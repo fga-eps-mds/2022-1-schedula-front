@@ -1,9 +1,4 @@
-import {
-  Button,
-  Center,
-  Input,
-  Spacer,
-} from '@chakra-ui/react';
+import { Button, Center, Input } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import { toast } from 'react-toastify';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -33,7 +28,7 @@ const Home: NextPage = () => {
           {...register('field1')}
         />
         <Button
-          colorScheme='telegram'
+          colorScheme='twitter'
           size='sm'
           type='submit'>
           Projeto agenda
