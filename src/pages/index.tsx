@@ -1,7 +1,8 @@
 import { Button, Center, Input } from '@chakra-ui/react';
 import type { NextPage } from 'next';
+import React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useForm, SubmitHandler } from 'react-hook-form';
 
 type formFields = {
   field1: string;

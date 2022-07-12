@@ -1,5 +1,10 @@
 {
-  "plugins": ["@typescript-eslint", "prettier"],
+  "plugins": [
+    "@typescript-eslint",
+    "simple-import-sort",
+    "import",
+    "prettier"
+  ],
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
@@ -9,11 +14,20 @@
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "error",
     "prettier/prettier": "error",
-    "prefer-const": "error"
+    "prefer-const": "error",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "import/no-cycle": "error"
   },
   "settings": {
     "import/resolver": {
       "typescript": {}
     }
+  },
+  "parserOptions": {
+    "sourceType": "module"
   }
 }
