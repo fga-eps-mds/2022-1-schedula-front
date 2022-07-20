@@ -1,4 +1,4 @@
-import { Heading, Box, Flex, Button, color } from '@chakra-ui/react';
+import { Heading, Flex, Button, Stack } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 
 
@@ -23,6 +23,20 @@ const lista_categoria: NextPage = () => {
                 </Heading>
             </Flex>
 
+            <Stack spacing={4} direction='row' align='center'>
+                <Button colorScheme='teal' size='sm'>
+                    Button
+                </Button>
+                <Button colorScheme='teal' size='sm'>
+                    Button
+                </Button>
+                <Button colorScheme='teal' size='sm'>
+                    Button
+                </Button>
+                <Button colorScheme='teal' size='sm'>
+                    Button
+                </Button>
+            </Stack>
         </div>
 
         
