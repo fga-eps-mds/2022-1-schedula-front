@@ -13,6 +13,7 @@ const lista_categoria: NextPage = () => {
     }
 
     return(
+        <>
         <div Background-color='#E5E5E5' style = {{margin: '55px'}}>
             <Flex 
                 align="center" 
@@ -23,23 +24,28 @@ const lista_categoria: NextPage = () => {
                 </Heading>
             </Flex>
 
-            <Stack spacing={4} direction='row' align='center'>
-                <Button colorScheme='teal' size='sm'>
-                    Button
+            <Stack spacing={4} direction='column' align='center' width={360}>
+                <Button colorScheme='orange' size='sm' w={360}>
+                    Dashbord
                 </Button>
-                <Button colorScheme='teal' size='sm'>
-                    Button
+                <Button colorScheme='orange' size='sm' w={360}>
+                    Chamados
                 </Button>
-                <Button colorScheme='teal' size='sm'>
-                    Button
+                <Button colorScheme='orange' size='sm' w={360}>
+                    Registrar Chamados
                 </Button>
-                <Button colorScheme='teal' size='sm'>
-                    Button
+                <Button colorScheme='orange' size='sm' w={360}>
+                    Gerenciar Tipos De Problema
+                </Button>
+                <Button colorScheme='orange' size='sm' w={360}>
+                    Tutoriais
                 </Button>
             </Stack>
+
+
         </div>
 
-        
+        </>
     );
 }
 
