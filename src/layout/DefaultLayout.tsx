@@ -12,7 +12,6 @@ const DefaultLayout = ({
   children,
 }: DefaultLayoutProps) => {
   const MenuHeadStyle = {
-    // boxSizing: 'border-box',
     borderBottom: '1px solid',
     width: '360px',
     height: '60px',
