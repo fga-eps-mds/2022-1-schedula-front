@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { FiLayout } from 'react-icons/fi';
 import {
   MdMonitor,
+  MdOutlineCallToAction,
   MdOutlineDashboard,
   MdOutlineViewAgenda,
 } from 'react-icons/md';
@@ -28,7 +29,7 @@ const DefaultLayout = ({
 }: DefaultLayoutProps) => {
   const MenuHeadStyle = {
     borderBottom: '1px solid',
-    width: '360px',
+    width: '340px',
     height: '60px',
     borderColor: '#777777',
   };
@@ -104,7 +105,7 @@ const DefaultLayout = ({
             <DashboardOptions isActive={isActive3}>
               <div style={divStyle}>
                 <div style={iconStyle}>
-                  <FiLayout />{' '}
+                  <MdOutlineCallToAction />{' '}
                 </div>{' '}
                 <div style={buttonTextStyle}>
                   <div>Registrar Chamados</div>
@@ -114,7 +115,7 @@ const DefaultLayout = ({
             <DashboardOptions isActive={isActive4}>
               <div style={divStyle}>
                 <div style={iconStyle}>
-                  <MdOutlineViewAgenda />{' '}
+                  <FiLayout />{' '}
                 </div>{' '}
                 <h1
                   style={{
