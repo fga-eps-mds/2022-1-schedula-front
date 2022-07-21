@@ -1,12 +1,13 @@
-import type { AppProps } from 'next/app';
-import { ToastContainer } from 'react-toastify';
-import { ChakraProvider } from '@chakra-ui/react';
-
 import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { ColorTheme } from '../styles/ColorTheme';
-import { ReactElement, ReactNode } from 'react';
+
+import { ChakraProvider } from '@chakra-ui/react';
 import type { NextPage } from 'next';
+import type { AppProps } from 'next/app';
+import { ReactElement, ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
+
+import { ColorTheme } from '../styles/ColorTheme';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
