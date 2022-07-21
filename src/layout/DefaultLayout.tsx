@@ -45,7 +45,7 @@ const DefaultLayout = ({
   const buttonTextStyle = {
     marginLeft: '12px',
     display: 'flex',
-    marginTop: '3%',
+    marginTop: '4%',
   };
 
   const iconStyle = {
@@ -57,6 +57,7 @@ const DefaultLayout = ({
       <div
         style={{
           display: 'flex',
+          fontFamily: 'Overpass ,sans-serif',
         }}>
         <div
           style={{
@@ -70,9 +71,15 @@ const DefaultLayout = ({
               width={210}
               height={51}
               margin='0 auto'
-              size='xl'
               textAlign='center'>
-              Schedula
+              <div
+                style={{
+                  fontFamily: 'Overpass, sans-serif',
+                  fontSize: 'lg',
+                  color: 'black',
+                }}>
+                Schedula
+              </div>
             </Heading>
           </Flex>
 
