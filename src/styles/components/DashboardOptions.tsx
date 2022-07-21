@@ -6,10 +6,6 @@ interface DashboardOptionsProps {
   isActive?: boolean;
 }
 
-// function changeColor() {
-//   console.log('passou por cima');
-// }
-
 export const DashboardOptions = ({
   children,
   isActive,
@@ -22,8 +18,7 @@ export const DashboardOptions = ({
       w='235px'
       h='48px'
       _hover={{ bg: 'primary', color: 'white' }}>
-      {' '}
-      {children}{' '}
+      {children}
     </Button>
   );
 };
