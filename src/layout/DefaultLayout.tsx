@@ -1,6 +1,6 @@
 import { Flex, Heading, Stack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
-import { BsReverseLayoutTextWindowReverse } from 'react-icons/bs';
+import { FiLayout } from 'react-icons/fi';
 import {
   MdMonitor,
   MdOutlineDashboard,
@@ -37,27 +37,30 @@ const DefaultLayout = ({
     // textAlign: 'left',
     width: '100%',
     display: 'flex',
-    fontSize: 'large',
+    fontSize: 'medium',
     alignItem: 'center',
   };
 
   const buttonTextStyle = {
-    // marginLeft: '9px',
-    // top: '5px',
-    // display: 'flex',
-    // margin: '0 auto',
+    marginLeft: '12px',
+    display: 'flex',
+    marginTop: '3%',
   };
 
   const iconStyle = {
-    // fontSize: 'xx-large',
+    fontSize: 'xx-large',
   };
 
   return (
     <>
-      <div style={{ display: 'flex' }}>
+      <div
+        style={{
+          display: 'flex',
+        }}>
         <div
-          Background-color='#E5E5E5'
-          style={{ margin: '55px' }}>
+          style={{
+            margin: '55px',
+          }}>
           <Flex
             align='center'
             justify='center'
@@ -83,25 +86,41 @@ const DefaultLayout = ({
                 <div style={iconStyle}>
                   <MdOutlineDashboard />
                 </div>{' '}
-                <div style={buttonTextStyle}>Dashboard</div>
+                <div style={buttonTextStyle}>
+                  <div>Dashboard</div>
+                </div>
               </div>
             </DashboardOptions>
             <DashboardOptions isActive={isActive2}>
               <div style={divStyle}>
-                <MdOutlineViewAgenda /> <div>Chamados</div>
+                <div style={iconStyle}>
+                  <MdOutlineViewAgenda />{' '}
+                </div>{' '}
+                <div style={buttonTextStyle}>
+                  <div>Chamados</div>
+                </div>
               </div>
             </DashboardOptions>
             <DashboardOptions isActive={isActive3}>
               <div style={divStyle}>
-                <BsReverseLayoutTextWindowReverse />{' '}
-                <div>Registrar Chamados</div>
+                <div style={iconStyle}>
+                  <FiLayout />{' '}
+                </div>{' '}
+                <div style={buttonTextStyle}>
+                  <div>Registrar Chamados</div>
+                </div>
               </div>
             </DashboardOptions>
             <DashboardOptions isActive={isActive4}>
               <div style={divStyle}>
-                <MdOutlineDashboard />{' '}
-                <h1 style={{ textAlign: 'left' }}>
-                  {' '}
+                <div style={iconStyle}>
+                  <MdOutlineViewAgenda />{' '}
+                </div>{' '}
+                <h1
+                  style={{
+                    textAlign: 'left',
+                    marginLeft: '12px',
+                  }}>
                   Gerenciar Tipos
                   <p />
                   de Chamados
@@ -110,7 +129,12 @@ const DefaultLayout = ({
             </DashboardOptions>
             <DashboardOptions isActive={isActive5}>
               <div style={divStyle}>
-                <MdMonitor /> <div>Tutoriais</div>
+                <div style={iconStyle}>
+                  <MdMonitor />{' '}
+                </div>{' '}
+                <div style={buttonTextStyle}>
+                  <div>Tutoriais</div>
+                </div>
               </div>
             </DashboardOptions>
           </Stack>

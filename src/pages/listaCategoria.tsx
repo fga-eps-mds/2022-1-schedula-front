@@ -12,7 +12,7 @@ const listaCategoria = () => {
 //Chamado do DefaulLayout
 listaCategoria.getLayout = (page: ReactNode) => {
   return (
-    <DefaultLayout isActive4={true}>{page}</DefaultLayout>
+    <DefaultLayout isActive2={true}>{page}</DefaultLayout>
   );
 };
 export default listaCategoria;
