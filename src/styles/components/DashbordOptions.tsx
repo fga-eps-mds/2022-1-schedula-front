@@ -12,7 +12,7 @@ export const DashbordOptions = ({
 }: DashbordOptionsProps) => {
   return (
     <Button
-      bg={isActive == true ? 'primary' : 'white'}
+      bg={isActive == false ? 'primary' : 'white'}
       size='sm'
       w={260}>
       {' '}

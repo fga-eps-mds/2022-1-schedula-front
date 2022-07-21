@@ -8,7 +8,7 @@ import { ReactElement, ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import { ColorTheme } from '../styles/ColorTheme';
-
+//setando layout default
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
   auth?: boolean;

@@ -9,6 +9,7 @@ const listaCategoria = () => {
     </>
   );
 };
+//Chamado do DefaulLayout
 listaCategoria.getLayout = (page: ReactNode) => {
   return <DefaultLayout>{page}</DefaultLayout>;
 };
