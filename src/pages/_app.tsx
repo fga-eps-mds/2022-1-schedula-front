@@ -2,23 +2,27 @@ import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { ChakraProvider } from '@chakra-ui/react';
-import type { AppProps } from 'next/app';
-import { ToastContainer } from 'react-toastify';
-import { ColorTheme } from '../styles/ColorTheme';
-import { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
+import type { AppProps } from 'next/app';
+import { ReactElement, ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
+
+import { ColorTheme } from '../styles/ColorTheme';
 
 type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode,
-  auth?: boolean
-}
+  getLayout?: (page: ReactElement) => ReactNode;
+  auth?: boolean;
+};
 
 type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout
-}
+  Component: NextPageWithLayout;
+};
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? ((page) => page)
+function MyApp({
+  Component,
+  pageProps,
+}: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <ChakraProvider resetCSS theme={ColorTheme}>
       {getLayout(<Component {...pageProps} />)}
