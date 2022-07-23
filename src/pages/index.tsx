@@ -1,8 +1,8 @@
-import { Button, Center, Input } from '@chakra-ui/react';
-import type { NextPage } from 'next';
 import React from 'react';
+import type { NextPage } from 'next';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { Button, Center, Input } from '@chakra-ui/react';
 
 type formFields = {
   field1: string;
@@ -14,10 +14,12 @@ const Home: NextPage = () => {
     handleSubmit,
     formState: {},
   } = useForm<formFields>();
+
   const onSubmit: SubmitHandler<formFields> = (data) => {
     alert(JSON.stringify(data));
     toast.info('Form enviado');
   };
+
   return (
     <Center height='100vh'>
       <form onSubmit={handleSubmit(onSubmit)}>
