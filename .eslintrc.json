@@ -116,7 +116,7 @@
   "ignorePatterns": ["**/*.json", "**/*.js"],
   "overrides": [
     {
-      "files": ["src/**/*"],
+      "files": ["src/**/*", "__tests__/**/*"],
       "rules": {
         "simple-import-sort/imports": [
           "warn",
