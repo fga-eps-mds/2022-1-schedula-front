@@ -12,8 +12,8 @@ export const DashboardOptions = ({
 }: DashboardOptionsProps) => {
   return (
     <Button
-      bg={isActive == true ? 'primary' : 'white'}
-      color={isActive == true ? 'white' : 'black'}
+      bg={isActive ? 'primary' : 'white'}
+      color={isActive ? 'white' : 'black'}
       size='sm'
       w='235px'
       h='48px'

@@ -12,7 +12,7 @@ const teste = () => {
 //Chamado do DefaulLayout
 teste.getLayout = (page: ReactNode) => {
   return (
-    <DefaultLayout isActive1={true}>{page}</DefaultLayout>
+    <DefaultLayout Active='dashboard'>{page}</DefaultLayout>
   );
 };
 export default teste;
