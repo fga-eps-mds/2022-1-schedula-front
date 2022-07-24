@@ -78,7 +78,7 @@ const listaCategoria = ({
             </Text>
           </Button>
         </Box>
-        <Box mt='1em'>
+        <Box mt='1em' mb='3em'>
           <Text>Categorias cadastradas no sitema.</Text>
           {
             //madar categoria.email para categoria.descrição, o email era só para fim de teste.
