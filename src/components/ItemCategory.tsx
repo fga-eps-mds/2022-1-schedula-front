@@ -10,14 +10,18 @@ interface categoriesItem {
   description: string;
   active?: boolean;
   updatedAt?: Date;
-  link: string;
+  linkEdit: string;
+  linkDel: string;
+  linkAdd: string;
 }
 
 export const ItemCategory = ({
   id,
   description,
   name,
-  link,
+  linkEdit,
+  linkDel,
+  linkAdd,
 }: categoriesItem) => {
   return (
     <Box key={id} mt='2em'>
@@ -26,18 +30,30 @@ export const ItemCategory = ({
           <Text fontSize='large'>{name}</Text>
           <Text noOfLines={1}>{description}</Text>
         </Box>
-        <Box m='0 auto' mt='1em' fontSize={'xl'}>
-          <Link href={link}>
+        <Box
+          m='0 auto'
+          mt='1em'
+          fontSize={'xl'}
+          _hover={{ boxShadow: 'dark-lg' }}>
+          <Link href={linkAdd}>
             <VscAdd color='#405866' />
           </Link>
         </Box>
-        <Box m='0 auto' mt='1em' fontSize={'xl'}>
-          <Link href={link}>
+        <Box
+          m='0 auto'
+          mt='1em'
+          fontSize={'xl'}
+          _hover={{ boxShadow: 'dark-lg' }}>
+          <Link href={linkEdit}>
             <BiEditAlt />
           </Link>
         </Box>
-        <Box m='0 auto' mt='1em' fontSize={'xl'}>
-          <Link href={link}>
+        <Box
+          m='0 auto'
+          mt='1em'
+          fontSize={'xl'}
+          _hover={{ boxShadow: 'dark-lg' }}>
+          <Link href={linkDel}>
             <RiDeleteBin6Line />
           </Link>
         </Box>

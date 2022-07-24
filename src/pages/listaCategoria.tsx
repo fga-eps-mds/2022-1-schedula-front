@@ -73,7 +73,9 @@ const listaCategoria = ({
               bg: 'primary',
               boxShadow: 'xl',
             }}>
-            <Box mt='%1'>NOVA CATEGORIA DE PROBLEMA</Box>
+            <Text mt='0.25em' noOfLines={1}>
+              NOVA CATEGORIA DE PROBLEMA
+            </Text>
           </Button>
         </Box>
         <Box mt='1em'>
@@ -86,7 +88,9 @@ const listaCategoria = ({
             return (
               <ItemCategory
                 key={categoria.id}
-                link={link}
+                linkAdd={link}
+                linkEdit={link}
+                linkDel={link}
                 {...categoria}
               />
             );
