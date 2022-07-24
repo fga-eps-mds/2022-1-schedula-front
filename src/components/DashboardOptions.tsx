@@ -6,10 +6,6 @@ interface DashboardOptionsProps {
   isActive?: boolean;
 }
 
-// function changeColor() {
-//   console.log('passou por cima');
-// }
-
 export const DashboardOptions = ({
   children,
   isActive,

@@ -4,7 +4,7 @@ import { BiEditAlt } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
 
-interface categoriesItem {
+interface CategoriesItem {
   id: number;
   name: string;
   description: string;
@@ -22,7 +22,7 @@ export const ItemCategory = ({
   linkEdit,
   linkDel,
   linkAdd,
-}: categoriesItem) => {
+}: CategoriesItem) => {
   return (
     <Box key={id} mt='2em'>
       <Flex w='100%'>

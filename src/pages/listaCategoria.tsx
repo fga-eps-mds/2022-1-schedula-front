@@ -10,7 +10,7 @@ import { ReactNode } from 'react';
 import { ItemCategory } from '../components/ItemCategory';
 import DefaultLayout from '../layout/DefaultLayout';
 
-interface data1 {
+interface Data1 {
   id: number;
   name: string;
   description: string;
@@ -24,7 +24,7 @@ export const getStaticProps = async () => {
   const url = await fetch(
     'https://jsonplaceholder.typicode.com/users'
   );
-  const data: data1[] = await url.json();
+  const data: Data1[] = await url.json();
   return {
     props: { categorias: data },
   };
@@ -33,7 +33,7 @@ export const getStaticProps = async () => {
 const listaCategoria = ({
   categorias,
 }: {
-  categorias: data1[];
+  categorias: Data1[];
 }) => {
   return (
     <>
@@ -81,7 +81,7 @@ const listaCategoria = ({
           {
             //madar categoria.email para categoria.descrição, o email era só para fim de teste.
           }
-          {categorias.map((categoria: data1) => {
+          {categorias.map((categoria: Data1) => {
             const link = '/teste';
             return (
               <ItemCategory
