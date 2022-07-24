@@ -12,20 +12,12 @@ import { DashboardOptions } from '../styles/components/DashboardOptions';
 
 interface DefaultLayoutProps {
   children: ReactNode;
-  isActive1?: boolean;
-  isActive2?: boolean;
-  isActive3?: boolean;
-  isActive4?: boolean;
-  isActive5?: boolean;
+  Active: string;
 }
 
 const DefaultLayout = ({
   children,
-  isActive1,
-  isActive2,
-  isActive3,
-  isActive4,
-  isActive5,
+  Active,
 }: DefaultLayoutProps) => {
   const MenuHeadStyle = {
     borderBottom: '1px solid',
@@ -89,7 +81,8 @@ const DefaultLayout = ({
             align='left'
             w={360}
             marginTop={10}>
-            <DashboardOptions isActive={isActive1}>
+            <DashboardOptions
+              isActive={Active == 'dashboard'}>
               <div style={divStyle}>
                 <div style={iconStyle}>
                   <MdOutlineDashboard />
@@ -99,7 +92,8 @@ const DefaultLayout = ({
                 </div>
               </div>
             </DashboardOptions>
-            <DashboardOptions isActive={isActive2}>
+            <DashboardOptions
+              isActive={Active == 'chamados'}>
               <div style={divStyle}>
                 <div style={iconStyle}>
                   <MdOutlineViewAgenda />{' '}
@@ -109,7 +103,8 @@ const DefaultLayout = ({
                 </div>
               </div>
             </DashboardOptions>
-            <DashboardOptions isActive={isActive3}>
+            <DashboardOptions
+              isActive={Active == 'registrarChamados'}>
               <div style={divStyle}>
                 <div style={iconStyle}>
                   <MdOutlineCallToAction />{' '}
@@ -119,7 +114,10 @@ const DefaultLayout = ({
                 </div>
               </div>
             </DashboardOptions>
-            <DashboardOptions isActive={isActive4}>
+            <DashboardOptions
+              isActive={
+                Active == 'gerenciarTiposDeChamado'
+              }>
               <div style={divStyle}>
                 <div style={iconStyle}>
                   <FiLayout />{' '}
@@ -135,7 +133,8 @@ const DefaultLayout = ({
                 </h1>
               </div>
             </DashboardOptions>
-            <DashboardOptions isActive={isActive5}>
+            <DashboardOptions
+              isActive={Active == 'tutoriais'}>
               <div style={divStyle}>
                 <div style={iconStyle}>
                   <MdMonitor />{' '}
