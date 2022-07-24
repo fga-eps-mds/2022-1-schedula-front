@@ -82,9 +82,7 @@ const DefaultLayout = ({
             w={360}
             marginTop={10}>
             <DashboardOptions
-              isActive={
-                Active == 'dashboard' ? true : false
-              }>
+              isActive={Active == 'dashboard'}>
               <div style={divStyle}>
                 <div style={iconStyle}>
                   <MdOutlineDashboard />
@@ -95,9 +93,7 @@ const DefaultLayout = ({
               </div>
             </DashboardOptions>
             <DashboardOptions
-              isActive={
-                Active == 'chamados' ? true : false
-              }>
+              isActive={Active == 'chamados'}>
               <div style={divStyle}>
                 <div style={iconStyle}>
                   <MdOutlineViewAgenda />{' '}
@@ -108,9 +104,7 @@ const DefaultLayout = ({
               </div>
             </DashboardOptions>
             <DashboardOptions
-              isActive={
-                Active == 'registrarChamados' ? true : false
-              }>
+              isActive={Active == 'registrarChamados'}>
               <div style={divStyle}>
                 <div style={iconStyle}>
                   <MdOutlineCallToAction />{' '}
@@ -123,8 +117,6 @@ const DefaultLayout = ({
             <DashboardOptions
               isActive={
                 Active == 'gerenciarTiposDeChamado'
-                  ? true
-                  : false
               }>
               <div style={divStyle}>
                 <div style={iconStyle}>
@@ -142,9 +134,7 @@ const DefaultLayout = ({
               </div>
             </DashboardOptions>
             <DashboardOptions
-              isActive={
-                Active == 'tutoriais' ? true : false
-              }>
+              isActive={Active == 'tutoriais'}>
               <div style={divStyle}>
                 <div style={iconStyle}>
                   <MdMonitor />{' '}
