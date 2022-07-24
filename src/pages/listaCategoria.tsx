@@ -1,9 +1,29 @@
-import { Button, Flex, Heading } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+} from '@chakra-ui/react';
+import Link from 'next/link';
 import { ReactNode } from 'react';
+import { BiEditAlt } from 'react-icons/bi';
+import { GrAdd } from 'react-icons/gr';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 import DefaultLayout from '../layout/DefaultLayout';
 
-const listaCategoria = () => {
+export const getStaticProps = async () => {
+  const url = await fetch(
+    'https://jsonplaceholder.typicode.com/users'
+  );
+  const data = await url.json();
+  RiDeleteBin6Line;
+  return {
+    props: { categorias: data },
+  };
+};
+
+const listaCategoria = ({ categorias }) => {
   const MenuHeadStyle = {
     width: '60%',
     height: '5%',
@@ -45,14 +65,43 @@ const listaCategoria = () => {
               bg: 'primary',
               boxShadow: 'xl',
             }}>
-            <div style={{ marginTop: '3px' }}>
+            <div style={{ marginTop: '1%' }}>
               NOVA CATEGORIA DE PROBLEMA
             </div>
           </Button>
         </div>
-        <div style={{ marginTop: '2em' }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing
-          elit. Maecenas Lorem ipsum dolor sit amet...
+        <div style={{ marginTop: '1em' }}>
+          <h2>Categorias cadastradas no sitema.</h2>
+
+          {categorias.map((categoria) => (
+            <div
+              key={categoria.id}
+              style={{ marginTop: '2em' }}>
+              <Flex w='100%'>
+                <Box w='90%'>
+                  <h1 style={{ fontSize: 'large' }}>
+                    {categoria.name}
+                  </h1>
+                  <p>{categoria.email}</p>
+                </Box>
+                <Box m='0 auto' mt='1em' fontSize={'xl'}>
+                  <Link href={'/teste'}>
+                    <GrAdd />
+                  </Link>
+                </Box>
+                <Box m='0 auto' mt='1em' fontSize={'xl'}>
+                  <Link href={'/teste'}>
+                    <BiEditAlt />
+                  </Link>
+                </Box>
+                <Box m='0 auto' mt='1em' fontSize={'xl'}>
+                  <Link href={'/teste'}>
+                    <RiDeleteBin6Line />
+                  </Link>
+                </Box>
+              </Flex>
+            </div>
+          ))}
         </div>
       </div>
     </>
