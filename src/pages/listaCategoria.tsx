@@ -6,7 +6,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
-import { RiDeleteBin6Line } from 'react-icons/ri';
 
 import { ItemCategory } from '../components/ItemCategory';
 import DefaultLayout from '../layout/DefaultLayout';
@@ -26,7 +25,6 @@ export const getStaticProps = async () => {
     'https://jsonplaceholder.typicode.com/users'
   );
   const data: data1[] = await url.json();
-  RiDeleteBin6Line;
   return {
     props: { categorias: data },
   };
