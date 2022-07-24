@@ -8,7 +8,7 @@ import {
   MdOutlineViewAgenda,
 } from 'react-icons/md';
 
-import { DashboardOptions } from '../styles/components/DashboardOptions';
+import { DashboardOptions } from '../components/DashboardOptions';
 
 interface DefaultLayoutProps {
   children: ReactNode;

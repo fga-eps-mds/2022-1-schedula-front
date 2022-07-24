@@ -22,8 +22,7 @@ export const DashboardOptions = ({
       w='235px'
       h='48px'
       _hover={{ bg: 'primary', color: 'white' }}>
-      {' '}
-      {children}{' '}
+      {children}
     </Button>
   );
 };

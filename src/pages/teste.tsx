@@ -1,3 +1,4 @@
+import { Heading } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
 import DefaultLayout from '../layout/DefaultLayout';
@@ -5,7 +6,7 @@ import DefaultLayout from '../layout/DefaultLayout';
 const teste = () => {
   return (
     <>
-      <h1 style={{ width: '100%' }}>Página Teste</h1>
+      <Heading w='100%'>Página Teste</Heading>
     </>
   );
 };
