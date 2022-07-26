@@ -36,7 +36,7 @@ export const ItemCategory = ({
           mt='1em'
           fontSize={'xl'}
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-          _hover={{boxShadow: 'dark-lg'}}>
+          _hover={{ boxShadow: 'dark-lg' }}>
           <Link href={linkAdd}>
             <VscAdd color='#405866' />
           </Link>
@@ -46,7 +46,7 @@ export const ItemCategory = ({
           mt='1em'
           fontSize={'xl'}
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-          _hover={{boxShadow: 'dark-lg'}}>
+          _hover={{ boxShadow: 'dark-lg' }}>
           <Link href={linkEdit}>
             <BiEditAlt />
           </Link>
@@ -56,7 +56,7 @@ export const ItemCategory = ({
           mt='1em'
           fontSize={'xl'}
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-          _hover={{boxShadow: 'dark-lg'}}>
+          _hover={{ boxShadow: 'dark-lg' }}>
           <Link href={linkDel}>
             <RiDeleteBin6Line />
           </Link>
