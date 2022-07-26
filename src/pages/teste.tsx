@@ -8,6 +8,7 @@ const teste = () => {
     <>
       <Heading w='100%'>Página Teste</Heading>
     </>
+
   );
 };
 //Chamado do DefaulLayout
