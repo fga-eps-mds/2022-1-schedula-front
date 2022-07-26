@@ -1,11 +1,8 @@
+import Link from 'next/link';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { BiEditAlt } from 'react-icons/bi';
-
-import Link from 'next/link';
-
 import { RiDeleteBin6Line } from 'react-icons/ri';
-
 import { VscAdd } from 'react-icons/vsc';
 
 interface CategoriesItem {
@@ -29,8 +26,8 @@ export const ItemCategory = ({
 }: CategoriesItem) => {
 
   const hover = {
-    boxShadow: 'dark-lg'
-  }
+    boxShadow: 'dark-lg',
+  };
 
   return (
     <Box key={id} mt='2em'>
@@ -43,6 +40,7 @@ export const ItemCategory = ({
           m='0 auto'
           mt='1em'
           fontSize={'xl'}
+          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
           _hover={hover}>
           <Link href={linkAdd}>
             <VscAdd color='#405866' />
@@ -52,6 +50,7 @@ export const ItemCategory = ({
           m='0 auto'
           mt='1em'
           fontSize={'xl'}
+          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
           _hover={hover}>
           <Link href={linkEdit}>
             <BiEditAlt />
@@ -61,6 +60,7 @@ export const ItemCategory = ({
           m='0 auto'
           mt='1em'
           fontSize={'xl'}
+          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
           _hover={hover}>
           <Link href={linkDel}>
             <RiDeleteBin6Line />
