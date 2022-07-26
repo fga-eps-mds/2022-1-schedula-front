@@ -1,17 +1,16 @@
 import { ReactNode } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 
 import DefaultLayout from '../layout/DefaultLayout';
 
 const teste = () => {
   return (
     <>
-      <Box>Página Teste</Box>
+      <Heading w='100%'>Página Teste</Heading>
     </>
   );
 };
 
-//Chamado do DefaulLayout
 teste.getLayout = (page: ReactNode) => {
   return (
     <DefaultLayout Active='dashboard'>{page}</DefaultLayout>
