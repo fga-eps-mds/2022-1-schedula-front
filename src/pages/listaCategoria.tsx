@@ -7,8 +7,9 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
-import { ItemCategory } from '../components/ItemCategory';
 import DefaultLayout from '../layout/DefaultLayout';
+
+import { ItemCategory } from '../components/ItemCategory';
 
 interface Data1 {
   id: number;
@@ -24,6 +25,7 @@ export const getStaticProps = async () => {
   const url = await fetch(
     'https://jsonplaceholder.typicode.com/users'
   );
+
   const data: Data1[] = await url.json();
   return {
     props: { categorias: data },
@@ -42,19 +44,22 @@ const listaCategoria = ({
           width='100%'
           display='flex'
           marginTop='6%'
-          fontFamily='Overpass ,sans-serif'>
+          fontFamily='Overpass ,sans-serif'
+        >
           <Flex
             align='center'
             justify='left'
             w='60%'
             h='5%'
-            mt='2%'>
+            mt='2%'
+          >
             <Heading
               margin='0 auto'
               marginLeft={0}
               size='lg'
               textAlign='center'
-              fontFamily='Overpass ,sans-serif'>
+              fontFamily='Overpass ,sans-serif'
+            >
               Gerenciar Categoria De Problema
             </Heading>
           </Flex>
@@ -66,11 +71,13 @@ const listaCategoria = ({
             marginTop={'1em'}
             borderRadius={'90px'}
             h={'2em'}
+            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
             _hover={{
               color: 'white',
               bg: 'primary',
               boxShadow: 'xl',
-            }}>
+            }}
+          >
             <Text mt='0.25em' noOfLines={1}>
               NOVA CATEGORIA DE PROBLEMA
             </Text>
@@ -83,6 +90,7 @@ const listaCategoria = ({
           }
           {categorias.map((categoria: Data1) => {
             const link = '/teste';
+
             return (
               <ItemCategory
                 key={categoria.id}
@@ -98,7 +106,7 @@ const listaCategoria = ({
     </>
   );
 };
-//Chamado do DefaulLayout
+
 listaCategoria.getLayout = (page: ReactNode) => {
   return (
     <DefaultLayout Active='gerenciarTiposDeChamado'>
@@ -106,4 +114,5 @@ listaCategoria.getLayout = (page: ReactNode) => {
     </DefaultLayout>
   );
 };
+
 export default listaCategoria;
