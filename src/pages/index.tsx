@@ -33,7 +33,8 @@ const Home: NextPage = () => {
         <Button
           colorScheme='twitter'
           size='sm'
-          type='submit'>
+          type='submit'
+        >
           Projeto agenda
         </Button>
       </form>

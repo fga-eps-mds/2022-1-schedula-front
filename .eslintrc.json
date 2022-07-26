@@ -13,6 +13,7 @@
   },
   "extends": [
     "plugin:@typescript-eslint/recommended",
+    "plugin:eslint-comments/recommended",
     "plugin:import/typescript",
     "plugin:prettier/recommended",
     "plugin:react-perf/recommended",
@@ -110,7 +111,17 @@
         "blankLine": "always",
         "prev": "*",
         "next": ["interface", "type"]
+      },
+      {
+        "blankLine": "always",
+        "prev": ["interface", "type"],
+        "next": "*"
       }
+    ],
+    // "eslint-comments/no-use": ["warn", { "allow": [] }],
+    "eslint-comments/require-description": [
+      "error",
+      { "ignore": [] }
     ]
   },
   "ignorePatterns": ["**/*.json", "**/*.js"],
