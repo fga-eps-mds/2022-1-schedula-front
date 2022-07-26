@@ -1,7 +1,7 @@
-import DefaultLayout from '../layout/DefaultLayout';
-
-import { Heading } from '@chakra-ui/react';
 import { ReactNode } from 'react';
+import { Heading } from '@chakra-ui/react';
+
+import DefaultLayout from '../layout/DefaultLayout';
 
 const teste = () => {
   return (

@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
   Box,
   Button,
@@ -7,9 +8,6 @@ import {
 } from '@chakra-ui/react';
 
 import DefaultLayout from '../layout/DefaultLayout';
-
-import { ReactNode } from 'react';
-
 import { ItemCategory } from '../components/ItemCategory';
 
 interface Data1 {
