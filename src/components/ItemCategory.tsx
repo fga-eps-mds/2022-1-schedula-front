@@ -1,7 +1,11 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
-import Link from 'next/link';
+
 import { BiEditAlt } from 'react-icons/bi';
+
+import Link from 'next/link';
+
 import { RiDeleteBin6Line } from 'react-icons/ri';
+
 import { VscAdd } from 'react-icons/vsc';
 
 interface CategoriesItem {
@@ -23,6 +27,11 @@ export const ItemCategory = ({
   linkDel,
   linkAdd,
 }: CategoriesItem) => {
+
+  const hover = {
+    boxShadow: 'dark-lg'
+  }
+
   return (
     <Box key={id} mt='2em'>
       <Flex w='100%'>
@@ -34,7 +43,7 @@ export const ItemCategory = ({
           m='0 auto'
           mt='1em'
           fontSize={'xl'}
-          _hover={{ boxShadow: 'dark-lg' }}>
+          _hover={hover}>
           <Link href={linkAdd}>
             <VscAdd color='#405866' />
           </Link>
@@ -43,7 +52,7 @@ export const ItemCategory = ({
           m='0 auto'
           mt='1em'
           fontSize={'xl'}
-          _hover={{ boxShadow: 'dark-lg' }}>
+          _hover={hover}>
           <Link href={linkEdit}>
             <BiEditAlt />
           </Link>
@@ -52,7 +61,7 @@ export const ItemCategory = ({
           m='0 auto'
           mt='1em'
           fontSize={'xl'}
-          _hover={{ boxShadow: 'dark-lg' }}>
+          _hover={hover}>
           <Link href={linkDel}>
             <RiDeleteBin6Line />
           </Link>
