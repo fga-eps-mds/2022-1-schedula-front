@@ -5,9 +5,10 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react';
-import { ReactNode } from 'react';
 
 import DefaultLayout from '../layout/DefaultLayout';
+
+import { ReactNode } from 'react';
 
 import { ItemCategory } from '../components/ItemCategory';
 
@@ -27,6 +28,7 @@ export const getStaticProps = async () => {
   );
 
   const data: Data1[] = await url.json();
+
   return {
     props: { categorias: data },
   };
@@ -44,22 +46,19 @@ const listaCategoria = ({
           width='100%'
           display='flex'
           marginTop='6%'
-          fontFamily='Overpass ,sans-serif'
-        >
+          fontFamily='Overpass ,sans-serif'>
           <Flex
             align='center'
             justify='left'
             w='60%'
             h='5%'
-            mt='2%'
-          >
+            mt='2%'>
             <Heading
               margin='0 auto'
               marginLeft={0}
               size='lg'
               textAlign='center'
-              fontFamily='Overpass ,sans-serif'
-            >
+              fontFamily='Overpass ,sans-serif'>
               Gerenciar Categoria De Problema
             </Heading>
           </Flex>
@@ -76,8 +75,7 @@ const listaCategoria = ({
               color: 'white',
               bg: 'primary',
               boxShadow: 'xl',
-            }}
-          >
+            }}>
             <Text mt='0.25em' noOfLines={1}>
               NOVA CATEGORIA DE PROBLEMA
             </Text>
