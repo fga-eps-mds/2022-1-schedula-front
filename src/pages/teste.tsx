@@ -16,4 +16,5 @@ teste.getLayout = (page: ReactNode) => {
     <DefaultLayout Active='dashboard'>{page}</DefaultLayout>
   );
 };
+
 export default teste;
