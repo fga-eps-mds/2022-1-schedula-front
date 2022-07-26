@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Box, Flex, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 
 import { BiEditAlt } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
@@ -24,11 +24,6 @@ export const ItemCategory = ({
   linkDel,
   linkAdd,
 }: CategoriesItem) => {
-
-  const hover = {
-    boxShadow: 'dark-lg',
-  };
-
   return (
     <Box key={id} mt='2em'>
       <Flex w='100%'>
@@ -41,7 +36,7 @@ export const ItemCategory = ({
           mt='1em'
           fontSize={'xl'}
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-          _hover={hover}>
+          _hover={{boxShadow: 'dark-lg'}}>
           <Link href={linkAdd}>
             <VscAdd color='#405866' />
           </Link>
@@ -51,7 +46,7 @@ export const ItemCategory = ({
           mt='1em'
           fontSize={'xl'}
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-          _hover={hover}>
+          _hover={{boxShadow: 'dark-lg'}}>
           <Link href={linkEdit}>
             <BiEditAlt />
           </Link>
@@ -61,7 +56,7 @@ export const ItemCategory = ({
           mt='1em'
           fontSize={'xl'}
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-          _hover={hover}>
+          _hover={{boxShadow: 'dark-lg'}}>
           <Link href={linkDel}>
             <RiDeleteBin6Line />
           </Link>
