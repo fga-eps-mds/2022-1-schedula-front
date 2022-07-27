@@ -1,20 +1,13 @@
 import { ReactNode } from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 
 import { ItemCategory } from '../components/ItemCategory';
+import { ModalCad } from '../components/ModalCad';
 import DefaultLayout from '../layout/DefaultLayout';
 
 interface Data1 {
   id: number;
   name: string;
-
-
   description: string;
   active: boolean;
   updatedAt: Date;
@@ -65,25 +58,7 @@ const listaCategoria = ({
               Gerenciar Categoria De Problema
             </Heading>
           </Flex>
-          <Button
-            bg={'primary'}
-            color={'white'}
-            margin={'0 auto'}
-            boxShadow={'dark-lg'}
-            marginTop={'1em'}
-            borderRadius={'90px'}
-            h={'2em'}
-            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
-            _hover={{
-              color: 'white',
-              bg: 'primary',
-              boxShadow: 'xl',
-            }}
-          >
-            <Text mt='0.25em' noOfLines={1}>
-              NOVA CATEGORIA DE PROBLEMA
-            </Text>
-          </Button>
+          <ModalCad />
         </Box>
         <Box mt='1em' mb='3em'>
           <Text>Categorias cadastradas no sitema.</Text>
