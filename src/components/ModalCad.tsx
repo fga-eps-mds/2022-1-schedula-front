@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
   Box,
   Button,
+  FormControl,
+  FormLabel,
   Input,
   Modal,
   ModalBody,
@@ -17,21 +20,43 @@ import {
 
 export const ModalCad = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: {},
+  } = useForm<formFields>();
+
+  const [isError, setError] = useState(false);
 
   type formFields = {
     name: string;
     description: string;
+    date: Date;
+    active: boolean;
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: {},
-  } = useForm<formFields>();
-
   const onSubmit: SubmitHandler<formFields> = (data) => {
-    alert(JSON.stringify(data));
-    toast.info('Form enviado');
+    data.date = new Date();
+    data.active = true;
+
+    if (data.name === '' || data.description === '') {
+      setError(true);
+    } else {
+      toast(
+        'A categoria ' + data.name + ' foi cadastrada',
+        {
+          position: 'top-left',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+      reset();
+    }
   };
 
   return (
@@ -60,50 +85,50 @@ export const ModalCad = () => {
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Nova Categoria</ModalHeader>
+
             <ModalCloseButton />
+
             <ModalBody>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Input
-                  size='sm'
-                  w='sm'
-                  mr={2}
-                  placeholder='Nome'
-                  {...register('name')}
-                />
-                <Input
-                  size='sm'
-                  w='sm'
-                  mr={2}
-                  placeholder='Descrição'
-                  {...register('description')}
-                />
+                <FormControl isRequired isInvalid={isError}>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    placeholder='Nome'
+                    {...register('name')}
+                  />
+                </FormControl>
+
+                <FormControl isRequired isInvalid={isError}>
+                  <FormLabel>Descrição</FormLabel>
+                  <Input
+                    placeholder='Descrição'
+                    {...register('description')}
+                  />
+                </FormControl>
+
+                <ModalFooter>
+                  <Button
+                    colorScheme=''
+                    bg='InfoBackground'
+                    color='black'
+                    mr={3}
+                    onClick={onClose}
+                    border={'1px'}
+                    borderColor={'black'}>
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant='ghost'
+                    bg='primary'
+                    color={'white'}
+                    type='submit'>
+                    <Text>
+                      REGISTRAR CATEGORIA DE<p></p> PROBLEMA
+                    </Text>
+                  </Button>
+                </ModalFooter>
               </form>
             </ModalBody>
-
-            <ModalFooter
-              justifyContent={'center'}
-              fontSize={'small'}
-              onSubmit={handleSubmit(onSubmit)}>
-              <Button
-                colorScheme=''
-                bg='InfoBackground'
-                color='black'
-                mr={3}
-                onClick={onClose}
-                border={'1px'}
-                borderColor={'black'}>
-                Cancelar
-              </Button>
-              <Button
-                variant='ghost'
-                bg='primary'
-                color={'white'}
-                type='submit'>
-                <Text>
-                  REGISTRAR CATEGORIA DE<p></p> PROBLEMA
-                </Text>
-              </Button>
-            </ModalFooter>
           </ModalContent>
         </Modal>
       </Box>
