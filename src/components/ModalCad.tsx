@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -9,7 +8,6 @@ import {
   Input,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -19,44 +17,36 @@ import {
 } from '@chakra-ui/react';
 
 export const ModalCad = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: {},
-  } = useForm<formFields>();
-
-  const [isError, setError] = useState(false);
-
-  type formFields = {
+  type FormProps = {
     name: string;
     description: string;
     date: Date;
     active: boolean;
   };
 
-  const onSubmit: SubmitHandler<formFields> = (data) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: {},
+  } = useForm<FormProps>();
+
+  const onSubmit: SubmitHandler<FormProps> = (data) => {
     data.date = new Date();
     data.active = true;
-
-    if (data.name === '' || data.description === '') {
-      setError(true);
-    } else {
-      toast(
-        'A categoria ' + data.name + ' foi cadastrada',
-        {
-          position: 'top-left',
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
-      reset();
-    }
+    console.log(JSON.stringify(data));
+    toast('A categoria ' + data.name + ' foi cadastrada', {
+      position: 'top-left',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    reset();
   };
 
   return (
@@ -81,37 +71,50 @@ export const ModalCad = () => {
             NOVA CATEGORIA DE PROBLEMA
           </Text>
         </Button>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal
+          isOpen={isOpen}
+          onClose={onClose}
+          size={'2xl'}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Nova Categoria</ModalHeader>
-
-            <ModalCloseButton />
+            <ModalHeader
+              textAlign={'center'}
+              fontSize={'3xl'}>
+              Nova Categoria de Problema
+            </ModalHeader>
 
             <ModalBody>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <FormControl isRequired isInvalid={isError}>
-                  <FormLabel>Name</FormLabel>
-                  <Input
-                    placeholder='Nome'
-                    {...register('name')}
-                  />
-                </FormControl>
+                <Box w={'50%'} m={'0 auto'}>
+                  <FormControl isRequired>
+                    <FormLabel>Name</FormLabel>
+                    <Input
+                      borderRadius={'8px'}
+                      size={'sm'}
+                      placeholder='Nome'
+                      {...register('name')}
+                    />
+                  </FormControl>
 
-                <FormControl isRequired isInvalid={isError}>
-                  <FormLabel>Descrição</FormLabel>
-                  <Input
-                    placeholder='Descrição'
-                    {...register('description')}
-                  />
-                </FormControl>
+                  <FormControl isRequired mt={'24px'}>
+                    <FormLabel>Descrição</FormLabel>
+                    <Input
+                      borderRadius={'8px'}
+                      size={'sm'}
+                      placeholder='Descrição'
+                      {...register('description')}
+                    />
+                  </FormControl>
+                </Box>
 
-                <ModalFooter>
+                <ModalFooter
+                  justifyContent={'center'}
+                  mt={'60px'}>
                   <Button
                     colorScheme=''
                     bg='InfoBackground'
                     color='black'
-                    mr={3}
+                    mr={'30px'}
                     onClick={onClose}
                     border={'1px'}
                     borderColor={'black'}>

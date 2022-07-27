@@ -46,8 +46,8 @@ const listaCategoria = ({
             justify='left'
             w='60%'
             h='5%'
-            mt='2%'
-          >
+            mr={10}
+            mt='2%'>
             <Heading
               margin='0 auto'
               marginLeft={0}
