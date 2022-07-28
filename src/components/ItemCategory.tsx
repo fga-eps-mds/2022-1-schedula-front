@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { BiEditAlt } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
 import { Box, Flex, Text } from '@chakra-ui/react';
+
+import { ModalEditCategory } from './ModalEditCategory';
 
 interface CategoriesItem {
   id: number;
@@ -41,17 +42,12 @@ export const ItemCategory = ({
             <VscAdd color='#405866' />
           </Link>
         </Box>
-        <Box
-          m='0 auto'
-          mt='1em'
-          fontSize={'xl'}
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
-          _hover={{ boxShadow: 'dark-lg' }}
-        >
-          <Link href={linkEdit}>
-            <BiEditAlt />
-          </Link>
-        </Box>
+        <ModalEditCategory
+          id={id}
+          name={name}
+          description={description}
+          linkEdit={linkEdit}
+        />
         <Box
           m='0 auto'
           mt='1em'

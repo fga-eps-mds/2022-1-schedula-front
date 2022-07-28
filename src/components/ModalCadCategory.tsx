@@ -31,16 +31,18 @@ export const ModalCadCategory = () => {
     formState: {},
   } = useForm<FormProps>();
 
-  const onSubmit: SubmitHandler<FormProps> = (data) => {
-    console.log(JSON.stringify(data));
+  const onSubmit: SubmitHandler<FormProps> = async (
+    data
+  ) => {
+    const response = await fetch(
+      'https://jsonplaceholder.typicode.com/users',
+      { method: 'POST', body: JSON.stringify(data) }
+    );
+    console.log(response);
     toast('A categoria ' + data.name + ' foi cadastrada', {
       position: 'top-left',
       autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
       draggable: true,
-      progress: undefined,
     });
     reset();
   };
@@ -84,7 +86,7 @@ export const ModalCadCategory = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Box w={'50%'} m={'0 auto'}>
                   <FormControl isRequired>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Nome</FormLabel>
                     <Input
                       borderRadius={'8px'}
                       size={'sm'}
@@ -93,7 +95,7 @@ export const ModalCadCategory = () => {
                     />
                   </FormControl>
 
-                  <FormControl isRequired mt={'24px'}>
+                  <FormControl mt={'24px'}>
                     <FormLabel>Descrição</FormLabel>
                     <Input
                       borderRadius={'8px'}
