@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-export const ModalCad = () => {
+export const ModalCadCategory = () => {
   type FormProps = {
     name: string;
     description: string;

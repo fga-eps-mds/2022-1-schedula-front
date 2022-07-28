@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 
 import { ItemCategory } from '../components/ItemCategory';
-import { ModalCad } from '../components/ModalCad';
+import { ModalCadCategory } from '../components/ModalCadCategory';
 import DefaultLayout from '../layout/DefaultLayout';
 
 interface Data1 {
@@ -58,7 +58,7 @@ const listaCategoria = ({
               Gerenciar Categoria De Problema
             </Heading>
           </Flex>
-          <ModalCad />
+          <ModalCadCategory />
         </Box>
         <Box mt='1em' mb='3em'>
           <Text>Categorias cadastradas no sitema.</Text>
