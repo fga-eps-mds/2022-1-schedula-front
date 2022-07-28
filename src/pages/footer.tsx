@@ -15,14 +15,16 @@ const Footer: NextPage = () => {
       <Grid
         h='150px'
         templateColumns='repeat(4, 1fr)'
-        gap={0}>
+        gap={0}
+      >
         <GridItem backgroundColor='#505050'>
           <Center color='white'>
             <Box paddingY={7}>
               <Text
                 marginTop={6}
                 marginBottom={5}
-                fontSize='2xl'>
+                fontSize='2xl'
+              >
                 Lorem
               </Text>
               <Text marginBottom={2} fontSize='1xl'>
@@ -41,7 +43,8 @@ const Footer: NextPage = () => {
               <Text
                 marginTop={6}
                 marginBottom={5}
-                fontSize='2xl'>
+                fontSize='2xl'
+              >
                 Lorem
               </Text>
               <Text marginBottom={2} fontSize='1xl'>
@@ -60,7 +63,8 @@ const Footer: NextPage = () => {
               <Text
                 marginTop={6}
                 marginBottom={5}
-                fontSize='2xl'>
+                fontSize='2xl'
+              >
                 Lorem
               </Text>
               <Text marginBottom={2} fontSize='1xl'>
@@ -82,7 +86,8 @@ const Footer: NextPage = () => {
                 paddingBottom={5}
                 borderRadius='50px'
                 bg='primary'
-                boxShadow='1px 4px 4px rgba(0, 0, 0, 0.25);'>
+                boxShadow='1px 4px 4px rgba(0, 0, 0, 0.25);'
+              >
                 Explorar
               </Button>
             </Box>

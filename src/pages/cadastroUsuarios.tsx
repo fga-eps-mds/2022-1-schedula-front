@@ -36,7 +36,8 @@ const Cadastro: NextPage = () => {
       <Center
         bgGradient='linear(288.94deg, #F8B86D 0%, #F78F88 90.96%)'
         h='100vh'
-        color='white'>
+        color='white'
+      >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box
             className='white_box'
@@ -49,7 +50,8 @@ const Cadastro: NextPage = () => {
             0px 8px 8px rgba(0, 0, 0, 0.12);'
             color='black'
             paddingY={7}
-            paddingX={20}>
+            paddingX={20}
+          >
             <Text marginBottom={12} fontSize='4xl'>
               Cadastro
             </Text>
@@ -57,7 +59,8 @@ const Cadastro: NextPage = () => {
               h='200px'
               templateRows='repeat(2, 1fr)'
               templateColumns='repeat(2, 1fr)'
-              gap={14}>
+              gap={14}
+            >
               <GridItem paddingEnd={5}>
                 <Box marginBottom={5}>
                   <h2>Nome completo</h2>
@@ -154,7 +157,8 @@ const Cadastro: NextPage = () => {
                 borderRadius='50px'
                 bg='primary'
                 boxShadow='1px 4px 4px rgba(0, 0, 0, 0.25);'
-                color='white'>
+                color='white'
+              >
                 REGISTRAR
               </Button>
             </Center>
