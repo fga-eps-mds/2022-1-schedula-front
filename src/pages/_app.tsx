@@ -1,8 +1,10 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ToastContainer } from 'react-toastify';
 import { ChakraProvider } from '@chakra-ui/react';
+
+import { testApi } from '@services/testApi';
 
 import { ColorTheme } from '../styles/ColorTheme';
 
@@ -24,6 +26,13 @@ function MyApp({
   pageProps,
 }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
+
+  useEffect(() => {
+    testApi.get('/zen').then((res) => {
+      console.log(res.data);
+      alert(JSON.stringify(res.data));
+    });
+  }, []);
 
   return (
     <ChakraProvider resetCSS theme={ColorTheme}>
