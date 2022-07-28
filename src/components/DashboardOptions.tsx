@@ -19,7 +19,7 @@ export const DashboardOptions = ({
       size='sm'
       w='235px'
       h='48px'
-      // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
+      // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
       _hover={{ bg: 'primary', color: 'white' }}
     >
       <Box

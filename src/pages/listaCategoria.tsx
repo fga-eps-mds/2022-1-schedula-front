@@ -7,8 +7,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import DefaultLayout from '../layout/DefaultLayout';
 import { ItemCategory } from '../components/ItemCategory';
+import DefaultLayout from '../layout/DefaultLayout';
 
 interface Data1 {
   id: number;
@@ -44,19 +44,22 @@ const listaCategoria = ({
           width='100%'
           display='flex'
           marginTop='6%'
-          fontFamily='Overpass ,sans-serif'>
+          fontFamily='Overpass ,sans-serif'
+        >
           <Flex
             align='center'
             justify='left'
             w='60%'
             h='5%'
-            mt='2%'>
+            mt='2%'
+          >
             <Heading
               margin='0 auto'
               marginLeft={0}
               size='lg'
               textAlign='center'
-              fontFamily='Overpass ,sans-serif'>
+              fontFamily='Overpass ,sans-serif'
+            >
               Gerenciar Categoria De Problema
             </Heading>
           </Flex>
@@ -68,12 +71,13 @@ const listaCategoria = ({
             marginTop={'1em'}
             borderRadius={'90px'}
             h={'2em'}
-            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
+            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
             _hover={{
               color: 'white',
               bg: 'primary',
               boxShadow: 'xl',
-            }}>
+            }}
+          >
             <Text mt='0.25em' noOfLines={1}>
               NOVA CATEGORIA DE PROBLEMA
             </Text>
