@@ -16,7 +16,13 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-export const ModalCadCategory = () => {
+interface ModalCadCategoryProps {
+  linkCad: string;
+}
+
+export const ModalCadCategory = ({
+  linkCad,
+}: ModalCadCategoryProps) => {
   type FormProps = {
     name: string;
     description: string;
@@ -34,11 +40,12 @@ export const ModalCadCategory = () => {
   const onSubmit: SubmitHandler<FormProps> = async (
     data
   ) => {
-    const response = await fetch(
-      'https://jsonplaceholder.typicode.com/users',
-      { method: 'POST', body: JSON.stringify(data) }
-    );
-    console.log(response);
+    const response = await fetch(linkCad, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }).then((res) => {
+      console.log(res);
+    });
     toast('A categoria ' + data.name + ' foi cadastrada', {
       position: 'top-left',
       autoClose: 2000,

@@ -50,9 +50,14 @@ export const ModalEditCategory = ({
     },
   });
 
-  const onEdit: SubmitHandler<FormProps> = (data) => {
+  const onEdit: SubmitHandler<FormProps> = async (data) => {
     data.id = id;
-    console.log(JSON.stringify(data));
+    const response = await fetch(linkEdit, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }).then((res) => {
+      console.log(res);
+    });
     toast('A categoria ' + name + ' foi atualizada', {
       position: 'top-left',
       autoClose: 2000,

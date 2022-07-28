@@ -15,7 +15,7 @@ interface Data1 {
 
 //mudar link para a api do backend, esse é só um link teste.
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const url = await fetch(
     'https://jsonplaceholder.typicode.com/users'
   );
@@ -32,6 +32,9 @@ const listaCategoria = ({
 }: {
   categorias: Data1[];
 }) => {
+  const linkCad =
+    'https://jsonplaceholder.typicode.com/users';
+
   return (
     <>
       <Box w='100%'>
@@ -58,7 +61,7 @@ const listaCategoria = ({
               Gerenciar Categoria De Problema
             </Heading>
           </Flex>
-          <ModalCadCategory />
+          <ModalCadCategory linkCad={linkCad} />
         </Box>
         <Box mt='1em' mb='3em'>
           <Text>Categorias cadastradas no sitema.</Text>
@@ -66,14 +69,17 @@ const listaCategoria = ({
             //madar categoria.email para categoria.descrição, o email era só para fim de teste.
           }
           {categorias.map((categoria: Data1) => {
-            const link = '/teste';
+            const linkAdd = '/teste';
+            const linkEdit =
+              'https://jsonplaceholder.typicode.com/users';
+            const linkDel = '/teste';
 
             return (
               <ItemCategory
                 key={categoria.id}
-                linkAdd={link}
-                linkEdit={link}
-                linkDel={link}
+                linkAdd={linkAdd}
+                linkEdit={linkEdit}
+                linkDel={linkDel}
                 {...categoria}
               />
             );
