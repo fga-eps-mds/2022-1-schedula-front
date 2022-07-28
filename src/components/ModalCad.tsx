@@ -20,7 +20,6 @@ export const ModalCad = () => {
   type FormProps = {
     name: string;
     description: string;
-    active: boolean;
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,7 +32,6 @@ export const ModalCad = () => {
   } = useForm<FormProps>();
 
   const onSubmit: SubmitHandler<FormProps> = (data) => {
-    data.active = true;
     console.log(JSON.stringify(data));
     toast('A categoria ' + data.name + ' foi cadastrada', {
       position: 'top-left',
