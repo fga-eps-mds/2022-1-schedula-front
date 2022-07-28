@@ -20,7 +20,6 @@ export const ModalCad = () => {
   type FormProps = {
     name: string;
     description: string;
-    date: Date;
     active: boolean;
   };
 
@@ -34,7 +33,6 @@ export const ModalCad = () => {
   } = useForm<FormProps>();
 
   const onSubmit: SubmitHandler<FormProps> = (data) => {
-    data.date = new Date();
     data.active = true;
     console.log(JSON.stringify(data));
     toast('A categoria ' + data.name + ' foi cadastrada', {
@@ -74,16 +72,17 @@ export const ModalCad = () => {
         <Modal
           isOpen={isOpen}
           onClose={onClose}
-          size={'2xl'}>
+          size={'xl'}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader
               textAlign={'center'}
-              fontSize={'3xl'}>
+              fontSize={'3xl'}
+              fontFamily={'Overpass ,sans-serif'}>
               Nova Categoria de Problema
             </ModalHeader>
 
-            <ModalBody>
+            <ModalBody fontFamily={'Overpass ,sans-serif'}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Box w={'50%'} m={'0 auto'}>
                   <FormControl isRequired>
@@ -117,15 +116,19 @@ export const ModalCad = () => {
                     mr={'30px'}
                     onClick={onClose}
                     border={'1px'}
-                    borderColor={'black'}>
+                    borderColor={'black'}
+                    borderRadius={'50px'}
+                    fontSize={'medium'}>
                     Cancelar
                   </Button>
                   <Button
                     variant='ghost'
                     bg='primary'
                     color={'white'}
-                    type='submit'>
-                    <Text>
+                    type='submit'
+                    borderRadius={'50px'}
+                    boxShadow={'dark-lg'}>
+                    <Text fontSize={'smaller'}>
                       REGISTRAR CATEGORIA DE<p></p> PROBLEMA
                     </Text>
                   </Button>
