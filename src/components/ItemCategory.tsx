@@ -1,9 +1,8 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
 import Link from 'next/link';
-
 import { BiEditAlt } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 interface CategoriesItem {
   id: number;
@@ -35,8 +34,9 @@ export const ItemCategory = ({
           m='0 auto'
           mt='1em'
           fontSize={'xl'}
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-          _hover={{ boxShadow: 'dark-lg' }}>
+          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
+          _hover={{ boxShadow: 'dark-lg' }}
+        >
           <Link href={linkAdd}>
             <VscAdd color='#405866' />
           </Link>
@@ -45,8 +45,9 @@ export const ItemCategory = ({
           m='0 auto'
           mt='1em'
           fontSize={'xl'}
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-          _hover={{ boxShadow: 'dark-lg' }}>
+          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
+          _hover={{ boxShadow: 'dark-lg' }}
+        >
           <Link href={linkEdit}>
             <BiEditAlt />
           </Link>
@@ -55,8 +56,9 @@ export const ItemCategory = ({
           m='0 auto'
           mt='1em'
           fontSize={'xl'}
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
-          _hover={{ boxShadow: 'dark-lg' }}>
+          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
+          _hover={{ boxShadow: 'dark-lg' }}
+        >
           <Link href={linkDel}>
             <RiDeleteBin6Line />
           </Link>
