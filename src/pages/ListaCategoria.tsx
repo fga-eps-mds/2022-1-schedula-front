@@ -64,13 +64,24 @@ const ListaCategoria = () => {
   return (
     <>
       {isLoading ? (
-        <Spinner
-          thickness='4px'
-          speed='0.65s'
-          emptyColor='gray.200'
-          color='blue.500'
-          size='xl'
-        />
+        <Box
+          w={'100%'}
+          verticalAlign={'90px'}
+          alignContent={'center'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          margin={'0 auto'}
+        >
+          <Spinner
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='blue.500'
+            size='xl'
+            mt={'30%'}
+            ml={'40%'}
+          />
+        </Box>
       ) : (
         <Box w='100%'>
           <Box
