@@ -23,6 +23,7 @@ type FormProps = {
   id: number;
   name: string;
   description: string;
+  active: boolean;
 };
 
 interface ModalEditCategoryProps {
@@ -54,8 +55,9 @@ export const ModalEditCategory = ({
 
   const onEdit: SubmitHandler<FormProps> = async (data) => {
     data.id = id;
+    data.active = true;
     listcategory
-      .put('/users', JSON.stringify(data))
+      .put('/Categories/' + data.id, data)
       .then(() => {
         toast.success(
           'A categoria ' + data.name + ' foi atualizada',
@@ -66,12 +68,11 @@ export const ModalEditCategory = ({
         );
         callBackEdit(data);
       })
-      .catch((error) => {
+      .catch(() => {
         toast.warning('Falha ao atualizar categoria!', {
           position: 'top-left',
           autoClose: 2000,
         });
-        console.log(error);
       });
     reset();
     onClose();

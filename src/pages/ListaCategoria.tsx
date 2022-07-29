@@ -47,14 +47,12 @@ const ListaCategoria = () => {
           : { ...categoria }
       )
     );
-    console.log(categorias);
   }
 
   useEffect(() => {
     listcategory
-      .get('/users')
+      .get('/Categories')
       .then((res) => {
-        console.log(res);
         setCategorias(res.data);
       })
       .catch()
