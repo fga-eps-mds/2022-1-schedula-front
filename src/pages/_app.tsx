@@ -30,7 +30,6 @@ function MyApp({
   useEffect(() => {
     testApi.get('/zen').then((res) => {
       console.log(res.data);
-      alert(JSON.stringify(res.data));
     });
   }, []);
 

@@ -11,18 +11,12 @@ interface CategoriesItem {
   description: string;
   active?: boolean;
   updatedAt?: Date;
-  linkEdit: string;
-  linkDel: string;
-  linkAdd: string;
 }
 
 export const ItemCategory = ({
   id,
   description,
   name,
-  linkEdit,
-  linkDel,
-  linkAdd,
 }: CategoriesItem) => {
   return (
     <Box key={id} mt='2em'>
@@ -38,7 +32,7 @@ export const ItemCategory = ({
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
           _hover={{ boxShadow: 'dark-lg' }}
         >
-          <Link href={linkAdd}>
+          <Link href={'../pages/teste.tsx'}>
             <VscAdd color='#405866' />
           </Link>
         </Box>
@@ -46,7 +40,6 @@ export const ItemCategory = ({
           id={id}
           name={name}
           description={description}
-          linkEdit={linkEdit}
         />
         <Box
           m='0 auto'
@@ -55,7 +48,7 @@ export const ItemCategory = ({
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
           _hover={{ boxShadow: 'dark-lg' }}
         >
-          <Link href={linkDel}>
+          <Link href={'../pages/teste.tsx'}>
             <RiDeleteBin6Line />
           </Link>
         </Box>

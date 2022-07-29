@@ -17,18 +17,18 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import { listcategory } from '@services/testApi';
+
 interface ModalEditCategoryProps {
   id: number;
   name: string;
   description: string;
-  linkEdit: string;
 }
 
 export const ModalEditCategory = ({
   id,
   name,
   description,
-  linkEdit,
 }: ModalEditCategoryProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -52,17 +52,23 @@ export const ModalEditCategory = ({
 
   const onEdit: SubmitHandler<FormProps> = async (data) => {
     data.id = id;
-    const response = await fetch(linkEdit, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    }).then((res) => {
-      console.log(res);
-    });
-    toast('A categoria ' + name + ' foi atualizada', {
-      position: 'top-left',
-      autoClose: 2000,
-      draggable: true,
-    });
+    listcategory
+      .put('/users', data)
+      .then(() => {
+        toast.success(
+          'A categoria ' + data.name + ' foi atualizada',
+          {
+            position: 'top-left',
+            autoClose: 2000,
+          }
+        );
+      })
+      .catch(() => {
+        toast.warning('Falha ao atualizar categoria!', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
+      });
     reset();
     onClose();
   };
@@ -73,9 +79,10 @@ export const ModalEditCategory = ({
         m='0 auto'
         mt='1em'
         fontSize={'xl'}
-        // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
+        // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- Its hover.
         _hover={{ boxShadow: 'dark-lg' }}
-        onClick={onOpen}>
+        onClick={onOpen}
+      >
         <BiEditAlt />
       </Box>
       <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
@@ -84,7 +91,8 @@ export const ModalEditCategory = ({
           <ModalHeader
             textAlign={'center'}
             fontSize={'3xl'}
-            fontFamily={'Overpass ,sans-serif'}>
+            fontFamily={'Overpass ,sans-serif'}
+          >
             Editar Categoria de Problema
           </ModalHeader>
 
@@ -114,7 +122,8 @@ export const ModalEditCategory = ({
 
               <ModalFooter
                 justifyContent={'center'}
-                mt={'60px'}>
+                mt={'60px'}
+              >
                 <Button
                   colorScheme=''
                   bg='InfoBackground'
@@ -124,7 +133,8 @@ export const ModalEditCategory = ({
                   border={'1px'}
                   borderColor={'black'}
                   borderRadius={'50px'}
-                  fontSize={'medium'}>
+                  fontSize={'medium'}
+                >
                   Cancelar
                 </Button>
                 <Button
@@ -133,7 +143,8 @@ export const ModalEditCategory = ({
                   color={'white'}
                   type='submit'
                   borderRadius={'50px'}
-                  boxShadow={'dark-lg'}>
+                  boxShadow={'dark-lg'}
+                >
                   <Text fontSize={'smaller'}>
                     ATUALIZAR CATEGORIA DE<p></p> PROBLEMA
                   </Text>

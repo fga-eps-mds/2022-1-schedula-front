@@ -16,18 +16,23 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import { listcategory } from '@services/testApi';
+
+interface Data1 {
+  id: number;
+  name: string;
+  description: string;
+  active: boolean;
+  updatedAt: Date;
+}
+
 interface ModalCadCategoryProps {
-  linkCad: string;
+  callBack: (novaCategoria: Data1) => void;
 }
 
 export const ModalCadCategory = ({
-  linkCad,
+  callBack,
 }: ModalCadCategoryProps) => {
-  type FormProps = {
-    name: string;
-    description: string;
-  };
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
@@ -35,23 +40,28 @@ export const ModalCadCategory = ({
     register,
     reset,
     formState: {},
-  } = useForm<FormProps>();
+  } = useForm<Data1>();
 
-  const onSubmit: SubmitHandler<FormProps> = async (
-    data
-  ) => {
-    const response = await fetch(linkCad, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }).then((res) => {
-      console.log(res);
-    });
-    toast('A categoria ' + data.name + ' foi cadastrada', {
-      position: 'top-left',
-      autoClose: 2000,
-      draggable: true,
-    });
-    reset();
+  const onSubmit: SubmitHandler<Data1> = async (data) => {
+    listcategory
+      .post('/users', data)
+      .then(() => {
+        toast.success(
+          'A categoria ' + data.name + ' foi cadastrada',
+          {
+            position: 'top-left',
+            autoClose: 2000,
+          }
+        );
+        callBack(data);
+        reset();
+      })
+      .catch(() => {
+        toast.warning('Falha ao criar categoria', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
+      });
   };
 
   return (
@@ -66,12 +76,13 @@ export const ModalCadCategory = ({
           borderRadius={'90px'}
           h={'2em'}
           onClick={onOpen}
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
+          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
           _hover={{
             color: 'white',
             bg: 'primary',
             boxShadow: 'xl',
-          }}>
+          }}
+        >
           <Text mt='0.25em' noOfLines={1}>
             NOVA CATEGORIA DE PROBLEMA
           </Text>
@@ -79,13 +90,15 @@ export const ModalCadCategory = ({
         <Modal
           isOpen={isOpen}
           onClose={onClose}
-          size={'xl'}>
+          size={'xl'}
+        >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader
               textAlign={'center'}
               fontSize={'3xl'}
-              fontFamily={'Overpass ,sans-serif'}>
+              fontFamily={'Overpass ,sans-serif'}
+            >
               Nova Categoria de Problema
             </ModalHeader>
 
@@ -115,7 +128,8 @@ export const ModalCadCategory = ({
 
                 <ModalFooter
                   justifyContent={'center'}
-                  mt={'60px'}>
+                  mt={'60px'}
+                >
                   <Button
                     colorScheme=''
                     bg='InfoBackground'
@@ -125,7 +139,8 @@ export const ModalCadCategory = ({
                     border={'1px'}
                     borderColor={'black'}
                     borderRadius={'50px'}
-                    fontSize={'medium'}>
+                    fontSize={'medium'}
+                  >
                     Cancelar
                   </Button>
                   <Button
@@ -134,7 +149,8 @@ export const ModalCadCategory = ({
                     color={'white'}
                     type='submit'
                     borderRadius={'50px'}
-                    boxShadow={'dark-lg'}>
+                    boxShadow={'dark-lg'}
+                  >
                     <Text fontSize={'smaller'}>
                       REGISTRAR CATEGORIA DE<p></p> PROBLEMA
                     </Text>
