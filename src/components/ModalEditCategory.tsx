@@ -83,6 +83,7 @@ export const ModalEditCategory = ({
       <Box
         m='0 auto'
         mt='1em'
+        maxH={'20px'}
         fontSize={'xl'}
         // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- Its hover.
         _hover={{ boxShadow: 'dark-lg' }}

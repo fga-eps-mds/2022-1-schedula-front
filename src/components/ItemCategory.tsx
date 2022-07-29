@@ -40,6 +40,7 @@ export const ItemCategory = ({
         <Box
           m='0 auto'
           mt='1em'
+          maxH={'20px'}
           fontSize={'xl'}
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
           _hover={{ boxShadow: 'dark-lg' }}
@@ -57,6 +58,7 @@ export const ItemCategory = ({
         <Box
           m='0 auto'
           mt='1em'
+          maxH={'20px'}
           fontSize={'xl'}
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
           _hover={{ boxShadow: 'dark-lg' }}
