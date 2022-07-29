@@ -19,24 +19,26 @@ import {
 
 import { listcategory } from '@services/testApi';
 
+type FormProps = {
+  id: number;
+  name: string;
+  description: string;
+};
+
 interface ModalEditCategoryProps {
   id: number;
   name: string;
   description: string;
+  callBackEdit: (novaCategoria: FormProps) => void;
 }
 
 export const ModalEditCategory = ({
   id,
   name,
   description,
+  callBackEdit,
 }: ModalEditCategoryProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  type FormProps = {
-    id: number;
-    name: string;
-    description: string;
-  };
 
   const {
     handleSubmit,
@@ -53,7 +55,7 @@ export const ModalEditCategory = ({
   const onEdit: SubmitHandler<FormProps> = async (data) => {
     data.id = id;
     listcategory
-      .put('/users', data)
+      .put('/users', JSON.stringify(data))
       .then(() => {
         toast.success(
           'A categoria ' + data.name + ' foi atualizada',
@@ -62,12 +64,14 @@ export const ModalEditCategory = ({
             autoClose: 2000,
           }
         );
+        callBackEdit(data);
       })
-      .catch(() => {
+      .catch((error) => {
         toast.warning('Falha ao atualizar categoria!', {
           position: 'top-left',
           autoClose: 2000,
         });
+        console.log(error);
       });
     reset();
     onClose();

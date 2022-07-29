@@ -21,12 +21,33 @@ export interface Data1 {
   updatedAt: Date;
 }
 
+type FormProps = {
+  id: number;
+  name: string;
+  description: string;
+};
+
 const ListaCategoria = () => {
   const [categorias, setCategorias] = useState<Data1[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   function AddCategory(categoria: Data1) {
     setCategorias([categoria, ...categorias]);
+  }
+
+  function EditCategory(categoria2: FormProps) {
+    setCategorias(
+      categorias.map((categoria) =>
+        categoria.id === categoria2.id
+          ? {
+              ...categoria,
+              name: categoria2.name,
+              description: categoria2.description,
+            }
+          : { ...categoria }
+      )
+    );
+    console.log(categorias);
   }
 
   useEffect(() => {
@@ -89,6 +110,7 @@ const ListaCategoria = () => {
               return (
                 <ItemCategory
                   key={categoria.id}
+                  callBackEdit={EditCategory}
                   {...categoria}
                 />
               );
