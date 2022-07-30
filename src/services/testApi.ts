@@ -5,7 +5,7 @@ export const testApi = axios.create({
 });
 
 export const listcategory = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'https://jsonplaceholder.typicode.com',
 });
 
 // export microservices here...

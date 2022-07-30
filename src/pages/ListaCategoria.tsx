@@ -51,7 +51,7 @@ const ListaCategoria = () => {
 
   useEffect(() => {
     listcategory
-      .get('/Categories')
+      .get('/users')
       .then((res) => {
         setCategorias(res.data);
       })

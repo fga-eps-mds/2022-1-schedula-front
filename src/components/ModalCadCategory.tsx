@@ -44,7 +44,7 @@ export const ModalCadCategory = ({
 
   const onSubmit: SubmitHandler<Data1> = async (data) => {
     listcategory
-      .post('/Categories', data)
+      .post('/users', data)
       .then(() => {
         toast.success(
           'A categoria ' + data.name + ' foi cadastrada',

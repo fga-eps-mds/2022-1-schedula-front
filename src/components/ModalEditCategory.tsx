@@ -57,7 +57,7 @@ export const ModalEditCategory = ({
     data.id = id;
     data.active = true;
     listcategory
-      .put('/Categories/' + data.id, data)
+      .put('/users/' + data.id, data)
       .then(() => {
         toast.success(
           'A categoria ' + data.name + ' foi atualizada',
