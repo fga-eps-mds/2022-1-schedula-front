@@ -22,7 +22,7 @@ interface DelCategoryProps {
   callBackDel: (Delid: number) => void;
 }
 
-export const ModalDelCategory = ({
+export const ModalDelType = ({
   id,
   name,
   callBackDel,
@@ -30,15 +30,15 @@ export const ModalDelCategory = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
 
-  function DeleteCategory() {
+  function DeleteType() {
     const del = {
       active: false,
     };
     listcategory
-      .patch('/users/' + id, del)
+      .patch('/users/' + id, del) //O caminho deve ser alterado para a api do back.
       .then(() => {
         toast.success(
-          'A categoria ' + name + ' foi desativada',
+          'O tipo ' + name + ' foi desativado',
           {
             position: 'top-left',
             autoClose: 2000,
@@ -47,12 +47,14 @@ export const ModalDelCategory = ({
         callBackDel(id);
       })
       .catch(() => {
-        toast.warning('Falha ao desativar categoria!', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
+        toast.warning(
+          'Falha ao desativar tipo de problema!',
+          {
+            position: 'top-left',
+            autoClose: 2000,
+          }
+        );
       });
-    //Teria + uma api de deleção dos tipos logo abaixo desta.
   }
 
   return (
@@ -84,7 +86,7 @@ export const ModalDelCategory = ({
                 m={'0 auto'}
                 fontFamily={'Overpass ,sans-serif'}
               >
-                Remover Categoria de Problema
+                Remover Tipo de Problema
               </AlertDialogHeader>
 
               <AlertDialogBody>
@@ -95,10 +97,9 @@ export const ModalDelCategory = ({
                   fontSize={'md'}
                   fontFamily={'Overpass ,sans-serif'}
                 >
-                  Você está prestes a remover a categoria
-                  {' ' + name + ' '} e todos os tipos de
-                  problemas relacionados a ela. Tem certeza
-                  disso?
+                  Você está prestes a remover o tipo de
+                  problema
+                  {' ' + name + ' '}. Tem certeza disso?
                 </Text>
               </AlertDialogBody>
 
@@ -122,7 +123,7 @@ export const ModalDelCategory = ({
                 <Button
                   colorScheme='red'
                   bg={'#DE4040'}
-                  onClick={DeleteCategory}
+                  onClick={DeleteType}
                   ml={5}
                   fontSize={'18px'}
                   borderRadius={'50px'}
