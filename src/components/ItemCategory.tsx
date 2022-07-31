@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
+import { ModalDelCategory } from './ModalDelCategory';
 import { ModalEditCategory } from './ModalEditCategory';
 
 type FormProps = {
@@ -55,18 +55,7 @@ export const ItemCategory = ({
           description={description}
           callBackEdit={callBack}
         />
-        <Box
-          m='0 auto'
-          mt='1em'
-          maxH={'20px'}
-          fontSize={'xl'}
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
-          _hover={{ boxShadow: 'dark-lg' }}
-        >
-          <Link href={'../pages/teste.tsx'}>
-            <RiDeleteBin6Line />
-          </Link>
-        </Box>
+        <ModalDelCategory name={name} id={id} />
       </Flex>
     </Box>
   );
