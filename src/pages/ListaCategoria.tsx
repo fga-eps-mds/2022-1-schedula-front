@@ -124,6 +124,7 @@ const ListaCategoria = () => {
               //o map só pode listar se tiver com o active == true, não faz isso agora pq a api não existe.
             }
             {categorias?.map((categoria: Data1) => {
+              // categoria.active === true ?
               return (
                 <ItemCategory
                   key={categoria.id}
