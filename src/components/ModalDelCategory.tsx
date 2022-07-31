@@ -1,15 +1,14 @@
-import React from 'react';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Box,
   Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -28,7 +27,6 @@ export const ModalDelCategory = ({
   callBackDel,
 }: DelCategoryProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef();
 
   function DeleteCategory() {
     const del = {
@@ -70,24 +68,23 @@ export const ModalDelCategory = ({
           <RiDeleteBin6Line />
         </Box>
 
-        <AlertDialog
+        <Modal
           size={'2xl'}
           isOpen={isOpen}
-          leastDestructiveRef={cancelRef}
           onClose={onClose}
         >
-          <AlertDialogOverlay>
-            <AlertDialogContent>
-              <AlertDialogHeader
+          <ModalOverlay>
+            <ModalContent>
+              <ModalHeader
                 fontSize='3xl'
                 fontWeight='bold'
                 m={'0 auto'}
                 fontFamily={'Overpass ,sans-serif'}
               >
                 Remover Categoria de Problema
-              </AlertDialogHeader>
+              </ModalHeader>
 
-              <AlertDialogBody>
+              <ModalBody>
                 <Text
                   w='60%'
                   m={'0 auto'}
@@ -100,15 +97,14 @@ export const ModalDelCategory = ({
                   problemas relacionados a ela. Tem certeza
                   disso?
                 </Text>
-              </AlertDialogBody>
+              </ModalBody>
 
-              <AlertDialogFooter
+              <ModalFooter
                 fontFamily={'Overpass ,sans-serif'}
                 justifyContent={'center'}
                 mt={'30px'}
               >
                 <Button
-                  ref={cancelRef}
                   colorScheme='green'
                   bg={'#22A122'}
                   onClick={onClose}
@@ -131,10 +127,10 @@ export const ModalDelCategory = ({
                 >
                   SIM, TENHO CERTEZA
                 </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialogOverlay>
-        </AlertDialog>
+              </ModalFooter>
+            </ModalContent>
+          </ModalOverlay>
+        </Modal>
       </Box>
     </>
   );
