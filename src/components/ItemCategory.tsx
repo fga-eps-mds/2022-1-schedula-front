@@ -18,6 +18,7 @@ interface CategoriesItemProps {
   active?: boolean;
   updatedAt?: Date;
   callBackEdit: (novaCategoria: FormProps) => void;
+  callBackDel: (delid: number) => void;
 }
 
 export const ItemCategory = ({
@@ -25,11 +26,8 @@ export const ItemCategory = ({
   description,
   name,
   callBackEdit,
+  callBackDel,
 }: CategoriesItemProps) => {
-  function callBack(categoria: FormProps) {
-    callBackEdit(categoria);
-  }
-
   return (
     <Box key={id} mt='2em'>
       <Flex w='100%'>
@@ -53,9 +51,13 @@ export const ItemCategory = ({
           id={id}
           name={name}
           description={description}
-          callBackEdit={callBack}
+          callBackEdit={callBackEdit}
         />
-        <ModalDelCategory name={name} id={id} />
+        <ModalDelCategory
+          name={name}
+          id={id}
+          callBackDel={callBackDel}
+        />
       </Flex>
     </Box>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { toast } from 'react-toastify';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -13,17 +14,47 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import { listcategory } from '@services/testApi';
+
 interface DelCategoryProps {
   id: number;
   name: string;
+  callBackDel: (Delid: number) => void;
 }
 
 export const ModalDelCategory = ({
   id,
   name,
+  callBackDel,
 }: DelCategoryProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
+
+  function DeleteCategory() {
+    const del = {
+      active: false,
+      body: 'active',
+    };
+    listcategory
+      .put('/users/' + id, del)
+      .then(() => {
+        toast.success(
+          'A categoria ' + name + ' foi desativada',
+          {
+            position: 'top-left',
+            autoClose: 2000,
+          }
+        );
+        callBackDel(id);
+      })
+      .catch(() => {
+        toast.warning('Falha ao desativar categoria!', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
+      });
+    //Teria + uma api de deleção dos tipos logo abaixo desta.
+  }
 
   return (
     <>
@@ -92,7 +123,7 @@ export const ModalDelCategory = ({
                 <Button
                   colorScheme='red'
                   bg={'#DE4040'}
-                  onClick={onClose}
+                  onClick={DeleteCategory}
                   ml={5}
                   fontSize={'18px'}
                   borderRadius={'50px'}
