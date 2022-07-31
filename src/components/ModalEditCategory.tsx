@@ -131,7 +131,7 @@ export const ModalEditCategory = ({
                 mt={'60px'}
               >
                 <Button
-                  colorScheme=''
+                  variant={'solid'}
                   bg='InfoBackground'
                   color='black'
                   mr={'30px'}
@@ -144,7 +144,7 @@ export const ModalEditCategory = ({
                   Cancelar
                 </Button>
                 <Button
-                  variant='ghost'
+                  colorScheme={'orange'}
                   bg='primary'
                   color={'white'}
                   type='submit'
