@@ -31,9 +31,11 @@ export const ItemCategory = ({
   return (
     <Box key={id} mt='2em'>
       <Flex w='100%'>
-        <Box w='90%'>
+        <Box w='91%'>
           <Text fontSize='large'>{name}</Text>
-          <Text noOfLines={1}>{description}</Text>
+          <Text noOfLines={1} w='85%' maxW={'50em'}>
+            {description}
+          </Text>
         </Box>
         <Box
           m='0 auto'
@@ -43,7 +45,7 @@ export const ItemCategory = ({
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
           _hover={{ boxShadow: 'dark-lg' }}
         >
-          <Link href={'../pages/teste.tsx'}>
+          <Link href={'/teste'}>
             <VscAdd color='#405866' />
           </Link>
         </Box>
