@@ -49,6 +49,14 @@ const ListaCategoria = () => {
     );
   }
 
+  function DelCategory(delid: number) {
+    setCategorias(
+      categorias.filter(
+        (categoria) => categoria.id !== delid
+      )
+    );
+  }
+
   useEffect(() => {
     listcategory
       .get('/users')
@@ -113,13 +121,15 @@ const ListaCategoria = () => {
           <Box mt='1em' mb='3em'>
             <Text>Categorias cadastradas no sitema.</Text>
             {
-              //madar categoria.email para categoria.descrição, o email era só para fim de teste.
+              //o map só pode listar se tiver com o active == true, não faz isso agora pq a api não existe.
             }
             {categorias?.map((categoria: Data1) => {
+              // categoria.active === true ?
               return (
                 <ItemCategory
                   key={categoria.id}
                   callBackEdit={EditCategory}
+                  callBackDel={DelCategory}
                   {...categoria}
                 />
               );

@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
+import { ModalDelCategory } from './ModalDelCategory';
 import { ModalEditCategory } from './ModalEditCategory';
 
 type FormProps = {
@@ -18,6 +18,7 @@ interface CategoriesItemProps {
   active?: boolean;
   updatedAt?: Date;
   callBackEdit: (novaCategoria: FormProps) => void;
+  callBackDel: (delid: number) => void;
 }
 
 export const ItemCategory = ({
@@ -25,17 +26,16 @@ export const ItemCategory = ({
   description,
   name,
   callBackEdit,
+  callBackDel,
 }: CategoriesItemProps) => {
-  function callBack(categoria: FormProps) {
-    callBackEdit(categoria);
-  }
-
   return (
     <Box key={id} mt='2em'>
       <Flex w='100%'>
-        <Box w='90%'>
+        <Box w='91%'>
           <Text fontSize='large'>{name}</Text>
-          <Text noOfLines={1}>{description}</Text>
+          <Text noOfLines={1} w='85%' maxW={'50em'}>
+            {description}
+          </Text>
         </Box>
         <Box
           m='0 auto'
@@ -45,7 +45,7 @@ export const ItemCategory = ({
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
           _hover={{ boxShadow: 'dark-lg' }}
         >
-          <Link href={'../pages/teste.tsx'}>
+          <Link href={'/teste'}>
             <VscAdd color='#405866' />
           </Link>
         </Box>
@@ -53,20 +53,13 @@ export const ItemCategory = ({
           id={id}
           name={name}
           description={description}
-          callBackEdit={callBack}
+          callBackEdit={callBackEdit}
         />
-        <Box
-          m='0 auto'
-          mt='1em'
-          maxH={'20px'}
-          fontSize={'xl'}
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
-          _hover={{ boxShadow: 'dark-lg' }}
-        >
-          <Link href={'../pages/teste.tsx'}>
-            <RiDeleteBin6Line />
-          </Link>
-        </Box>
+        <ModalDelCategory
+          name={name}
+          id={id}
+          callBackDel={callBackDel}
+        />
       </Flex>
     </Box>
   );
