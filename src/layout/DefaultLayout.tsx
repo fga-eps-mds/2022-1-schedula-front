@@ -7,7 +7,9 @@ interface DefaultLayoutProps {
   children: ReactNode;
 }
 
-export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+export const DefaultLayout = ({
+  children,
+}: DefaultLayoutProps) => {
   return (
     <>
       <Grid
