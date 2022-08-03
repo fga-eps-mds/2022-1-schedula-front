@@ -18,13 +18,7 @@ import {
 
 import { listcategory } from '@services/testApi';
 
-interface Data1 {
-  id: number;
-  name: string;
-  description: string;
-  active: boolean;
-  updatedAt: Date;
-}
+import { Data1 } from './DataType';
 
 interface ModalCadCategoryProps {
   callBack: (novaCategoria: Data1) => void;

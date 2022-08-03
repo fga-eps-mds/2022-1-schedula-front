@@ -7,19 +7,12 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import { Data1 } from '@components/DataType';
 import { listcategory } from '@services/testApi';
 
 import { ItemCategory } from '../components/ItemCategory';
 import { ModalCadCategory } from '../components/ModalCadCategory';
 import DefaultLayout from '../layout/DefaultLayout';
-
-export interface Data1 {
-  id: number;
-  name: string;
-  description: string;
-  active: boolean;
-  updatedAt: Date;
-}
 
 type FormProps = {
   id: number;
