@@ -34,15 +34,18 @@ const DefaultLayout = ({
             borderBottom='1px solid'
             width='340px'
             height='60px'
-            borderColor='#777777'>
+            borderColor='#777777'
+          >
             <Heading
               width={210}
               height={51}
               margin='0 auto'
-              textAlign='center'>
+              textAlign='center'
+            >
               <Box
                 fontFamily='Overpass ,sans-serif'
-                color='black'>
+                color='black'
+              >
                 Schedula
               </Box>
             </Heading>
@@ -53,32 +56,38 @@ const DefaultLayout = ({
             direction='column'
             align='left'
             w={360}
-            marginTop={10}>
+            marginTop={10}
+          >
             <DashboardOptions
               isActive={Active == 'dashboard'}
               title='Dashboard'
               icon={<MdOutlineDashboard />}
+              goTo='teste'
             />
 
             <DashboardOptions
               isActive={Active == 'chamados'}
               title='Chamados'
               icon={<MdOutlineViewAgenda />}
+              goTo='teste'
             />
             <DashboardOptions
               isActive={Active == 'registrarChamados'}
               title='Registrar Chamados'
               icon={<MdOutlineCallToAction />}
+              goTo='teste'
             />
             <DashboardOptions
               isActive={Active == 'gerenciarTiposDeChamado'}
               title='Tipos  de Chamados'
               icon={<FiLayout />}
+              goTo='ListaCategoria'
             />
             <DashboardOptions
               isActive={Active == 'tutoriais'}
               title='Tutoriais'
               icon={<MdMonitor />}
+              goTo='teste'
             />
           </Stack>
         </Box>
@@ -89,5 +98,5 @@ const DefaultLayout = ({
   );
 };
 
-// eslint-disable-next-line import/no-default-export
+// eslint-disable-next-line import/no-default-export -- It's a layout.
 export default DefaultLayout;
