@@ -1,18 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Box, Flex, Heading, Spinner, Text } from '@chakra-ui/react';
 
+import { Data1 } from '@components/DataType';
 import { listcategory } from '@services/testApi';
 
 import { ItemCategory } from '../components/ItemCategory';
 import { ModalCadCategory } from '../components/ModalCadCategory';
-
-export interface Data1 {
-  id: number;
-  name: string;
-  description: string;
-  active: boolean;
-  updatedAt: Date;
-}
 
 type FormProps = {
   id: number;
