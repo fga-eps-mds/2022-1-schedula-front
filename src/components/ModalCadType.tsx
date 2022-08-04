@@ -15,36 +15,42 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { listcategory } from '@services/testApi';
+import { typeApi } from '@services/testApi';
 
-import { Data1 } from './DataType';
+import { DataProbType } from './DataType';
 
 interface ModalCadTypeProps {
-  callBack: (novaCategoria: Data1) => void;
-  onOpen: () => void;
+  callBack: (novoTipo: DataProbType) => void;
   onClose: () => void;
   isOpen: boolean;
+  categoryId: number;
 }
 
 export const ModalCadType = ({
   callBack,
-  onOpen,
   onClose,
   isOpen,
+  categoryId,
 }: ModalCadTypeProps) => {
   const {
     handleSubmit,
     register,
     reset,
     formState: {},
-  } = useForm<Data1>();
+  } = useForm<DataProbType>();
 
-  const onSubmit: SubmitHandler<Data1> = async (data) => {
-    listcategory
+  const onSubmit: SubmitHandler<DataProbType> = async (
+    data
+  ) => {
+    data.category_id = categoryId;
+    data.active = true;
+    typeApi
       .post('/users', data)
       .then(() => {
         toast.success(
-          'A categoria ' + data.name + ' foi cadastrada',
+          'O tipo ' +
+            data.name +
+            ' foi cadastrado com sucesso',
           {
             position: 'top-left',
             autoClose: 2000,
@@ -54,7 +60,7 @@ export const ModalCadType = ({
         reset();
       })
       .catch(() => {
-        toast.warning('Falha ao criar categoria', {
+        toast.warning('Falha ao criar tipo de problema', {
           position: 'top-left',
           autoClose: 2000,
         });
@@ -76,7 +82,7 @@ export const ModalCadType = ({
               fontSize={'3xl'}
               fontFamily={'Overpass ,sans-serif'}
             >
-              Nova Categoria de Problema
+              Novo Tipo de Problema
             </ModalHeader>
 
             <ModalBody fontFamily={'Overpass ,sans-serif'}>
@@ -129,7 +135,7 @@ export const ModalCadType = ({
                     boxShadow={'dark-lg'}
                   >
                     <Text fontSize={'smaller'}>
-                      REGISTRAR CATEGORIA DE<p></p> PROBLEMA
+                      REGISTRAR TIPO DE<p></p> PROBLEMA
                     </Text>
                   </Button>
                 </ModalFooter>

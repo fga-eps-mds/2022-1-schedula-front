@@ -7,7 +7,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { Data1 } from '@components/DataType';
+import { DataCategory } from '@components/DataType';
 import { listcategory } from '@services/testApi';
 
 import { ItemCategory } from '../components/ItemCategory';
@@ -21,10 +21,12 @@ type FormProps = {
 };
 
 const ListaCategoria = () => {
-  const [categorias, setCategorias] = useState<Data1[]>([]);
+  const [categorias, setCategorias] = useState<
+    DataCategory[]
+  >([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  function AddCategory(categoria: Data1) {
+  function AddCategory(categoria: DataCategory) {
     setCategorias([categoria, ...categorias]);
   }
 
@@ -116,7 +118,7 @@ const ListaCategoria = () => {
             {
               //o map só pode listar se tiver com o active == true, não faz isso agora pq a api não existe.
             }
-            {categorias?.map((categoria: Data1) => {
+            {categorias?.map((categoria: DataCategory) => {
               // categoria.active === true ?
               return (
                 <ItemCategory

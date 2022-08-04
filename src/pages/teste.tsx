@@ -7,16 +7,18 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { Data1 } from '@components/DataType';
+import { DataCategory } from '@components/DataType';
 import { ModalCadType } from '@components/ModalCadType';
 
 import DefaultLayout from '../layout/DefaultLayout';
 
 const Teste = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [categorias, setCategorias] = useState<Data1[]>([]);
+  const [categorias, setCategorias] = useState<
+    DataCategory[]
+  >([]);
 
-  function callBack(categoria: Data1) {
+  function callBack(categoria: DataCategory) {
     setCategorias([categoria, ...categorias]);
   }
 
@@ -26,7 +28,6 @@ const Teste = () => {
       <Button onClick={onOpen}>Teste Modal Cad.</Button>
       <ModalCadType
         isOpen={isOpen}
-        onOpen={onOpen}
         onClose={onClose}
         callBack={callBack}
       />
@@ -35,7 +36,7 @@ const Teste = () => {
         {
           //o map só pode listar se tiver com o active == true, não faz isso agora pq a api não existe.
         }
-        {categorias?.map((categoria: Data1) => {
+        {categorias?.map((categoria: DataCategory) => {
           // categoria.active === true ?
           return (
             <>
