@@ -1,7 +1,16 @@
-export type Data1 = {
+export type DataCategory = {
   id: number;
   name: string;
   description: string;
   active: boolean;
-  updatedAt: Date;
+  updated_at: Date;
+};
+
+export type DataProbType = {
+  id: number;
+  name: string;
+  description: string;
+  active: boolean;
+  updated_at: Date;
+  category_id: number;
 };
