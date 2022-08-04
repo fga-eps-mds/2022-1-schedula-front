@@ -20,10 +20,17 @@ import { typeApi } from '@services/testApi';
 import { DataProbType } from './DataType';
 
 interface ModalCadTypeProps {
+<<<<<<< HEAD
   callBack?: (novoTipo: DataProbType) => void;
   categoryId: number;
   isOpen: boolean;
   onClose: () => void;
+=======
+  callBack: (novoTipo: DataProbType) => void;
+  onClose: () => void;
+  isOpen: boolean;
+  categoryId: number;
+>>>>>>> dfd7bee (Add tipos de problemas to the text)
 }
 
 export const ModalCadType = ({
@@ -31,6 +38,7 @@ export const ModalCadType = ({
   callBack,
   onClose,
   isOpen,
+  categoryId,
 }: ModalCadTypeProps) => {
   const {
     handleSubmit,
@@ -63,7 +71,11 @@ export const ModalCadType = ({
 
         reset();
       })
+<<<<<<< HEAD
       .catch((error) => {
+=======
+      .catch(() => {
+>>>>>>> dfd7bee (Add tipos de problemas to the text)
         toast.warning('Falha ao criar tipo de problema', {
           position: 'top-left',
           autoClose: 2000,
