@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Box, Heading, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 import {
   DataCategory,
   DataProbType,
 } from '@components/DataType';
+import { ModalCadType } from '@components/ModalCadType';
 import { ModalEditType } from '@components/ModalEditType';
 import { listcategory } from '@services/testApi';
 
 const Teste = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [categorias, setCategorias] = useState<
     DataCategory[]
   >([]);
@@ -36,9 +44,20 @@ const Teste = () => {
     );
   }
 
+  function AddCategory(categoria: DataCategory) {
+    setCategorias([categoria, ...categorias]);
+  }
+
   return (
     <>
       <Heading w='100%'>Página Teste</Heading>
+      <Button onClick={onOpen}>Cadastrar tipo</Button>
+      <ModalCadType
+        categoryId={1}
+        isOpen={isOpen}
+        onClose={onClose}
+        callBack={AddCategory}
+      />
       <Box mt='1em' mb='3em'>
         <Text>Tipos cadastrados no sitema.</Text>
         {

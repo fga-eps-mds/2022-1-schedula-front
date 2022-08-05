@@ -60,8 +60,9 @@ export const ModalEditType = ({
         );
         callBack(data);
         reset();
+        onClose();
       })
-      .catch((error) => {
+      .catch(() => {
         toast.warning(
           'Falha ao atualizar tipo de problema',
           {
@@ -69,7 +70,6 @@ export const ModalEditType = ({
             autoClose: 2000,
           }
         );
-        console.log(error);
       });
   };
 
