@@ -1,4 +1,3 @@
-import { VscAdd } from 'react-icons/vsc';
 import {
   Box,
   Flex,
@@ -44,22 +43,7 @@ export const ItemCategory = ({
             {description}
           </Text>
         </Box>
-        <Box
-          m='0 auto'
-          mt='1em'
-          maxH={'20px'}
-          fontSize={'xl'}
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
-          _hover={{ boxShadow: 'dark-lg' }}
-          onClick={onOpen}
-        >
-          <VscAdd color='#405866' />
-        </Box>
-        <ModalCadType
-          isOpen={isOpen}
-          onClose={onClose}
-          categoryId={2}
-        />
+        <ModalCadType categoryId={2} />
         <ModalEditCategory
           id={id}
           name={name}

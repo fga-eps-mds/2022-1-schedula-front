@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { VscAdd } from 'react-icons/vsc';
 import { toast } from 'react-toastify';
 import {
   Box,
@@ -13,6 +14,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import { typeApi } from '@services/testApi';
@@ -21,16 +23,13 @@ import { DataProbType } from './DataType';
 
 interface ModalCadTypeProps {
   // callBack: (novoTipo: DataProbType) => void;
-  onClose: () => void;
-  isOpen: boolean;
   categoryId: number;
 }
 
 export const ModalCadType = ({
-  onClose,
-  isOpen,
   categoryId,
 }: ModalCadTypeProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     handleSubmit,
     register,
@@ -69,6 +68,17 @@ export const ModalCadType = ({
 
   return (
     <>
+      <Box
+        m='0 auto'
+        mt='1em'
+        maxH={'20px'}
+        fontSize={'xl'}
+        // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
+        _hover={{ boxShadow: 'dark-lg' }}
+        onClick={onOpen}
+      >
+        <VscAdd color='#405866' />
+      </Box>
       <Box fontFamily={'Overpass ,sans-serif'}>
         <Modal
           isOpen={isOpen}
