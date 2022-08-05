@@ -20,16 +20,17 @@ import { typeApi } from '@services/testApi';
 import { DataProbType } from './DataType';
 
 interface ModalCadTypeProps {
-  // callBack: (novoTipo: DataProbType) => void;
+  callBack: (novoTipo: DataProbType) => void;
   onClose: () => void;
   isOpen: boolean;
   categoryId: number;
 }
 
-export const ModalCadType = ({
+export const ModalEditType = ({
   onClose,
   isOpen,
   categoryId,
+  callBack,
 }: ModalCadTypeProps) => {
   const {
     handleSubmit,
@@ -44,7 +45,7 @@ export const ModalCadType = ({
     data.category_id = categoryId;
     data.active = true;
     typeApi
-      .post('/users', data)
+      .put('/users', data)
       .then(() => {
         toast.success(
           'O tipo ' +
@@ -55,7 +56,7 @@ export const ModalCadType = ({
             autoClose: 2000,
           }
         );
-        // callBack(data);
+        callBack(data);
         reset();
       })
       .catch((error) => {

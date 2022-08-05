@@ -18,10 +18,6 @@ const Teste = () => {
     DataCategory[]
   >([]);
 
-  function callBack(categoria: DataCategory) {
-    setCategorias([categoria, ...categorias]);
-  }
-
   return (
     <>
       <Heading w='100%'>Página Teste</Heading>
@@ -29,7 +25,7 @@ const Teste = () => {
       <ModalCadType
         isOpen={isOpen}
         onClose={onClose}
-        callBack={callBack}
+        categoryId={2}
       />
       <Box mt='1em' mb='3em'>
         <Text>Tipos cadastrados no sitema.</Text>
