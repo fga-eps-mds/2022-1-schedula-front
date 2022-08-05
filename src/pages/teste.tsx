@@ -1,19 +1,29 @@
+<<<<<<< HEAD
 import { useEffect, useState } from 'react';
+=======
+import { ReactNode, useEffect, useState } from 'react';
+>>>>>>> b469c8e (Remove icon from the edit type component)
 import {
   Box,
   Button,
   Heading,
   Text,
+<<<<<<< HEAD
+=======
+  useDisclosure,
+>>>>>>> b469c8e (Remove icon from the edit type component)
 } from '@chakra-ui/react';
 
 import {
   DataCategory,
   DataProbType,
 } from '@components/DataType';
+import { ModalCadType } from '@components/ModalCadType';
 import { ModalEditType } from '@components/ModalEditType';
 import { listcategory } from '@services/testApi';
 
 const Teste = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [categorias, setCategorias] = useState<
     DataCategory[]
   >([]);
