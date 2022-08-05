@@ -58,7 +58,7 @@ export const SideBar = () => {
         <Flex gap={2} justifyContent={'space-between'} alignItems={'center'}>
           <FaRegUser size={25} />
           <Text maxWidth={140} noOfLines={1}>
-            Nome de user bal blal aals dad
+            Nome de user
           </Text>
           <RiLogoutCircleFill size={25} />
         </Flex>
