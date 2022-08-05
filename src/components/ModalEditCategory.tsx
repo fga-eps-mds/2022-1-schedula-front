@@ -13,7 +13,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 
@@ -59,13 +58,10 @@ export const ModalEditCategory = ({
     listcategory
       .put('/users/' + data.id, data)
       .then(() => {
-        toast.success(
-          'A categoria ' + data.name + ' foi atualizada',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('A categoria ' + data.name + ' foi atualizada', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
         callBackEdit(data);
       })
       .catch(() => {
@@ -126,10 +122,7 @@ export const ModalEditCategory = ({
                 </FormControl>
               </Box>
 
-              <ModalFooter
-                justifyContent={'center'}
-                mt={'60px'}
-              >
+              <ModalFooter justifyContent={'center'} mt={'60px'}>
                 <Button
                   variant={'solid'}
                   bg='InfoBackground'
@@ -151,9 +144,7 @@ export const ModalEditCategory = ({
                   borderRadius={'50px'}
                   boxShadow={'dark-lg'}
                 >
-                  <Text fontSize={'smaller'}>
-                    ATUALIZAR CATEGORIA DE<p></p> PROBLEMA
-                  </Text>
+                  ATUALIZAR CATEGORIA DE PROBLEMA
                 </Button>
               </ModalFooter>
             </form>
