@@ -31,6 +31,11 @@ const routes: SideBarItemAttributes[] = [
     pathname: '/listaCategoria',
     icon: <FiLayout size={28} />,
   },
+  {
+    label: 'Teste',
+    pathname: '/teste',
+    icon: <FiLayout size={28} />,
+  },
 ];
 
 export const SideBar = () => {

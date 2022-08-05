@@ -1,10 +1,5 @@
 import { VscAdd } from 'react-icons/vsc';
-import {
-  Box,
-  Flex,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Flex, Text, useDisclosure } from '@chakra-ui/react';
 
 import { ModalCadType } from './ModalCadType';
 import { ModalDelCategory } from './ModalDelCategory';
@@ -55,11 +50,7 @@ export const ItemCategory = ({
         >
           <VscAdd color='#405866' />
         </Box>
-        <ModalCadType
-          onClose={onClose}
-          isOpen={isOpen}
-          categoryId={2}
-        />
+        <ModalCadType onClose={onClose} isOpen={isOpen} categoryId={2} />
         <ModalEditCategory
           id={id}
           name={name}

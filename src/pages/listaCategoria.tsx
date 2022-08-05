@@ -14,9 +14,7 @@ type FormProps = {
 };
 
 const ListaCategoria = () => {
-  const [categorias, setCategorias] = useState<
-    DataCategory[]
-  >([]);
+  const [categorias, setCategorias] = useState<DataCategory[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   function AddCategory(categoria: DataCategory) {
@@ -63,6 +61,7 @@ const ListaCategoria = () => {
           justifyContent={'center'}
           alignItems={'center'}
           margin={'0 auto'}
+          ml={5}
         >
           <Spinner
             thickness='4px'
@@ -76,13 +75,8 @@ const ListaCategoria = () => {
         </Box>
       ) : (
         <Box w='100%'>
-          <Box
-            width='100%'
-            display='flex'
-            marginTop='6%'
-            fontFamily='Overpass ,sans-serif'
-          >
-            <Flex align='center' justify='left' w='60%' h='5%' mr={10} mt='2%'>
+          <Box width='100%' display='flex' fontFamily='Overpass ,sans-serif'>
+            <Flex align='center' justify='left' w='100%' h='5%' mr={10} mt='2%'>
               <Heading
                 margin='0 auto'
                 marginLeft={0}
@@ -92,8 +86,8 @@ const ListaCategoria = () => {
               >
                 Gerenciar Categoria De Problema
               </Heading>
+              <ModalCadCategory callBack={AddCategory} />
             </Flex>
-            <ModalCadCategory callBack={AddCategory} />
           </Box>
           <Box mt='1em' mb='3em'>
             <Text>Categorias cadastradas no sitema.</Text>
