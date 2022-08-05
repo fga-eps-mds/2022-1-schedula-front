@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -7,8 +7,13 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { DataCategory } from '@components/DataType';
+import {
+  DataCategory,
+  DataProbType,
+} from '@components/DataType';
 import { ModalCadType } from '@components/ModalCadType';
+import { ModalEditType } from '@components/ModalEditType';
+import { listcategory } from '@services/testApi';
 
 import DefaultLayout from '../layout/DefaultLayout';
 
@@ -17,6 +22,29 @@ const Teste = () => {
   const [categorias, setCategorias] = useState<
     DataCategory[]
   >([]);
+
+  useEffect(() => {
+    listcategory
+      .get('/users')
+      .then((res) => {
+        setCategorias(res.data);
+      })
+      .catch();
+  }, []);
+
+  function EditCategory(categoria2: DataProbType) {
+    setCategorias(
+      categorias.map((categoria) =>
+        categoria.id === categoria2.id
+          ? {
+              ...categoria,
+              name: categoria2.name,
+              description: categoria2.description,
+            }
+          : { ...categoria }
+      )
+    );
+  }
 
   return (
     <>
@@ -38,6 +66,15 @@ const Teste = () => {
             <>
               <Text>{categoria.name}</Text>
               <Text>{categoria.description}</Text>
+
+              <Button onClick={onOpen}>Editar</Button>
+              <ModalEditType
+                callBack={EditCategory}
+                categoryId={categoria.id}
+                id={categoria.id}
+                isOpen={isOpen}
+                onClose={onClose}
+              />
             </>
           );
         })}
