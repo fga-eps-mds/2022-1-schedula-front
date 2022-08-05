@@ -1,5 +1,4 @@
 import React from 'react';
-import type { NextPage } from 'next';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   Box,
@@ -21,15 +20,14 @@ interface userData {
   confirmedPassWord: string;
 }
 
-const Cadastro: NextPage = () => {
+const Cadastro: NextPageWithLayout = () => {
   const [value, setValue] = React.useState('1');
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<userData>();
-  const onSubmit: SubmitHandler<userData> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<userData> = (data) => console.log(data);
 
   return (
     <>
@@ -68,13 +66,11 @@ const Cadastro: NextPage = () => {
                     {...register('fullName', {
                       required: true,
                     })}
-                    placeholder='Ex: Luiz Inácio'
+                    placeholder='Ex: Rodolfo'
                   />
                   {errors.fullName && (
                     <span>
-                      <Text color='red.400'>
-                        Este campo é obrigatório
-                      </Text>
+                      <Text color='red.400'>Este campo é obrigatório</Text>
                     </span>
                   )}
                 </Box>
@@ -90,9 +86,7 @@ const Cadastro: NextPage = () => {
                   />
                   {errors.passWord && (
                     <span>
-                      <Text color='red.400'>
-                        Este campo é obrigatório
-                      </Text>
+                      <Text color='red.400'>Este campo é obrigatório</Text>
                     </span>
                   )}
                 </Box>
@@ -104,13 +98,11 @@ const Cadastro: NextPage = () => {
                     {...register('loginName', {
                       required: true,
                     })}
-                    placeholder='Ex: Luiz13'
+                    placeholder='Ex: Rodolfo73'
                   />
                   {errors.loginName && (
                     <span>
-                      <Text color='red.400'>
-                        Este campo é obrigatório
-                      </Text>
+                      <Text color='red.400'>Este campo é obrigatório</Text>
                     </span>
                   )}
                 </Box>
@@ -125,9 +117,7 @@ const Cadastro: NextPage = () => {
                   />
                   {errors.confirmedPassWord && (
                     <span>
-                      <Text color='red.400'>
-                        Este campo é obrigatório
-                      </Text>
+                      <Text color='red.400'>Este campo é obrigatório</Text>
                     </span>
                   )}
                 </Box>
@@ -167,6 +157,10 @@ const Cadastro: NextPage = () => {
       </Center>
     </>
   );
+};
+
+Cadastro.getLayout = (page) => {
+  return page;
 };
 
 export default Cadastro;
