@@ -69,6 +69,8 @@ const Teste = () => {
             <>
               <Text>{categoria.name}</Text>
               <Text>{categoria.description}</Text>
+
+              <Button onClick={onOpen}>Editar</Button>
               <ModalEditType
                 callBack={EditCategory}
                 categoryId={categoria.id}
