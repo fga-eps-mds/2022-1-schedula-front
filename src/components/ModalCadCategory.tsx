@@ -18,10 +18,10 @@ import {
 
 import { listcategory } from '@services/testApi';
 
-import { Data1 } from './DataType';
+import { DataCategory } from './DataType';
 
 interface ModalCadCategoryProps {
-  callBack: (novaCategoria: Data1) => void;
+  callBack: (novaCategoria: DataCategory) => void;
 }
 
 export const ModalCadCategory = ({
@@ -34,9 +34,11 @@ export const ModalCadCategory = ({
     register,
     reset,
     formState: {},
-  } = useForm<Data1>();
+  } = useForm<DataCategory>();
 
-  const onSubmit: SubmitHandler<Data1> = async (data) => {
+  const onSubmit: SubmitHandler<DataCategory> = async (
+    data
+  ) => {
     listcategory
       .post('/users', data)
       .then(() => {
@@ -86,7 +88,10 @@ export const ModalCadCategory = ({
           onClose={onClose}
           size={'xl'}
         >
-          <ModalOverlay />
+          <ModalOverlay
+            backdropFilter={'auto'}
+            backdropBlur={'2px'}
+          />
           <ModalContent>
             <ModalHeader
               textAlign={'center'}

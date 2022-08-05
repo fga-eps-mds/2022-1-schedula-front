@@ -73,63 +73,65 @@ export const ModalDelCategory = ({
           isOpen={isOpen}
           onClose={onClose}
         >
-          <ModalOverlay>
-            <ModalContent>
-              <ModalHeader
-                fontSize='3xl'
-                fontWeight='bold'
+          <ModalOverlay
+            backdropFilter={'auto'}
+            backdropBlur={'2px'}
+          />
+          <ModalContent>
+            <ModalHeader
+              fontSize='3xl'
+              fontWeight='bold'
+              m={'0 auto'}
+              fontFamily={'Overpass ,sans-serif'}
+            >
+              Remover Categoria de Problema
+            </ModalHeader>
+
+            <ModalBody>
+              <Text
+                w='60%'
                 m={'0 auto'}
+                textAlign={'justify'}
+                fontSize={'md'}
                 fontFamily={'Overpass ,sans-serif'}
               >
-                Remover Categoria de Problema
-              </ModalHeader>
+                Você está prestes a remover a categoria
+                {' ' + name + ' '} e todos os tipos de
+                problemas relacionados a ela. Tem certeza
+                disso?
+              </Text>
+            </ModalBody>
 
-              <ModalBody>
-                <Text
-                  w='60%'
-                  m={'0 auto'}
-                  textAlign={'justify'}
-                  fontSize={'md'}
-                  fontFamily={'Overpass ,sans-serif'}
-                >
-                  Você está prestes a remover a categoria
-                  {' ' + name + ' '} e todos os tipos de
-                  problemas relacionados a ela. Tem certeza
-                  disso?
-                </Text>
-              </ModalBody>
-
-              <ModalFooter
-                fontFamily={'Overpass ,sans-serif'}
-                justifyContent={'center'}
-                mt={'30px'}
+            <ModalFooter
+              fontFamily={'Overpass ,sans-serif'}
+              justifyContent={'center'}
+              mt={'30px'}
+            >
+              <Button
+                colorScheme='green'
+                bg={'#22A122'}
+                onClick={onClose}
+                fontSize={'md'}
+                borderRadius={'50px'}
+                maxH={'35px'}
+                w={'190px'}
               >
-                <Button
-                  colorScheme='green'
-                  bg={'#22A122'}
-                  onClick={onClose}
-                  fontSize={'md'}
-                  borderRadius={'50px'}
-                  maxH={'35px'}
-                  w={'190px'}
-                >
-                  CANCELAR
-                </Button>
-                <Button
-                  colorScheme='red'
-                  bg={'#DE4040'}
-                  onClick={DeleteCategory}
-                  ml={5}
-                  fontSize={'18px'}
-                  borderRadius={'50px'}
-                  maxH={'35px'}
-                  w={'250px'}
-                >
-                  SIM, TENHO CERTEZA
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </ModalOverlay>
+                CANCELAR
+              </Button>
+              <Button
+                colorScheme='red'
+                bg={'#DE4040'}
+                onClick={DeleteCategory}
+                ml={5}
+                fontSize={'18px'}
+                borderRadius={'50px'}
+                maxH={'35px'}
+                w={'250px'}
+              >
+                SIM, TENHO CERTEZA
+              </Button>
+            </ModalFooter>
+          </ModalContent>
         </Modal>
       </Box>
     </>
