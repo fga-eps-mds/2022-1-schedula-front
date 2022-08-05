@@ -30,9 +30,7 @@ interface ModalCadCategoryProps {
   callBack: (novaCategoria: Data1) => void;
 }
 
-export const ModalCadCategory = ({
-  callBack,
-}: ModalCadCategoryProps) => {
+export const ModalCadCategory = ({ callBack }: ModalCadCategoryProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
@@ -46,13 +44,10 @@ export const ModalCadCategory = ({
     listcategory
       .post('/users', data)
       .then(() => {
-        toast.success(
-          'A categoria ' + data.name + ' foi cadastrada',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('A categoria ' + data.name + ' foi cadastrada', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
         callBack(data);
         reset();
       })
@@ -87,11 +82,7 @@ export const ModalCadCategory = ({
             NOVA CATEGORIA DE PROBLEMA
           </Text>
         </Button>
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-          size={'xl'}
-        >
+        <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader
@@ -126,10 +117,7 @@ export const ModalCadCategory = ({
                   </FormControl>
                 </Box>
 
-                <ModalFooter
-                  justifyContent={'center'}
-                  mt={'60px'}
-                >
+                <ModalFooter justifyContent={'center'} mt={'60px'}>
                   <Button
                     variant={'solid'}
                     bg='InfoBackground'

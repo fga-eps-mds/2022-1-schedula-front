@@ -21,11 +21,7 @@ interface DelCategoryProps {
   callBackDel: (Delid: number) => void;
 }
 
-export const ModalDelType = ({
-  id,
-  name,
-  callBackDel,
-}: DelCategoryProps) => {
+export const ModalDelType = ({ id, name, callBackDel }: DelCategoryProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function DeleteType() {
@@ -35,23 +31,17 @@ export const ModalDelType = ({
     listcategory
       .patch('/users/' + id, del) //O caminho deve ser alterado para a api do back.
       .then(() => {
-        toast.success(
-          'O tipo ' + name + ' foi desativado',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('O tipo ' + name + ' foi desativado', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
         callBackDel(id);
       })
       .catch(() => {
-        toast.warning(
-          'Falha ao desativar tipo de problema!',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.warning('Falha ao desativar tipo de problema!', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
       });
   }
 
@@ -70,11 +60,7 @@ export const ModalDelType = ({
           <RiDeleteBin6Line />
         </Box>
 
-        <Modal
-          size={'2xl'}
-          isOpen={isOpen}
-          onClose={onClose}
-        >
+        <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay>
             <ModalContent>
               <ModalHeader
@@ -94,8 +80,7 @@ export const ModalDelType = ({
                   fontSize={'md'}
                   fontFamily={'Overpass ,sans-serif'}
                 >
-                  Você está prestes a remover o tipo de
-                  problema
+                  Você está prestes a remover o tipo de problema
                   {' ' + name + ' '}. Tem certeza disso?
                 </Text>
               </ModalBody>

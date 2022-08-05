@@ -1,17 +1,10 @@
-import { ReactNode, useEffect, useState } from 'react';
-import {
-  Box,
-  Flex,
-  Heading,
-  Spinner,
-  Text,
-} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { Box, Flex, Heading, Spinner, Text } from '@chakra-ui/react';
 
 import { listcategory } from '@services/testApi';
 
 import { ItemCategory } from '../components/ItemCategory';
 import { ModalCadCategory } from '../components/ModalCadCategory';
-import DefaultLayout from '../layout/DefaultLayout';
 
 export interface Data1 {
   id: number;
@@ -50,11 +43,7 @@ const ListaCategoria = () => {
   }
 
   function DelCategory(delid: number) {
-    setCategorias(
-      categorias.filter(
-        (categoria) => categoria.id !== delid
-      )
-    );
+    setCategorias(categorias.filter((categoria) => categoria.id !== delid));
   }
 
   useEffect(() => {
@@ -98,14 +87,7 @@ const ListaCategoria = () => {
             marginTop='6%'
             fontFamily='Overpass ,sans-serif'
           >
-            <Flex
-              align='center'
-              justify='left'
-              w='60%'
-              h='5%'
-              mr={10}
-              mt='2%'
-            >
+            <Flex align='center' justify='left' w='60%' h='5%' mr={10} mt='2%'>
               <Heading
                 margin='0 auto'
                 marginLeft={0}
@@ -138,14 +120,6 @@ const ListaCategoria = () => {
         </Box>
       )}
     </>
-  );
-};
-
-ListaCategoria.getLayout = (page: ReactNode) => {
-  return (
-    <DefaultLayout Active='gerenciarTiposDeChamado'>
-      {page}
-    </DefaultLayout>
   );
 };
 
