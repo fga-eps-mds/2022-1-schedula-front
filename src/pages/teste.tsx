@@ -4,19 +4,16 @@ import {
   Button,
   Heading,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 
 import {
   DataCategory,
   DataProbType,
 } from '@components/DataType';
-import { ModalCadType } from '@components/ModalCadType';
 import { ModalEditType } from '@components/ModalEditType';
 import { listcategory } from '@services/testApi';
 
 const Teste = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [categorias, setCategorias] = useState<
     DataCategory[]
   >([]);
@@ -69,8 +66,6 @@ const Teste = () => {
             <>
               <Text>{categoria.name}</Text>
               <Text>{categoria.description}</Text>
-
-              <Button onClick={onOpen}>Editar</Button>
               <ModalEditType
                 callBack={EditCategory}
                 categoryId={categoria.id}

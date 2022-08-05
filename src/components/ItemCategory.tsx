@@ -1,4 +1,3 @@
-import { VscAdd } from 'react-icons/vsc';
 import {
   Box,
   Flex,
@@ -44,6 +43,7 @@ export const ItemCategory = ({
             {description}
           </Text>
         </Box>
+<<<<<<< HEAD
         <Box
           m='0 auto'
           mt='1em'
@@ -60,6 +60,9 @@ export const ItemCategory = ({
           isOpen={isOpen}
           categoryId={2}
         />
+=======
+        <ModalCadType categoryId={2} />
+>>>>>>> 46de37f (box with icon)
         <ModalEditCategory
           id={id}
           name={name}
