@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { BiEditAlt } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import {
   Box,
@@ -13,6 +14,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import { typeApi } from '@services/testApi';
@@ -21,19 +23,16 @@ import { DataProbType } from './DataType';
 
 interface ModalCadTypeProps {
   callBack: (novoTipo: DataProbType) => void;
-  onClose: () => void;
-  isOpen: boolean;
   categoryId: number;
   id: number;
 }
 
 export const ModalEditType = ({
-  onClose,
-  isOpen,
   categoryId,
   id,
   callBack,
 }: ModalCadTypeProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     handleSubmit,
     register,
@@ -77,6 +76,18 @@ export const ModalEditType = ({
   return (
     <>
       <Box fontFamily={'Overpass ,sans-serif'}>
+        <Box
+          m='0 auto'
+          mt='1em'
+          maxH={'20px'}
+          maxW={'20px'}
+          fontSize={'xl'}
+          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- Its hover.
+          _hover={{ boxShadow: 'dark-lg' }}
+          onClick={onOpen}
+        >
+          <BiEditAlt />
+        </Box>
         <Modal
           isOpen={isOpen}
           onClose={onClose}
