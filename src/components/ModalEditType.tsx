@@ -24,12 +24,14 @@ interface ModalCadTypeProps {
   onClose: () => void;
   isOpen: boolean;
   categoryId: number;
+  id: number;
 }
 
 export const ModalEditType = ({
   onClose,
   isOpen,
   categoryId,
+  id,
   callBack,
 }: ModalCadTypeProps) => {
   const {
@@ -39,18 +41,19 @@ export const ModalEditType = ({
     formState: {},
   } = useForm<DataProbType>();
 
-  const onSubmit: SubmitHandler<DataProbType> = async (
+  const onEdit: SubmitHandler<DataProbType> = async (
     data
   ) => {
+    data.id = id;
     data.category_id = categoryId;
     data.active = true;
     typeApi
-      .put('/users', data)
+      .put('/users/' + data.id, data)
       .then(() => {
         toast.success(
           'O tipo ' +
             data.name +
-            ' foi cadastrado com sucesso',
+            ' foi atualizado com sucesso',
           {
             position: 'top-left',
             autoClose: 2000,
@@ -60,10 +63,13 @@ export const ModalEditType = ({
         reset();
       })
       .catch((error) => {
-        toast.warning('Falha ao criar tipo de problema', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
+        toast.warning(
+          'Falha ao atualizar tipo de problema',
+          {
+            position: 'top-left',
+            autoClose: 2000,
+          }
+        );
         console.log(error);
       });
   };
@@ -76,18 +82,21 @@ export const ModalEditType = ({
           onClose={onClose}
           size={'xl'}
         >
-          <ModalOverlay />
+          <ModalOverlay
+            backdropFilter={'auto'}
+            backdropBlur={'2px'}
+          />
           <ModalContent>
             <ModalHeader
               textAlign={'center'}
               fontSize={'3xl'}
               fontFamily={'Overpass ,sans-serif'}
             >
-              Novo Tipo de Problema
+              Editar Tipo de Problema
             </ModalHeader>
 
             <ModalBody fontFamily={'Overpass ,sans-serif'}>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={handleSubmit(onEdit)}>
                 <Box w={'50%'} m={'0 auto'}>
                   <FormControl isRequired>
                     <FormLabel>Nome</FormLabel>
@@ -136,7 +145,7 @@ export const ModalEditType = ({
                     boxShadow={'dark-lg'}
                   >
                     <Text fontSize={'smaller'}>
-                      REGISTRAR TIPO DE<p></p> PROBLEMA
+                      ATUALIZAR TIPO DE<p></p> PROBLEMA
                     </Text>
                   </Button>
                 </ModalFooter>
