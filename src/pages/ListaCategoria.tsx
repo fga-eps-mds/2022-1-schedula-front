@@ -1,11 +1,10 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Flex, Heading, Spinner, Text } from '@chakra-ui/react';
 
 import { listcategory } from '@services/testApi';
 
 import { ItemCategory } from '../components/ItemCategory';
 import { ModalCadCategory } from '../components/ModalCadCategory';
-import { DefaultLayout } from '../layout/DefaultLayout';
 
 export interface Data1 {
   id: number;
@@ -122,10 +121,6 @@ const ListaCategoria = () => {
       )}
     </>
   );
-};
-
-ListaCategoria.getLayout = (page: ReactNode) => {
-  return <DefaultLayout Active='gerenciarTiposDeChamado'>{page}</DefaultLayout>;
 };
 
 export default ListaCategoria;
