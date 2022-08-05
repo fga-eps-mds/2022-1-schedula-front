@@ -18,13 +18,15 @@ import {
 
 import { listcategory } from '@services/testApi';
 
-import { Data1 } from './DataType';
+import { DataCategory } from './DataType';
 
 interface ModalCadCategoryProps {
-  callBack: (novaCategoria: Data1) => void;
+  callBack: (novaCategoria: DataCategory) => void;
 }
 
-export const ModalCadCategory = ({ callBack }: ModalCadCategoryProps) => {
+export const ModalCadCategory = ({
+  callBack,
+}: ModalCadCategoryProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
@@ -32,16 +34,21 @@ export const ModalCadCategory = ({ callBack }: ModalCadCategoryProps) => {
     register,
     reset,
     formState: {},
-  } = useForm<Data1>();
+  } = useForm<DataCategory>();
 
-  const onSubmit: SubmitHandler<Data1> = async (data) => {
+  const onSubmit: SubmitHandler<DataCategory> = async (
+    data
+  ) => {
     listcategory
       .post('/users', data)
       .then(() => {
-        toast.success('A categoria ' + data.name + ' foi cadastrada', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
+        toast.success(
+          'A categoria ' + data.name + ' foi cadastrada',
+          {
+            position: 'top-left',
+            autoClose: 2000,
+          }
+        );
         callBack(data);
         reset();
       })
@@ -76,8 +83,16 @@ export const ModalCadCategory = ({ callBack }: ModalCadCategoryProps) => {
             NOVA CATEGORIA DE PROBLEMA
           </Text>
         </Button>
-        <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
-          <ModalOverlay />
+
+        <Modal
+          isOpen={isOpen}
+          onClose={onClose}
+          size={'xl'}
+        >
+          <ModalOverlay
+            backdropFilter={'auto'}
+            backdropBlur={'2px'}
+          />
           <ModalContent>
             <ModalHeader
               textAlign={'center'}
@@ -111,7 +126,10 @@ export const ModalCadCategory = ({ callBack }: ModalCadCategoryProps) => {
                   </FormControl>
                 </Box>
 
-                <ModalFooter justifyContent={'center'} mt={'60px'}>
+                <ModalFooter
+                  justifyContent={'center'}
+                  mt={'60px'}
+                >
                   <Button
                     variant={'solid'}
                     bg='InfoBackground'

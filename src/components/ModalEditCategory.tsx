@@ -88,7 +88,10 @@ export const ModalEditCategory = ({
         <BiEditAlt />
       </Box>
       <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
-        <ModalOverlay />
+        <ModalOverlay
+          backdropFilter={'auto'}
+          backdropBlur={'2px'}
+        />
         <ModalContent>
           <ModalHeader
             textAlign={'center'}

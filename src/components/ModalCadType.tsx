@@ -75,7 +75,10 @@ export const ModalCadType = ({
           onClose={onClose}
           size={'xl'}
         >
-          <ModalOverlay />
+          <ModalOverlay
+            backdropFilter={'auto'}
+            backdropBlur={'2px'}
+          />
           <ModalContent>
             <ModalHeader
               textAlign={'center'}
