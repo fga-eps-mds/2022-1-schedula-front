@@ -1,9 +1,4 @@
-import {
-  Box,
-  Flex,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { ModalCadType } from './ModalCadType';
 import { ModalDelCategory } from './ModalDelCategory';
@@ -32,8 +27,6 @@ export const ItemCategory = ({
   callBackEdit,
   callBackDel,
 }: CategoriesItemProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <Box key={id} mt='2em'>
       <Flex w='100%'>
