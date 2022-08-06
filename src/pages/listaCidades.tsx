@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Box, Spinner } from '@chakra-ui/react';
 
 import { DataCity } from '@components/DataType';
+import { Loading } from '@components/loading';
 import { listCity } from '@services/testApi';
 
 const ListarCidades = () => {
   const [cidades, setCidades] = useState<DataCity[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     listCity
@@ -22,29 +22,7 @@ const ListarCidades = () => {
 
   return (
     <>
-      {isLoading ? (
-        <Box
-          w={'100%'}
-          verticalAlign={'90px'}
-          alignContent={'center'}
-          justifyContent={'center'}
-          alignItems={'center'}
-          margin={'0 auto'}
-          ml={5}
-        >
-          <Spinner
-            thickness='4px'
-            speed='0.65s'
-            emptyColor='gray.200'
-            color='blue.500'
-            size='xl'
-            mt={'30%'}
-            ml={'40%'}
-          />
-        </Box>
-      ) : (
-        <Box></Box>
-      )}
+      <Loading isLoading={isLoading}>oi</Loading>
     </>
   );
 };
