@@ -1,10 +1,6 @@
+import Link from 'next/link';
 import { VscAdd } from 'react-icons/vsc';
-import {
-  Box,
-  Flex,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Divider, Flex, Text, useDisclosure } from '@chakra-ui/react';
 
 import { ModalCadType } from './ModalCadType';
 import { ModalDelCategory } from './ModalDelCategory';
@@ -38,12 +34,15 @@ export const ItemCategory = ({
   return (
     <Box key={id} mt='2em'>
       <Flex w='100%'>
-        <Box w='91%'>
-          <Text fontSize='large'>{name}</Text>
-          <Text noOfLines={1} w='85%' maxW={'50em'}>
-            {description}
-          </Text>
-        </Box>
+        <Link href={'/listaTipos?id=' + id} passHref>
+          <Box w='91%'>
+            <Text fontSize='large'>{name}</Text>
+            <Text noOfLines={1} w='85%' maxW={'50em'}>
+              {description}
+            </Text>
+            <Divider orientation='horizontal' />
+          </Box>
+        </Link>
         <Box
           m='0 auto'
           mt='1em'
@@ -55,22 +54,14 @@ export const ItemCategory = ({
         >
           <VscAdd color='#405866' />
         </Box>
-        <ModalCadType
-          onClose={onClose}
-          isOpen={isOpen}
-          categoryId={2}
-        />
+        <ModalCadType onClose={onClose} isOpen={isOpen} categoryId={2} />
         <ModalEditCategory
           id={id}
           name={name}
           description={description}
           callBackEdit={callBackEdit}
         />
-        <ModalDelCategory
-          name={name}
-          id={id}
-          callBackDel={callBackDel}
-        />
+        <ModalDelCategory name={name} id={id} callBackDel={callBackDel} />
       </Flex>
     </Box>
   );
