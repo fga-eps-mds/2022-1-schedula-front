@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   Box,
   Flex,
@@ -9,7 +10,10 @@ import {
 
 import { ItemTipos } from '@components/ItemTipos';
 import { ModalCadTipos } from '@components/ModalCadTipos';
-import { listproblemas } from '@services/testApi';
+import {
+  listcategory,
+  listproblemas,
+} from '@services/testApi';
 
 import DefaultLayout from '../layout/DefaultLayout';
 
@@ -36,6 +40,7 @@ type FormProps = {
 const ListaTipos = () => {
   const [tipos, setTipos] = useState<Data1[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [categoria, nameCat] = useState<Data1>();
 
   function AddTipo(tipo: Data1) {
     setTipos([tipo, ...tipos]);
@@ -59,11 +64,24 @@ const ListaTipos = () => {
     setTipos(tipos.filter((tipo) => tipo.id !== delid));
   }
 
+  const router = useRouter();
   useEffect(() => {
     listproblemas
-      .get('/users')
+      .get('/users/' + router.query.id)
       .then((res) => {
         setTipos(res.data);
+      })
+      .catch()
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    listcategory
+      .get('/users/' + router.query.id)
+      .then((res) => {
+        nameCat(res.data);
       })
       .catch()
       .finally(() => {
@@ -97,13 +115,12 @@ const ListaTipos = () => {
           <Box
             width='100%'
             display='flex'
-            marginTop='6%'
             fontFamily='Overpass ,sans-serif'
           >
             <Flex
               align='center'
               justify='left'
-              w='60%'
+              w='100%'
               h='5%'
               mr={10}
               mt='2%'
@@ -115,10 +132,13 @@ const ListaTipos = () => {
                 textAlign='center'
                 fontFamily='Overpass ,sans-serif'
               >
-                Gerenciar {' ' + name}
+                {' '}
+                {categoria != undefined
+                  ? 'Gerenciar ' + categoria.name
+                  : 'Gerenciar Problema'}
               </Heading>
+              <ModalCadTipos callBack={AddTipo} />
             </Flex>
-            <ModalCadTipos callBack={AddTipo} />
           </Box>
           <Box mt='1em' mb='3em'>
             <Text>Problemas cadastrados no sitema.</Text>
