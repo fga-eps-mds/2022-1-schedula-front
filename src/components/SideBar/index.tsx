@@ -3,9 +3,11 @@ import { FiLayout } from 'react-icons/fi';
 import {
   MdOutlineCallToAction,
   MdOutlineDashboard,
+  MdOutlineLocationCity,
   MdOutlineViewAgenda,
 } from 'react-icons/md';
 import { RiLogoutCircleFill } from 'react-icons/ri';
+import { TbTestPipe } from 'react-icons/tb';
 import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react';
 
 import { SideBarItem, SideBarItemAttributes } from './SideBarItem';
@@ -32,9 +34,14 @@ const routes: SideBarItemAttributes[] = [
     icon: <FiLayout size={28} />,
   },
   {
+    label: 'Cidades [admin]',
+    pathname: '/listaCidades',
+    icon: <MdOutlineLocationCity size={28} />,
+  },
+  {
     label: 'Teste',
     pathname: '/teste',
-    icon: <FiLayout size={28} />,
+    icon: <TbTestPipe size={28} />,
   },
 ];
 
