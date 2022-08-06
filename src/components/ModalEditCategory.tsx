@@ -58,13 +58,10 @@ export const ModalEditCategory = ({
     listcategory
       .put('/users/' + data.id, data)
       .then(() => {
-        toast.success(
-          'A categoria ' + data.name + ' foi atualizada',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('A categoria ' + data.name + ' foi atualizada', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
         callBackEdit(data);
       })
       .catch(() => {
@@ -92,10 +89,7 @@ export const ModalEditCategory = ({
         <BiEditAlt />
       </Box>
       <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
-        <ModalOverlay
-          backdropFilter={'auto'}
-          backdropBlur={'2px'}
-        />
+        <ModalOverlay backdropFilter={'auto'} backdropBlur={'2px'} />
         <ModalContent>
           <ModalHeader
             textAlign={'center'}
@@ -129,10 +123,7 @@ export const ModalEditCategory = ({
                 </FormControl>
               </Box>
 
-              <ModalFooter
-                justifyContent={'center'}
-                mt={'60px'}
-              >
+              <ModalFooter justifyContent={'center'} mt={'60px'}>
                 <Button
                   variant={'solid'}
                   bg='InfoBackground'

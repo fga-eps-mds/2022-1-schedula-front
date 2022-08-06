@@ -39,23 +39,16 @@ export const ModalCadType = ({
     formState: {},
   } = useForm<DataProbType>();
 
-  const onSubmit: SubmitHandler<DataProbType> = async (
-    data
-  ) => {
+  const onSubmit: SubmitHandler<DataProbType> = async (data) => {
     data.category_id = categoryId;
     data.active = true;
     typeApi
       .post('/users', data)
       .then(() => {
-        toast.success(
-          'O tipo ' +
-            data.name +
-            ' foi cadastrado com sucesso',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('O tipo ' + data.name + ' foi cadastrado com sucesso', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
 
         if (callBack !== undefined) {
           callBack(data);
@@ -75,15 +68,8 @@ export const ModalCadType = ({
   return (
     <>
       <Box fontFamily={'Overpass ,sans-serif'}>
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-          size={'xl'}
-        >
-          <ModalOverlay
-            backdropFilter={'auto'}
-            backdropBlur={'2px'}
-          />
+        <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
+          <ModalOverlay backdropFilter={'auto'} backdropBlur={'2px'} />
           <ModalContent>
             <ModalHeader
               textAlign={'center'}
@@ -117,10 +103,7 @@ export const ModalCadType = ({
                   </FormControl>
                 </Box>
 
-                <ModalFooter
-                  justifyContent={'center'}
-                  mt={'60px'}
-                >
+                <ModalFooter justifyContent={'center'} mt={'60px'}>
                   <Button
                     variant={'solid'}
                     bg='InfoBackground'

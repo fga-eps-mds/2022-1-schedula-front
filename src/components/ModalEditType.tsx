@@ -40,36 +40,26 @@ export const ModalEditType = ({
     formState: {},
   } = useForm<DataProbType>();
 
-  const onEdit: SubmitHandler<DataProbType> = async (
-    data
-  ) => {
+  const onEdit: SubmitHandler<DataProbType> = async (data) => {
     data.id = id;
     data.category_id = categoryId;
     data.active = true;
     typeApi
       .put('/users/' + data.id, data)
       .then(() => {
-        toast.success(
-          'O tipo ' +
-            data.name +
-            ' foi atualizado com sucesso',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('O tipo ' + data.name + ' foi atualizado com sucesso', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
         callBack(data);
         reset();
         onClose();
       })
       .catch(() => {
-        toast.warning(
-          'Falha ao atualizar tipo de problema',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.warning('Falha ao atualizar tipo de problema', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
       });
   };
 
@@ -88,15 +78,8 @@ export const ModalEditType = ({
         >
           <BiEditAlt />
         </Box>
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-          size={'xl'}
-        >
-          <ModalOverlay
-            backdropFilter={'auto'}
-            backdropBlur={'2px'}
-          />
+        <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
+          <ModalOverlay backdropFilter={'auto'} backdropBlur={'2px'} />
           <ModalContent>
             <ModalHeader
               textAlign={'center'}
@@ -130,10 +113,7 @@ export const ModalEditType = ({
                   </FormControl>
                 </Box>
 
-                <ModalFooter
-                  justifyContent={'center'}
-                  mt={'60px'}
-                >
+                <ModalFooter justifyContent={'center'} mt={'60px'}>
                   <Button
                     variant={'solid'}
                     bg='InfoBackground'

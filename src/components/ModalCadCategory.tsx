@@ -24,9 +24,7 @@ interface ModalCadCategoryProps {
   callBack: (novaCategoria: DataCategory) => void;
 }
 
-export const ModalCadCategory = ({
-  callBack,
-}: ModalCadCategoryProps) => {
+export const ModalCadCategory = ({ callBack }: ModalCadCategoryProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
@@ -36,19 +34,14 @@ export const ModalCadCategory = ({
     formState: {},
   } = useForm<DataCategory>();
 
-  const onSubmit: SubmitHandler<DataCategory> = async (
-    data
-  ) => {
+  const onSubmit: SubmitHandler<DataCategory> = async (data) => {
     listcategory
       .post('/users', data)
       .then(() => {
-        toast.success(
-          'A categoria ' + data.name + ' foi cadastrada',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('A categoria ' + data.name + ' foi cadastrada', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
         callBack(data);
         reset();
       })
@@ -84,15 +77,8 @@ export const ModalCadCategory = ({
           </Text>
         </Button>
 
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-          size={'xl'}
-        >
-          <ModalOverlay
-            backdropFilter={'auto'}
-            backdropBlur={'2px'}
-          />
+        <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
+          <ModalOverlay backdropFilter={'auto'} backdropBlur={'2px'} />
           <ModalContent>
             <ModalHeader
               textAlign={'center'}
@@ -126,10 +112,7 @@ export const ModalCadCategory = ({
                   </FormControl>
                 </Box>
 
-                <ModalFooter
-                  justifyContent={'center'}
-                  mt={'60px'}
-                >
+                <ModalFooter justifyContent={'center'} mt={'60px'}>
                   <Button
                     variant={'solid'}
                     bg='InfoBackground'

@@ -1,25 +1,14 @@
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Heading,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Button, Heading, Text, useDisclosure } from '@chakra-ui/react';
 
-import {
-  DataCategory,
-  DataProbType,
-} from '@components/DataType';
+import { DataCategory, DataProbType } from '@components/DataType';
 import { ModalCadType } from '@components/ModalCadType';
 import { ModalEditType } from '@components/ModalEditType';
 import { listcategory } from '@services/testApi';
 
 const Teste = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [categorias, setCategorias] = useState<
-    DataCategory[]
-  >([]);
+  const [categorias, setCategorias] = useState<DataCategory[]>([]);
 
   useEffect(() => {
     listcategory
