@@ -55,11 +55,7 @@ export const ItemCategory = ({
           description={description}
           callBackEdit={callBackEdit}
         />
-        <ModalDelCategory
-          name={name}
-          id={id}
-          callBackDel={callBackDel}
-        />
+        <ModalDelCategory name={name} id={id} callBackDel={callBackDel} />
       </Flex>
     </Box>
   );

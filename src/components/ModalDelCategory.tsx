@@ -35,13 +35,10 @@ export const ModalDelCategory = ({
     listcategory
       .patch('/users/' + id, del)
       .then(() => {
-        toast.success(
-          'A categoria ' + name + ' foi desativada',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('A categoria ' + name + ' foi desativada', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
         callBackDel(id);
       })
       .catch(() => {
@@ -68,11 +65,7 @@ export const ModalDelCategory = ({
           <RiDeleteBin6Line />
         </Box>
 
-        <Modal
-          size={'2xl'}
-          isOpen={isOpen}
-          onClose={onClose}
-        >
+        <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay>
             <ModalContent>
               <ModalHeader
@@ -93,9 +86,8 @@ export const ModalDelCategory = ({
                   fontFamily={'Overpass ,sans-serif'}
                 >
                   Você está prestes a remover a categoria
-                  {' ' + name + ' '} e todos os tipos de
-                  problemas relacionados a ela. Tem certeza
-                  disso?
+                  {' ' + name + ' '} e todos os tipos de problemas relacionados
+                  a ela. Tem certeza disso?
                 </Text>
               </ModalBody>
 
