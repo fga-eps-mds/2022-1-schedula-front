@@ -1,3 +1,9 @@
+export type CommonData = {
+  id: number;
+  name: string;
+  description: string;
+};
+
 export type DataCategory = {
   id: number;
   name: string;
