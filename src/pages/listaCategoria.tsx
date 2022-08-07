@@ -61,6 +61,7 @@ const ListaCategoria = () => {
         api={listcategory}
         tag='/users/'
         addTag='/users/'
+        goTo='/listaTipos'
         data={categorias}
         modalAddHeader='Novo Tipo de Problema'
         errorAddMessage='Falha ao cadastrar Tipo de Problema!'

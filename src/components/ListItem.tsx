@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Link from 'next/link';
 import { BiEditAlt } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
@@ -14,6 +15,7 @@ export const ListItem = ({
   name,
   noAdd,
   api,
+  goTo,
   addTag,
   modalEditHeader,
   buttonEditModal,
@@ -58,12 +60,23 @@ export const ListItem = ({
     <>
       <Box key={id} mt='2em'>
         <Flex w='100%'>
-          <Box w='91%'>
-            <Text fontSize='large'>{name}</Text>
-            <Text noOfLines={1} w='85%' maxW={'50em'}>
-              {description}
-            </Text>
-          </Box>
+          {goTo ? (
+            <Link href={goTo + '?id=' + id} passHref>
+              <Box w='91%'>
+                <Text fontSize='large'>{name}</Text>
+                <Text noOfLines={1} w='85%' maxW={'50em'}>
+                  {description}
+                </Text>
+              </Box>
+            </Link>
+          ) : (
+            <Box w='91%'>
+              <Text fontSize='large'>{name}</Text>
+              <Text noOfLines={1} w='85%' maxW={'50em'}>
+                {description}
+              </Text>
+            </Box>
+          )}
           <ListIcon
             noAdd={noAdd}
             api={api}
@@ -97,7 +110,6 @@ export const ListItem = ({
             <BiEditAlt />
           </ListIcon>
           <ListIcon
-            noAdd={noAdd}
             api={api}
             tag={tag}
             errorMessage={errorDelMessage}

@@ -57,6 +57,7 @@ type ListType = {
   api: AxiosInstance;
   tag: string;
   addTag: string;
+  goTo?: string;
   Edit: (data: CommonData) => void;
   buttonEditModal: ReactNode;
   modalEditHeader: string;

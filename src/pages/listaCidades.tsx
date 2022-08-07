@@ -12,15 +12,15 @@ const ListarCidades = () => {
   const [cidades, setCidades] = useState<CommonData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  function delListCity(item: number) {
+  function Del(item: number) {
     setCidades(delList(item, cidades));
   }
 
-  function editListCity(item: CommonData) {
+  function Edit(item: CommonData) {
     setCidades(editList(item, cidades));
   }
 
-  function addListCity(item: CommonData) {
+  function Add(item: CommonData) {
     setCidades(addList(item, cidades));
   }
 
@@ -43,13 +43,46 @@ const ListarCidades = () => {
           header='Gerenciar Cidades'
           underHeader='Lista de cidades cadastradas'
         >
-          <ListagemButtonCad buttonText='Nova Cidade'></ListagemButtonCad>
+          <ListagemButtonCad
+            buttonText='Nova Cidade'
+            modalHeader={''}
+            buttonModal={undefined}
+            api={listCity}
+            errorMessage={''}
+            successMessage={''}
+            tag={'/users'}
+            callBack={Add}
+          />
         </ListagemHeader>
         <ListagemBody
           noAdd
+          api={listCity}
+          tag='/users/'
+          addTag='/users/'
           data={cidades}
-          Del={delListCity}
-          Edit={editListCity}
+          modalAddHeader='Novo Tipo de Problema'
+          errorAddMessage='Falha ao cadastrar Tipo de Problema!'
+          successAddMessage='Tipo de Problema cadastrado com sucesso!'
+          buttonAddModal={
+            <>
+              REGISTRAR TIPO DE<p></p> PROBLEMA
+            </>
+          }
+          Edit={Edit}
+          modalEditHeader='Editar Categoria de Problema'
+          buttonEditModal={
+            <>
+              ATUALIZAR CATEGORIA DE<p></p> PROBLEMA
+            </>
+          }
+          errorEditMessage={'Falha ao atualizar categoria!'}
+          successEditMessage={'Categoria atualizada com sucesso!'}
+          Del={Del}
+          modalDelHeader='Remover Categoria De Problema'
+          firstTextDel='a categoria'
+          secondTextDel='e todos os Tipos de Problema reclacionados a ela'
+          successDelMessage='A categoria foi removida com sucesso!'
+          errorDelMessage='Falha ao remover categoria!'
         />
       </Loading>
     </>
