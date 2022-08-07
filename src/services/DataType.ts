@@ -56,7 +56,7 @@ type ListType = {
   noAdd?: boolean;
   api: AxiosInstance;
   tag: string;
-  addTag: string;
+  addTag?: string;
   goTo?: string;
   Edit: (data: CommonData) => void;
   buttonEditModal: ReactNode;

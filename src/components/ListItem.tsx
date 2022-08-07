@@ -36,6 +36,7 @@ export const ListItem = ({
   Del,
 }: ListItemProps) => {
   type AddType = {
+    AddTag: string;
     errorAdd: string;
     successAdd: string;
     buttonAdd: ReactNode;
@@ -44,6 +45,7 @@ export const ListItem = ({
   };
 
   const AddTp: AddType = {
+    AddTag: addTag !== undefined ? addTag : '',
     errorAdd: errorAddMessage !== undefined ? errorAddMessage : '',
     successAdd: successAddMessage !== undefined ? successAddMessage : '',
     buttonAdd: buttonAddModal,
@@ -80,7 +82,7 @@ export const ListItem = ({
           <ListIcon
             noAdd={noAdd}
             api={api}
-            tag={addTag}
+            tag={AddTp.AddTag}
             successMessage={AddTp.successAdd}
             errorMessage={AddTp.errorAdd}
             // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- Its not css.

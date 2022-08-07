@@ -46,7 +46,7 @@ const ListarCidades = () => {
           <ListagemButtonCad
             buttonText='Nova Cidade'
             modalHeader={''}
-            buttonModal={undefined}
+            buttonModal={<>REGISTRAR CIDADE</>}
             api={listCity}
             errorMessage={''}
             successMessage={''}
@@ -58,31 +58,18 @@ const ListarCidades = () => {
           noAdd
           api={listCity}
           tag='/users/'
-          addTag='/users/'
           data={cidades}
-          modalAddHeader='Novo Tipo de Problema'
-          errorAddMessage='Falha ao cadastrar Tipo de Problema!'
-          successAddMessage='Tipo de Problema cadastrado com sucesso!'
-          buttonAddModal={
-            <>
-              REGISTRAR TIPO DE<p></p> PROBLEMA
-            </>
-          }
           Edit={Edit}
-          modalEditHeader='Editar Categoria de Problema'
-          buttonEditModal={
-            <>
-              ATUALIZAR CATEGORIA DE<p></p> PROBLEMA
-            </>
-          }
-          errorEditMessage={'Falha ao atualizar categoria!'}
-          successEditMessage={'Categoria atualizada com sucesso!'}
+          modalEditHeader=''
+          buttonEditModal={<>ATUALIZAR CIDADE</>}
+          errorEditMessage={''}
+          successEditMessage={''}
           Del={Del}
-          modalDelHeader='Remover Categoria De Problema'
-          firstTextDel='a categoria'
-          secondTextDel='e todos os Tipos de Problema reclacionados a ela'
-          successDelMessage='A categoria foi removida com sucesso!'
-          errorDelMessage='Falha ao remover categoria!'
+          modalDelHeader=''
+          firstTextDel=''
+          secondTextDel=''
+          successDelMessage=''
+          errorDelMessage=''
         />
       </Loading>
     </>
