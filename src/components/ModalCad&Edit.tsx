@@ -52,12 +52,7 @@ export const ModalCadEdit = ({
   onClose,
   callBack,
 }: ModalCadEditProps) => {
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: {},
-  } = useForm<CommonData>({
+  const { handleSubmit, register, reset } = useForm<CommonData>({
     defaultValues: {
       name,
       description,
