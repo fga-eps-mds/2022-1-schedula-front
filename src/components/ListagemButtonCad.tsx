@@ -17,16 +17,7 @@ interface ListagemButtonProps {
   callBack: (data: CommonData) => void;
 }
 
-export const ListagemButton = ({
-  buttonText,
-  buttonModal,
-  modalHeader,
-  api,
-  errorMessage,
-  successMessage,
-  tag,
-  callBack,
-}: ListagemButtonProps) => {
+export const ListagemButtonCad = ({ ...prop }: ListagemButtonProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -48,21 +39,10 @@ export const ListagemButton = ({
         }}
       >
         <Text mt='0.25em' noOfLines={1}>
-          {buttonText}
+          {prop.buttonText}
         </Text>
       </Button>
-      <ModalCadEdit
-        api={api}
-        errorMessage={errorMessage}
-        successMessage={successMessage}
-        tag={tag}
-        type='cad'
-        buttonModal={buttonModal}
-        isOpen={isOpen}
-        onClose={onClose}
-        modalHeader={modalHeader}
-        callBack={callBack}
-      />
+      <ModalCadEdit isOpen={isOpen} onClose={onClose} type='cad' {...prop} />
     </>
   );
 };

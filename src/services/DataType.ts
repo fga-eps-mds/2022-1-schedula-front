@@ -32,7 +32,7 @@ export type DataCity = {
   updated_at: Date;
 };
 
-export type CadRequestProps = {
+export type RequestProps = {
   data: CommonData;
   api: AxiosInstance;
   errorMessage: string;

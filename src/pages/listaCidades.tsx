@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ListagemBody } from '@components/ListagemBody';
-import { ListagemButton } from '@components/ListagemButton';
+import { ListagemButtonCad } from '@components/ListagemButtonCad';
 import { ListagemHeader } from '@components/ListagemHeader';
 import { Loading } from '@components/loading';
 import { CommonData } from '@services/DataType';
@@ -43,7 +43,7 @@ const ListarCidades = () => {
           header='Gerenciar Cidades'
           underHeader='Lista de cidades cadastradas'
         >
-          <ListagemButton buttonText='Nova Cidade'></ListagemButton>
+          <ListagemButtonCad buttonText='Nova Cidade'></ListagemButtonCad>
         </ListagemHeader>
         <ListagemBody
           noAdd

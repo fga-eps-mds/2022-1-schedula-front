@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-import { CadRequestProps } from '../services/DataType';
+import { RequestProps } from './DataType';
 
 export const CadRequest = async ({
   data,
@@ -10,7 +10,7 @@ export const CadRequest = async ({
   tag,
   reset,
   callBack,
-}: CadRequestProps) => {
+}: RequestProps) => {
   api
     .post(tag, data)
     .then(() => {

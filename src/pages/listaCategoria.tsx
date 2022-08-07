@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ListagemBody } from '@components/ListagemBody';
-import { ListagemButton } from '@components/ListagemButton';
+import { ListagemButtonCad } from '@components/ListagemButtonCad';
 import { ListagemHeader } from '@components/ListagemHeader';
 import { Loading } from '@components/loading';
 import { CommonData } from '@services/DataType';
@@ -42,7 +42,7 @@ const ListaCategoria = () => {
         header='Gerenciar Categorias de Problema'
         underHeader='Lista de categorias cadastradas'
       >
-        <ListagemButton
+        <ListagemButtonCad
           buttonText='Nova Categoria De Problema'
           modalHeader='Nova Categoria de Problema'
           successMessage='A categoria foi cadastrada com sucesso!'
@@ -57,7 +57,29 @@ const ListaCategoria = () => {
           }
         />
       </ListagemHeader>
-      <ListagemBody data={categorias} Del={Del} Edit={Edit} />
+      <ListagemBody
+        api={listcategory}
+        tag='/users/'
+        data={categorias}
+        Del={Del}
+        modalAddHeader='Novo Tipo de Problema'
+        errorAddMessage='Falha ao cadastrar Tipo de Problema!'
+        successAddMessage='Tipo de Problema cadastrado com sucesso!'
+        buttonAddModal={
+          <>
+            REGISTRAR TIPO DE<p></p> PROBLEMA
+          </>
+        }
+        modalEditHeader='Editar Categoria de Problema'
+        buttonEditModal={
+          <>
+            ATUALIZAR CATEGORIA DE<p></p> PROBLEMA
+          </>
+        }
+        errorEditMessage={'Falha ao atualizar categoria!'}
+        successEditMessage={'Categoria atualizada com sucesso!'}
+        Edit={Edit}
+      />
     </Loading>
   );
 };

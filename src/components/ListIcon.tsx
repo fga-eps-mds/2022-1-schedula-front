@@ -1,32 +1,64 @@
 import { ReactNode } from 'react';
 import { Box, useDisclosure } from '@chakra-ui/react';
+import { AxiosInstance } from 'axios';
+
+import { CommonData } from '@services/DataType';
+
+import { ModalCadEdit } from './ModalCad&Edit';
 
 interface ListIconProps {
-  children: ReactNode;
-  type: string;
   noAdd?: boolean;
+  children: ReactNode;
+  edit?: {
+    modalHeader: string;
+    buttonModal: ReactNode;
+    callBack: (data: CommonData) => void;
+    id: number;
+    name: string;
+    description: string;
+  };
+  add?: {
+    modalHeader: string;
+    buttonModal: ReactNode;
+    callBack: (data: CommonData) => void;
+  };
+  delete?: boolean;
+  api: AxiosInstance;
+  errorMessage: string;
+  successMessage: string;
+  tag: string;
 }
 
-export const ListIcon = ({ children, type, noAdd }: ListIconProps) => {
+export const ListIcon = ({ ...prop }: ListIconProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function ModalType() {
-    switch (type) {
-      case 'edit':
-        return <></>;
-
-      case 'delete':
-        return <></>;
-
-      case 'add':
-        return <></>;
-
-      default:
-        return <></>;
+    if (prop.edit) {
+      return (
+        <ModalCadEdit
+          isOpen={isOpen}
+          onClose={onClose}
+          type='edit'
+          {...prop}
+          {...prop.edit}
+        />
+      );
+    } else if (prop.add) {
+      return (
+        <ModalCadEdit
+          isOpen={isOpen}
+          onClose={onClose}
+          type='cad'
+          {...prop}
+          {...prop.add}
+        />
+      );
+    } else if (prop.delete) {
+      return <></>;
     }
   }
 
-  return noAdd ? (
+  return prop.noAdd ? (
     <></>
   ) : (
     <>
@@ -39,7 +71,7 @@ export const ListIcon = ({ children, type, noAdd }: ListIconProps) => {
         _hover={{ boxShadow: 'dark-lg' }}
         onClick={onOpen}
       >
-        {children}
+        {prop.children}
       </Box>
       {ModalType()}
     </>

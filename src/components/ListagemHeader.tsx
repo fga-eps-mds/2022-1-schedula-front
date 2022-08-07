@@ -1,15 +1,10 @@
 import { ReactNode } from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/react';
 
-import { CommonData } from '../services/DataType';
-
 interface ListagemHeaderProps {
   header: string;
   underHeader: string;
   children: ReactNode;
-  addList?: (data: CommonData) => void;
-  editList?: (data: CommonData) => void;
-  delList?: (delid: number) => void;
 }
 
 export const ListagemHeader = ({ ...List }: ListagemHeaderProps) => {

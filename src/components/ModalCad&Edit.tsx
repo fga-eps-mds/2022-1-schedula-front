@@ -16,9 +16,10 @@ import {
 } from '@chakra-ui/react';
 import { AxiosInstance } from 'axios';
 
-import { CadRequestProps, CommonData } from '../services/DataType';
+import { CadRequest } from '@services/RequestCad';
 
-import { CadRequest } from './CadRequest';
+import { CommonData, RequestProps } from '../services/DataType';
+import { EditRequest } from '../services/RequestEdit';
 
 interface ModalCadEditProps {
   isOpen: boolean;
@@ -29,6 +30,9 @@ interface ModalCadEditProps {
   errorMessage: string;
   successMessage: string;
   tag: string;
+  id?: number;
+  name?: string;
+  description?: string;
   onClose: () => void;
   callBack: (data: CommonData) => void;
 }
@@ -42,6 +46,9 @@ export const ModalCadEdit = ({
   errorMessage,
   successMessage,
   tag,
+  id,
+  name,
+  description,
   onClose,
   callBack,
 }: ModalCadEditProps) => {
@@ -50,29 +57,33 @@ export const ModalCadEdit = ({
     register,
     reset,
     formState: {},
-  } = useForm<CommonData>();
+  } = useForm<CommonData>({
+    defaultValues: {
+      name,
+      description,
+    },
+  });
 
   const onSubmit: SubmitHandler<CommonData> = async (data) => {
+    data.id = id !== undefined ? id : data.id;
+    const requestBody: RequestProps = {
+      data,
+      api,
+      errorMessage,
+      successMessage,
+      tag,
+      reset,
+      callBack,
+    };
+
     switch (type) {
       case 'cad':
-        const requestBody: CadRequestProps = {
-          data,
-          api,
-          errorMessage,
-          successMessage,
-          tag,
-          reset,
-          callBack,
-        };
-        requestBody.data = data;
         CadRequest(requestBody);
         break;
 
       case 'edit':
-        return <></>;
-
-      default:
-        return <></>;
+        EditRequest(requestBody);
+        break;
     }
   };
 
