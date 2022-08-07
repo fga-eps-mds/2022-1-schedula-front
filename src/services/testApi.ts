@@ -8,4 +8,12 @@ export const listcategory = axios.create({
   baseURL: 'https://jsonplaceholder.typicode.com',
 });
 
+export const listCity = axios.create({
+  baseURL: 'https://jsonplaceholder.typicode.com',
+});
+
+export const typeApi = axios.create({
+  baseURL: 'https://jsonplaceholder.typicode.com',
+});
+
 // export microservices here...
