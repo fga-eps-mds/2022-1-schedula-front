@@ -1,14 +1,30 @@
+import { ReactNode } from 'react';
 import { Button, Text, useDisclosure } from '@chakra-ui/react';
+import { AxiosInstance } from 'axios';
 
-import { CommonData } from './DataType';
+import { CommonData } from '@services/DataType';
+
+import { ModalCadEdit } from './ModalCad&Edit';
 
 interface ListagemButtonProps {
   buttonText: string;
-  callBack: (item: CommonData) => void;
+  modalHeader: string;
+  buttonModal: ReactNode;
+  api: AxiosInstance;
+  errorMessage: string;
+  successMessage: string;
+  tag: string;
+  callBack: (data: CommonData) => void;
 }
 
 export const ListagemButton = ({
   buttonText,
+  buttonModal,
+  modalHeader,
+  api,
+  errorMessage,
+  successMessage,
+  tag,
   callBack,
 }: ListagemButtonProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,12 +51,18 @@ export const ListagemButton = ({
           {buttonText}
         </Text>
       </Button>
-      {/* <ModalCadType
+      <ModalCadEdit
+        api={api}
+        errorMessage={errorMessage}
+        successMessage={successMessage}
+        tag={tag}
+        type='cad'
+        buttonModal={buttonModal}
         isOpen={isOpen}
         onClose={onClose}
-        categoryId={2}
+        modalHeader={modalHeader}
         callBack={callBack}
-      /> */}
+      />
     </>
   );
 };

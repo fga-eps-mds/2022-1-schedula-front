@@ -1,3 +1,6 @@
+import { UseFormReset } from 'react-hook-form';
+import { AxiosInstance } from 'axios';
+
 export type CommonData = {
   id: number;
   name: string;
@@ -27,4 +30,14 @@ export type DataCity = {
   description: string;
   active: boolean;
   updated_at: Date;
+};
+
+export type CadRequestProps = {
+  data: CommonData;
+  api: AxiosInstance;
+  errorMessage: string;
+  successMessage: string;
+  tag: string;
+  reset: UseFormReset<CommonData>;
+  callBack: (data: CommonData) => void;
 };

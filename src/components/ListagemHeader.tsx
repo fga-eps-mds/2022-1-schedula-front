@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/react';
 
-import { CommonData } from './DataType';
+import { CommonData } from '../services/DataType';
 
 interface ListagemHeaderProps {
   header: string;

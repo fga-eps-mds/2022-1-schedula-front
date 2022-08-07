@@ -3,7 +3,8 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
 import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 
-import { CommonData } from './DataType';
+import { CommonData } from '../services/DataType';
+
 import { ListIcon } from './ListIcon';
 
 interface ListItemProps {

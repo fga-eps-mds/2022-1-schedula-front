@@ -17,7 +17,7 @@ import {
 
 import { typeApi } from '@services/testApi';
 
-import { DataProbType } from './DataType';
+import { DataProbType } from '../services/DataType';
 
 interface ModalCadTypeProps {
   callBack?: (novoTipo: DataProbType) => void;

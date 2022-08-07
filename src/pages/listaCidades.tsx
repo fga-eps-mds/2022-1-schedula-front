@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { CommonData } from '@components/DataType';
-import { addList, delList, editList } from '@components/FunctionList';
 import { ListagemBody } from '@components/ListagemBody';
 import { ListagemButton } from '@components/ListagemButton';
 import { ListagemHeader } from '@components/ListagemHeader';
 import { Loading } from '@components/loading';
+import { CommonData } from '@services/DataType';
+import { addList, delList, editList } from '@services/FunctionList';
 import { listCity } from '@services/testApi';
 
 const ListarCidades = () => {
@@ -43,10 +43,7 @@ const ListarCidades = () => {
           header='Gerenciar Cidades'
           underHeader='Lista de cidades cadastradas'
         >
-          <ListagemButton
-            callBack={addListCity}
-            buttonText='Nova Cidade'
-          ></ListagemButton>
+          <ListagemButton buttonText='Nova Cidade'></ListagemButton>
         </ListagemHeader>
         <ListagemBody
           noAdd

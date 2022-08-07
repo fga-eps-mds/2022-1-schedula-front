@@ -1,4 +1,5 @@
-import { CommonData } from './DataType';
+import { CommonData } from '../services/DataType';
+
 import { ListItem } from './ListItem';
 
 interface ListagemBodyProps {

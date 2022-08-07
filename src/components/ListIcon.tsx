@@ -41,7 +41,7 @@ export const ListIcon = ({ children, type, noAdd }: ListIconProps) => {
       >
         {children}
       </Box>
-      <Box>{ModalType()}</Box>
+      {ModalType()}
     </>
   );
 };
