@@ -32,16 +32,6 @@ export const ListagemHeader = ({ ...List }: ListagemHeaderProps) => {
         </Box>
         <Box mt='1em' mb='3em'>
           <Box>{List.underHeader}</Box>
-          {/* {List.data?.map((Data: CommonData) => {
-            return (
-              <ListItem
-                key={Data.id}
-                callBackEdit={List.editList}
-                callBackDel={List.delList}
-                {...Data}
-              />
-            );
-          })} */}
         </Box>
       </Box>
     </>

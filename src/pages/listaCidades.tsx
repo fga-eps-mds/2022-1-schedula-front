@@ -1,18 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Box, useDisclosure } from '@chakra-ui/react';
 
 import { CommonData } from '@components/DataType';
-import { addList } from '@components/FunctionList';
+import { addList, delList, editList } from '@components/FunctionList';
+import { ListagemBody } from '@components/ListagemBody';
 import { ListagemButton } from '@components/ListagemButton';
 import { ListagemHeader } from '@components/ListagemHeader';
 import { Loading } from '@components/loading';
-import { ModalCadType } from '@components/ModalCadType';
 import { listCity } from '@services/testApi';
 
 const ListarCidades = () => {
   const [cidades, setCidades] = useState<CommonData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  function delListCity(item: number) {
+    setCidades(delList(item, cidades));
+  }
+
+  function editListCity(item: CommonData) {
+    setCidades(editList(item, cidades));
+  }
 
   function addListCity(item: CommonData) {
     setCidades(addList(item, cidades));
@@ -37,16 +43,17 @@ const ListarCidades = () => {
           header='Gerenciar Cidades'
           underHeader='Lista de cidades cadastradas'
         >
-          <ListagemButton onOpen={onOpen} buttonText='Nova Cidade'>
-            <ModalCadType
-              isOpen={isOpen}
-              onClose={onClose}
-              categoryId={2}
-              callBack={addListCity}
-            />
-          </ListagemButton>
+          <ListagemButton
+            callBack={addListCity}
+            buttonText='Nova Cidade'
+          ></ListagemButton>
         </ListagemHeader>
-        <Box>oi</Box>
+        <ListagemBody
+          noAdd
+          data={cidades}
+          Del={delListCity}
+          Edit={editListCity}
+        />
       </Loading>
     </>
   );

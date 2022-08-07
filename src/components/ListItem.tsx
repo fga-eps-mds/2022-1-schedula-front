@@ -1,17 +1,16 @@
+import { BiEditAlt } from 'react-icons/bi';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
-import { Box, Divider, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 
 import { CommonData } from './DataType';
-import { ModalCadType } from './ModalCadType';
-import { ModalDelCategory } from './ModalDelCategory';
-import { ModalEditCategory } from './ModalEditCategory';
+import { ListIcon } from './ListIcon';
 
 interface ListItemProps {
   id: number;
   name: string;
   description: string;
-  active?: boolean;
-  updatedAt?: Date;
+  noAdd?: boolean;
   callBackEdit: (data: CommonData) => void;
   callBackDel: (delid: number) => void;
 }
@@ -20,11 +19,10 @@ export const ListItem = ({
   id,
   description,
   name,
+  noAdd,
   callBackEdit,
   callBackDel,
 }: ListItemProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
       <Box key={id} mt='2em'>
@@ -35,26 +33,15 @@ export const ListItem = ({
               {description}
             </Text>
           </Box>
-
-          <Box
-            m='0 auto'
-            mt='1em'
-            maxH={'20px'}
-            fontSize={'xl'}
-            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
-            _hover={{ boxShadow: 'dark-lg' }}
-            onClick={onOpen}
-          >
+          <ListIcon noAdd={noAdd} type='Add'>
             <VscAdd color='#405866' />
-          </Box>
-          <ModalCadType onClose={onClose} isOpen={isOpen} categoryId={2} />
-          <ModalEditCategory
-            id={id}
-            name={name}
-            description={description}
-            callBackEdit={callBackEdit}
-          />
-          <ModalDelCategory name={name} id={id} callBackDel={callBackDel} />
+          </ListIcon>
+          <ListIcon type='Edit'>
+            <BiEditAlt />
+          </ListIcon>
+          <ListIcon type='Delete'>
+            <RiDeleteBin6Line />
+          </ListIcon>
         </Flex>
       </Box>
       <Divider mt={'1vh'} orientation='horizontal' />

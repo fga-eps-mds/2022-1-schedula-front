@@ -25,7 +25,3 @@ export function delList(delId: number, data: CommonData[]) {
 
   return data;
 }
-
-export function Modal() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-}

@@ -1,17 +1,18 @@
-import { ReactNode } from 'react';
-import { Button, Text } from '@chakra-ui/react';
+import { Button, Text, useDisclosure } from '@chakra-ui/react';
+
+import { CommonData } from './DataType';
 
 interface ListagemButtonProps {
   buttonText: string;
-  onOpen: () => void;
-  children?: ReactNode;
+  callBack: (item: CommonData) => void;
 }
 
 export const ListagemButton = ({
-  children,
   buttonText,
-  onOpen,
+  callBack,
 }: ListagemButtonProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
       <Button
@@ -34,7 +35,12 @@ export const ListagemButton = ({
           {buttonText}
         </Text>
       </Button>
-      {children}
+      {/* <ModalCadType
+        isOpen={isOpen}
+        onClose={onClose}
+        categoryId={2}
+        callBack={callBack}
+      /> */}
     </>
   );
 };
