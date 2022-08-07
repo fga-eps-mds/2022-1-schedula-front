@@ -5,6 +5,7 @@ import { AxiosInstance } from 'axios';
 import { CommonData } from '@services/DataType';
 
 import { ModalCadEdit } from './ModalCad&Edit';
+import { ModalDel } from './ModalDel';
 
 interface ListIconProps {
   noAdd?: boolean;
@@ -22,7 +23,14 @@ interface ListIconProps {
     buttonModal: ReactNode;
     callBack: (data: CommonData) => void;
   };
-  delete?: boolean;
+  delete?: {
+    modalHeader: string;
+    callBack: (id: number) => void;
+    id: number;
+    name: string;
+    fistText: string;
+    secondText: string;
+  };
   api: AxiosInstance;
   errorMessage: string;
   successMessage: string;
@@ -54,7 +62,14 @@ export const ListIcon = ({ ...prop }: ListIconProps) => {
         />
       );
     } else if (prop.delete) {
-      return <></>;
+      return (
+        <ModalDel
+          isOpen={isOpen}
+          onClose={onClose}
+          {...prop}
+          {...prop.delete}
+        />
+      );
     }
   }
 

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Heading, Text, useDisclosure } from '@chakra-ui/react';
 
-import { DataCategory, DataProbType } from '@components/DataType';
 import { ModalCadType } from '@components/ModalCadType';
 import { ModalEditType } from '@components/ModalEditType';
+import { DataCategory, DataProbType } from '@services/DataType';
 import { listcategory } from '@services/testApi';
 
 const Teste = () => {

@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-import { RequestProps } from './DataType';
+import { RequestMainProps } from './DataType';
 
 export const EditRequest = async ({
   data,
@@ -9,7 +9,8 @@ export const EditRequest = async ({
   successMessage,
   tag,
   callBack,
-}: RequestProps) => {
+  onClose,
+}: RequestMainProps) => {
   api
     .put(tag + data.id, data)
     .then(() => {
@@ -17,8 +18,8 @@ export const EditRequest = async ({
         position: 'top-left',
         autoClose: 2000,
       });
-      console.log(data.id);
       callBack(data);
+      onClose();
     })
     .catch(() => {
       toast.warning(errorMessage, {

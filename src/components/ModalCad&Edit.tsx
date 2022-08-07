@@ -18,7 +18,7 @@ import { AxiosInstance } from 'axios';
 
 import { CadRequest } from '@services/RequestCad';
 
-import { CommonData, RequestProps } from '../services/DataType';
+import { CommonData, RequestMainProps } from '../services/DataType';
 import { EditRequest } from '../services/RequestEdit';
 
 interface ModalCadEditProps {
@@ -66,7 +66,7 @@ export const ModalCadEdit = ({
 
   const onSubmit: SubmitHandler<CommonData> = async (data) => {
     data.id = id !== undefined ? id : data.id;
-    const requestBody: RequestProps = {
+    const requestBody: RequestMainProps = {
       data,
       api,
       errorMessage,
@@ -74,6 +74,7 @@ export const ModalCadEdit = ({
       tag,
       reset,
       callBack,
+      onClose,
     };
 
     switch (type) {

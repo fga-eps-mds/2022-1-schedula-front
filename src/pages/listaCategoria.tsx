@@ -60,8 +60,8 @@ const ListaCategoria = () => {
       <ListagemBody
         api={listcategory}
         tag='/users/'
+        addTag='/users/'
         data={categorias}
-        Del={Del}
         modalAddHeader='Novo Tipo de Problema'
         errorAddMessage='Falha ao cadastrar Tipo de Problema!'
         successAddMessage='Tipo de Problema cadastrado com sucesso!'
@@ -70,6 +70,7 @@ const ListaCategoria = () => {
             REGISTRAR TIPO DE<p></p> PROBLEMA
           </>
         }
+        Edit={Edit}
         modalEditHeader='Editar Categoria de Problema'
         buttonEditModal={
           <>
@@ -78,7 +79,12 @@ const ListaCategoria = () => {
         }
         errorEditMessage={'Falha ao atualizar categoria!'}
         successEditMessage={'Categoria atualizada com sucesso!'}
-        Edit={Edit}
+        Del={Del}
+        modalDelHeader='Remover Categoria De Problema'
+        firstTextDel='a categoria'
+        secondTextDel='e todos os Tipos de Problema reclacionados a ela'
+        successDelMessage='A categoria foi removida com sucesso!'
+        errorDelMessage='Falha ao remover categoria!'
       />
     </Loading>
   );

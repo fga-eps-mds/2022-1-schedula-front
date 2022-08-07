@@ -3,31 +3,10 @@ import { BiEditAlt } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
 import { Box, Divider, Flex, Text } from '@chakra-ui/react';
-import { AxiosInstance } from 'axios';
 
-import { CommonData } from '../services/DataType';
+import { CommonData, ListItemProps } from '../services/DataType';
 
 import { ListIcon } from './ListIcon';
-
-interface ListItemProps {
-  id: number;
-  name: string;
-  description: string;
-  noAdd?: boolean;
-  modalEditHeader: string;
-  buttonEditModal: ReactNode;
-  api: AxiosInstance;
-  errorEditMessage: string;
-  successEditMessage: string;
-  tag: string;
-  callBackEdit: (data: CommonData) => void;
-  callBackDel: (delid: number) => void;
-  modalAddHeader?: string;
-  buttonAddModal?: ReactNode;
-  errorAddMessage?: string;
-  successAddMessage?: string;
-  callBackAdd?: (data: CommonData) => void;
-}
 
 export const ListItem = ({
   id,
@@ -35,6 +14,7 @@ export const ListItem = ({
   name,
   noAdd,
   api,
+  addTag,
   modalEditHeader,
   buttonEditModal,
   tag,
@@ -44,9 +24,14 @@ export const ListItem = ({
   successAddMessage,
   buttonAddModal,
   modalAddHeader,
-  callBackAdd,
-  callBackEdit,
-  callBackDel,
+  firstTextDel,
+  secondTextDel,
+  modalDelHeader,
+  errorDelMessage,
+  successDelMessage,
+  Add,
+  Edit,
+  Del,
 }: ListItemProps) => {
   type AddType = {
     errorAdd: string;
@@ -56,14 +41,14 @@ export const ListItem = ({
     BackAdd: (data: CommonData) => void;
   };
 
-  const Add: AddType = {
+  const AddTp: AddType = {
     errorAdd: errorAddMessage !== undefined ? errorAddMessage : '',
     successAdd: successAddMessage !== undefined ? successAddMessage : '',
     buttonAdd: buttonAddModal,
     modalAdd: modalAddHeader !== undefined ? modalAddHeader : '',
     BackAdd:
-      callBackAdd !== undefined
-        ? callBackAdd
+      Add !== undefined
+        ? Add
         : (data: CommonData) => {
             return data;
           },
@@ -82,14 +67,14 @@ export const ListItem = ({
           <ListIcon
             noAdd={noAdd}
             api={api}
-            tag={tag}
-            successMessage={Add.successAdd}
-            errorMessage={Add.errorAdd}
+            tag={addTag}
+            successMessage={AddTp.successAdd}
+            errorMessage={AddTp.errorAdd}
             // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- Its not css.
             add={{
-              buttonModal: Add.buttonAdd,
-              modalHeader: Add.modalAdd,
-              callBack: Add.BackAdd,
+              buttonModal: AddTp.buttonAdd,
+              modalHeader: AddTp.modalAdd,
+              callBack: AddTp.BackAdd,
             }}
           >
             <VscAdd color='#405866' />
@@ -103,7 +88,7 @@ export const ListItem = ({
             edit={{
               buttonModal: buttonEditModal,
               modalHeader: modalEditHeader,
-              callBack: callBackEdit,
+              callBack: Edit,
               id,
               name,
               description,
@@ -114,9 +99,18 @@ export const ListItem = ({
           <ListIcon
             noAdd={noAdd}
             api={api}
-            errorMessage={errorEditMessage}
-            successMessage={successEditMessage}
             tag={tag}
+            errorMessage={errorDelMessage}
+            successMessage={successDelMessage}
+            // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- Its not css.
+            delete={{
+              fistText: firstTextDel,
+              id,
+              modalHeader: modalDelHeader,
+              name,
+              secondText: secondTextDel,
+              callBack: Del,
+            }}
           >
             <RiDeleteBin6Line />
           </ListIcon>
