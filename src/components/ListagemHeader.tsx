@@ -7,7 +7,6 @@ interface ListagemHeaderProps {
   header: string;
   underHeader: string;
   children: ReactNode;
-  data: CommonData[];
   addList?: (data: CommonData) => void;
   editList?: (data: CommonData) => void;
   delList?: (delid: number) => void;
@@ -28,7 +27,7 @@ export const ListagemHeader = ({ ...List }: ListagemHeaderProps) => {
             >
               {List.header}
             </Heading>
-            {List.children}
+            <Box alignSelf={'flex-end'}>{List.children}</Box>
           </Flex>
         </Box>
         <Box mt='1em' mb='3em'>

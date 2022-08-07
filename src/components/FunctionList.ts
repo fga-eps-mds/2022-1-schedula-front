@@ -20,8 +20,12 @@ export function editList(item: CommonData, data: CommonData[]) {
   return data;
 }
 
-export function delList(item: CommonData, data: CommonData[]) {
-  data = data.filter((data2) => data2.id !== item.id);
+export function delList(delId: number, data: CommonData[]) {
+  data = data.filter((data2) => data2.id !== delId);
 
   return data;
+}
+
+export function Modal() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 }
