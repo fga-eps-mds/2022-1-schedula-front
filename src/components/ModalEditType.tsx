@@ -17,9 +17,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import { DataProbType } from '@services/DataType';
 import { typeApi } from '@services/testApi';
-
-import { DataProbType } from './DataType';
 
 interface ModalCadTypeProps {
   callBack: (novoTipo: DataProbType) => void;
