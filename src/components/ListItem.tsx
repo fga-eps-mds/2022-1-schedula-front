@@ -90,6 +90,7 @@ export const ListItem = ({
               buttonModal: AddTp.buttonAdd,
               modalHeader: AddTp.modalAdd,
               callBack: AddTp.BackAdd,
+              parentId: id,
             }}
           >
             <VscAdd color='#405866' />

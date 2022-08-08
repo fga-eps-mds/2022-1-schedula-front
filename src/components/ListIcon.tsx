@@ -22,6 +22,7 @@ interface ListIconProps {
     modalHeader: string;
     buttonModal: ReactNode;
     callBack: (data: CommonData) => void;
+    parentId?: number;
   };
   delete?: {
     modalHeader: string;

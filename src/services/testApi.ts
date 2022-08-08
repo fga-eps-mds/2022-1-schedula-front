@@ -1,19 +1,23 @@
 import axios from 'axios';
 
 export const testApi = axios.create({
-  baseURL: 'https://api.github.com',
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL ?? 'https://api.github.com',
 });
 
 export const listcategory = axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com',
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://0.0.0.0:5000',
 });
 
 export const listCity = axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com',
+  baseURL:
+    process.env.NEXT_PUBLIC_BACKEND_URL ??
+    'https://jsonplaceholder.typicode.com',
 });
 
 export const typeApi = axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com',
+  baseURL:
+    process.env.NEXT_PUBLIC_BACKEND_URL ??
+    'https://jsonplaceholder.typicode.com',
 });
 
 // export microservices here...
