@@ -6,6 +6,7 @@ export type CommonData = {
   id: number;
   name: string;
   description: string;
+  parentId: number;
 };
 
 export type DataCategory = {

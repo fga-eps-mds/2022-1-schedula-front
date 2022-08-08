@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { ListagemBody } from '@components/ListagemBody';
 import { ListagemButtonCad } from '@components/ListagemButtonCad';
 import { ListagemHeader } from '@components/ListagemHeader';
+import { ListItem } from '@components/ListItem';
 import { Loading } from '@components/loading';
 import { CommonData } from '@services/DataType';
 import { addList, delList, editList } from '@services/FunctionList';
@@ -54,23 +54,28 @@ const ListarCidades = () => {
             callBack={Add}
           />
         </ListagemHeader>
-        <ListagemBody
-          noAdd
-          api={listCity}
-          tag='/users/'
-          data={cidades}
-          Edit={Edit}
-          modalEditHeader=''
-          buttonEditModal={<>ATUALIZAR CIDADE</>}
-          errorEditMessage={''}
-          successEditMessage={''}
-          Del={Del}
-          modalDelHeader=''
-          firstTextDel=''
-          secondTextDel=''
-          successDelMessage=''
-          errorDelMessage=''
-        />
+        {cidades?.map((item: CommonData) => {
+          return (
+            <ListItem
+              noAdd
+              api={listCity}
+              tag='/users/'
+              Edit={Edit}
+              modalEditHeader=''
+              buttonEditModal={<>ATUALIZAR CIDADE</>}
+              errorEditMessage={''}
+              successEditMessage={''}
+              Del={Del}
+              modalDelHeader=''
+              firstTextDel=''
+              secondTextDel=''
+              successDelMessage=''
+              errorDelMessage=''
+              key={item.id}
+              {...item}
+            />
+          );
+        })}
       </Loading>
     </>
   );

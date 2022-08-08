@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { ListagemBody } from '@components/ListagemBody';
 import { ListagemButtonCad } from '@components/ListagemButtonCad';
 import { ListagemHeader } from '@components/ListagemHeader';
+import { ListItem } from '@components/ListItem';
 import { Loading } from '@components/loading';
 import { CommonData } from '@services/DataType';
 import { addList, delList, editList } from '@services/FunctionList';
@@ -26,9 +26,9 @@ const ListaCategoria = () => {
 
   useEffect(() => {
     listcategory
-      .get('/users')
+      .get('/categoria/')
       .then((res) => {
-        setCategorias(res.data);
+        setCategorias(res.data.data);
       })
       .catch()
       .finally(() => {
@@ -48,7 +48,7 @@ const ListaCategoria = () => {
           successMessage='A categoria foi cadastrada com sucesso!'
           errorMessage='Não foi possível cadastrar a categoria!'
           api={listcategory}
-          tag='/users'
+          tag='/categoria/'
           callBack={Add}
           buttonModal={
             <>
@@ -57,36 +57,41 @@ const ListaCategoria = () => {
           }
         />
       </ListagemHeader>
-      <ListagemBody
-        api={listcategory}
-        tag='/users/'
-        addTag='/users/'
-        goTo='/listaTipos'
-        data={categorias}
-        modalAddHeader='Novo Tipo de Problema'
-        errorAddMessage='Falha ao cadastrar Tipo de Problema!'
-        successAddMessage='Tipo de Problema cadastrado com sucesso!'
-        buttonAddModal={
-          <>
-            REGISTRAR TIPO DE<p></p> PROBLEMA
-          </>
-        }
-        Edit={Edit}
-        modalEditHeader='Editar Categoria de Problema'
-        buttonEditModal={
-          <>
-            ATUALIZAR CATEGORIA DE<p></p> PROBLEMA
-          </>
-        }
-        errorEditMessage={'Falha ao atualizar categoria!'}
-        successEditMessage={'Categoria atualizada com sucesso!'}
-        Del={Del}
-        modalDelHeader='Remover Categoria De Problema'
-        firstTextDel='a categoria'
-        secondTextDel='e todos os Tipos de Problema reclacionados a ela'
-        successDelMessage='A categoria foi removida com sucesso!'
-        errorDelMessage='Falha ao remover categoria!'
-      />
+      {categorias?.map((item: CommonData) => {
+        return (
+          <ListItem
+            api={listcategory}
+            tag={'/categoria/'}
+            addTag={'/problema/'}
+            goTo='/listaTipos/'
+            Edit={Edit}
+            modalAddHeader='Novo Tipo de Problema'
+            errorAddMessage='Falha ao cadastrar Tipo de Problema!'
+            successAddMessage='Tipo de Problema cadastrado com sucesso!'
+            buttonAddModal={
+              <>
+                REGISTRAR TIPO DE<p></p> PROBLEMA
+              </>
+            }
+            modalEditHeader='Editar Categoria de Problema'
+            buttonEditModal={
+              <>
+                ATUALIZAR CATEGORIA DE<p></p> PROBLEMA
+              </>
+            }
+            errorEditMessage={'Falha ao atualizar categoria!'}
+            successEditMessage={'Categoria atualizada com sucesso!'}
+            Del={Del}
+            modalDelHeader='Remover Categoria De Problema'
+            firstTextDel='a categoria'
+            secondTextDel='e todos os Tipos de Problema reclacionados a ela'
+            successDelMessage='A categoria foi removida com sucesso!'
+            errorDelMessage='Falha ao remover categoria!'
+            key={item.id}
+            {...item}
+          />
+        );
+      })}
     </Loading>
   );
 };

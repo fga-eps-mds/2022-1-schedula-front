@@ -5,7 +5,7 @@ export const testApi = axios.create({
 });
 
 export const listcategory = axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com',
+  baseURL: 'http://0.0.0.0:5000',
 });
 
 export const listCity = axios.create({

@@ -33,6 +33,7 @@ interface ModalCadEditProps {
   id?: number;
   name?: string;
   description?: string;
+  parentId?: number;
   onClose: () => void;
   callBack: (data: CommonData) => void;
 }
@@ -49,6 +50,7 @@ export const ModalCadEdit = ({
   id,
   name,
   description,
+  parentId,
   onClose,
   callBack,
 }: ModalCadEditProps) => {
@@ -61,6 +63,7 @@ export const ModalCadEdit = ({
 
   const onSubmit: SubmitHandler<CommonData> = async (data) => {
     data.id = id !== undefined ? id : data.id;
+    data.parentId = parentId !== undefined ? parentId : data.parentId;
     const requestBody: RequestMainProps = {
       data,
       api,
