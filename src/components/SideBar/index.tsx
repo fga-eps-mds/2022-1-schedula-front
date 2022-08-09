@@ -43,6 +43,11 @@ const routes: SideBarItemAttributes[] = [
     pathname: '/teste',
     icon: <TbTestPipe size={28} />,
   },
+  {
+    label: 'Usuários',
+    pathname: '/usuarios',
+    icon: <FaRegUser size={28} />,
+  },
 ];
 
 export const SideBar = () => {
