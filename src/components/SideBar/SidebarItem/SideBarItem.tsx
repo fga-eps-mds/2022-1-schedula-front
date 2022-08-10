@@ -4,13 +4,11 @@ import React, { ReactElement, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Flex } from '@chakra-ui/react';
+import { IRoute } from 'routes';
 
-export interface SideBarItemAttributes {
-  label: string;
-  pathname: string;
+export interface SideBarItemAttributes extends IRoute {
   query?: { [key: string]: string };
   as?: string;
-  icon?: JSX.Element;
   isActive?: boolean;
 }
 

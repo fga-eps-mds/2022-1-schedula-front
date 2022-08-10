@@ -120,10 +120,7 @@
       }
     ],
     // "eslint-comments/no-use": ["warn", { "allow": [] }],
-    "eslint-comments/require-description": [
-      "error",
-      { "ignore": [] }
-    ]
+    "eslint-comments/require-description": ["error", { "ignore": [] }]
   },
   "ignorePatterns": ["**/*.json", "**/*.js"],
   "overrides": [
@@ -143,18 +140,14 @@
               ["^react$", "^next", "^react", "^@?\\w"],
               // Internal packages.
               [
-                "^(@components|@pages|@hooks|@contexts|@templates|@layouts|@public|@constants|@utils|@controllers|@models|@services|@company|@ui|@UI|@stripe|@database|@aws|@lib|components|utils|config|vendored-lib|@prismadb)(/.*|$|..)"
+                "^(@components|@routes|@pages|@hooks|@contexts|@templates|@layouts|@public|@constants|@utils|@controllers|@models|@services|@company|@ui|@UI|@stripe|@database|@aws|@lib|components|utils|config|vendored-lib|@prismadb)(/.*|$|..)"
               ],
               // Side effect imports.
               ["^\\u0000"],
               // Parent imports. Put `..` last.
               ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
               // Other relative imports. Put same-folder imports and `.` last.
-              [
-                "^\\./(?=.*/)(?!/?$)",
-                "^\\.(?!/?$)",
-                "^\\./?$"
-              ],
+              ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
               // Style imports.
               ["@styles", "^.+\\.s?css$"]
             ]
