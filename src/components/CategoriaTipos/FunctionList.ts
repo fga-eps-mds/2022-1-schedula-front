@@ -1,4 +1,4 @@
-import { CommonData } from './DataType';
+import { CommonData } from '@components/DataType';
 
 export function addList(item: CommonData, data: CommonData[]) {
   data = [item, ...data];
