@@ -32,7 +32,8 @@
       "@UI/*": ["UI/*"],
       "@utils": ["utils"],
       "@utils/*": ["utils/*"],
-      "@public/*": ["../public/*"]
+      "@public/*": ["../public/*"],
+      "@routes": ["routes"]
     },
     "incremental": true
   },

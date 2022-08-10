@@ -33,6 +33,7 @@ const customJestConfig = {
     '^@utils': '<rootDir>/src/utils',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@public/(.*)$': '<rootDir>/src/../public/$1',
+    '^@routes': '<rootDir>/src/routes',
   },
 };
 
