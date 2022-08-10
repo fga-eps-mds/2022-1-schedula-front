@@ -40,8 +40,7 @@ const Usuarios = () => {
       >
         <></>
       </ListagemHeader>
-
-      <Flex flexDirection='column' gap={4}>
+      <Flex flexDirection='column' gap={4} mt={20}>
         {users.map((user, index) => (
           <Flex
             key={index}
@@ -49,15 +48,25 @@ const Usuarios = () => {
             justifyContent='space-between'
             align='center'
           >
-            <Box>
-              <Text fontWeight='bold' mb={1}>
+            <Box width='50%'>
+              <Text color='#675775' fontWeight='bold' mb={2}>
                 {user.name}
               </Text>
-              <Box>{user.phone}</Box>
-              <Box>{user.id}</Box>
+              <Box marginBottom='14px' color='#A39DAA'>
+                {user.phone}
+                {user.id}
+                <hr></hr>
+              </Box>
             </Box>
             <Flex gap={2}>
-              <BiEditAlt />
+              <BiEditAlt
+                cursor='pointer'
+                size={28}
+                // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- ?
+                onClick={() => {
+                  deleteUser(user.id); //Trocar para EditUser depois
+                }}
+              />
               <RiDeleteBin6Line
                 cursor='pointer'
                 size={28}
