@@ -24,12 +24,9 @@ interface ListIconProps {
     parentId?: number;
   };
   delete?: {
-    modalHeader: string;
     callBack: (id: number) => void;
     id: number;
     name: string;
-    fistText: string;
-    secondText: string;
   };
   api: AxiosInstance;
   errorMessage: string;

@@ -77,9 +77,6 @@ type ListType = {
   errorAddMessage?: string;
   successAddMessage?: string;
 
-  firstTextDel: string;
-  secondTextDel: string;
-  modalDelHeader: string;
   errorDelMessage: string;
   successDelMessage: string;
 };
@@ -89,6 +86,9 @@ export type ListTiposProps = ListType & {
   Del: (delid: number) => void;
   Add?: (data: CommonData) => void;
   Edit: (data: CommonData) => void;
+  firstTextDel: string;
+  secondTextDel: string;
+  modalDelHeader: string;
 };
 
 export type ListCityProps = ListType & {

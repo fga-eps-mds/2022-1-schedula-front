@@ -13,15 +13,12 @@ import { DelRequest } from '@services/RequestDel';
 
 interface ModalDelProps {
   isOpen: boolean;
-  modalHeader: string;
   api: AxiosInstance;
   errorMessage: string;
   successMessage: string;
   tag: string;
   id: number;
   name: string;
-  fistText: string;
-  secondText: string;
   onClose: () => void;
   callBack: (data: number) => void;
 }

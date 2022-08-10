@@ -25,9 +25,6 @@ export const ListItem = ({
   successAddMessage,
   buttonAddModal,
   modalAddHeader,
-  firstTextDel,
-  secondTextDel,
-  modalDelHeader,
   errorDelMessage,
   successDelMessage,
   Add,
@@ -111,11 +108,8 @@ export const ListItem = ({
             successMessage={successDelMessage}
             // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- Its not css.
             delete={{
-              fistText: firstTextDel,
               id,
-              modalHeader: modalDelHeader,
               name,
-              secondText: secondTextDel,
               callBack: Del,
             }}
           >

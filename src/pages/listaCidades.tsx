@@ -45,11 +45,11 @@ const ListarCidades = () => {
         >
           <ListagemButtonCad
             buttonText='Nova Cidade'
-            modalHeader={''}
+            modalHeader={'Nova Cidade'}
             buttonModal={<>REGISTRAR CIDADE</>}
             api={listCity}
-            errorMessage={''}
-            successMessage={''}
+            errorMessage={'A cidade foi cadastrada com sucesso!'}
+            successMessage={'Falha ao cadastrar a cidade!'}
             tag={'/users'}
             callBack={Add}
           />
@@ -61,16 +61,13 @@ const ListarCidades = () => {
               api={listCity}
               tag='/users/'
               Edit={Edit}
-              modalEditHeader=''
+              modalEditHeader='Editar Cidade'
               buttonEditModal={<>ATUALIZAR CIDADE</>}
-              errorEditMessage={''}
-              successEditMessage={''}
+              errorEditMessage={'Não foi possível atualizar a cidade!'}
+              successEditMessage={'A cidade foi atualizada com sucesso!'}
               Del={Del}
-              modalDelHeader=''
-              firstTextDel=''
-              secondTextDel=''
-              successDelMessage=''
-              errorDelMessage=''
+              successDelMessage='A cidade foi apagada com sucesso!'
+              errorDelMessage='Não foi possível apagar a cidade!'
               key={item.id}
               {...item}
             />
