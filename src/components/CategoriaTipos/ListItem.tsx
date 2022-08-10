@@ -5,7 +5,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
 import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 
-import { CommonData, ListItemProps } from '../services/DataType';
+import { CommonData, ListTiposProps } from '../DataType';
 
 import { ListIcon } from './ListIcon';
 
@@ -34,7 +34,7 @@ export const ListItem = ({
   Add,
   Edit,
   Del,
-}: ListItemProps) => {
+}: ListTiposProps) => {
   type AddType = {
     AddTag: string;
     errorAdd: string;

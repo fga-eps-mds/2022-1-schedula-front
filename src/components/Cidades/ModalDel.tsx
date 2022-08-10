@@ -1,16 +1,14 @@
 import {
   Button,
   Modal,
-  ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from '@chakra-ui/react';
 import { AxiosInstance } from 'axios';
 
-import { RequestDelProps } from '@services/DataType';
+import { RequestDelProps } from '@components/DataType';
 import { DelRequest } from '@services/RequestDel';
 
 interface ModalDelProps {
@@ -30,15 +28,12 @@ interface ModalDelProps {
 
 export const ModalDel = ({
   isOpen,
-  modalHeader,
   api,
   errorMessage,
   successMessage,
   tag,
   id,
   name,
-  fistText,
-  secondText,
   onClose,
   callBack,
 }: ModalDelProps) => {
@@ -57,30 +52,20 @@ export const ModalDel = ({
 
   return (
     <>
-      <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+      <Modal size={'xl'} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay backdropFilter={'auto'} backdropBlur={'2px'} />
         <ModalContent>
           <ModalHeader
-            fontSize='3xl'
+            fontSize='xl'
             fontWeight='bold'
             m={'0 auto'}
             fontFamily={'Overpass ,sans-serif'}
+            w='75%'
+            textAlign={'justify'}
+            mt='2%'
           >
-            {modalHeader}
+            Você tem certeza que deseja apagar a cidade {name}?
           </ModalHeader>
-
-          <ModalBody>
-            <Text
-              w='60%'
-              m={'0 auto'}
-              textAlign={'justify'}
-              fontSize={'md'}
-              fontFamily={'Overpass ,sans-serif'}
-            >
-              Você está prestes a remover {fistText}
-              {' ' + name + ' '} {secondText}. Tem certeza disso?
-            </Text>
-          </ModalBody>
 
           <ModalFooter
             fontFamily={'Overpass ,sans-serif'}
@@ -88,19 +73,21 @@ export const ModalDel = ({
             mt={'30px'}
           >
             <Button
-              colorScheme='green'
-              bg={'#22A122'}
+              variant={'solid'}
+              bg='InfoBackground'
+              color='black'
+              mr={'30px'}
               onClick={onClose}
-              fontSize={'md'}
+              border={'1px'}
+              borderColor={'black'}
               borderRadius={'50px'}
-              maxH={'35px'}
-              w={'190px'}
+              fontSize={'medium'}
             >
               CANCELAR
             </Button>
             <Button
-              colorScheme='red'
-              bg={'#DE4040'}
+              colorScheme='orange'
+              bg={'primary'}
               onClick={Delete}
               ml={5}
               fontSize={'18px'}
@@ -108,7 +95,7 @@ export const ModalDel = ({
               maxH={'35px'}
               w={'250px'}
             >
-              SIM, TENHO CERTEZA
+              Apagar
             </Button>
           </ModalFooter>
         </ModalContent>

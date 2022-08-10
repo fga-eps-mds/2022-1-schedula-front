@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
 
-import { ListagemButtonCad } from '@components/ListagemButtonCad';
+import { addList, delList, editList } from '@components/Cidades/FunctionList';
+import { ListagemButtonCad } from '@components/Cidades/ListagemButtonCad';
+import { ListItem } from '@components/Cidades/ListItem';
+import { DataCity } from '@components/DataType';
 import { ListagemHeader } from '@components/ListagemHeader';
-import { ListItem } from '@components/ListItem';
 import { Loading } from '@components/loading';
-import { CommonData } from '@services/DataType';
-import { addList, delList, editList } from '@services/FunctionList';
 import { listCity } from '@services/testApi';
 
 const ListarCidades = () => {
-  const [cidades, setCidades] = useState<CommonData[]>([]);
+  const [cidades, setCidades] = useState<DataCity[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   function Del(item: number) {
     setCidades(delList(item, cidades));
   }
 
-  function Edit(item: CommonData) {
+  function Edit(item: DataCity) {
     setCidades(editList(item, cidades));
   }
 
-  function Add(item: CommonData) {
+  function Add(item: DataCity) {
     setCidades(addList(item, cidades));
   }
 
@@ -54,7 +54,7 @@ const ListarCidades = () => {
             callBack={Add}
           />
         </ListagemHeader>
-        {cidades?.map((item: CommonData) => {
+        {cidades?.map((item: DataCity) => {
           return (
             <ListItem
               noAdd

@@ -1,25 +1,25 @@
 import { toast } from 'react-toastify';
 
-import { RequestMainProps } from './DataType';
+import { RequestTiposProps } from '@components/DataType';
 
-export const CadRequest = async ({
+export const EditRequest = async ({
   data,
   api,
   errorMessage,
   successMessage,
   tag,
-  reset,
   callBack,
-}: RequestMainProps) => {
+  onClose,
+}: RequestTiposProps) => {
   api
-    .post(tag, data)
+    .put(tag + data.id, data)
     .then(() => {
       toast.success(successMessage, {
         position: 'top-left',
         autoClose: 2000,
       });
       callBack(data);
-      reset();
+      onClose();
     })
     .catch(() => {
       toast.warning(errorMessage, {

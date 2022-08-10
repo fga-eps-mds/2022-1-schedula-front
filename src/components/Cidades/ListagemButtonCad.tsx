@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Button, Text, useDisclosure } from '@chakra-ui/react';
 import { AxiosInstance } from 'axios';
 
-import { CommonData } from '@services/DataType';
+import { DataCity } from '@components/DataType';
 
 import { ModalCadEdit } from './ModalCad&Edit';
 
@@ -14,7 +14,7 @@ interface ListagemButtonProps {
   errorMessage: string;
   successMessage: string;
   tag: string;
-  callBack: (data: CommonData) => void;
+  callBack: (data: DataCity) => void;
 }
 
 export const ListagemButtonCad = ({ ...prop }: ListagemButtonProps) => {

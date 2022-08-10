@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 
-import { ListagemButtonCad } from '@components/ListagemButtonCad';
+import {
+  addList,
+  delList,
+  editList,
+} from '@components/CategoriaTipos/FunctionList';
+import { ListagemButtonCad } from '@components/CategoriaTipos/ListagemButtonCad';
+import { ListItem } from '@components/CategoriaTipos/ListItem';
+import { CommonData } from '@components/DataType';
 import { ListagemHeader } from '@components/ListagemHeader';
-import { ListItem } from '@components/ListItem';
 import { Loading } from '@components/loading';
-import { CommonData } from '@services/DataType';
-import { addList, delList, editList } from '@services/FunctionList';
 import { listcategory } from '@services/testApi';
 
 const ListaCategoria = () => {

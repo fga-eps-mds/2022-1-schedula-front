@@ -16,10 +16,10 @@ import {
 } from '@chakra-ui/react';
 import { AxiosInstance } from 'axios';
 
-import { CadRequest } from '@services/RequestCad';
+import { CommonData, RequestTiposProps } from '../DataType';
 
-import { CommonData, RequestMainProps } from '../services/DataType';
-import { EditRequest } from '../services/RequestEdit';
+import { AddRequest, CadRequest } from './RequestCad';
+import { EditRequest } from './RequestEdit';
 
 interface ModalCadEditProps {
   isOpen: boolean;
@@ -64,7 +64,7 @@ export const ModalCadEdit = ({
   const onSubmit: SubmitHandler<CommonData> = async (data) => {
     data.id = id !== undefined ? id : data.id;
     data.parentId = parentId !== undefined ? parentId : data.parentId;
-    const requestBody: RequestMainProps = {
+    const requestBody: RequestTiposProps = {
       data,
       api,
       errorMessage,
@@ -82,6 +82,10 @@ export const ModalCadEdit = ({
 
       case 'edit':
         EditRequest(requestBody);
+        break;
+
+      case 'add':
+        AddRequest(requestBody);
         break;
     }
   };
