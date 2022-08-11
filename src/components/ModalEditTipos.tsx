@@ -59,13 +59,10 @@ export const ModalEditTipos = ({
     listproblemas
       .put('/users/' + data.id, data)
       .then(() => {
-        toast.success(
-          'O problema ' + data.name + ' foi atualizado',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('O problema ' + data.name + ' foi atualizado', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
         callBackEdit(data);
       })
       .catch(() => {
@@ -92,20 +89,13 @@ export const ModalEditTipos = ({
         <BiEditAlt />
       </Box>
       <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
-        <ModalOverlay
-          backdropFilter='auto'
-          backdropBlur='2px'
-        />
+        <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
         <ModalContent>
-          <ModalHeader
-            textAlign={'center'}
-            fontSize={'3xl'}
-            fontFamily={'Overpass ,sans-serif'}
-          >
+          <ModalHeader textAlign={'center'} fontSize={'3xl'}>
             Editar Problema
           </ModalHeader>
 
-          <ModalBody fontFamily={'Overpass ,sans-serif'}>
+          <ModalBody>
             <form onSubmit={handleSubmit(onEdit)}>
               <Box w={'50%'} m={'0 auto'}>
                 <FormControl isRequired>
@@ -129,10 +119,7 @@ export const ModalEditTipos = ({
                 </FormControl>
               </Box>
 
-              <ModalFooter
-                justifyContent={'center'}
-                mt={'60px'}
-              >
+              <ModalFooter justifyContent={'center'} mt={'60px'}>
                 <Button
                   variant={'solid'}
                   bg='InfoBackground'
@@ -154,9 +141,7 @@ export const ModalEditTipos = ({
                   borderRadius={'50px'}
                   boxShadow={'dark-lg'}
                 >
-                  <Text fontSize={'smaller'}>
-                    ATUALIZAR PROBLEMA
-                  </Text>
+                  <Text fontSize={'smaller'}>ATUALIZAR PROBLEMA</Text>
                 </Button>
               </ModalFooter>
             </form>

@@ -21,11 +21,7 @@ interface DelTiposProps {
   callBackDel: (Delid: number) => void;
 }
 
-export const ModalDelTipos = ({
-  id,
-  name,
-  callBackDel,
-}: DelTiposProps) => {
+export const ModalDelTipos = ({ id, name, callBackDel }: DelTiposProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function DeleteTipos() {
@@ -35,13 +31,10 @@ export const ModalDelTipos = ({
     listproblemas
       .patch('/users/' + id, del)
       .then(() => {
-        toast.success(
-          'O problema ' + name + ' foi desativado',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
+        toast.success('O problema ' + name + ' foi desativado', {
+          position: 'top-left',
+          autoClose: 2000,
+        });
         callBackDel(id);
       })
       .catch(() => {
@@ -55,7 +48,7 @@ export const ModalDelTipos = ({
 
   return (
     <>
-      <Box fontFamily={'Overpass ,sans-serif'}>
+      <Box>
         <Box
           m='0 auto'
           mt='1em'
@@ -68,22 +61,10 @@ export const ModalDelTipos = ({
           <RiDeleteBin6Line />
         </Box>
 
-        <Modal
-          size={'2xl'}
-          isOpen={isOpen}
-          onClose={onClose}
-        >
-          <ModalOverlay
-            backdropFilter='auto'
-            backdropBlur='2px'
-          >
+        <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay backdropFilter='auto' backdropBlur='2px'>
             <ModalContent>
-              <ModalHeader
-                fontSize='3xl'
-                fontWeight='bold'
-                m={'0 auto'}
-                fontFamily={'Overpass ,sans-serif'}
-              >
+              <ModalHeader fontSize='3xl' fontWeight='bold' m={'0 auto'}>
                 Remover Tipo de Problema
               </ModalHeader>
 
@@ -93,18 +74,13 @@ export const ModalDelTipos = ({
                   m={'0 auto'}
                   textAlign={'justify'}
                   fontSize={'md'}
-                  fontFamily={'Overpass ,sans-serif'}
                 >
                   Você está prestes a remover o problema
                   {' ' + name + ' '}. Tem certeza disso?
                 </Text>
               </ModalBody>
 
-              <ModalFooter
-                fontFamily={'Overpass ,sans-serif'}
-                justifyContent={'center'}
-                mt={'30px'}
-              >
+              <ModalFooter justifyContent={'center'} mt={'30px'}>
                 <Button
                   colorScheme='green'
                   bg={'#22A122'}
