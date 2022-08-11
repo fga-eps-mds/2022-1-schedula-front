@@ -38,7 +38,7 @@ const ListaTipos = () => {
   const [tipos, setTipos] = useState<Data1[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [categoria, nameCat] = useState<Data1>();
-  const { isOpen, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   function AddTipo(tipo: Data1) {
     setTipos([tipo, ...tipos]);
@@ -152,7 +152,11 @@ const ListaTipos = () => {
                   NOVO TIPO DE PROBLEMA
                 </Text>
               </Button>
-              <ModalCadTipos callBack={AddTipo} isOpen={isOpen} />
+              <ModalCadTipos
+                callBack={AddTipo}
+                isOpen={isOpen}
+                onClose={onClose}
+              />
             </Flex>
           </Box>
           <Box mt='1em' mb='3em'>

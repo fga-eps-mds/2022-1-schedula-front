@@ -28,11 +28,16 @@ interface Data1 {
 
 interface ModalCadTiposProps {
   isOpen: boolean;
+  onClose: any;
   callBack: (novaCategoria: Data1) => void;
 }
 
-export const ModalCadTipos = ({ callBack, isOpen }: ModalCadTiposProps) => {
-  const { onOpen, onClose } = useDisclosure();
+export const ModalCadTipos = ({
+  callBack,
+  isOpen,
+  onClose,
+}: ModalCadTiposProps) => {
+  const { onOpen } = useDisclosure();
 
   const {
     handleSubmit,
