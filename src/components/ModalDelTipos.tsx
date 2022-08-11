@@ -62,7 +62,7 @@ export const ModalDelTipos = ({ id, name, callBackDel }: DelTiposProps) => {
         </Box>
 
         <Modal size={'2xl'} isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay backdropFilter='auto' backdropBlur='2px'>
+          <ModalOverlay>
             <ModalContent>
               <ModalHeader fontSize='3xl' fontWeight='bold' m={'0 auto'}>
                 Remover Tipo de Problema

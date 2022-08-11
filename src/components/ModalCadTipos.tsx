@@ -64,7 +64,7 @@ export const ModalCadTipos = ({ callBack, isOpen }: ModalCadTiposProps) => {
     <>
       <Box onClick={onOpen}>
         <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
-          <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
+          <ModalOverlay />
           <ModalContent>
             <ModalHeader textAlign={'center'} fontSize={'3xl'}>
               Novo tipo de problema

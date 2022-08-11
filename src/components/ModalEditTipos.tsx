@@ -89,7 +89,7 @@ export const ModalEditTipos = ({
         <BiEditAlt />
       </Box>
       <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
-        <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
+        <ModalOverlay />
         <ModalContent>
           <ModalHeader textAlign={'center'} fontSize={'3xl'}>
             Editar Problema
