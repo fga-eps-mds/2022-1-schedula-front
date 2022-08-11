@@ -8,4 +8,7 @@ export const listcategory = axios.create({
   baseURL: 'https://jsonplaceholder.typicode.com',
 });
 
+export const listproblemas = axios.create({
+  baseURL: 'https://jsonplaceholder.typicode.com',
+});
 // export microservices here...
