@@ -42,11 +42,7 @@ export const ItemTipos = ({
           description={description}
           callBackEdit={callBackEdit}
         />
-        <ModalDelTipos
-          name={name}
-          id={id}
-          callBackDel={callBackDel}
-        />
+        <ModalDelTipos name={name} id={id} callBackDel={callBackDel} />
       </Flex>
     </Box>
   );
