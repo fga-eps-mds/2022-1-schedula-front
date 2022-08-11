@@ -1,21 +1,18 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
   Box,
+  Button,
   Flex,
   Heading,
   Spinner,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import { ItemTipos } from '@components/ItemTipos';
 import { ModalCadTipos } from '@components/ModalCadTipos';
-import {
-  listcategory,
-  listproblemas,
-} from '@services/testApi';
-
-import DefaultLayout from '../layout/DefaultLayout';
+import { listcategory, listproblemas } from '@services/testApi';
 
 export interface Data1 {
   id: number;
@@ -41,6 +38,7 @@ const ListaTipos = () => {
   const [tipos, setTipos] = useState<Data1[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [categoria, nameCat] = useState<Data1>();
+  const { isOpen, onOpen } = useDisclosure();
 
   function AddTipo(tipo: Data1) {
     setTipos([tipo, ...tipos]);
@@ -75,7 +73,7 @@ const ListaTipos = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [router.query.id]);
 
   useEffect(() => {
     listcategory
@@ -87,7 +85,7 @@ const ListaTipos = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [router.query.id]);
 
   return (
     <>
@@ -112,32 +110,49 @@ const ListaTipos = () => {
         </Box>
       ) : (
         <Box w='100%'>
-          <Box
-            width='100%'
-            display='flex'
-            fontFamily='Overpass ,sans-serif'
-          >
-            <Flex
-              align='center'
-              justify='left'
-              w='100%'
-              h='5%'
-              mr={10}
-              mt='2%'
-            >
+          <Box width='100%' display='flex'>
+            <Flex align='center' justify='left' w='100%' h='5%' mr={10} mt='2%'>
               <Heading
                 margin='0 auto'
                 marginLeft={0}
                 size='lg'
                 textAlign='center'
-                fontFamily='Overpass ,sans-serif'
               >
                 {' '}
                 {categoria != undefined
                   ? 'Gerenciar ' + categoria.name
                   : 'Gerenciar Problema'}
               </Heading>
-              <ModalCadTipos callBack={AddTipo} />
+            </Flex>
+            <Flex
+              align='center'
+              justify='right'
+              w='100%'
+              h='5%'
+              mr={10}
+              mt='2%'
+            >
+              <Button
+                bg={'primary'}
+                color={'white'}
+                margin={'0 auto'}
+                boxShadow={'dark-lg'}
+                marginTop={'1em'}
+                borderRadius={'90px'}
+                h={'2em'}
+                onClick={onOpen}
+                // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
+                _hover={{
+                  color: 'white',
+                  bg: 'primary',
+                  boxShadow: 'xl',
+                }}
+              >
+                <Text mt='0.25em' noOfLines={1}>
+                  NOVO TIPO DE PROBLEMA
+                </Text>
+              </Button>
+              <ModalCadTipos callBack={AddTipo} isOpen={isOpen} />
             </Flex>
           </Box>
           <Box mt='1em' mb='3em'>
@@ -160,14 +175,6 @@ const ListaTipos = () => {
         </Box>
       )}
     </>
-  );
-};
-
-ListaTipos.getLayout = (page: ReactNode) => {
-  return (
-    <DefaultLayout Active='gerenciarTiposDeChamado'>
-      {page}
-    </DefaultLayout>
   );
 };
 
