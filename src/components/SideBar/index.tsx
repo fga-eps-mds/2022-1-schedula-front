@@ -1,16 +1,9 @@
 import { FaRegUser } from 'react-icons/fa';
-import { FiLayout } from 'react-icons/fi';
-import {
-  MdOutlineCallToAction,
-  MdOutlineDashboard,
-  MdOutlineLocationCity,
-  MdOutlineViewAgenda,
-} from 'react-icons/md';
 import { RiLogoutCircleFill } from 'react-icons/ri';
-import { TbTestPipe } from 'react-icons/tb';
 import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react';
+import { SideBarItem } from './SidebarItem/SideBarItem';
+import { routes } from '@routes';
 
-import { SideBarItem, SideBarItemAttributes } from './SideBarItem';
 
 const routes: SideBarItemAttributes[] = [
   {
