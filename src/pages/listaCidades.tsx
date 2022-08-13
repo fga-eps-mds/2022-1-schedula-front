@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
 
-import { ListagemButtonCad } from '@components/ListagemButtonCad';
+import { addList, delList, editList } from '@components/Cidades/FunctionList';
+import { ListagemButtonCad } from '@components/Cidades/ListagemButtonCad';
+import { ListItem } from '@components/Cidades/ListItem';
+import { DataCity } from '@components/DataType';
 import { ListagemHeader } from '@components/ListagemHeader';
-import { ListItem } from '@components/ListItem';
 import { Loading } from '@components/loading';
-import { CommonData } from '@services/DataType';
-import { addList, delList, editList } from '@services/FunctionList';
 import { listCity } from '@services/testApi';
 
 const ListarCidades = () => {
-  const [cidades, setCidades] = useState<CommonData[]>([]);
+  const [cidades, setCidades] = useState<DataCity[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   function Del(item: number) {
     setCidades(delList(item, cidades));
   }
 
-  function Edit(item: CommonData) {
+  function Edit(item: DataCity) {
     setCidades(editList(item, cidades));
   }
 
-  function Add(item: CommonData) {
+  function Add(item: DataCity) {
     setCidades(addList(item, cidades));
   }
 
@@ -45,32 +45,29 @@ const ListarCidades = () => {
         >
           <ListagemButtonCad
             buttonText='Nova Cidade'
-            modalHeader={''}
+            modalHeader={'Nova Cidade'}
             buttonModal={<>REGISTRAR CIDADE</>}
             api={listCity}
-            errorMessage={''}
-            successMessage={''}
+            errorMessage={'A cidade foi cadastrada com sucesso!'}
+            successMessage={'Falha ao cadastrar a cidade!'}
             tag={'/users'}
             callBack={Add}
           />
         </ListagemHeader>
-        {cidades?.map((item: CommonData) => {
+        {cidades?.map((item: DataCity) => {
           return (
             <ListItem
               noAdd
               api={listCity}
               tag='/users/'
               Edit={Edit}
-              modalEditHeader=''
+              modalEditHeader='Editar Cidade'
               buttonEditModal={<>ATUALIZAR CIDADE</>}
-              errorEditMessage={''}
-              successEditMessage={''}
+              errorEditMessage={'Não foi possível atualizar a cidade!'}
+              successEditMessage={'A cidade foi atualizada com sucesso!'}
               Del={Del}
-              modalDelHeader=''
-              firstTextDel=''
-              secondTextDel=''
-              successDelMessage=''
-              errorDelMessage=''
+              successDelMessage='A cidade foi apagada com sucesso!'
+              errorDelMessage='Não foi possível apagar a cidade!'
               key={item.id}
               {...item}
             />

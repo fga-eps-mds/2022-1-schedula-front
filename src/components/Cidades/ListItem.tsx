@@ -5,13 +5,12 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { VscAdd } from 'react-icons/vsc';
 import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 
-import { CommonData, ListItemProps } from '../services/DataType';
+import { DataCity, ListCityProps } from '../DataType';
 
 import { ListIcon } from './ListIcon';
 
 export const ListItem = ({
   id,
-  description,
   name,
   noAdd,
   api,
@@ -26,22 +25,19 @@ export const ListItem = ({
   successAddMessage,
   buttonAddModal,
   modalAddHeader,
-  firstTextDel,
-  secondTextDel,
-  modalDelHeader,
   errorDelMessage,
   successDelMessage,
   Add,
   Edit,
   Del,
-}: ListItemProps) => {
+}: ListCityProps) => {
   type AddType = {
     AddTag: string;
     errorAdd: string;
     successAdd: string;
     buttonAdd: ReactNode;
     modalAdd: string;
-    BackAdd: (data: CommonData) => void;
+    BackAdd: (data: DataCity) => void;
   };
 
   const AddTp: AddType = {
@@ -53,7 +49,7 @@ export const ListItem = ({
     BackAdd:
       Add !== undefined
         ? Add
-        : (data: CommonData) => {
+        : (data: DataCity) => {
             return data;
           },
   };
@@ -66,17 +62,11 @@ export const ListItem = ({
             <Link href={goTo + '?id=' + id} passHref>
               <Box w='91%'>
                 <Text fontSize='large'>{name}</Text>
-                <Text noOfLines={1} w='85%' maxW={'50em'}>
-                  {description}
-                </Text>
               </Box>
             </Link>
           ) : (
             <Box w='91%'>
               <Text fontSize='large'>{name}</Text>
-              <Text noOfLines={1} w='85%' maxW={'50em'}>
-                {description}
-              </Text>
             </Box>
           )}
           <ListIcon
@@ -107,7 +97,6 @@ export const ListItem = ({
               callBack: Edit,
               id,
               name,
-              description,
             }}
           >
             <BiEditAlt />
@@ -119,11 +108,8 @@ export const ListItem = ({
             successMessage={successDelMessage}
             // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- Its not css.
             delete={{
-              fistText: firstTextDel,
               id,
-              modalHeader: modalDelHeader,
               name,
-              secondText: secondTextDel,
               callBack: Del,
             }}
           >

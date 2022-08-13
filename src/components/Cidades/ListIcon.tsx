@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Box, useDisclosure } from '@chakra-ui/react';
 import { AxiosInstance } from 'axios';
 
-import { CommonData } from '@services/DataType';
+import { DataCity } from '@components/DataType';
 
 import { ModalCadEdit } from './ModalCad&Edit';
 import { ModalDel } from './ModalDel';
@@ -13,24 +13,20 @@ interface ListIconProps {
   edit?: {
     modalHeader: string;
     buttonModal: ReactNode;
-    callBack: (data: CommonData) => void;
+    callBack: (data: DataCity) => void;
     id: number;
     name: string;
-    description: string;
   };
   add?: {
     modalHeader: string;
     buttonModal: ReactNode;
-    callBack: (data: CommonData) => void;
+    callBack: (data: DataCity) => void;
     parentId?: number;
   };
   delete?: {
-    modalHeader: string;
     callBack: (id: number) => void;
     id: number;
     name: string;
-    fistText: string;
-    secondText: string;
   };
   api: AxiosInstance;
   errorMessage: string;
@@ -57,7 +53,7 @@ export const ListIcon = ({ ...prop }: ListIconProps) => {
         <ModalCadEdit
           isOpen={isOpen}
           onClose={onClose}
-          type='cad'
+          type='add'
           {...prop}
           {...prop.add}
         />

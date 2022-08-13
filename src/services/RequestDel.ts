@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-import { RequestDelProps } from './DataType';
+import { RequestDelProps } from '@components/DataType';
 
 export const DelRequest = async ({
   id,
