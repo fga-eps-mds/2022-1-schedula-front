@@ -76,13 +76,11 @@ const ListaTipos = () => {
 
   useEffect(() => {
     listproblemas
-      .get('/problema/?problem_id=' + idCategoria)
+      .get('/problema/?category_id=' + idCategoria)
       .then((res) => {
-        setTipos([res.data.data]); //Na aplicação esses colchetes devem ser retirados.
+        setTipos(res.data.data); //Na aplicação esses colchetes devem ser retirados.
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch()
       .finally(() => {
         setIsLoading(false);
       });
@@ -92,12 +90,9 @@ const ListaTipos = () => {
     listcategory
       .get('/categoria/?category_id=' + idCategoria)
       .then((res) => {
-        console.log(res);
         nameCat(res.data.data[0].name);
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch()
       .finally(() => {
         setIsLoading(false);
       });
