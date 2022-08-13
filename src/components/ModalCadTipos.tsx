@@ -24,12 +24,12 @@ interface Data1 {
   description: string;
   active: boolean;
   updatedAt: Date;
-  category_id: string;
+  category_id: string | string[];
 }
 
 interface ModalCadTiposProps {
   isOpen: boolean;
-  category_id: string;
+  category_id: string | string[];
   onClose: () => void;
   callBack: (novaCategoria: Data1) => void;
 }

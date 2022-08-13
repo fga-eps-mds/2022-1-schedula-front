@@ -35,16 +35,17 @@ type FormProps = {
 };
 
 const ListaTipos = () => {
-  const teste: Data1 = {
-    id: 1,
-    name: 'oi',
-    description: 'oizin',
-    active: true,
-    updatedAt: new Date(),
-  };
-  const [tipos, setTipos] = useState<Data1[]>([teste]);
+  // const teste: Data1 = {
+  //   id: 1,
+  //   name: 'oi',
+  //   description: 'oizin',
+  //   active: true,
+  //   updatedAt: new Date(),
+  // };
+  const [tipos, setTipos] = useState<Data1[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [categoria, nameCat] = useState<Data1[]>([]);
+  // const [categoria, nameCat] = useState<Data1[]>([]);
+  const [categoria, nameCat] = useState<string>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function AddTipo(tipo: Data1) {
@@ -71,10 +72,11 @@ const ListaTipos = () => {
 
   const router = useRouter();
   const idCategoria = router.query.id;
+  const idCategoria2 = router.query.id !== undefined ? router.query.id : '';
 
   useEffect(() => {
     listproblemas
-      .get('/problemas/' + idCategoria)
+      .get('/problema/?problem_id=' + idCategoria)
       .then((res) => {
         setTipos([res.data.data]); //Na aplicação esses colchetes devem ser retirados.
       })
@@ -91,7 +93,7 @@ const ListaTipos = () => {
       .get('/categoria/?category_id=' + idCategoria)
       .then((res) => {
         console.log(res);
-        nameCat(res.data.data);
+        nameCat(res.data.data[0].name);
       })
       .catch((error) => {
         console.log(error);
@@ -133,7 +135,7 @@ const ListaTipos = () => {
                 textAlign='center'
               >
                 {categoria != undefined
-                  ? 'Gerenciar ' + categoria[0].name
+                  ? 'Gerenciar ' + categoria
                   : 'Gerenciar Problema'}
               </Heading>
             </Flex>
@@ -169,7 +171,7 @@ const ListaTipos = () => {
                 callBack={AddTipo}
                 isOpen={isOpen}
                 onClose={onClose}
-                category_id={idCategoria}
+                category_id={idCategoria2}
               />
             </Flex>
           </Box>
@@ -183,6 +185,7 @@ const ListaTipos = () => {
               return (
                 <ItemTipos
                   key={tipo.id}
+                  category_id={idCategoria2}
                   callBackEdit={EditTipo}
                   callBackDel={DelTipo}
                   {...tipo}

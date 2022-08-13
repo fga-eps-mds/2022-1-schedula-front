@@ -24,12 +24,14 @@ type FormProps = {
   name: string;
   description: string;
   active: boolean;
+  category_id: string | string[];
 };
 
 interface ModalEditTiposProps {
   id: number;
   name: string;
   description: string;
+  category_id: string | string[];
   callBackEdit: (novotipo: FormProps) => void;
 }
 
@@ -37,6 +39,7 @@ export const ModalEditTipos = ({
   id,
   name,
   description,
+  category_id,
   callBackEdit,
 }: ModalEditTiposProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -56,8 +59,9 @@ export const ModalEditTipos = ({
   const onEdit: SubmitHandler<FormProps> = async (data) => {
     data.id = id;
     data.active = true;
+    data.category_id = category_id;
     listproblemas
-      .put('/users/' + data.id, data)
+      .put('/problema/' + data.id, data)
       .then(() => {
         toast.success('O problema ' + data.name + ' foi atualizado', {
           position: 'top-left',

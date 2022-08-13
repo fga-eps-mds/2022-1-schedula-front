@@ -25,11 +25,8 @@ export const ModalDelTipos = ({ id, name, callBackDel }: DelTiposProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function DeleteTipos() {
-    const del = {
-      active: false,
-    };
     listproblemas
-      .patch('/users/' + id, del)
+      .delete('/problema/' + id)
       .then(() => {
         toast.success('O problema ' + name + ' foi desativado', {
           position: 'top-left',
@@ -43,7 +40,6 @@ export const ModalDelTipos = ({ id, name, callBackDel }: DelTiposProps) => {
           autoClose: 2000,
         });
       });
-    //Teria + uma api de deleção dos tipos logo abaixo desta.
   }
 
   return (
