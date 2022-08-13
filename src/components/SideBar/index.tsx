@@ -1,54 +1,10 @@
 import { FaRegUser } from 'react-icons/fa';
-import { FiLayout } from 'react-icons/fi';
-import {
-  MdOutlineCallToAction,
-  MdOutlineDashboard,
-  MdOutlineLocationCity,
-  MdOutlineViewAgenda,
-} from 'react-icons/md';
 import { RiLogoutCircleFill } from 'react-icons/ri';
-import { TbTestPipe } from 'react-icons/tb';
 import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react';
 
-import { SideBarItem, SideBarItemAttributes } from './SideBarItem';
+import { routes } from '@routes';
 
-const routes: SideBarItemAttributes[] = [
-  {
-    label: 'Dashboard',
-    pathname: '/dashboard',
-    icon: <MdOutlineDashboard size={28} />,
-  },
-  {
-    label: 'Chamados',
-    pathname: '/chamados',
-    icon: <MdOutlineViewAgenda size={28} />,
-  },
-  {
-    label: 'Registrar Chamado',
-    pathname: '/registrachamado',
-    icon: <MdOutlineCallToAction size={28} />,
-  },
-  {
-    label: 'Tipos De Problemas',
-    pathname: '/listaCategoria',
-    icon: <FiLayout size={28} />,
-  },
-  {
-    label: 'Cidades [admin]',
-    pathname: '/listaCidades',
-    icon: <MdOutlineLocationCity size={28} />,
-  },
-  {
-    label: 'Teste',
-    pathname: '/teste',
-    icon: <TbTestPipe size={28} />,
-  },
-  {
-    label: 'Usuários',
-    pathname: '/usuarios',
-    icon: <FaRegUser size={28} />,
-  },
-];
+import { SideBarItem } from './SidebarItem/SideBarItem';
 
 export const SideBar = () => {
   return (
