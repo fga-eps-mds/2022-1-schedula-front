@@ -7,11 +7,10 @@ import axios from 'axios';
 import { ListagemHeader } from '@components/ListagemHeader';
 
 interface IUser {
-  id: number;
+  id: string;
   name: string;
   email: string;
-  phone: string;
-  website: string;
+  active: boolean;
 }
 
 const Usuarios = () => {
@@ -19,14 +18,23 @@ const Usuarios = () => {
 
   useEffect(() => {
     axios
-      .get('https://jsonplaceholder.typicode.com/users')
+      .get(process.env.NEXT_PUBLIC_BACKEND_URL + '/users')
       .then((usersData) => {
         console.log(usersData.data);
-        setUsers(usersData.data);
+        setUsers(
+          usersData.data.map((user: any) => {
+            return {
+              id: user.username,
+              name: user.name,
+              email: user.email,
+              active: user.active,
+            };
+          })
+        );
       });
   }, []);
 
-  const deleteUser = (id: number) => {
+  const deleteUser = (id: string) => {
     const newUsers = users.filter((user) => user.id !== id);
     setUsers(newUsers);
   };
@@ -35,8 +43,7 @@ const Usuarios = () => {
     <>
       <ListagemHeader
         header='Gerenciar Usuários'
-        underHeader='Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt eaque
-      aspernatur'
+        underHeader='Lista de Usuários'
       >
         <></>
       </ListagemHeader>
@@ -53,7 +60,6 @@ const Usuarios = () => {
                 {user.name}
               </Text>
               <Box marginBottom='14px' color='#A39DAA'>
-                {user.phone}
                 {user.id}
                 <hr></hr>
               </Box>
