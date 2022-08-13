@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { listcategory } from '@services/testApi';
+import { listproblemas } from '@services/testApi';
 
 interface Data1 {
   id: number;
@@ -24,17 +24,20 @@ interface Data1 {
   description: string;
   active: boolean;
   updatedAt: Date;
+  category_id: string;
 }
 
 interface ModalCadTiposProps {
   isOpen: boolean;
-  onClose: any;
+  category_id: string;
+  onClose: () => void;
   callBack: (novaCategoria: Data1) => void;
 }
 
 export const ModalCadTipos = ({
   callBack,
   isOpen,
+  category_id,
   onClose,
 }: ModalCadTiposProps) => {
   const { onOpen } = useDisclosure();
@@ -47,8 +50,9 @@ export const ModalCadTipos = ({
   } = useForm<Data1>();
 
   const onSubmit: SubmitHandler<Data1> = async (data) => {
-    listcategory
-      .post('/users', data)
+    data.category_id = category_id;
+    listproblemas
+      .post('/problema', data)
       .then(() => {
         toast.success('A categoria ' + data.name + ' foi cadastrada', {
           position: 'top-left',

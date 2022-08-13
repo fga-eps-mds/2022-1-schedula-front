@@ -35,9 +35,16 @@ type FormProps = {
 };
 
 const ListaTipos = () => {
-  const [tipos, setTipos] = useState<Data1[]>([]);
+  const teste: Data1 = {
+    id: 1,
+    name: 'oi',
+    description: 'oizin',
+    active: true,
+    updatedAt: new Date(),
+  };
+  const [tipos, setTipos] = useState<Data1[]>([teste]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [categoria, nameCat] = useState<Data1>();
+  const [categoria, nameCat] = useState<Data1[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function AddTipo(tipo: Data1) {
@@ -63,29 +70,36 @@ const ListaTipos = () => {
   }
 
   const router = useRouter();
+  const idCategoria = router.query.id;
+
   useEffect(() => {
     listproblemas
-      .get('/users/' + router.query.id)
+      .get('/problemas/' + idCategoria)
       .then((res) => {
-        setTipos(res.data);
+        setTipos([res.data.data]); //Na aplicação esses colchetes devem ser retirados.
       })
-      .catch()
+      .catch((error) => {
+        console.log(error);
+      })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [router.query.id]);
+  }, [idCategoria]);
 
   useEffect(() => {
     listcategory
-      .get('/users/' + router.query.id)
+      .get('/categoria/?category_id=' + idCategoria)
       .then((res) => {
-        nameCat(res.data);
+        console.log(res);
+        nameCat(res.data.data);
       })
-      .catch()
+      .catch((error) => {
+        console.log(error);
+      })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [router.query.id]);
+  }, [idCategoria]);
 
   return (
     <>
@@ -118,9 +132,8 @@ const ListaTipos = () => {
                 size='lg'
                 textAlign='center'
               >
-                {' '}
                 {categoria != undefined
-                  ? 'Gerenciar ' + categoria.name
+                  ? 'Gerenciar ' + categoria[0].name
                   : 'Gerenciar Problema'}
               </Heading>
             </Flex>
@@ -156,6 +169,7 @@ const ListaTipos = () => {
                 callBack={AddTipo}
                 isOpen={isOpen}
                 onClose={onClose}
+                category_id={idCategoria}
               />
             </Flex>
           </Box>
