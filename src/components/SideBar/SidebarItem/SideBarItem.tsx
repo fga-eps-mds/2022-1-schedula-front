@@ -16,6 +16,12 @@ export interface SideBarItemProps extends Partial<SideBarItemAttributes> {
   children?: ReactElement<{ isActive: boolean }>;
 }
 
+const hoverStyle = {
+  border: '1px solid',
+  borderColor: 'primary',
+  textDecoration: 'none',
+};
+
 export const SideBarItem = ({
   pathname,
   query,
@@ -42,23 +48,25 @@ export const SideBarItem = ({
   return (
     <Link href={href} as={as} shallow={!pathname}>
       <Flex
+        transition='all 0.5s, color 0s'
+        backgroundSize='200% auto'
         alignItems={'center'}
         gap={2}
-        fontSize={18}
         fontWeight={'medium'}
         cursor='pointer'
         px={2}
         py={2.5}
+        borderWidth={1}
+        borderColor='transparent'
         borderRadius={'base'}
-        bg={isActive ? 'primary' : 'inherit'}
+        bgImage={
+          isActive
+            ? 'linear-gradient(to right, #FF8008 0%, #FFA03A 51%, #FF8008 100%)'
+            : 'black'
+        }
         color={isActive ? 'white' : 'inherit'}
         boxShadow={isActive ? 'soft' : 'none'}
-        // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- não irei implementar uma classe que aplica hover
-        _hover={{
-          bg: 'primary',
-          color: 'white',
-          boxShadow: 'soft',
-        }}
+        _hover={hoverStyle}
       >
         {icon} {label}
       </Flex>
