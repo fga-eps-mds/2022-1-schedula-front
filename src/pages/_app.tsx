@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import { ToastContainer } from 'react-toastify';
 import { ChakraProvider } from '@chakra-ui/react';
 import { DefaultLayout } from 'layout/DefaultLayout';
-
-import { testApi } from '@services/testApi';
+import { SWRConfig, SWRConfiguration } from 'swr';
 
 import { ColorTheme } from '../styles/ColorTheme';
 
@@ -15,19 +13,20 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+const swrConfig: SWRConfiguration = {
+  revalidateOnFocus: process.env.NODE_ENV !== 'development',
+  shouldRetryOnError: false,
+};
+
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout =
     Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
 
-  useEffect(() => {
-    testApi.get('/zen').then((res) => {
-      console.log(res.data);
-    });
-  }, []);
-
   return (
     <ChakraProvider resetCSS theme={ColorTheme}>
-      {getLayout(<Component {...pageProps} />)}
+      <SWRConfig value={swrConfig}>
+        {getLayout(<Component {...pageProps} />)}
+      </SWRConfig>
       <ToastContainer />
     </ChakraProvider>
   );

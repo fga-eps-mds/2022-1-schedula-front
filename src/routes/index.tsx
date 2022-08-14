@@ -31,8 +31,8 @@ export const routes: IRoute[] = [
     icon: <MdOutlineCallToAction size={28} />,
   },
   {
-    label: 'Tipos De Problemas',
-    pathname: '/listaCategoria',
+    label: 'Categorias de Problema',
+    pathname: '/categorias',
     icon: <FiLayout size={28} />,
   },
   {
