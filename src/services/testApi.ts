@@ -21,6 +21,6 @@ export const typeApi = axios.create({
 });
 
 export const listproblemas = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:5000',
 });
 // export microservices here...
