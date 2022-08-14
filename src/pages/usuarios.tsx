@@ -13,16 +13,26 @@ interface IUser {
   active: boolean;
 }
 
+interface ResponseUser {
+  email: string;
+  username: string;
+  active: true;
+  acess: string;
+  job_role: string;
+  name: string;
+  password: string;
+  updated_at: string;
+}
+
 const Usuarios = () => {
   const [users, setUsers] = useState<IUser[]>([]);
 
   useEffect(() => {
     axios
-      .get(process.env.NEXT_PUBLIC_BACKEND_URL + '/users')
+      .get(process.env.NEXT_PUBLIC_BACKEND_URL + '/user')
       .then((usersData) => {
-        console.log(usersData.data);
         setUsers(
-          usersData.data.map((user: any) => {
+          usersData.data.data.map((user: ResponseUser) => {
             return {
               id: user.username,
               name: user.name,
