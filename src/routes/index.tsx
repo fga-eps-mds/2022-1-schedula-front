@@ -1,3 +1,4 @@
+import { FaRegUser } from 'react-icons/fa';
 import { FiLayout } from 'react-icons/fi';
 import {
   MdOutlineCallToAction,
@@ -38,6 +39,11 @@ export const routes: IRoute[] = [
     label: 'Cidades [admin]',
     pathname: '/listaCidades',
     icon: <MdOutlineLocationCity size={28} />,
+  },
+  {
+    label: 'Usuários',
+    pathname: '/usuarios',
+    icon: <FaRegUser size={28} />,
   },
   {
     label: 'Teste',
