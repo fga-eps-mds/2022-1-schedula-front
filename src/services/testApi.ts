@@ -20,4 +20,7 @@ export const typeApi = axios.create({
     'https://jsonplaceholder.typicode.com',
 });
 
+export const listproblemas = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:5000',
+});
 // export microservices here...
