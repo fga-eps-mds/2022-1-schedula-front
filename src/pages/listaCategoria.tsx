@@ -10,10 +10,14 @@ import { ListItem } from '@components/CategoriaTipos/ListItem';
 import { CommonData } from '@components/DataType';
 import { ListagemHeader } from '@components/ListagemHeader';
 import { Loading } from '@components/loading';
+import {
+  getProblemCategories,
+  IProblemCategory,
+} from '@services/DetalhadorChamados';
 import { listcategory } from '@services/testApi';
 
 const ListaCategoria = () => {
-  const [categorias, setCategorias] = useState<CommonData[]>([]);
+  const [categorias, setCategorias] = useState<IProblemCategory[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   function Del(item: number) {
@@ -29,15 +33,14 @@ const ListaCategoria = () => {
   }
 
   useEffect(() => {
-    listcategory
-      .get('/categoria/')
-      .then((res) => {
-        setCategorias(res.data.data);
-      })
-      .catch()
-      .finally(() => {
+    const getData = async () => {
+      const recievedData = await getProblemCategories(() => {
         setIsLoading(false);
       });
+      setCategorias(recievedData);
+    };
+
+    getData();
   }, []);
 
   return (
@@ -61,7 +64,7 @@ const ListaCategoria = () => {
           }
         />
       </ListagemHeader>
-      {categorias?.map((item: CommonData) => {
+      {categorias?.map((item: IProblemCategory) => {
         return (
           <ListItem
             api={listcategory}
