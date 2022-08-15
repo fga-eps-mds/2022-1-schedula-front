@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
-import { FaSyncAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import {
   Box,
   Button,
   Flex,
   HStack,
-  IconButton,
-  Tooltip,
+  Skeleton,
+  Tag,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import { AxiosResponse } from 'axios';
@@ -18,8 +18,10 @@ import { ListItem } from '@components/ListItem';
 import { ListItemSkeleton } from '@components/ListItem/LIstItemSkeleton';
 import { Modal } from '@components/Modal/Modal';
 import { PageHeader } from '@components/PageHeader';
+import { RefreshButton } from '@components/RefreshButton';
 import { ApiData, useRequest } from '@hooks/useRequest';
 import { detalhadorApi } from '@services/api';
+import { getProblemCategory } from '@services/DetalhadorChamados';
 import {
   createProblemType,
   deleteProblemType,
@@ -32,6 +34,12 @@ const ListaProblemas = () => {
   const router = useRouter();
 
   const category_id = Number(router.query?.id);
+
+  const { data: categoria, isLoading: isLoadingCategory } =
+    useRequest<IProblemCategory>(
+      category_id ? getProblemCategory(category_id)() : null,
+      detalhadorApi
+    );
 
   const {
     data: problemas,
@@ -126,23 +134,24 @@ const ListaProblemas = () => {
 
   return (
     <>
-      <PageHeader title='Gerenciar Tipos de Problema'>
-        <HStack spacing={2}>
-          <Tooltip
-            label='Atualizar Dados'
-            placement='top'
-            bg='yellow'
-            color='black'
-            openDelay={250}
+      <PageHeader
+        title='Gerenciar Tipos de Problema'
+        subtitle={
+          <Skeleton
+            h='16px'
+            isLoaded={Boolean(!isLoadingCategory && category_id)}
           >
-            <IconButton
-              icon={<FaSyncAlt />}
-              aria-label='Atualizar Dados'
-              variant='outline'
-              // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- ignore
-              onClick={() => mutate()}
-            />
-          </Tooltip>
+            <Text color='GrayText'>
+              Da Categoria{' '}
+              <Tag colorScheme='yellow' fontWeight='semibold' fontSize='1rem'>
+                {categoria?.data?.name}
+              </Tag>
+            </Text>
+          </Skeleton>
+        }
+      >
+        <HStack spacing={2}>
+          <RefreshButton refresh={mutate} />
           <Button onClick={onOpen}>Novo Tipo de Problema</Button>
         </HStack>
       </PageHeader>
