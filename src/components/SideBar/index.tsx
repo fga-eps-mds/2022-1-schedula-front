@@ -11,10 +11,11 @@ export const SideBar = () => {
     <Flex
       gap={2}
       flexDirection={'column'}
-      width={225}
-      height={'95vh'}
+      width={230}
+      height='100%'
+      maxHeight={'90vh'}
       position={'sticky'}
-      top={5}
+      top={16}
     >
       <Heading margin='0 auto' textAlign='center' fontWeight={'medium'}>
         Schedula

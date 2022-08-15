@@ -1,23 +1,14 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { BiEditAlt } from 'react-icons/bi';
-import { toast } from 'react-toastify';
 import {
   Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
-
-import { listproblemas } from '@services/testApi';
 
 type FormProps = {
   id: number;
@@ -56,28 +47,28 @@ export const ModalEditTipos = ({
     },
   });
 
-  const onEdit: SubmitHandler<FormProps> = async (data) => {
-    data.id = id;
-    data.active = true;
-    data.category_id = category_id;
-    listproblemas
-      .put('/problema/' + data.id, data)
-      .then(() => {
-        toast.success('O problema ' + data.name + ' foi atualizado', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
-        callBackEdit(data);
-      })
-      .catch(() => {
-        toast.warning('Falha ao atualizar problema!', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
-      });
-    reset();
-    onClose();
-  };
+  //   const onEdit: SubmitHandler<FormProps> = async (data) => {
+  //     data.id = id;
+  //     data.active = true;
+  //     data.category_id = category_id;
+  //     listproblemas
+  //       .put('/problema/' + data.id, data)
+  //       .then(() => {
+  //         toast.success('O problema ' + data.name + ' foi atualizado', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //         callBackEdit(data);
+  //       })
+  //       .catch(() => {
+  //         toast.warning('Falha ao atualizar problema!', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //       });
+  //     reset();
+  //     onClose();
+  //   };
 
   return (
     <>
@@ -100,7 +91,7 @@ export const ModalEditTipos = ({
           </ModalHeader>
 
           <ModalBody>
-            <form onSubmit={handleSubmit(onEdit)}>
+            {/* <form onSubmit={handleSubmit(onEdit)}>
               <Box w={'50%'} m={'0 auto'}>
                 <FormControl isRequired>
                   <FormLabel>Nome</FormLabel>
@@ -148,7 +139,7 @@ export const ModalEditTipos = ({
                   <Text fontSize={'smaller'}>ATUALIZAR PROBLEMA</Text>
                 </Button>
               </ModalFooter>
-            </form>
+            </form> */}
           </ModalBody>
         </ModalContent>
       </Modal>

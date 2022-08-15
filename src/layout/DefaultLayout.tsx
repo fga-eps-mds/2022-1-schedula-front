@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Box, Grid } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 
 import { SideBar } from '@components/SideBar';
 
@@ -9,19 +9,19 @@ interface DefaultLayoutProps {
 
 export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
-    <>
+    <Flex as='main' minHeight='100vh'>
       <Grid
-        minHeight={'100vh'}
+        width='100%'
+        maxWidth='1440px'
+        margin='0 auto'
         templateColumns='auto minmax(0, 1fr)'
-        gap={4}
+        gap={12}
         px='12'
-        py='4'
+        py='16'
       >
-        <Box>
-          <SideBar />
-        </Box>
-        <Box>{children}</Box>
+        <SideBar />
+        <Flex flexDirection='column'>{children}</Flex>
       </Grid>
-    </>
+    </Flex>
   );
 };

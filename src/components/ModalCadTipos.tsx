@@ -1,22 +1,13 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
 import {
   Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
-
-import { listproblemas } from '@services/testApi';
 
 interface Data1 {
   id: number;
@@ -49,25 +40,25 @@ export const ModalCadTipos = ({
     formState: {},
   } = useForm<Data1>();
 
-  const onSubmit: SubmitHandler<Data1> = async (data) => {
-    data.category_id = category_id;
-    listproblemas
-      .post('/problema', data)
-      .then(() => {
-        toast.success('A categoria ' + data.name + ' foi cadastrada', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
-        callBack(data);
-        reset();
-      })
-      .catch(() => {
-        toast.warning('Falha ao criar categoria', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
-      });
-  };
+  //   const onSubmit: SubmitHandler<Data1> = async (data) => {
+  //     data.category_id = category_id;
+  //     listproblemas
+  //       .post('/problema', data)
+  //       .then(() => {
+  //         toast.success('A categoria ' + data.name + ' foi cadastrada', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //         callBack(data);
+  //         reset();
+  //       })
+  //       .catch(() => {
+  //         toast.warning('Falha ao criar categoria', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //       });
+  //   };
 
   return (
     <>
@@ -80,7 +71,7 @@ export const ModalCadTipos = ({
             </ModalHeader>
 
             <ModalBody>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              {/* <form onSubmit={handleSubmit(onSubmit)}>
                 <Box w={'50%'} m={'0 auto'}>
                   <FormControl isRequired>
                     <FormLabel>Nome</FormLabel>
@@ -130,7 +121,7 @@ export const ModalCadTipos = ({
                     </Text>
                   </Button>
                 </ModalFooter>
-              </form>
+              </form> */}
             </ModalBody>
           </ModalContent>
         </Modal>

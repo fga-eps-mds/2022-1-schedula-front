@@ -1,5 +1,4 @@
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { toast } from 'react-toastify';
 import {
   Box,
   Button,
@@ -13,8 +12,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { listproblemas } from '@services/testApi';
-
 interface DelTiposProps {
   id: number;
   name: string;
@@ -24,23 +21,23 @@ interface DelTiposProps {
 export const ModalDelTipos = ({ id, name, callBackDel }: DelTiposProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  function DeleteTipos() {
-    listproblemas
-      .delete('/problema/' + id)
-      .then(() => {
-        toast.success('O problema ' + name + ' foi desativado', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
-        callBackDel(id);
-      })
-      .catch(() => {
-        toast.warning('Falha ao desativar problema!', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
-      });
-  }
+  //   function DeleteTipos() {
+  //     listproblemas
+  //       .delete('/problema/' + id)
+  //       .then(() => {
+  //         toast.success('O problema ' + name + ' foi desativado', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //         callBackDel(id);
+  //       })
+  //       .catch(() => {
+  //         toast.warning('Falha ao desativar problema!', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //       });
+  //   }
 
   return (
     <>
@@ -91,7 +88,7 @@ export const ModalDelTipos = ({ id, name, callBackDel }: DelTiposProps) => {
                 <Button
                   colorScheme='red'
                   bg={'#DE4040'}
-                  onClick={DeleteTipos}
+                  //   onClick={DeleteTipos}
                   ml={5}
                   fontSize={'18px'}
                   borderRadius={'50px'}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import {
   Box,
@@ -12,7 +12,6 @@ import {
 
 import { ItemTipos } from '@components/ItemTipos';
 import { ModalCadTipos } from '@components/ModalCadTipos';
-import { listcategory, listproblemas } from '@services/testApi';
 
 export interface Data1 {
   id: number;
@@ -74,29 +73,29 @@ const ListaTipos = () => {
   const idCategoria = router.query.id;
   const idCategoria2 = router.query.id !== undefined ? router.query.id : '';
 
-  useEffect(() => {
-    listproblemas
-      .get('/problema/?category_id=' + idCategoria)
-      .then((res) => {
-        setTipos(res.data.data); //Na aplicação esses colchetes devem ser retirados.
-      })
-      .catch()
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [idCategoria]);
+  //   useEffect(() => {
+  //     listproblemas
+  //       .get('/problema/?category_id=' + idCategoria)
+  //       .then((res) => {
+  //         setTipos(res.data.data); //Na aplicação esses colchetes devem ser retirados.
+  //       })
+  //       .catch()
+  //       .finally(() => {
+  //         setIsLoading(false);
+  //       });
+  //   }, [idCategoria]);
 
-  useEffect(() => {
-    listcategory
-      .get('/categoria/?category_id=' + idCategoria)
-      .then((res) => {
-        nameCat(res.data.data[0].name);
-      })
-      .catch()
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [idCategoria]);
+  //   useEffect(() => {
+  //     listcategory
+  //       .get('/categoria/?category_id=' + idCategoria)
+  //       .then((res) => {
+  //         nameCat(res.data.data[0].name);
+  //       })
+  //       .catch()
+  //       .finally(() => {
+  //         setIsLoading(false);
+  //       });
+  //   }, [idCategoria]);
 
   return (
     <>

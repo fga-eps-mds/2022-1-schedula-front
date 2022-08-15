@@ -1,13 +1,7 @@
 import React from 'react';
 
-import Cadastro from './cadastro';
-
 const Home: NextPageWithLayout = () => {
-  return (
-    <>
-      <Cadastro></Cadastro>
-    </>
-  );
+  return <></>;
 };
 
 Home.getLayout = (page) => {
