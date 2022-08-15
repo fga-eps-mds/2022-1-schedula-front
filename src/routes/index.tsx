@@ -34,7 +34,7 @@ export const routes: IRoute[] = [
   //     icon: <MdOutlineLocationCity size={28} />,
   //   },
   {
-    label: 'Usuarios',
+    label: 'Usuários',
     pathname: '/usuarios',
     icon: <FaUsersCog size={28} />,
   },

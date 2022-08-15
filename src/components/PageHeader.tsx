@@ -8,14 +8,7 @@ interface PageHeaderProps {
 
 export const PageHeader = ({ title, subtitle, children }: PageHeaderProps) => {
   return (
-    <Flex
-      justifyContent='space-between'
-      marginBottom={8}
-      //   position='sticky'
-      //   top={16}
-      //   zIndex={10}
-      //   backdropFilter={'blur(12px)'}
-    >
+    <Flex justifyContent='space-between' marginBottom={8}>
       <Box>
         <Heading>{title}</Heading>
         {subtitle && <Text>{subtitle}</Text>}

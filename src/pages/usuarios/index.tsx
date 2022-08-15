@@ -54,7 +54,7 @@ const Usuarios = () => {
       const response = await request(deleteUser(username), usuariosApi);
 
       if (response.type === 'success') {
-        toast.success('Usuario removido com sucesso!');
+        toast.success('Usuário removido com sucesso!');
 
         const newUsers = users?.data.filter(
           (user) => user.username !== username
@@ -74,7 +74,7 @@ const Usuarios = () => {
         return;
       }
 
-      toast.error('Erro ao deletar Usuario!');
+      toast.error('Erro ao deletar Usuário!');
     },
     [users?.data, mutate]
   );
@@ -97,7 +97,7 @@ const Usuarios = () => {
       );
 
       if (response.type === 'success') {
-        toast.success('Usuario criado com sucesso!');
+        toast.success('Usuário criado com sucesso!');
 
         const newUsers = users?.data.filter(
           (user) => user.username !== userToEdit?.username
@@ -129,8 +129,8 @@ const Usuarios = () => {
 
   return (
     <>
-      <PageHeader title='Gerenciar Usuarios'>
-        <Button onClick={onOpen}>Novo Usuarios</Button>
+      <PageHeader title='Gerenciar Usuários'>
+        <Button onClick={onOpen}>Novo Usuário</Button>
       </PageHeader>
 
       {isLoading ? (
@@ -161,7 +161,7 @@ const Usuarios = () => {
       )}
 
       <Modal
-        title={userToEdit ? 'Editar Usuario' : 'Novo Usuario'}
+        title={userToEdit ? 'Editar Usuário' : 'Novo Usuário'}
         isOpen={isOpen}
         onClose={handleClose}
         size='2xl'

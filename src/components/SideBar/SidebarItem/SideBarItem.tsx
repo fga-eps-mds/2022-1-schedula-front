@@ -20,6 +20,7 @@ const hoverStyle = {
   border: '1px solid',
   borderColor: 'primary',
   textDecoration: 'none',
+  backgroundPosition: 'right center',
 };
 
 export const SideBarItem = ({
@@ -62,7 +63,7 @@ export const SideBarItem = ({
         bgImage={
           isActive
             ? 'linear-gradient(to right, #FF8008 0%, #FFA03A 51%, #FF8008 100%)'
-            : 'black'
+            : 'transparent'
         }
         color={isActive ? 'white' : 'inherit'}
         boxShadow={isActive ? 'soft' : 'none'}

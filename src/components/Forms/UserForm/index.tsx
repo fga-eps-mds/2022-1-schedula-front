@@ -47,10 +47,10 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
             </Box>
 
             <Box w='100%'>
-              <FormLabel htmlFor='username'>Nome de Usuario</FormLabel>
+              <FormLabel htmlFor='username'>Nome de Usuário</FormLabel>
               <Input
                 {...register('username', { required: 'Campo obrigatório' })}
-                placeholder='Nome de Usuario'
+                placeholder='Nome de Usuário'
                 variant='flushed'
               />
               {errors?.username && (
