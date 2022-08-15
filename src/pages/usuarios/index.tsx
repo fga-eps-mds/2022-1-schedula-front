@@ -9,13 +9,13 @@ import { ListItemSkeleton } from '@components/ListItem/LIstItemSkeleton';
 import { Modal } from '@components/Modal/Modal';
 import { PageHeader } from '@components/PageHeader';
 import { ApiData, useRequest } from '@hooks/useRequest';
+import { usuariosApi } from '@services/api';
 import { request } from '@services/request';
 import {
   createUser,
   deleteUser,
   getUsers,
   updateUser,
-  usuariosApi,
 } from '@services/Usuarios';
 
 const RoleBadge = (role: Accesses) => {

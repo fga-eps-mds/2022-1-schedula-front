@@ -1,11 +1,5 @@
 import { createRequestConfig } from '@services/request';
 
-import { api } from '../api';
-
-export const detalhadorApi = api;
-detalhadorApi.defaults.baseURL =
-  process.env.NEXT_PUBLIC_DETALHADOR_CHAMADOS_URL;
-
 export const getProblemCategories = createRequestConfig({
   url: '/categoria',
   method: 'get',

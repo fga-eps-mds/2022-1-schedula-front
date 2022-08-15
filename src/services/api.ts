@@ -1,11 +1,15 @@
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-const api = axios.create({
-  //   withCredentials: true,
+const usuariosApi = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_GESTOR_DE_USUARIOS_URL,
 });
 
-const errorResponseHandler = (error: any) => {
+const detalhadorApi = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_DETALHADOR_CHAMADOS_URL,
+});
+
+export const errorResponseHandler = (error: any) => {
   if (error?.response) {
     if (typeof error?.response?.data === 'string') {
       return Promise.reject(new Error(error.response.data));
@@ -37,6 +41,15 @@ const errorResponseHandler = (error: any) => {
 };
 
 // api.defaults.withCredentials = true;
-api.interceptors.response.use((response) => response, errorResponseHandler);
 
-export { api };
+usuariosApi.interceptors.response.use(
+  (response) => response,
+  errorResponseHandler
+);
+
+detalhadorApi.interceptors.response.use(
+  (response) => response,
+  errorResponseHandler
+);
+
+export { detalhadorApi, usuariosApi };

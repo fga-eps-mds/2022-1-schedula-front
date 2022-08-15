@@ -10,7 +10,7 @@ import { ListItemSkeleton } from '@components/ListItem/LIstItemSkeleton';
 import { Modal } from '@components/Modal/Modal';
 import { PageHeader } from '@components/PageHeader';
 import { ApiData, useRequest } from '@hooks/useRequest';
-import { detalhadorApi } from '@services/DetalhadorChamados';
+import { detalhadorApi } from '@services/api';
 import {
   createProblemType,
   deleteProblemType,
