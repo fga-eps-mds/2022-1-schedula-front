@@ -18,6 +18,7 @@ import {
   PopoverHeader,
   PopoverTrigger,
   Text,
+  Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
 
@@ -85,20 +86,36 @@ export const Actions: React.FC<ActionsProps> = ({
   return (
     <HStack spacing={4}>
       {onAdd && (
-        <IconButton
-          aria-label='Add'
-          onClick={onAdd}
-          icon={<MdLibraryAdd cursor='pointer' size={24} />}
-          variant='solid'
-        />
+        <Tooltip
+          label='Tipos de Problema'
+          placement='top'
+          bg='blackAlpha.100'
+          color='black'
+          openDelay={250}
+        >
+          <IconButton
+            aria-label='Add'
+            onClick={onAdd}
+            icon={<MdLibraryAdd cursor='pointer' size={24} />}
+            variant='solid'
+          />
+        </Tooltip>
       )}
 
-      <IconButton
-        aria-label='Edit'
-        onClick={onEdit}
-        icon={<BiEditAlt cursor='pointer' size={24} />}
-        variant='solid'
-      />
+      <Tooltip
+        label={`Editar ${itemName}`}
+        placement='top'
+        bg='whiteAlpha.200'
+        color='black'
+        openDelay={250}
+      >
+        <IconButton
+          aria-label='Edit'
+          onClick={onEdit}
+          icon={<BiEditAlt cursor='pointer' size={24} />}
+          variant='solid'
+        />
+      </Tooltip>
 
       <Popover
         isOpen={isOpen}
@@ -106,15 +123,25 @@ export const Actions: React.FC<ActionsProps> = ({
         onClose={onClose}
         placement='auto'
       >
-        <PopoverTrigger>
-          <IconButton
-            aria-label='Delete'
-            icon={<FaTrash />}
-            color='red.600'
-            variant='solid'
-            isLoading={isLoading}
-          />
-        </PopoverTrigger>
+        <Tooltip
+          label={`Apagar ${itemName}`}
+          placement='top'
+          bg='red.300'
+          color='black'
+          openDelay={250}
+        >
+          <Box>
+            <PopoverTrigger>
+              <IconButton
+                aria-label='Delete'
+                icon={<FaTrash />}
+                color='red.600'
+                variant='solid'
+                isLoading={isLoading}
+              />
+            </PopoverTrigger>
+          </Box>
+        </Tooltip>
         <PopoverContent>
           <PopoverArrow />
           <PopoverCloseButton />

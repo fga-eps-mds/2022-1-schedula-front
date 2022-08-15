@@ -6,7 +6,7 @@ export const getUsers = createRequestConfig({
 });
 
 export const createUser = createRequestConfig<CreateUserPayload>({
-  url: '/user/',
+  url: '/user',
   method: 'post',
 });
 
