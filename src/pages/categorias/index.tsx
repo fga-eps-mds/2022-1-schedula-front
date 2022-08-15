@@ -67,7 +67,7 @@ const ListaCategoria = () => {
   );
 
   const handleAddProblem = useCallback(
-    (id: string) => () => {
+    (id: number) => () => {
       router.push(`/categorias/${id}/problemas`);
     },
     [router]
@@ -135,7 +135,7 @@ const ListaCategoria = () => {
                 itemName={item?.name}
                 onEdit={handleEdit(item)}
                 onDelete={handleDelete(item.id)}
-                onAdd={handleAddProblem(item?.name)}
+                onAdd={handleAddProblem(item?.id)}
               />
             </ListItem>
           ))}

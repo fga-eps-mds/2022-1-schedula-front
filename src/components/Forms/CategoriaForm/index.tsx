@@ -11,7 +11,9 @@ import {
 
 interface CategoriaFormProps {
   defaultValues?: IProblemCategory | undefined;
-  onSubmit: (data: IProblemCategoryPayload) => void;
+  onSubmit:
+    | ((data: IProblemCategoryPayload) => void)
+    | ((data: ProblemTypePayload) => void);
 }
 
 export const CategoriaForm = ({
@@ -59,7 +61,7 @@ export const CategoriaForm = ({
       </FormControl>
 
       <Button type='submit' width='100%' isLoading={isSubmitting}>
-        Registrar Categoria
+        Registrar
       </Button>
     </form>
   );
