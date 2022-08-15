@@ -1,17 +1,11 @@
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
-import {
-  Badge,
-  Button,
-  Flex,
-  HStack,
-  Spinner,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Badge, Button, Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import { AxiosResponse } from 'axios';
 
 import { UserForm } from '@components/Forms/UserForm';
 import { ListItem } from '@components/ListItem';
+import { ListItemSkeleton } from '@components/ListItem/LIstItemSkeleton';
 import { Modal } from '@components/Modal/Modal';
 import { PageHeader } from '@components/PageHeader';
 import { ApiData, useRequest } from '@hooks/useRequest';
@@ -140,7 +134,7 @@ const Usuarios = () => {
       </PageHeader>
 
       {isLoading ? (
-        <Spinner />
+        <ListItemSkeleton />
       ) : (
         <Flex flexDirection='column' gap={8}>
           {users?.data?.map?.((item, key) => (

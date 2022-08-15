@@ -12,9 +12,10 @@ export const SideBar = () => {
       gap={2}
       flexDirection={'column'}
       width={230}
-      height={'92vh'}
+      height='100%'
+      maxHeight={'90vh'}
       position={'sticky'}
-      top={8}
+      top={16}
     >
       <Heading margin='0 auto' textAlign='center' fontWeight={'medium'}>
         Schedula

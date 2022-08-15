@@ -112,9 +112,10 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
                 {...register('acess', {
                   required: 'Campo obrigatório',
                 })}
+                defaultValue=''
                 variant='flushed'
               >
-                <option disabled selected value=''>
+                <option disabled value=''>
                   Escolha um Acesso
                 </option>
                 <option value='basic'>Basico</option>

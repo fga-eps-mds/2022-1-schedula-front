@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { BiEditAlt } from 'react-icons/bi';
 import { FaTrash } from 'react-icons/fa';
 import { MdLibraryAdd } from 'react-icons/md';
@@ -28,7 +28,7 @@ type ListItemProps = {
   children?: React.ReactNode;
 };
 
-const Divider = {
+export const Divider = {
   content: "''",
   position: 'absolute',
   bottom: 0,
@@ -63,7 +63,7 @@ export const ListItem = ({ title, description, children }: ListItemProps) => {
 interface ActionsProps {
   itemName: string;
   onEdit: () => void;
-  onDelete: () => void;
+  onDelete: () => Promise<void>;
   onAdd?: () => void;
 }
 
@@ -74,9 +74,11 @@ export const Actions: React.FC<ActionsProps> = ({
   onAdd,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = useCallback(() => {
-    onDelete?.();
+    setIsLoading(true);
+    onDelete?.()?.then(() => setIsLoading(false));
     onClose?.();
   }, [onClose, onDelete]);
 
@@ -110,6 +112,7 @@ export const Actions: React.FC<ActionsProps> = ({
             icon={<FaTrash />}
             color='red.600'
             variant='solid'
+            isLoading={isLoading}
           />
         </PopoverTrigger>
         <PopoverContent>

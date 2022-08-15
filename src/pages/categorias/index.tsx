@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { Button, Flex, Spinner, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, useDisclosure } from '@chakra-ui/react';
 import { AxiosResponse } from 'axios';
 
 import { CategoriaForm } from '@components/Forms/CategoriaForm';
 import { ListItem } from '@components/ListItem';
+import { ListItemSkeleton } from '@components/ListItem/LIstItemSkeleton';
 import { Modal } from '@components/Modal/Modal';
 import { PageHeader } from '@components/PageHeader';
 import { ApiData, useRequest } from '@hooks/useRequest';
@@ -122,7 +123,7 @@ const ListaCategoria = () => {
       </PageHeader>
 
       {isLoading ? (
-        <Spinner />
+        <ListItemSkeleton />
       ) : (
         <Flex flexDirection='column' gap={8}>
           {categorias?.data?.map?.((item, key) => (

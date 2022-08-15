@@ -9,21 +9,19 @@ interface DefaultLayoutProps {
 
 export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
-    <main>
+    <Flex as='main' minHeight='100vh'>
       <Grid
+        width='100%'
         maxWidth='1440px'
         margin='0 auto'
-        minHeight={'100vh'}
         templateColumns='auto minmax(0, 1fr)'
         gap={12}
         px='12'
-        py='8'
+        py='16'
       >
         <SideBar />
-        <Flex flexDirection='column' paddingBottom={12}>
-          {children}
-        </Flex>
+        <Flex flexDirection='column'>{children}</Flex>
       </Grid>
-    </main>
+    </Flex>
   );
 };
