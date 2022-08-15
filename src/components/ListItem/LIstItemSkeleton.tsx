@@ -1,24 +1,26 @@
 import { Flex, HStack, Skeleton, VStack } from '@chakra-ui/react';
 
-import { Divider } from '@components/ListItem';
-
 export const ListItemSkeleton = () => {
   return (
-    <VStack spacing={8}>
-      {Array.from({ length: 5 }, (_, key) => (
+    <VStack spacing={6}>
+      {Array.from({ length: 4 }, (_, key) => (
         <Flex
-          w='100%'
-          position='relative'
-          justifyContent='space-between'
-          _after={Divider}
-          pb={2}
           key={key}
+          w='100%'
+          justifyContent='space-between'
+          alignItems='center'
+          pb={2}
+          bg='white'
+          borderRadius='md'
+          padding={4}
+          boxShadow='md'
+          height='84px'
         >
           <VStack spacing={2} alignItems='start'>
-            <Skeleton height='18px' w={175} />
-            <Skeleton height='12px' w={280} />
+            <Skeleton height='24px' w={175} />
+            <Skeleton height='16px' w={280} />
           </VStack>
-          <HStack spacing={4}>
+          <HStack spacing={4} alignSelf='end'>
             <Skeleton height='40px' width='40px' alignSelf='end' />
             <Skeleton height='40px' width='40px' alignSelf='end' />
             <Skeleton height='40px' width='40px' alignSelf='end' />

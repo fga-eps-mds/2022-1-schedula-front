@@ -1,16 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
-import { FaSyncAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  IconButton,
-  Tooltip,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import { AxiosResponse } from 'axios';
 
 import { CategoriaForm } from '@components/Forms/CategoriaForm';
@@ -18,6 +9,7 @@ import { ListItem } from '@components/ListItem';
 import { ListItemSkeleton } from '@components/ListItem/LIstItemSkeleton';
 import { Modal } from '@components/Modal/Modal';
 import { PageHeader } from '@components/PageHeader';
+import { RefreshButton } from '@components/RefreshButton';
 import { ApiData, useRequest } from '@hooks/useRequest';
 import { detalhadorApi } from '@services/api';
 import {
@@ -130,21 +122,7 @@ const ListaCategoria = () => {
     <>
       <PageHeader title='Categorias de Problemas'>
         <HStack spacing={2}>
-          <Tooltip
-            label='Atualizar Dados'
-            placement='top'
-            bg='yellow'
-            color='black'
-            openDelay={250}
-          >
-            <IconButton
-              icon={<FaSyncAlt />}
-              aria-label='Atualizar Dados'
-              variant='outline'
-              // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- ignore
-              onClick={() => mutate()}
-            />
-          </Tooltip>
+          <RefreshButton refresh={mutate} />
           <Button onClick={onOpen}>Nova Categoria</Button>
         </HStack>
       </PageHeader>
@@ -152,7 +130,7 @@ const ListaCategoria = () => {
       {isLoading ? (
         <ListItemSkeleton />
       ) : (
-        <Flex flexDirection='column' gap={8}>
+        <Flex flexDirection='column' gap={6}>
           {categorias?.data?.map?.((item, key) => (
             <ListItem
               title={item?.name}

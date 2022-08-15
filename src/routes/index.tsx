@@ -1,41 +1,42 @@
+import { IconType } from 'react-icons';
 import { FaUsersCog } from 'react-icons/fa';
 import { FiLayout } from 'react-icons/fi';
 
 export interface IRoute {
   label: string;
   pathname: string;
-  icon?: JSX.Element;
+  icon?: IconType;
 }
 
 export const routes: IRoute[] = [
   //   {
   //     label: 'Dashboard',
   //     pathname: '/dashboard',
-  //     icon: <MdOutlineDashboard size={28} />,
+  //     icon: MdOutlineDashboard,
   //   },
   //   {
   //     label: 'Chamados',
   //     pathname: '/chamados',
-  //     icon: <MdOutlineViewAgenda size={28} />,
+  //     icon: MdOutlineViewAgenda,
   //   },
   //   {
   //     label: 'Registrar Chamado',
   //     pathname: '/registrachamado',
-  //     icon: <MdOutlineCallToAction size={28} />,
+  //     icon: MdOutlineCallToAction,
   //   },
   {
     label: 'Categorias de Problema',
     pathname: '/categorias',
-    icon: <FiLayout size={28} />,
+    icon: FiLayout,
   },
   //   {
   //     label: 'Cidades',
   //     pathname: '/listaCidades',
-  //     icon: <MdOutlineLocationCity size={28} />,
+  //     icon: MdOutlineLocationCity,
   //   },
   {
     label: 'Usuários',
     pathname: '/usuarios',
-    icon: <FaUsersCog size={28} />,
+    icon: FaUsersCog,
   },
 ];

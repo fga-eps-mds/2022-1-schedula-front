@@ -32,32 +32,34 @@ type ListItemProps = {
 export const Divider = {
   content: "''",
   position: 'absolute',
-  bottom: 0,
-  width: '40%',
+  bottom: '0',
+  width: '300px',
   height: '1px',
   backgroundColor: '#e6e6e6',
 };
 
 export const ListItem = ({ title, description, children }: ListItemProps) => {
   return (
-    <>
-      <Flex
-        w='100%'
-        justifyContent='space-between'
-        align='center'
-        position='relative'
-        _after={Divider}
-      >
-        <Box>
-          <Text fontWeight='semibold' mb={1}>
-            {title}
-          </Text>
-          <Text color='GrayText'>{description}</Text>
-        </Box>
+    <Flex
+      w='100%'
+      justifyContent='space-between'
+      alignItems='center'
+      position='relative'
+      //   _after={Divider}
+      bg='white'
+      borderRadius='md'
+      padding={4}
+      boxShadow='md'
+    >
+      <Box>
+        <Text fontWeight='medium' mb={1} position='relative' _before={Divider}>
+          {title}
+        </Text>
+        <Text color='GrayText'>{description}</Text>
+      </Box>
 
-        <Box alignSelf='end'>{children}</Box>
-      </Flex>
-    </>
+      <Box alignSelf='end'>{children}</Box>
+    </Flex>
   );
 };
 
@@ -89,9 +91,10 @@ export const Actions: React.FC<ActionsProps> = ({
         <Tooltip
           label='Tipos de Problema'
           placement='top'
-          bg='blackAlpha.100'
+          bg='gray.100'
           color='black'
           openDelay={250}
+          hasArrow
         >
           <IconButton
             aria-label='Add'
@@ -105,9 +108,10 @@ export const Actions: React.FC<ActionsProps> = ({
       <Tooltip
         label={`Editar ${itemName}`}
         placement='top'
-        bg='whiteAlpha.200'
+        bg='gray.100'
         color='black'
         openDelay={250}
+        hasArrow
       >
         <IconButton
           aria-label='Edit'
@@ -126,16 +130,17 @@ export const Actions: React.FC<ActionsProps> = ({
         <Tooltip
           label={`Apagar ${itemName}`}
           placement='top'
-          bg='red.300'
-          color='black'
+          bg='red.500'
+          color='white'
           openDelay={250}
+          hasArrow
         >
           <Box>
             <PopoverTrigger>
               <IconButton
                 aria-label='Delete'
                 icon={<FaTrash />}
-                color='red.600'
+                color='red.500'
                 variant='solid'
                 isLoading={isLoading}
               />
@@ -146,7 +151,9 @@ export const Actions: React.FC<ActionsProps> = ({
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverHeader>
-            <Heading size='md'>Apagar {itemName}</Heading>
+            <Heading size='md' fontWeight='light'>
+              Apagar &apos;{itemName}&apos;
+            </Heading>
           </PopoverHeader>
           <PopoverBody>
             Você realmente deseja excluir <strong>{itemName}</strong>?

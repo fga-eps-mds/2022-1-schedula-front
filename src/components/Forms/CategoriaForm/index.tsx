@@ -24,12 +24,11 @@ export const CategoriaForm = ({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<IProblemCategoryPayload>({
+  } = useForm<ProblemTypePayload>({
     defaultValues,
   });
 
   return (
-    // @ts-ignore
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={Object.keys(errors).length > 0} mb={8}>
         <Stack spacing={8}>

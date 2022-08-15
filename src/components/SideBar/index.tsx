@@ -1,6 +1,6 @@
 import { FaRegUser } from 'react-icons/fa';
 import { RiLogoutCircleFill } from 'react-icons/ri';
-import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 
 import { routes } from '@routes';
 
@@ -9,25 +9,26 @@ import { SideBarItem } from './SidebarItem/SideBarItem';
 export const SideBar = () => {
   return (
     <Flex
+      flexDirection='column'
       gap={2}
-      flexDirection={'column'}
-      width={230}
+      width={'fit-content'}
       height='100%'
-      maxHeight={'90vh'}
-      position={'sticky'}
+      maxHeight='calc(100vh - 8rem)' // 4rem padding 2x
+      position='sticky'
       top={16}
     >
-      <Heading margin='0 auto' textAlign='center' fontWeight={'medium'}>
+      <Heading margin='0 auto' textAlign='center' fontWeight='hairline'>
         Schedula
       </Heading>
       <Divider />
-      <Flex flexDirection={'column'} gap={3}>
+
+      <VStack spacing={4} align='stretch'>
         {routes.map((route) => (
           <SideBarItem key={route.label} {...route} />
         ))}
-      </Flex>
+      </VStack>
 
-      <Box marginTop={'auto'}>
+      <Box marginTop='auto'>
         <Divider marginBottom={2} />
         <Flex gap={2} justifyContent={'space-between'} alignItems={'center'}>
           <FaRegUser size={25} />

@@ -1,10 +1,11 @@
 import type { AppProps } from 'next/app';
+import NextNprogress from 'nextjs-progressbar';
 import { Slide, ToastContainer } from 'react-toastify';
 import { ChakraProvider } from '@chakra-ui/react';
 import { DefaultLayout } from 'layout/DefaultLayout';
 import { SWRConfig, SWRConfiguration } from 'swr';
 
-import { ColorTheme } from '../styles/ColorTheme';
+import { ColorTheme } from '../styles/Theme';
 
 import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,6 +26,17 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <ChakraProvider resetCSS theme={ColorTheme}>
       <SWRConfig value={swrConfig}>
+        <NextNprogress
+          color='linear-gradient(
+            to right,
+                #fdd017,
+                #FF8520,
+                #EB6A00,
+                #e84049
+                )'
+          startPosition={0.4}
+          height={3}
+        />
         {getLayout(<Component {...pageProps} />)}
       </SWRConfig>
       <ToastContainer

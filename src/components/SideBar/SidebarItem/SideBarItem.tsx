@@ -3,7 +3,7 @@ import { Url } from 'url';
 import React, { ReactElement, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Flex } from '@chakra-ui/react';
+import { HStack, Icon, Text } from '@chakra-ui/react';
 import { IRoute } from 'routes';
 
 export interface SideBarItemAttributes extends IRoute {
@@ -48,18 +48,17 @@ export const SideBarItem = ({
 
   return (
     <Link href={href} as={as} shallow={!pathname}>
-      <Flex
+      <HStack
         transition='all 0.5s, color 0s'
         backgroundSize='200% auto'
-        alignItems={'center'}
-        gap={2}
-        fontWeight={'medium'}
+        alignItems='center'
+        gap={1}
         cursor='pointer'
-        px={2}
+        px={3}
         py={2.5}
         borderWidth={1}
-        borderColor='transparent'
-        borderRadius={'base'}
+        borderColor='gray.200'
+        borderRadius='base'
         bgImage={
           isActive
             ? 'linear-gradient(to right, #FF8008 0%, #FFA03A 51%, #FF8008 100%)'
@@ -69,8 +68,9 @@ export const SideBarItem = ({
         boxShadow={isActive ? 'soft' : 'none'}
         _hover={hoverStyle}
       >
-        {icon} {label}
-      </Flex>
+        <Icon as={icon} boxSize='1.5em' />
+        <Text fontWeight={'medium'}>{label}</Text>
+      </HStack>
     </Link>
   );
 };
