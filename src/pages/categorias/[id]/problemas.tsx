@@ -140,12 +140,14 @@ const ListaProblemas = () => {
       )}
 
       <Modal
-        title='Novo Tipo de Problema'
+        title={
+          problemToEdit ? 'Editar Tipo de Problema' : 'Novo Tipo de Problema'
+        }
         isOpen={isOpen}
         onClose={handleClose}
       >
         <ProblemTypeForm
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop
+          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- ignore
           defaultValues={{ ...problemToEdit, category_id } as ProblemType}
           onSubmit={onSubmit}
         />

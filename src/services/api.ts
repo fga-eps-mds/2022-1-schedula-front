@@ -11,6 +11,10 @@ const errorResponseHandler = (error: any) => {
       return Promise.reject(new Error(error.response.data));
     }
 
+    if (typeof error?.response?.data?.message === 'string') {
+      return Promise.reject(new Error(error.response.data.message));
+    }
+
     return Promise.reject(
       new Error('Something went wrong', {
         cause: error.response,

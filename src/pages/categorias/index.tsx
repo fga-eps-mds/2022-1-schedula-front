@@ -143,7 +143,7 @@ const ListaCategoria = () => {
       )}
 
       <Modal
-        title='Nova Categoria de Problema'
+        title={categoriaToEdit ? 'Editar Categoria' : 'Nova Categoria'}
         isOpen={isOpen}
         onClose={handleClose}
       >

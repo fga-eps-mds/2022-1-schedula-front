@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   HStack,
   IconButton,
   Popover,
@@ -21,8 +22,8 @@ import {
 } from '@chakra-ui/react';
 
 type ListItemProps = {
-  title: string;
-  description: string;
+  title: string | JSX.Element;
+  description: string | JSX.Element;
   Actions?: typeof Actions;
   children?: React.ReactNode;
 };
@@ -83,15 +84,17 @@ export const Actions: React.FC<ActionsProps> = ({
     <HStack spacing={4}>
       {onAdd && (
         <IconButton
-          aria-label='Delete'
-          icon={<MdLibraryAdd onClick={onAdd} cursor='pointer' size={24} />}
+          aria-label='Add'
+          onClick={onAdd}
+          icon={<MdLibraryAdd cursor='pointer' size={24} />}
           variant='solid'
         />
       )}
 
       <IconButton
-        aria-label='Delete'
-        icon={<BiEditAlt onClick={onEdit} cursor='pointer' size={24} />}
+        aria-label='Edit'
+        onClick={onEdit}
+        icon={<BiEditAlt cursor='pointer' size={24} />}
         variant='solid'
       />
 
@@ -112,7 +115,9 @@ export const Actions: React.FC<ActionsProps> = ({
         <PopoverContent>
           <PopoverArrow />
           <PopoverCloseButton />
-          <PopoverHeader>Você tem certeza?</PopoverHeader>
+          <PopoverHeader>
+            <Heading size='md'>Apagar {itemName}</Heading>
+          </PopoverHeader>
           <PopoverBody>
             Você realmente deseja excluir <strong>{itemName}</strong>?
           </PopoverBody>

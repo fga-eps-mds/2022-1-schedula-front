@@ -1,12 +1,5 @@
-import { FaRegUser } from 'react-icons/fa';
+import { FaUsersCog } from 'react-icons/fa';
 import { FiLayout } from 'react-icons/fi';
-import {
-  MdOutlineCallToAction,
-  MdOutlineDashboard,
-  MdOutlineLocationCity,
-  MdOutlineViewAgenda,
-} from 'react-icons/md';
-import { TbTestPipe } from 'react-icons/tb';
 
 export interface IRoute {
   label: string;
@@ -15,39 +8,34 @@ export interface IRoute {
 }
 
 export const routes: IRoute[] = [
-  {
-    label: 'Dashboard',
-    pathname: '/dashboard',
-    icon: <MdOutlineDashboard size={28} />,
-  },
-  {
-    label: 'Chamados',
-    pathname: '/chamados',
-    icon: <MdOutlineViewAgenda size={28} />,
-  },
-  {
-    label: 'Registrar Chamado',
-    pathname: '/registrachamado',
-    icon: <MdOutlineCallToAction size={28} />,
-  },
+  //   {
+  //     label: 'Dashboard',
+  //     pathname: '/dashboard',
+  //     icon: <MdOutlineDashboard size={28} />,
+  //   },
+  //   {
+  //     label: 'Chamados',
+  //     pathname: '/chamados',
+  //     icon: <MdOutlineViewAgenda size={28} />,
+  //   },
+  //   {
+  //     label: 'Registrar Chamado',
+  //     pathname: '/registrachamado',
+  //     icon: <MdOutlineCallToAction size={28} />,
+  //   },
   {
     label: 'Categorias de Problema',
     pathname: '/categorias',
     icon: <FiLayout size={28} />,
   },
+  //   {
+  //     label: 'Cidades',
+  //     pathname: '/listaCidades',
+  //     icon: <MdOutlineLocationCity size={28} />,
+  //   },
   {
-    label: 'Cidades [admin]',
-    pathname: '/listaCidades',
-    icon: <MdOutlineLocationCity size={28} />,
-  },
-  {
-    label: 'Usuários',
+    label: 'Usuarios',
     pathname: '/usuarios',
-    icon: <FaRegUser size={28} />,
-  },
-  {
-    label: 'Teste',
-    pathname: '/teste',
-    icon: <TbTestPipe size={28} />,
+    icon: <FaUsersCog size={28} />,
   },
 ];
