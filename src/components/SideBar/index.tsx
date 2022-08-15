@@ -9,12 +9,12 @@ import { SideBarItem } from './SidebarItem/SideBarItem';
 export const SideBar = () => {
   return (
     <Flex
+      flexDirection='column'
       gap={2}
-      flexDirection={'column'}
       width={230}
       height='100%'
-      maxHeight={'90vh'}
-      position={'sticky'}
+      maxHeight='calc(100vh - 8rem)' // 4rem padding 2x
+      position='sticky'
       top={16}
     >
       <Heading margin='0 auto' textAlign='center' fontWeight={'medium'}>

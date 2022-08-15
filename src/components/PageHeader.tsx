@@ -1,8 +1,8 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 
 interface PageHeaderProps {
   title: string;
-  subtitle?: string;
+  subtitle?: string | JSX.Element;
   children?: React.ReactNode;
 }
 
@@ -11,7 +11,7 @@ export const PageHeader = ({ title, subtitle, children }: PageHeaderProps) => {
     <Flex justifyContent='space-between' marginBottom={8}>
       <Box>
         <Heading>{title}</Heading>
-        {subtitle && <Text>{subtitle}</Text>}
+        {subtitle}
       </Box>
 
       <Box>{children}</Box>

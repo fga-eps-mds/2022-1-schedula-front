@@ -5,6 +5,12 @@ export const getProblemCategories = createRequestConfig({
   method: 'get',
 });
 
+export const getProblemCategory = (id: number) =>
+  createRequestConfig({
+    url: `/categoria?category_id=${id}`,
+    method: 'get',
+  });
+
 export const createProblemCategory =
   createRequestConfig<IProblemCategoryPayload>({
     url: '/categoria',

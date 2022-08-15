@@ -14,7 +14,8 @@ export const ColorTheme = extendTheme({
       body: {
         color: '#333',
         fontFamily: 'Overpass, sans-serif',
-        background: 'linear-gradient(135deg, #FFFFFF 20%, #F0F0F0 100%);',
+        background: 'linear-gradient(135deg, #FFFFFF 20%, #F0F0F0 100%)',
+        backgroundAttachment: 'fixed',
       },
     },
   },

@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { FaSyncAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import {
   Badge,
@@ -7,8 +6,6 @@ import {
   Button,
   Flex,
   HStack,
-  IconButton,
-  Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
 import { AxiosResponse } from 'axios';
@@ -18,6 +15,7 @@ import { ListItem } from '@components/ListItem';
 import { ListItemSkeleton } from '@components/ListItem/LIstItemSkeleton';
 import { Modal } from '@components/Modal/Modal';
 import { PageHeader } from '@components/PageHeader';
+import { RefreshButton } from '@components/RefreshButton';
 import { ApiData, useRequest } from '@hooks/useRequest';
 import { usuariosApi } from '@services/api';
 import { request } from '@services/request';
@@ -142,21 +140,7 @@ const Usuarios = () => {
     <>
       <PageHeader title='Gerenciar Usuários'>
         <HStack spacing={2}>
-          <Tooltip
-            label='Atualizar Dados'
-            placement='top'
-            bg='yellow'
-            color='black'
-            openDelay={250}
-          >
-            <IconButton
-              icon={<FaSyncAlt />}
-              aria-label='Atualizar Dados'
-              variant='outline'
-              // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- ignore
-              onClick={() => mutate()}
-            />
-          </Tooltip>
+          <RefreshButton refresh={mutate} />
           <Button onClick={onOpen}>Novo Usuário</Button>
         </HStack>
       </PageHeader>
