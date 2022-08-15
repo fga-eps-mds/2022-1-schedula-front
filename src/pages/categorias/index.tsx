@@ -1,7 +1,16 @@
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
+import { FaSyncAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { Button, Flex, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  IconButton,
+  Tooltip,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { AxiosResponse } from 'axios';
 
 import { CategoriaForm } from '@components/Forms/CategoriaForm';
@@ -25,6 +34,7 @@ const ListaCategoria = () => {
   const {
     data: categorias,
     isLoading,
+    isValidating,
     mutate,
   } = useRequest<IProblemCategory[]>(getProblemCategories(), detalhadorApi, {});
 
@@ -119,7 +129,24 @@ const ListaCategoria = () => {
   return (
     <>
       <PageHeader title='Categorias de Problemas'>
-        <Button onClick={onOpen}>Nova Categoria</Button>
+        <HStack spacing={2}>
+          <Tooltip
+            label='Atualizar Dados'
+            placement='top'
+            bg='yellow'
+            color='black'
+            openDelay={250}
+          >
+            <IconButton
+              icon={<FaSyncAlt />}
+              aria-label='Atualizar Dados'
+              variant='outline'
+              // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- ignore
+              onClick={() => mutate()}
+            />
+          </Tooltip>
+          <Button onClick={onOpen}>Nova Categoria</Button>
+        </HStack>
       </PageHeader>
 
       {isLoading ? (
@@ -141,6 +168,12 @@ const ListaCategoria = () => {
             </ListItem>
           ))}
         </Flex>
+      )}
+
+      {categorias && isValidating && (
+        <Box mt={8}>
+          <ListItemSkeleton />
+        </Box>
       )}
 
       <Modal

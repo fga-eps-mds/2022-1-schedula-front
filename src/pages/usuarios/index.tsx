@@ -1,6 +1,16 @@
 import { useCallback, useState } from 'react';
+import { FaSyncAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { Badge, Button, Flex, HStack, useDisclosure } from '@chakra-ui/react';
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  HStack,
+  IconButton,
+  Tooltip,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { AxiosResponse } from 'axios';
 
 import { UserForm } from '@components/Forms/UserForm';
@@ -42,6 +52,7 @@ const Usuarios = () => {
   const {
     data: users,
     isLoading,
+    isValidating,
     mutate,
   } = useRequest<User[]>(getUsers(), usuariosApi);
 
@@ -130,7 +141,24 @@ const Usuarios = () => {
   return (
     <>
       <PageHeader title='Gerenciar Usuários'>
-        <Button onClick={onOpen}>Novo Usuário</Button>
+        <HStack spacing={2}>
+          <Tooltip
+            label='Atualizar Dados'
+            placement='top'
+            bg='yellow'
+            color='black'
+            openDelay={250}
+          >
+            <IconButton
+              icon={<FaSyncAlt />}
+              aria-label='Atualizar Dados'
+              variant='outline'
+              // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- ignore
+              onClick={() => mutate()}
+            />
+          </Tooltip>
+          <Button onClick={onOpen}>Novo Usuário</Button>
+        </HStack>
       </PageHeader>
 
       {isLoading ? (
@@ -158,6 +186,12 @@ const Usuarios = () => {
             </ListItem>
           ))}
         </Flex>
+      )}
+
+      {users && isValidating && (
+        <Box mt={8}>
+          <ListItemSkeleton />
+        </Box>
       )}
 
       <Modal
