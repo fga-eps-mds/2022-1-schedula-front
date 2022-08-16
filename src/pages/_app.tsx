@@ -1,42 +1,37 @@
-import { ReactElement, ReactNode, useEffect } from 'react';
-import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import { ToastContainer } from 'react-toastify';
+import { Slide, ToastContainer } from 'react-toastify';
 import { ChakraProvider } from '@chakra-ui/react';
-
-import { testApi } from '@services/testApi';
+import { DefaultLayout } from 'layout/DefaultLayout';
+import { SWRConfig, SWRConfiguration } from 'swr';
 
 import { ColorTheme } from '../styles/ColorTheme';
 
 import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-//setando layout default
-type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode;
-  auth?: boolean;
-};
-
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-function MyApp({
-  Component,
-  pageProps,
-}: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? ((page) => page);
+const swrConfig: SWRConfiguration = {
+  revalidateOnFocus: process.env.NODE_ENV !== 'development',
+  shouldRetryOnError: false,
+};
 
-  useEffect(() => {
-    testApi.get('/zen').then((res) => {
-      console.log(res.data);
-    });
-  }, []);
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout =
+    Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
 
   return (
     <ChakraProvider resetCSS theme={ColorTheme}>
-      {getLayout(<Component {...pageProps} />)}
-      <ToastContainer />
+      <SWRConfig value={swrConfig}>
+        {getLayout(<Component {...pageProps} />)}
+      </SWRConfig>
+      <ToastContainer
+        position='bottom-right'
+        hideProgressBar
+        transition={Slide}
+      />
     </ChakraProvider>
   );
 }

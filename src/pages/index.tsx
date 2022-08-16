@@ -1,14 +1,11 @@
 import React from 'react';
-import type { NextPage } from 'next';
 
-import Cadastro from './cadastroUsuarios';
+const Home: NextPageWithLayout = () => {
+  return <></>;
+};
 
-const Home: NextPage = () => {
-  return (
-    <>
-      <Cadastro></Cadastro>
-    </>
-  );
+Home.getLayout = (page) => {
+  return page;
 };
 
 export default Home;

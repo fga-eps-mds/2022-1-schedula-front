@@ -64,11 +64,10 @@ jobs:
       - name: 🧰 Install dependencies
         run: yarn install
 
-      - name: 🧹 Run lint
+      - name: 🧪 Run tests
         run: yarn test
 
   sonarcloud:
-    needs: test
     name: SonarCloud
     runs-on: ubuntu-latest
     steps:
@@ -89,6 +88,9 @@ jobs:
 
       - name: 🧰 Install dependencies
         run: yarn install
+
+      - name: 📜 Eslint report
+        run: npx eslint -f json -o reports/eslint-report.json src
 
       - name: 🧪 Test and coverage
         run: yarn test

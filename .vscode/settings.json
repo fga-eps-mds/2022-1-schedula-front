@@ -1,7 +1,29 @@
 {
+  "eslint.packageManager": "yarn",
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
+    "source.fixAll.format": true,
     "source.fixAll.eslint": true
   },
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.linkedEditing": true,
+
+  "explorer.compactFolders": false,
+
+  // ESLint
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // Prettier settings
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "es5",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.printWidth": 80,
+  "prettier.useEditorConfig": false,
+
+  // Typescript
+  "typescript.preferences.importModuleSpecifier": "non-relative"
 }

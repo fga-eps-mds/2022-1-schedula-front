@@ -1,22 +1,13 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
 import {
   Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
-
-import { listcategory } from '@services/testApi';
 
 interface Data1 {
   id: number;
@@ -24,16 +15,23 @@ interface Data1 {
   description: string;
   active: boolean;
   updatedAt: Date;
+  category_id: string | string[];
 }
 
-interface ModalCadCategoryProps {
+interface ModalCadTiposProps {
+  isOpen: boolean;
+  category_id: string | string[];
+  onClose: () => void;
   callBack: (novaCategoria: Data1) => void;
 }
 
-export const ModalCadCategory = ({
+export const ModalCadTipos = ({
   callBack,
-}: ModalCadCategoryProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  isOpen,
+  category_id,
+  onClose,
+}: ModalCadTiposProps) => {
+  const { onOpen } = useDisclosure();
 
   const {
     handleSubmit,
@@ -42,68 +40,38 @@ export const ModalCadCategory = ({
     formState: {},
   } = useForm<Data1>();
 
-  const onSubmit: SubmitHandler<Data1> = async (data) => {
-    listcategory
-      .post('/users', data)
-      .then(() => {
-        toast.success(
-          'A categoria ' + data.name + ' foi cadastrada',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
-        callBack(data);
-        reset();
-      })
-      .catch(() => {
-        toast.warning('Falha ao criar categoria', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
-      });
-  };
+  //   const onSubmit: SubmitHandler<Data1> = async (data) => {
+  //     data.category_id = category_id;
+  //     listproblemas
+  //       .post('/problema', data)
+  //       .then(() => {
+  //         toast.success('A categoria ' + data.name + ' foi cadastrada', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //         callBack(data);
+  //         reset();
+  //       })
+  //       .catch(() => {
+  //         toast.warning('Falha ao criar categoria', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //       });
+  //   };
 
   return (
     <>
-      <Box fontFamily={'Overpass ,sans-serif'}>
-        <Button
-          bg={'primary'}
-          color={'white'}
-          margin={'0 auto'}
-          boxShadow={'dark-lg'}
-          marginTop={'1em'}
-          borderRadius={'90px'}
-          h={'2em'}
-          onClick={onOpen}
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- its necessary since _hover NEEDS a css style object
-          _hover={{
-            color: 'white',
-            bg: 'primary',
-            boxShadow: 'xl',
-          }}
-        >
-          <Text mt='0.25em' noOfLines={1}>
-            NOVA CATEGORIA DE PROBLEMA
-          </Text>
-        </Button>
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-          size={'xl'}
-        >
+      <Box onClick={onOpen}>
+        <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader
-              textAlign={'center'}
-              fontSize={'3xl'}
-              fontFamily={'Overpass ,sans-serif'}
-            >
-              Nova Categoria de Problema
+            <ModalHeader textAlign={'center'} fontSize={'3xl'}>
+              Novo tipo de problema
             </ModalHeader>
 
-            <ModalBody fontFamily={'Overpass ,sans-serif'}>
-              <form onSubmit={handleSubmit(onSubmit)}>
+            <ModalBody>
+              {/* <form onSubmit={handleSubmit(onSubmit)}>
                 <Box w={'50%'} m={'0 auto'}>
                   <FormControl isRequired>
                     <FormLabel>Nome</FormLabel>
@@ -126,10 +94,7 @@ export const ModalCadCategory = ({
                   </FormControl>
                 </Box>
 
-                <ModalFooter
-                  justifyContent={'center'}
-                  mt={'60px'}
-                >
+                <ModalFooter justifyContent={'center'} mt={'60px'}>
                   <Button
                     variant={'solid'}
                     bg='InfoBackground'
@@ -152,11 +117,11 @@ export const ModalCadCategory = ({
                     boxShadow={'dark-lg'}
                   >
                     <Text fontSize={'smaller'}>
-                      REGISTRAR CATEGORIA DE<p></p> PROBLEMA
+                      REGISTRAR TIPO DE<p></p> PROBLEMA
                     </Text>
                   </Button>
                 </ModalFooter>
-              </form>
+              </form> */}
             </ModalBody>
           </ModalContent>
         </Modal>

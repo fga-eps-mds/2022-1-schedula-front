@@ -1,93 +1,27 @@
 import { ReactNode } from 'react';
-import { FiLayout } from 'react-icons/fi';
-import {
-  MdMonitor,
-  MdOutlineCallToAction,
-  MdOutlineDashboard,
-  MdOutlineViewAgenda,
-} from 'react-icons/md';
-import {
-  Box,
-  Flex,
-  Heading,
-  Stack,
-} from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 
-import { DashboardOptions } from '../components/DashboardOptions';
+import { SideBar } from '@components/SideBar';
 
 interface DefaultLayoutProps {
   children: ReactNode;
-  Active: string;
 }
 
-const DefaultLayout = ({
-  children,
-  Active,
-}: DefaultLayoutProps) => {
+export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
-    <>
-      <Flex fontFamily='Overpass ,sans-serif'>
-        <Box padding={55}>
-          <Flex
-            align='center'
-            justify='center'
-            borderBottom='1px solid'
-            width='340px'
-            height='60px'
-            borderColor='#777777'>
-            <Heading
-              width={210}
-              height={51}
-              margin='0 auto'
-              textAlign='center'>
-              <Box
-                fontFamily='Overpass ,sans-serif'
-                color='black'>
-                Schedula
-              </Box>
-            </Heading>
-          </Flex>
-
-          <Stack
-            spacing={7}
-            direction='column'
-            align='left'
-            w={360}
-            marginTop={10}>
-            <DashboardOptions
-              isActive={Active == 'dashboard'}
-              title='Dashboard'
-              icon={<MdOutlineDashboard />}
-            />
-
-            <DashboardOptions
-              isActive={Active == 'chamados'}
-              title='Chamados'
-              icon={<MdOutlineViewAgenda />}
-            />
-            <DashboardOptions
-              isActive={Active == 'registrarChamados'}
-              title='Registrar Chamados'
-              icon={<MdOutlineCallToAction />}
-            />
-            <DashboardOptions
-              isActive={Active == 'gerenciarTiposDeChamado'}
-              title='Tipos  de Chamados'
-              icon={<FiLayout />}
-            />
-            <DashboardOptions
-              isActive={Active == 'tutoriais'}
-              title='Tutoriais'
-              icon={<MdMonitor />}
-            />
-          </Stack>
-        </Box>
-
-        <Box w='100%'>{children}</Box>
-      </Flex>
-    </>
+    <Flex as='main' minHeight='100vh'>
+      <Grid
+        width='100%'
+        maxWidth='1440px'
+        margin='0 auto'
+        templateColumns='auto minmax(0, 1fr)'
+        gap={12}
+        px='12'
+        py='16'
+      >
+        <SideBar />
+        <Flex flexDirection='column'>{children}</Flex>
+      </Grid>
+    </Flex>
   );
 };
-
-// eslint-disable-next-line import/no-default-export
-export default DefaultLayout;

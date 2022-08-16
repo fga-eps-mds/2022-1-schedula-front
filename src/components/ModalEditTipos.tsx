@@ -1,44 +1,38 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { BiEditAlt } from 'react-icons/bi';
-import { toast } from 'react-toastify';
 import {
   Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
-
-import { listcategory } from '@services/testApi';
 
 type FormProps = {
   id: number;
   name: string;
   description: string;
   active: boolean;
+  category_id: string | string[];
 };
 
-interface ModalEditCategoryProps {
+interface ModalEditTiposProps {
   id: number;
   name: string;
   description: string;
-  callBackEdit: (novaCategoria: FormProps) => void;
+  category_id: string | string[];
+  callBackEdit: (novotipo: FormProps) => void;
 }
 
-export const ModalEditCategory = ({
+export const ModalEditTipos = ({
   id,
   name,
   description,
+  category_id,
   callBackEdit,
-}: ModalEditCategoryProps) => {
+}: ModalEditTiposProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
@@ -53,30 +47,28 @@ export const ModalEditCategory = ({
     },
   });
 
-  const onEdit: SubmitHandler<FormProps> = async (data) => {
-    data.id = id;
-    data.active = true;
-    listcategory
-      .put('/users/' + data.id, data)
-      .then(() => {
-        toast.success(
-          'A categoria ' + data.name + ' foi atualizada',
-          {
-            position: 'top-left',
-            autoClose: 2000,
-          }
-        );
-        callBackEdit(data);
-      })
-      .catch(() => {
-        toast.warning('Falha ao atualizar categoria!', {
-          position: 'top-left',
-          autoClose: 2000,
-        });
-      });
-    reset();
-    onClose();
-  };
+  //   const onEdit: SubmitHandler<FormProps> = async (data) => {
+  //     data.id = id;
+  //     data.active = true;
+  //     data.category_id = category_id;
+  //     listproblemas
+  //       .put('/problema/' + data.id, data)
+  //       .then(() => {
+  //         toast.success('O problema ' + data.name + ' foi atualizado', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //         callBackEdit(data);
+  //       })
+  //       .catch(() => {
+  //         toast.warning('Falha ao atualizar problema!', {
+  //           position: 'top-left',
+  //           autoClose: 2000,
+  //         });
+  //       });
+  //     reset();
+  //     onClose();
+  //   };
 
   return (
     <>
@@ -94,16 +86,12 @@ export const ModalEditCategory = ({
       <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader
-            textAlign={'center'}
-            fontSize={'3xl'}
-            fontFamily={'Overpass ,sans-serif'}
-          >
-            Editar Categoria de Problema
+          <ModalHeader textAlign={'center'} fontSize={'3xl'}>
+            Editar Problema
           </ModalHeader>
 
-          <ModalBody fontFamily={'Overpass ,sans-serif'}>
-            <form onSubmit={handleSubmit(onEdit)}>
+          <ModalBody>
+            {/* <form onSubmit={handleSubmit(onEdit)}>
               <Box w={'50%'} m={'0 auto'}>
                 <FormControl isRequired>
                   <FormLabel>Nome</FormLabel>
@@ -126,10 +114,7 @@ export const ModalEditCategory = ({
                 </FormControl>
               </Box>
 
-              <ModalFooter
-                justifyContent={'center'}
-                mt={'60px'}
-              >
+              <ModalFooter justifyContent={'center'} mt={'60px'}>
                 <Button
                   variant={'solid'}
                   bg='InfoBackground'
@@ -151,12 +136,10 @@ export const ModalEditCategory = ({
                   borderRadius={'50px'}
                   boxShadow={'dark-lg'}
                 >
-                  <Text fontSize={'smaller'}>
-                    ATUALIZAR CATEGORIA DE<p></p> PROBLEMA
-                  </Text>
+                  <Text fontSize={'smaller'}>ATUALIZAR PROBLEMA</Text>
                 </Button>
               </ModalFooter>
-            </form>
+            </form> */}
           </ModalBody>
         </ModalContent>
       </Modal>
