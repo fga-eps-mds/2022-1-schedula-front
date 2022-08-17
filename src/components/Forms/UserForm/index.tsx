@@ -61,11 +61,7 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
 
           <Box>
             <FormLabel htmlFor='email'>E-mail</FormLabel>
-            <Input
-              {...register('email', { required: 'Campo obrigatório' })}
-              placeholder='Descrição'
-              variant='flushed'
-            />
+            <Input placeholder='Descrição' variant='flushed' />
             {errors?.email && (
               <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
             )}
