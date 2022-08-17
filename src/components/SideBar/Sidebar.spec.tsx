@@ -27,9 +27,9 @@ describe('SideBar', () => {
     const { getByText } = render(<SideBar />);
 
     routes.forEach((route) => {
-      expect(getByText(route.label).firstElementChild?.tagName).toBe(
-        'svg' || 'img'
-      );
+      expect(
+        getByText(route.label).parentNode?.firstElementChild?.tagName
+      ).toBe('svg' || 'img');
     });
   });
 });
