@@ -70,6 +70,7 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -90,7 +91,7 @@ jobs:
         run: yarn install
 
       - name: 📜 Eslint report
-        run: npx eslint -f json -o reports/eslint-report.json src
+        run: npx eslint -f json -o reports/eslint-report.json src || true
 
       - name: 🧪 Test and coverage
         run: yarn test

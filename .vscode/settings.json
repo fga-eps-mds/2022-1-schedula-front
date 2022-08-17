@@ -18,11 +18,7 @@
   ],
 
   // Prettier settings
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "es5",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.printWidth": 80,
-  "prettier.useEditorConfig": false,
 
   // Typescript
   "typescript.preferences.importModuleSpecifier": "non-relative"
