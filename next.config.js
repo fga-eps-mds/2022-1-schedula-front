@@ -1,4 +1,4 @@
-const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
+const { PHASE_DEVELOPMENT_SERVER, PHASE_TEST } = require('next/constants');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = (phase, { defaultConfig }) => ({
@@ -6,7 +6,8 @@ const nextConfig = (phase, { defaultConfig }) => ({
   reactStrictMode: false,
   swcMinify: true,
   compiler: {
-    ...(phase !== PHASE_DEVELOPMENT_SERVER && { removeConsole: true }),
+    ...(phase !== PHASE_DEVELOPMENT_SERVER &&
+      phase !== PHASE_TEST && { removeConsole: true }),
   },
   async redirects() {
     return [

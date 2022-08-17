@@ -151,7 +151,7 @@ const Usuarios = () => {
         <Flex flexDirection='column' gap={6}>
           {users?.data?.map?.((item, key) => (
             <ListItem
-              title={`${item?.name} [${item?.username}]`}
+              title={1}
               description={
                 <HStack spacing={2} mt={2.5}>
                   <Badge colorScheme='gray' variant='outline'>
