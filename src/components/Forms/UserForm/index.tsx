@@ -17,6 +17,7 @@ interface UserFormProps {
 }
 
 export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
+  let isUpdating = false;
   const {
     register,
     handleSubmit,
@@ -28,6 +29,10 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
       password: '',
     },
   });
+
+  if (defaultValues !== undefined) {
+    isUpdating = true;
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -61,7 +66,11 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
 
           <Box>
             <FormLabel htmlFor='email'>E-mail</FormLabel>
-            <Input placeholder='Descrição' variant='flushed' />
+            <Input
+              {...register('email')}
+              placeholder='Descrição'
+              variant='flushed'
+            />
             {errors?.email && (
               <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
             )}
@@ -72,7 +81,10 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
               <FormLabel htmlFor='password'>Senha</FormLabel>
               <Input
                 type='password'
-                {...register('password', { required: 'Campo obrigatório' })}
+                {...register(
+                  'password',
+                  isUpdating ? {} : { required: 'Campo obrigatório' }
+                )}
                 placeholder='Senha'
                 variant='flushed'
               />
@@ -85,11 +97,19 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
               <FormLabel htmlFor='confirmPassword'>Confirmar Senha</FormLabel>
               <Input
                 type='password'
-                {...register('confirmPassword', {
-                  required: 'Campo obrigatório',
-                  validate: (value) =>
-                    value === watch('password') || 'Senhas não conferem',
-                })}
+                {...register(
+                  'confirmPassword',
+                  isUpdating
+                    ? {
+                        validate: (value) =>
+                          value === watch('password') || 'Senhas não conferem',
+                      }
+                    : {
+                        required: 'Campo obrigatório',
+                        validate: (value) =>
+                          value === watch('password') || 'Senhas não conferem',
+                      }
+                )}
                 placeholder='Confirmar Senha'
                 variant='flushed'
               />
