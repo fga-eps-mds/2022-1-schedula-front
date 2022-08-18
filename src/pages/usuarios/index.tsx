@@ -106,19 +106,28 @@ const Usuarios = () => {
       )
 
       if (response.type === "success") {
-        toast.success("Usuário criado com sucesso!")
-
-        const newUsers = users?.data.filter(
-          (user) => user.username !== userToEdit?.username
+        toast.success(
+          `Usuário ${userToEdit ? "editado" : "criado"} com sucesso!`
         )
 
-        mutate({
-          data: {
-            error: null,
-            message: "",
-            data: [...(newUsers || []), response.value.data]
-          }
-        } as AxiosResponse<ApiData<User[]>>)
+        const newUsers = userToEdit
+          ? users?.data.map((user) =>
+              user.username === userToEdit?.username
+                ? response.value.data
+                : user
+            )
+          : [...(users?.data || []), response.value.data]
+
+        mutate(
+          {
+            data: {
+              error: null,
+              message: "",
+              data: newUsers
+            }
+          } as AxiosResponse<ApiData<User[]>>,
+          { revalidate: false }
+        )
 
         setUserToEdit(undefined)
         onClose()
@@ -173,7 +182,7 @@ const Usuarios = () => {
       )}
 
       {users && isValidating && (
-        <Box mt={8}>
+        <Box mt={6}>
           <ListItemSkeleton />
         </Box>
       )}
