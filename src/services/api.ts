@@ -9,6 +9,8 @@ const detalhadorApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_DETALHADOR_CHAMADOS_URL
 })
 
+//Adicionar a PUBLIC API das Cidades.
+
 export const errorResponseHandler = (error: any) => {
   if (error?.response) {
     if (typeof error?.response?.data === "string") {
