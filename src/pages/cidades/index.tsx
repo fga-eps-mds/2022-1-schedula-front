@@ -1,24 +1,20 @@
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
-import { AxiosResponse } from "axios"
-import { mutate } from "swr"
 
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
-import { ApiData } from "@hooks/useRequest"
+import { useRequest } from "@hooks/useRequest"
+import { detalhadorApi } from "@services/api"
+import { getProblemCategories } from "@services/DetalhadorChamados"
 
 const ListaCidades = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  mutate(
-    {
-      data: {
-        error: null,
-        message: "",
-        data: newCategorias
-      }
-    } as AxiosResponse<ApiData<IProblemCategory[]>>,
-    { revalidate: false }
-  )
+  const {
+    data: cidades,
+    isLoading,
+    isValidating,
+    mutate
+  } = useRequest<IProblemCategory[]>(getProblemCategories(), detalhadorApi, {})
 
   return (
     <PageHeader title="Cidades Cadastradas">
