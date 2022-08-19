@@ -1,27 +1,27 @@
 import { createRequestConfig } from "@services/request"
 
 export const getCities = createRequestConfig({
-  url: "/cidades",
+  url: "/city",
   method: "get"
 })
 
 export const getCity = (id: number) => ({
-  url: `/categoria?category_id=${id}`,
+  url: `/city?city_id=${id}`,
   method: "get"
 })
 
 export const createCity = createRequestConfig<ICityPayload>({
-  url: "/categoria",
+  url: "/city",
   method: "post"
 })
 
 export const updateCity = (id: number) =>
   createRequestConfig<ICityPayload>({
-    url: `/categoria/${id}`,
+    url: `/city/${id}`,
     method: "put"
   })
 
 export const deleteCity = (id: number) => ({
-  url: `/categoria/${id}`,
+  url: `/city/${id}`,
   method: "delete"
 })

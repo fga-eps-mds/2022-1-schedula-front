@@ -10,6 +10,9 @@ const detalhadorApi = axios.create({
 })
 
 //Adicionar a PUBLIC API das Cidades.
+const cidadesApi = axios.create({
+  baseURL: "localhost:5000"
+})
 
 export const errorResponseHandler = (error: any) => {
   if (error?.response) {
@@ -54,4 +57,9 @@ detalhadorApi.interceptors.response.use(
   errorResponseHandler
 )
 
-export { detalhadorApi, usuariosApi }
+cidadesApi.interceptors.response.use(
+  (response) => response,
+  errorResponseHandler
+)
+
+export { cidadesApi, detalhadorApi, usuariosApi }
