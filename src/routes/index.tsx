@@ -1,6 +1,7 @@
 import { IconType } from 'react-icons';
 import { FaUsersCog } from 'react-icons/fa';
 import { FiLayout } from 'react-icons/fi';
+import { FiMapPin } from 'react-icons/fi';
 
 export interface IRoute {
   label: string;
@@ -38,5 +39,11 @@ export const routes: IRoute[] = [
     label: 'Usuários',
     pathname: '/usuarios',
     icon: FaUsersCog,
+  },
+
+  {
+    label: 'Postos de Trabalho',
+    pathname: '/Workstation',
+    icon: FiMapPin,
   },
 ];
