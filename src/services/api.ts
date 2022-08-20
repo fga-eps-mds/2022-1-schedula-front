@@ -9,6 +9,10 @@ const detalhadorApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_DETALHADOR_CHAMADOS_URL,
 });
 
+const workstationApi = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_POSTOS_DE_TRABALHOS_URL,
+});
+
 export const errorResponseHandler = (error: any) => {
   if (error?.response) {
     if (typeof error?.response?.data === 'string') {
@@ -52,4 +56,9 @@ detalhadorApi.interceptors.response.use(
   errorResponseHandler
 );
 
-export { detalhadorApi, usuariosApi };
+workstationApi.interceptors.response.use(
+  (response) => response,
+  errorResponseHandler
+);
+
+export { detalhadorApi, usuariosApi, workstationApi };
