@@ -50,9 +50,9 @@ export const WorkstationForm = ({
               placeholder="IP"
               variant="flushed"
             />
-            {errors?.description && (
+            {errors?.ip && (
               <FormErrorMessage>
-                {errors?.description?.message}
+                {errors?.ip?.message}
               </FormErrorMessage>
             )}
           </Box>
