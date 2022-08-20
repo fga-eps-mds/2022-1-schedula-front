@@ -1,3 +1,4 @@
+
 interface Workstation {
   id: number;
   name: string;
@@ -17,4 +18,5 @@ interface CreateWorkstationPayload {
   city_id: String;
   regional_id: String;
 }
+
 

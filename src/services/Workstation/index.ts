@@ -1,3 +1,4 @@
+
 import { createRequestConfig } from '@services/request';
 
 export const getWorkstation = createRequestConfig({
@@ -5,13 +6,13 @@ export const getWorkstation = createRequestConfig({
   method: "get"
 })
 
-export const createWorkstation = createRequestConfig<CreateUserPayload>({
+export const createWorkstation = createRequestConfig<CreateWorkstationPayload>({
   url: "/workstation",
   method: "post"
 })
 
 export const updateWorkstation = (id: number) =>
-  createRequestConfig<CreateUserPayload>({
+  createRequestConfig<CreateWorkstationPayload>({
     url: "/workstation/${id}",
     method: "put"
   })

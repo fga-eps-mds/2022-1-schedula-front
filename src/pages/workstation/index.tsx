@@ -1,3 +1,4 @@
+
 import { useCallback, useState } from "react"
 import { toast } from "react-toastify"
 import {
@@ -78,7 +79,7 @@ const Workstation = () => {
   )
 
   const onSubmit = useCallback(
-    async (data: CreateUserPayload) => {
+    async (data: CreateWorkstationPayload) => {
       console.log("DATA: ", data)
 
       const response = await request<{ data: Workstation }>(
