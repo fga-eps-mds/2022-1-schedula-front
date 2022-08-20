@@ -17,6 +17,6 @@ export const updateWorkstation = (id: number) =>
   })
 
 export const deleteWorkstation = (id: number) => ({
-  url: "/workshop/${id}",
+  url: "/workstation/${id}",
   method: "delete"
 })
