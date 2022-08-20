@@ -36,7 +36,7 @@ const ListaCidades = () => {
       const response = await request(deleteCity(id), cidadesApi)
 
       if (response.type === "success") {
-        toast.success("Categoria deletada com sucesso!")
+        toast.success("Cidade deletada com sucesso!")
 
         const newCidades = cidades?.data.filter((cidade) => cidade.id !== id)
 
@@ -54,7 +54,7 @@ const ListaCidades = () => {
         return
       }
 
-      toast.error("Erro ao deletar categoria!")
+      toast.error("Erro ao deletar cidade!")
     },
     [cidades, mutate]
   )
