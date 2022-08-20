@@ -15,7 +15,7 @@ const cidadesApi = axios.create({
 })
 
 const workstationApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_POSTOS_DE_TRABALHOS_URL
+  baseURL: process.env.NEXT_PUBLIC_GERENCIADOR_DE_LOCALIDADES_URL
 })
 
 export const errorResponseHandler = (error: any) => {
@@ -70,4 +70,4 @@ cidadesApi.interceptors.response.use(
   errorResponseHandler
 )
 
-export { cidadesApi, detalhadorApi, usuariosApi }
+export { cidadesApi, detalhadorApi, usuariosApi, workstationApi }
