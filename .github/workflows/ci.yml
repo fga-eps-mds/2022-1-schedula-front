@@ -37,7 +37,35 @@ jobs:
         run: yarn install
 
       - name: 🧹 Run lint
-        run: yarn lint
+        run: yarn next lint
+
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+
+      # Cache node modules and next folder
+      - name: 📬 Caching
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/*.{js,jsx,ts,tsx}') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
+
+      - name: 🧰 Install dependencies
+        run: yarn install
+
+      - name: 🔧 Check validity of types
+        run: yarn tsc --noEmit --pretty
 
   test:
     runs-on: ubuntu-latest
@@ -103,7 +131,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build:
-    needs: lint
+    needs: [lint, type-check]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
