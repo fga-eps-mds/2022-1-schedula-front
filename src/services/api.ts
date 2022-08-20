@@ -11,7 +11,7 @@ const detalhadorApi = axios.create({
 
 //Adicionar a PUBLIC API das Cidades.
 const cidadesApi = axios.create({
-  baseURL: "localhost:5000"
+  baseURL: process.env.NEXT_PUBLIC_GERENCIADOR_DE_LOCALIDADES_URL
 })
 
 export const errorResponseHandler = (error: any) => {
