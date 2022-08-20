@@ -1,12 +1,12 @@
-import { IconType } from 'react-icons';
-import { FaUsersCog } from 'react-icons/fa';
-import { FiLayout } from 'react-icons/fi';
-import { FiMapPin } from 'react-icons/fi';
+import { IconType } from "react-icons"
+import { FaUsersCog } from "react-icons/fa"
+import { FiLayout, FiLayout, FiMapPin } from "react-icons/fi"
+import { MdOutlineLocationCity } from "react-icons/md"
 
 export interface IRoute {
-  label: string;
-  pathname: string;
-  icon?: IconType;
+  label: string
+  pathname: string
+  icon?: IconType
 }
 
 export const routes: IRoute[] = [
@@ -26,24 +26,24 @@ export const routes: IRoute[] = [
   //     icon: MdOutlineCallToAction,
   //   },
   {
-    label: 'Categorias de Problema',
-    pathname: '/categorias',
-    icon: FiLayout,
+    label: "Categorias de Problema",
+    pathname: "/categorias",
+    icon: FiLayout
   },
-  //   {
-  //     label: 'Cidades',
-  //     pathname: '/listaCidades',
-  //     icon: MdOutlineLocationCity,
-  //   },
   {
-    label: 'Usuários',
-    pathname: '/usuarios',
-    icon: FaUsersCog,
+    label: "Cidades",
+    pathname: "/cidades",
+    icon: MdOutlineLocationCity
   },
 
   {
-    label: 'Postos de Trabalho',
-    pathname: '/Workstation',
-    icon: FiMapPin,
+    label: "Postos de Trabalho",
+    pathname: "/Workstation",
+    icon: FiMapPin
   },
-];
+  {
+    label: "Usuários",
+    pathname: "/usuarios",
+    icon: FaUsersCog
+  }
+]
