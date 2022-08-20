@@ -3,12 +3,18 @@ interface Workstation {
   name: string;
   adsl_vpn: boolean;
   ip: string;
-  regional: Column;
-  city_id: Column;
-  regional_id: Column;
+  regional: String;
+  city_id: String;
+  regional_id: String;
 }
 
-interface IProblemWorkstationPayload {
+interface CreateWorkstationPayload {
+  id: number;
   name: string;
+  adsl_vpn: boolean;
   ip: string;
+  regional: String;
+  city_id: String;
+  regional_id: String;
 }
+
