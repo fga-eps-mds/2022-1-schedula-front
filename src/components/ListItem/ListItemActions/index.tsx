@@ -105,7 +105,7 @@ export const Actions: React.FC<ActionsProps> = ({
             </PopoverTrigger>
           </Box>
         </Tooltip>
-        <PopoverContent>
+        <PopoverContent data-testid="delete-confirmation-popover">
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverHeader>
