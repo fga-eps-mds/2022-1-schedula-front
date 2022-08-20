@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react"
 
 const Home: NextPageWithLayout = () => {
-  return <></>;
-};
+  return <></>
+}
 
 Home.getLayout = (page) => {
-  return page;
-};
+  return page
+}
 
-export default Home;
+export default Home
