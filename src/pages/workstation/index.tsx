@@ -24,27 +24,8 @@ import {
   deleteWorkstation,
   getWorkstation,
   updateWorkstation
-} from "@services/Workstation"
+} from "@services/workstation"
 
-const RoleBadge = (role: Accesses) => {
-  switch (role) {
-    case "admin":
-      return (
-        <Badge colorScheme="purple" variant="solid">
-          Admin
-        </Badge>
-      )
-
-    case "basic":
-      return <Badge>Basico</Badge>
-
-    case "manager":
-      return <Badge colorScheme="green">Gerente</Badge>
-
-    default:
-      return <Badge>Basico</Badge>
-  }
-}
 
 const Workstation = () => {
   const {
@@ -160,13 +141,9 @@ const Workstation = () => {
         <Flex flexDirection="column" gap={6}>
           {workstation?.data?.map?.((item, key) => (
             <ListItem
-              title={`${item?.name} [${item?.name}]`}
+              title={`${item?.name} [${item?.ip}]`}
               description={
                 <HStack spacing={2} mt={2.5}>
-                  <Badge colorScheme="gray" variant="outline">
-                    {item?.regional}
-                  </Badge>
-                  {RoleBadge(item?.city_id)}
                 </HStack>
               }
               key={key}
