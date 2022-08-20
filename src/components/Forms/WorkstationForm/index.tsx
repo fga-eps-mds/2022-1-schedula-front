@@ -9,11 +9,10 @@ import {
   Stack
 } from "@chakra-ui/react"
 
+
 interface WorkstationFormProps {
-  defaultValues?: IProblemCategory | undefined
-  onSubmit:
-    | ((data: IProblemCategoryPayload) => void)
-    | ((data: ProblemTypePayload) => void)
+  defaultValues?: Workstation | undefined;
+  onSubmit: (data: CreateWorkstationPayload) => void;
 }
 
 export const WorkstationForm = ({
@@ -45,10 +44,10 @@ export const WorkstationForm = ({
           </Box>
 
           <Box>
-            <FormLabel htmlFor="description">Descrição</FormLabel>
+            <FormLabel htmlFor="ip">Endereço de IP</FormLabel>
             <Input
-              {...register("description", { required: "Campo obrigatório" })}
-              placeholder="Descrição"
+              {...register("ip", { required: "Campo obrigatório" })}
+              placeholder="IP"
               variant="flushed"
             />
             {errors?.description && (
