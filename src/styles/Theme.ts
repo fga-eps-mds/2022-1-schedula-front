@@ -21,6 +21,10 @@ export const ColorTheme = extendTheme({
       body: {
         background: "linear-gradient(135deg, #FFFFFF 20%, #F0F0F0 100%)",
         backgroundAttachment: "fixed"
+      },
+      html: {
+        marginLeft: "calc(100vw - 100%)", // Fix scrollbar jump
+        marginRight: 0
       }
     }
   },

@@ -7,7 +7,6 @@ import { SWRConfig, SWRConfiguration } from "swr"
 
 import { ColorTheme } from "../styles/Theme"
 
-import "../styles/globals.css"
 import "react-toastify/dist/ReactToastify.css"
 
 type AppPropsWithLayout = AppProps & {
