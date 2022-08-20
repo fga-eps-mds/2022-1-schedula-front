@@ -25,7 +25,7 @@ import {
   deleteWorkstation,
   getWorkstation,
   updateWorkstation
-} from "@services/workstation"
+} from "@services/Workstation"
 
 
 const Workstation = () => {
