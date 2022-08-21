@@ -1,14 +1,8 @@
-
+// eslint-disable-next-line eslint-comments/disable-enable-pair -- fixing lint
+/* eslint-disable prettier/prettier  -- fail in word limit*/
 import { useCallback, useState } from "react"
 import { toast } from "react-toastify"
-import {
-  Badge,
-  Box,
-  Button,
-  Flex,
-  HStack,
-  useDisclosure
-} from "@chakra-ui/react"
+import { Box, Button, Flex, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
 import { WorkstationForm } from "@components/Forms/WorkstationForm"
@@ -26,7 +20,6 @@ import {
   getWorkstation,
   updateWorkstation
 } from "@services/Workstation"
-
 
 const Workstation = () => {
   const {
@@ -83,13 +76,17 @@ const Workstation = () => {
       console.log("DATA: ", data)
 
       const response = await request<{ data: Workstation }>(
-        workstationToEdit ? updateWorkstation(workstationToEdit.id)(data) : createWorkstation(data),
+        workstationToEdit
+          ? updateWorkstation(workstationToEdit.id)(data)
+          : createWorkstation(data),
         workstationApi
       )
 
       if (response.type === "success") {
         toast.success(
-          `Posto de Trabalho ${workstationToEdit ? "editado" : "criado"} com sucesso!`
+          `Posto de Trabalho ${
+            workstationToEdit ? "editado" : "criado"
+          } com sucesso!`
         )
 
         const newUsers = workstationToEdit
@@ -143,10 +140,7 @@ const Workstation = () => {
           {workstation?.data?.map?.((item, key) => (
             <ListItem
               title={`${item?.name} [${item?.ip}]`}
-              description={
-                <HStack spacing={2} mt={2.5}>
-                </HStack>
-              }
+              description={<HStack spacing={2} mt={2.5}></HStack>}
               key={key}
             >
               <ListItem.Actions
@@ -166,12 +160,19 @@ const Workstation = () => {
       )}
 
       <Modal
-        title={workstationToEdit ? "Editar Posto de Trabalho" : "Novo Posto de Trabalho"}
+        title={
+          workstationToEdit
+            ? "Editar Posto de Trabalho"
+            : "Novo Posto de Trabalho"
+        }
         isOpen={isOpen}
         onClose={handleClose}
         size="2xl"
       >
-        <WorkstationForm defaultValues={workstationToEdit} onSubmit={onSubmit} />
+        <WorkstationForm
+          defaultValues={workstationToEdit}
+          onSubmit={onSubmit}
+        />
       </Modal>
     </>
   )

@@ -9,10 +9,9 @@ import {
   Stack
 } from "@chakra-ui/react"
 
-
 interface WorkstationFormProps {
-  defaultValues?: Workstation | undefined;
-  onSubmit: (data: CreateWorkstationPayload) => void;
+  defaultValues?: Workstation | undefined
+  onSubmit: (data: CreateWorkstationPayload) => void
 }
 
 export const WorkstationForm = ({
@@ -23,7 +22,7 @@ export const WorkstationForm = ({
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
-  } = useForm< CreateWorkstationPayload>({
+  } = useForm<CreateWorkstationPayload>({
     defaultValues
   })
 
@@ -51,9 +50,7 @@ export const WorkstationForm = ({
               variant="flushed"
             />
             {errors?.ip && (
-              <FormErrorMessage>
-                {errors?.ip?.message}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors?.ip?.message}</FormErrorMessage>
             )}
           </Box>
         </Stack>
