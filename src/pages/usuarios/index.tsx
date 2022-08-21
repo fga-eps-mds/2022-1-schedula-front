@@ -1,18 +1,11 @@
 import { useCallback, useState } from "react"
 import { toast } from "react-toastify"
-import {
-  Badge,
-  Box,
-  Button,
-  Flex,
-  HStack,
-  useDisclosure
-} from "@chakra-ui/react"
+import { Badge, Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
 import { UserForm } from "@components/Forms/UserForm"
+import { List } from "@components/List"
 import { ListItem } from "@components/ListItem"
-import { ListItemSkeleton } from "@components/ListItem/LIstItemSkeleton"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
@@ -154,38 +147,28 @@ const Usuarios = () => {
         </HStack>
       </PageHeader>
 
-      {isLoading ? (
-        <ListItemSkeleton />
-      ) : (
-        <Flex flexDirection="column" gap={6}>
-          {users?.data?.map?.((item, key) => (
-            <ListItem
-              title={`${item?.name} [${item?.username}]`}
-              description={
-                <HStack spacing={2} mt={2.5}>
-                  <Badge colorScheme="gray" variant="outline">
-                    {item?.job_role}
-                  </Badge>
-                  {RoleBadge(item?.acess)}
-                </HStack>
-              }
-              key={key}
-            >
-              <ListItem.Actions
-                itemName={item?.name}
-                onEdit={handleEdit(item)}
-                onDelete={handleDelete(item.username)}
-              />
-            </ListItem>
-          ))}
-        </Flex>
-      )}
-
-      {users && isValidating && (
-        <Box mt={6}>
-          <ListItemSkeleton />
-        </Box>
-      )}
+      <List isLoading={isLoading || isValidating}>
+        {users?.data?.map?.((item, key) => (
+          <ListItem
+            title={`${item?.name} [${item?.username}]`}
+            description={
+              <HStack spacing={2} mt={2.5}>
+                <Badge colorScheme="gray" variant="outline">
+                  {item?.job_role}
+                </Badge>
+                {RoleBadge(item?.acess)}
+              </HStack>
+            }
+            key={key}
+          >
+            <ListItem.Actions
+              itemName={item?.name}
+              onEdit={handleEdit(item)}
+              onDelete={handleDelete(item.username)}
+            />
+          </ListItem>
+        ))}
+      </List>
 
       <Modal
         title={userToEdit ? "Editar Usuário" : "Novo Usuário"}

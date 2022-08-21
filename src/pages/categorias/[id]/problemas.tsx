@@ -2,9 +2,7 @@ import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import {
-  Box,
   Button,
-  Flex,
   HStack,
   Skeleton,
   Tag,
@@ -14,8 +12,8 @@ import {
 import { AxiosResponse } from "axios"
 
 import { CategoriaForm as ProblemTypeForm } from "@components/Forms/CategoriaForm"
+import { List } from "@components/List"
 import { ListItem } from "@components/ListItem"
-import { ListItemSkeleton } from "@components/ListItem/LIstItemSkeleton"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
@@ -165,31 +163,21 @@ const ListaProblemas = () => {
         </HStack>
       </PageHeader>
 
-      {isLoading ? (
-        <ListItemSkeleton />
-      ) : (
-        <Flex flexDirection="column" gap={6}>
-          {problemas?.data?.map?.((item, key) => (
-            <ListItem
-              title={item?.name}
-              description={item?.description}
-              key={key}
-            >
-              <ListItem.Actions
-                itemName={item?.name}
-                onEdit={handleEdit(item)}
-                onDelete={handleDelete(item.id)}
-              />
-            </ListItem>
-          ))}
-        </Flex>
-      )}
-
-      {problemas && isValidating && (
-        <Box mt={6}>
-          <ListItemSkeleton />
-        </Box>
-      )}
+      <List isLoading={isLoading || isValidating}>
+        {problemas?.data?.map?.((item, key) => (
+          <ListItem
+            title={item?.name}
+            description={item?.description}
+            key={key}
+          >
+            <ListItem.Actions
+              itemName={item?.name}
+              onEdit={handleEdit(item)}
+              onDelete={handleDelete(item.id)}
+            />
+          </ListItem>
+        ))}
+      </List>
 
       <Modal
         title={

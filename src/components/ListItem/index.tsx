@@ -1,13 +1,13 @@
-import React from "react"
-import { Box, Flex, Text } from "@chakra-ui/react"
+import React, { ReactElement } from "react"
+import { Box, Fade, Flex } from "@chakra-ui/react"
 
+import type { ActionsProps } from "@components/ListItem/ListItemActions"
 import { Actions } from "@components/ListItem/ListItemActions"
 
-type ListItemProps = {
+export interface ListItemProps {
   title: string | JSX.Element
   description: string | JSX.Element
-  Actions?: typeof Actions
-  children?: React.ReactNode
+  children?: ReactElement<ActionsProps>
 }
 
 export const Divider = {
@@ -21,25 +21,26 @@ export const Divider = {
 
 export const ListItem = ({ title, description, children }: ListItemProps) => {
   return (
-    <Flex
-      w="100%"
-      justifyContent="space-between"
-      alignItems="center"
-      position="relative"
-      bg="white"
-      borderRadius="md"
-      padding={5}
-      boxShadow="medium"
-    >
-      <Box>
-        <Text fontWeight="medium" mb={1} position="relative" _before={Divider}>
-          {title}
-        </Text>
-        <Text color="GrayText">{description}</Text>
-      </Box>
+    <Fade in>
+      <Flex
+        w="100%"
+        justifyContent="space-between"
+        position="relative"
+        bg="white"
+        borderRadius="md"
+        padding={5}
+        boxShadow="medium"
+      >
+        <Box alignSelf="center">
+          <Box fontWeight="medium" mb={1} position="relative" _before={Divider}>
+            {title}
+          </Box>
+          <Box color="GrayText">{description}</Box>
+        </Box>
 
-      <Box alignSelf="end">{children}</Box>
-    </Flex>
+        <Box alignSelf="end">{children}</Box>
+      </Flex>
+    </Fade>
   )
 }
 
