@@ -1,6 +1,6 @@
 import { IconType } from "react-icons"
 import { FaUsersCog } from "react-icons/fa"
-import { FiLayout } from "react-icons/fi"
+import { FiLayout, FiMapPin } from "react-icons/fi"
 import { MdOutlineLocationCity } from "react-icons/md"
 
 export interface IRoute {
@@ -34,6 +34,12 @@ export const routes: IRoute[] = [
     label: "Cidades",
     pathname: "/cidades",
     icon: MdOutlineLocationCity
+  },
+
+  {
+    label: "Postos de Trabalho",
+    pathname: "/workstation",
+    icon: FiMapPin
   },
   {
     label: "Usuários",

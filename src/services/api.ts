@@ -14,6 +14,10 @@ const cidadesApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_GERENCIADOR_DE_LOCALIDADES_URL
 })
 
+const workstationApi = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_GERENCIADOR_DE_LOCALIDADES_URL
+})
+
 export const errorResponseHandler = (error: any) => {
   if (error?.response) {
     if (typeof error?.response?.data === "string") {
@@ -57,9 +61,13 @@ detalhadorApi.interceptors.response.use(
   errorResponseHandler
 )
 
+workstationApi.interceptors.response.use(
+  (response) => response,
+  errorResponseHandler
+)
 cidadesApi.interceptors.response.use(
   (response) => response,
   errorResponseHandler
 )
 
-export { cidadesApi, detalhadorApi, usuariosApi }
+export { cidadesApi, detalhadorApi, usuariosApi, workstationApi }
