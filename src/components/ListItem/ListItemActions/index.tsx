@@ -21,19 +21,19 @@ import {
   useDisclosure
 } from "@chakra-ui/react"
 
-interface ActionsProps {
+export interface ActionsProps {
   itemName: string
   onEdit: () => void
   onDelete: () => Promise<void>
   onAdd?: () => void
 }
 
-export const Actions: React.FC<ActionsProps> = ({
+export const Actions = ({
   itemName,
   onEdit,
   onDelete,
   onAdd
-}) => {
+}: ActionsProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -44,7 +44,7 @@ export const Actions: React.FC<ActionsProps> = ({
   }, [onClose, onDelete])
 
   return (
-    <HStack spacing={4}>
+    <HStack spacing={4} role="menubar">
       {onAdd && (
         <Tooltip
           label="Tipos de Problema"

@@ -5,32 +5,26 @@ import { ListItem } from "./index"
 const mockedProps = {
   title: "Title",
   description: "Description",
-  children: "Hello"
+  children: (
+    <ListItem.Actions itemName="test" onEdit={jest.fn()} onDelete={jest.fn()} />
+  )
 }
 
 describe("ListItem", () => {
-  it("should render into the document", () => {
-    render(
-      <ListItem title={mockedProps.title} description={mockedProps.description}>
-        {mockedProps.children}
-      </ListItem>
-    )
-  })
-
-  it("should render the passed props", () => {
+  it("should render with the passed props", () => {
     const { getByText } = render(
-      <ListItem title={mockedProps.title} description={mockedProps.description}>
-        {mockedProps.children}
-      </ListItem>
+      <ListItem
+        title={mockedProps.title}
+        description={mockedProps.description}
+      />
     )
 
     expect(getByText(mockedProps.title)).toBeInTheDocument()
     expect(getByText(mockedProps.description)).toBeInTheDocument()
-    expect(getByText(mockedProps.children)).toBeInTheDocument()
   })
 
-  it("should be visible", () => {
-    const { getByText } = render(
+  it("should have actions", () => {
+    const { getByText, getByRole } = render(
       <ListItem title={mockedProps.title} description={mockedProps.description}>
         {mockedProps.children}
       </ListItem>
@@ -38,6 +32,9 @@ describe("ListItem", () => {
 
     expect(getByText(mockedProps.title)).toBeVisible()
     expect(getByText(mockedProps.description)).toBeVisible()
-    expect(getByText(mockedProps.children)).toBeVisible()
+
+    const actionsBar = getByRole("menubar")
+    expect(actionsBar).toBeInTheDocument()
+    expect(actionsBar).toBeVisible()
   })
 })

@@ -1,13 +1,13 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import { Box, Flex, Text } from "@chakra-ui/react"
 
+import type { ActionsProps } from "@components/ListItem/ListItemActions"
 import { Actions } from "@components/ListItem/ListItemActions"
 
 type ListItemProps = {
   title: string | JSX.Element
   description: string | JSX.Element
-  Actions?: typeof Actions
-  children?: React.ReactNode
+  children?: ReactElement<ActionsProps>
 }
 
 export const Divider = {
