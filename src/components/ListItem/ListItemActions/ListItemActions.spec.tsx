@@ -3,16 +3,10 @@ import { fireEvent, render, waitFor } from "@testing-library/react"
 import { Actions } from "./index"
 
 const mockedProps = {
-  itemName: "item",
-  onEdit: () => {
-    return
-  },
-  onDelete: async () => {
-    return
-  },
-  onAdd: () => {
-    return
-  }
+  itemName: "item name",
+  onEdit: jest.fn(),
+  onDelete: jest.fn(),
+  onAdd: jest.fn()
 }
 
 describe("ListItemActions", () => {
@@ -22,41 +16,30 @@ describe("ListItemActions", () => {
         itemName={mockedProps.itemName}
         onEdit={mockedProps.onEdit}
         onDelete={mockedProps.onDelete}
-        onAdd={mockedProps.onAdd}
       />
     )
   })
 
-  it("should render the all actions", () => {
-    const { getByLabelText } = render(
+  it("should invoke the onEdit callback", () => {
+    const { getByRole } = render(
       <Actions
         itemName={mockedProps.itemName}
         onEdit={mockedProps.onEdit}
         onDelete={mockedProps.onDelete}
-        onAdd={mockedProps.onAdd}
       />
     )
-    // add action
-    const addButton = getByLabelText("Add")
 
-    expect(addButton).toBeInTheDocument()
-    expect(addButton).toBeVisible()
-
-    // edit action
-    const editButton = getByLabelText("Edit")
-
+    const editButton = getByRole("button", { name: /edit/i })
     expect(editButton).toBeInTheDocument()
     expect(editButton).toBeVisible()
 
-    // delete action
-    const deleteButton = getByLabelText("Delete")
+    fireEvent.click(editButton)
 
-    expect(deleteButton).toBeInTheDocument()
-    expect(deleteButton).toBeVisible()
+    expect(mockedProps.onEdit).toHaveBeenCalled()
   })
 
-  it("should not show the add button if onAddProp is not defined", () => {
-    const { queryByLabelText } = render(
+  it("should invoke the onDelete callback", async () => {
+    const { getByRole, getByTestId, getByText } = render(
       <Actions
         itemName={mockedProps.itemName}
         onEdit={mockedProps.onEdit}
@@ -64,11 +47,29 @@ describe("ListItemActions", () => {
       />
     )
 
-    expect(queryByLabelText(`Add`)).toBeNull()
+    const deleteButton = getByRole("button", { name: /delete/i })
+    expect(deleteButton).toBeInTheDocument()
+    expect(deleteButton).toBeVisible()
+
+    fireEvent.click(deleteButton)
+
+    const confirmationPopover = getByTestId("delete-confirmation-popover")
+    expect(confirmationPopover).toBeInTheDocument()
+    await waitFor(() => expect(confirmationPopover).toBeVisible())
+
+    expect(getByText(mockedProps.itemName)).toBeInTheDocument()
+
+    const confirmActionButton = getByRole("button", { name: /apagar/i })
+    expect(confirmActionButton).toBeInTheDocument()
+    expect(confirmActionButton).toBeVisible()
+
+    fireEvent.click(confirmActionButton)
+
+    expect(mockedProps.onDelete).toHaveBeenCalled()
   })
 
-  it("should show a popover when delete action is used", async () => {
-    const { getByLabelText, getByTestId } = render(
+  it("should invoke the onAdd callback", () => {
+    const { getByRole } = render(
       <Actions
         itemName={mockedProps.itemName}
         onEdit={mockedProps.onEdit}
@@ -77,17 +78,12 @@ describe("ListItemActions", () => {
       />
     )
 
-    const deleteConfirmationPopover = getByTestId("delete-confirmation-popover")
+    const addButton = getByRole("button", { name: /add/i })
+    expect(addButton).toBeInTheDocument()
+    expect(addButton).toBeVisible()
 
-    //"Should be in the document but not visible yet"
-    expect(deleteConfirmationPopover).toBeInTheDocument()
-    expect(deleteConfirmationPopover).not.toBeVisible()
+    fireEvent.click(addButton)
 
-    //"Click the delete button and make sure the popover is visible"
-    fireEvent.click(getByLabelText("Delete"))
-
-    await waitFor(() => {
-      expect(getByTestId("delete-confirmation-popover")).toBeVisible()
-    })
+    expect(mockedProps.onAdd).toHaveBeenCalled()
   })
 })
