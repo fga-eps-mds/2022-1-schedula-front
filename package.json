@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint --fix; tsc --noEmit",
-    "test": "jest --coverage --passWithNoTests",
+    "test": "jest",
     "prepare": "husky install"
   },
   "husky": {

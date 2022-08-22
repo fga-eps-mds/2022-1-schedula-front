@@ -8,7 +8,7 @@ export const ListItemSkeleton = ({ lines = 4 }: ListItemSkeletonProps) => {
   return (
     <>
       {Array.from({ length: lines }, (_, key) => (
-        <Fade in key={key}>
+        <Fade in key={key} data-testid="list-item-skeleton">
           <Flex
             w="100%"
             justifyContent="space-between"
