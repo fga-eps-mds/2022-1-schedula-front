@@ -10,3 +10,7 @@ interface IProblemCategoryPayload {
   name: string
   description: string
 }
+
+type DetalhadorStatus = {
+  APP: "Detalhador de chamados is running"
+}

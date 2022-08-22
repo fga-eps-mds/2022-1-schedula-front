@@ -1,5 +1,9 @@
-type ResultSuccess<T> = { type: 'success'; value: T };
+type ResultSuccess<T> = { type: "success"; value: T }
 
-type ResultError = { type: 'error'; error: Error };
+type ResultError = { type: "error"; error: Error }
 
-type Result<T> = ResultSuccess<T> | ResultError;
+type Result<T> = ResultSuccess<T> | ResultError
+
+type ServiceStatus = {
+  APP: string
+}

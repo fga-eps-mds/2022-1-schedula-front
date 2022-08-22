@@ -9,12 +9,7 @@ const detalhadorApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_DETALHADOR_CHAMADOS_URL
 })
 
-//Adicionar a PUBLIC API das Cidades.
-const cidadesApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_GERENCIADOR_DE_LOCALIDADES_URL
-})
-
-const workstationApi = axios.create({
+const localidadesApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_GERENCIADOR_DE_LOCALIDADES_URL
 })
 
@@ -61,13 +56,13 @@ detalhadorApi.interceptors.response.use(
   errorResponseHandler
 )
 
-workstationApi.interceptors.response.use(
+localidadesApi.interceptors.response.use(
   (response) => response,
   errorResponseHandler
 )
-cidadesApi.interceptors.response.use(
+localidadesApi.interceptors.response.use(
   (response) => response,
   errorResponseHandler
 )
 
-export { cidadesApi, detalhadorApi, usuariosApi, workstationApi }
+export { detalhadorApi, localidadesApi, usuariosApi }

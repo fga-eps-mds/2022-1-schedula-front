@@ -12,7 +12,7 @@ import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { ApiData, useRequest } from "@hooks/useRequest"
-import { workstationApi } from "@services/api"
+import { localidadesApi } from "@services/api"
 import { request } from "@services/request"
 import {
   createWorkstation,
@@ -27,7 +27,7 @@ const Workstation = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Workstation[]>(getWorkstation(), workstationApi)
+  } = useRequest<Workstation[]>(getWorkstation(), localidadesApi)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -35,7 +35,7 @@ const Workstation = () => {
 
   const handleDelete = useCallback(
     (id: number) => async () => {
-      const response = await request(deleteWorkstation(id), workstationApi)
+      const response = await request(deleteWorkstation(id), localidadesApi)
 
       if (response.type === "success") {
         toast.success("Posto de trabalho removido com sucesso!")
@@ -79,7 +79,7 @@ const Workstation = () => {
         workstationToEdit
           ? updateWorkstation(workstationToEdit.id)(data)
           : createWorkstation(data),
-        workstationApi
+        localidadesApi
       )
 
       if (response.type === "success") {

@@ -10,7 +10,7 @@ import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { ApiData, useRequest } from "@hooks/useRequest"
-import { cidadesApi } from "@services/api"
+import { localidadesApi } from "@services/api"
 import {
   createCity,
   deleteCity,
@@ -29,11 +29,11 @@ const ListaCidades = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<ICity[]>(getCities(), cidadesApi, {})
+  } = useRequest<ICity[]>(getCities(), localidadesApi, {})
 
   const handleDelete = useCallback(
     (id: number) => async () => {
-      const response = await request(deleteCity(id), cidadesApi)
+      const response = await request(deleteCity(id), localidadesApi)
 
       if (response.type === "success") {
         toast.success("Cidade deletada com sucesso!")
@@ -78,7 +78,7 @@ const ListaCidades = () => {
 
       const response = await request<{ data: ICity }>(
         cidadesToEdit ? updateCity(cidadesToEdit.id)(data) : createCity(data),
-        cidadesApi
+        localidadesApi
       )
 
       if (response.type === "success") {
