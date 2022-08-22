@@ -1,41 +1,48 @@
-import { FaUsersCog } from 'react-icons/fa';
-import { FiLayout } from 'react-icons/fi';
+import { IconType } from "react-icons"
+import { FaUsersCog } from "react-icons/fa"
+import { FiLayout } from "react-icons/fi"
+import { MdOutlineLocationCity } from "react-icons/md"
 
 export interface IRoute {
-  label: string;
-  pathname: string;
-  icon?: JSX.Element;
+  label: string
+  pathname: string
+  icon?: IconType
 }
 
 export const routes: IRoute[] = [
   //   {
   //     label: 'Dashboard',
   //     pathname: '/dashboard',
-  //     icon: <MdOutlineDashboard size={28} />,
+  //     icon: MdOutlineDashboard,
   //   },
   //   {
   //     label: 'Chamados',
   //     pathname: '/chamados',
-  //     icon: <MdOutlineViewAgenda size={28} />,
+  //     icon: MdOutlineViewAgenda,
   //   },
   //   {
   //     label: 'Registrar Chamado',
   //     pathname: '/registrachamado',
-  //     icon: <MdOutlineCallToAction size={28} />,
+  //     icon: MdOutlineCallToAction,
   //   },
   {
-    label: 'Categorias de Problema',
-    pathname: '/categorias',
-    icon: <FiLayout size={28} />,
+    label: "Categorias de Problema",
+    pathname: "/categorias",
+    icon: FiLayout
+  },
+  {
+    label: "Cidades",
+    pathname: "/cidades",
+    icon: MdOutlineLocationCity
   },
   //   {
-  //     label: 'Cidades',
-  //     pathname: '/listaCidades',
-  //     icon: <MdOutlineLocationCity size={28} />,
+  //     label: "Postos de Trabalho",
+  //     pathname: "/workstation",
+  //     icon: FiMapPin
   //   },
   {
-    label: 'Usuários',
-    pathname: '/usuarios',
-    icon: <FaUsersCog size={28} />,
-  },
-];
+    label: "Usuários",
+    pathname: "/usuarios",
+    icon: FaUsersCog
+  }
+]

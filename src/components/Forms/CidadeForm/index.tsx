@@ -9,22 +9,17 @@ import {
   Stack
 } from "@chakra-ui/react"
 
-interface CategoriaFormProps {
-  defaultValues?: IProblemCategory | undefined
-  onSubmit:
-    | ((data: IProblemCategoryPayload) => void)
-    | ((data: ProblemTypePayload) => void)
+interface CidadeFormProps {
+  defaultValues?: ICity | undefined
+  onSubmit: (data: ICityPayload) => void
 }
 
-export const CategoriaForm = ({
-  defaultValues,
-  onSubmit
-}: CategoriaFormProps) => {
+export const CidadeForm = ({ defaultValues, onSubmit }: CidadeFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
-  } = useForm<ProblemTypePayload>({
+  } = useForm<ICityPayload>({
     defaultValues
   })
 
@@ -41,20 +36,6 @@ export const CategoriaForm = ({
             />
             {errors?.name && (
               <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
-            )}
-          </Box>
-
-          <Box>
-            <FormLabel htmlFor="description">Descrição</FormLabel>
-            <Input
-              {...register("description", { required: "Campo obrigatório" })}
-              placeholder="Descrição"
-              variant="flushed"
-            />
-            {errors?.description && (
-              <FormErrorMessage>
-                {errors?.description?.message}
-              </FormErrorMessage>
             )}
           </Box>
         </Stack>

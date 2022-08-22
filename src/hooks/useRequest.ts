@@ -2,34 +2,34 @@ import {
   AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse,
-} from 'axios';
-import get from 'lodash/get';
-import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
+  AxiosResponse
+} from "axios"
+import get from "lodash/get"
+import useSWR, { SWRConfiguration, SWRResponse } from "swr"
 
-export type GetRequest = AxiosRequestConfig | null;
+export type GetRequest = AxiosRequestConfig | null
 
 export type ApiData<Data> =
   | { data: Data; error: null | string; message: string }
-  | undefined;
+  | undefined
 
 interface Return<Data, Error>
   extends Pick<
     SWRResponse<AxiosResponse<Data>, AxiosError<Error>>,
-    'isValidating' | 'error' | 'mutate'
+    "isValidating" | "error" | "mutate"
   > {
-  data: Data | undefined;
-  response: AxiosResponse<Data> | undefined;
-  isLoading: boolean;
+  data: Data | undefined
+  response: AxiosResponse<Data> | undefined
+  isLoading: boolean
 }
 
 export interface Config<Data = unknown, Error = unknown>
   extends Omit<
     SWRConfiguration<AxiosResponse<Data>, AxiosError<Error>>,
-    'fallbackData'
+    "fallbackData"
   > {
-  fallbackData?: Data;
-  dataPath?: keyof Data | string | string[];
+  fallbackData?: Data
+  dataPath?: keyof Data | string | string[]
 }
 
 export function useRequest<Data = unknown, Error = unknown>(
@@ -41,7 +41,7 @@ export function useRequest<Data = unknown, Error = unknown>(
     data: response,
     error,
     isValidating,
-    mutate,
+    mutate
   } = useSWR<AxiosResponse<ApiData<Data>>, AxiosError<Error>>(
     request && JSON.stringify(request),
     /**
@@ -53,15 +53,15 @@ export function useRequest<Data = unknown, Error = unknown>(
       ...config,
       fallbackData: fallbackData && {
         status: 200,
-        statusText: 'InitialData',
+        statusText: "InitialData",
         config: request!,
         headers: {},
-        data: fallbackData,
-      },
+        data: fallbackData
+      }
     }
-  );
+  )
 
-  const dataPath = path ? `data.${String(path)}` : 'data';
+  const dataPath = path ? `data.${String(path)}` : "data"
 
   return {
     data: get(response, dataPath),
@@ -69,6 +69,6 @@ export function useRequest<Data = unknown, Error = unknown>(
     isLoading: !response && !error && !!request,
     error,
     isValidating,
-    mutate,
-  };
+    mutate
+  }
 }

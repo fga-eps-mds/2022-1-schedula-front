@@ -9,22 +9,20 @@ import {
   Stack
 } from "@chakra-ui/react"
 
-interface CategoriaFormProps {
-  defaultValues?: IProblemCategory | undefined
-  onSubmit:
-    | ((data: IProblemCategoryPayload) => void)
-    | ((data: ProblemTypePayload) => void)
+interface WorkstationFormProps {
+  defaultValues?: Workstation | undefined
+  onSubmit: (data: CreateWorkstationPayload) => void
 }
 
-export const CategoriaForm = ({
+export const WorkstationForm = ({
   defaultValues,
   onSubmit
-}: CategoriaFormProps) => {
+}: WorkstationFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
-  } = useForm<ProblemTypePayload>({
+  } = useForm<CreateWorkstationPayload>({
     defaultValues
   })
 
@@ -36,7 +34,7 @@ export const CategoriaForm = ({
             <FormLabel htmlFor="name">Nome</FormLabel>
             <Input
               {...register("name", { required: "Campo obrigatório" })}
-              placeholder="Nome"
+              placeholder="Nome do posto"
               variant="flushed"
             />
             {errors?.name && (
@@ -45,16 +43,14 @@ export const CategoriaForm = ({
           </Box>
 
           <Box>
-            <FormLabel htmlFor="description">Descrição</FormLabel>
+            <FormLabel htmlFor="ip">Endereço de IP</FormLabel>
             <Input
-              {...register("description", { required: "Campo obrigatório" })}
-              placeholder="Descrição"
+              {...register("ip", { required: "Campo obrigatório" })}
+              placeholder="IP"
               variant="flushed"
             />
-            {errors?.description && (
-              <FormErrorMessage>
-                {errors?.description?.message}
-              </FormErrorMessage>
+            {errors?.ip && (
+              <FormErrorMessage>{errors?.ip?.message}</FormErrorMessage>
             )}
           </Box>
         </Stack>

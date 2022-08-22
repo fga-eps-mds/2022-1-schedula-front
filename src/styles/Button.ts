@@ -10,6 +10,7 @@ export const Button: ComponentStyleConfig = {
   // Two variants: outline and solid
   variants: {
     primary: {
+      minWidth: '150px',
       color: '#F4F7F5',
       backgroundColor: 'primary',
       boxShadow: 'soft',
