@@ -1,5 +1,6 @@
 import {
   Badge,
+  Box,
   Divider,
   Drawer,
   DrawerBody,
@@ -7,7 +8,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  HStack,
+  Flex,
   Skeleton,
   Text,
   VStack
@@ -20,6 +21,55 @@ interface ServicesStatusProps {
   onClose: () => void
 }
 
+interface StatusLineProps {
+  serviceName: string
+  status: boolean
+  version: string
+  isLoadingStatus: boolean
+  isLoadingVersion: boolean
+}
+
+const StatusLine = ({
+  serviceName,
+  status,
+  version,
+  isLoadingStatus,
+  isLoadingVersion
+}: StatusLineProps) => {
+  return (
+    <Flex gap={2}>
+      <Skeleton isLoaded={!isLoadingStatus}>
+        <Badge
+          fontSize="sm"
+          variant="subtle"
+          colorScheme={status ? "green" : "red"}
+        >
+          {status ? "ON" : "OFF"}
+        </Badge>
+      </Skeleton>
+      <Text>{serviceName}</Text>
+      {process.env.NODE_ENV === "production" && (
+        <Skeleton isLoaded={!isLoadingVersion}>
+          <Badge
+            variant="outline"
+            textTransform="lowercase"
+            fontWeight="medium"
+          >
+            {version || "Not Released"}
+          </Badge>
+        </Skeleton>
+      )}
+      {process.env.NODE_ENV === "development" && (
+        <Box ml="auto">
+          <Badge colorScheme="pink" variant="outline" textTransform="lowercase">
+            dev
+          </Badge>
+        </Box>
+      )}
+    </Flex>
+  )
+}
+
 export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
   const {
     errorUsuarios,
@@ -28,11 +78,14 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
     isLoadingChamadosStatus,
     isLoadingUsuariosStatus,
     isLoadingLocalidadesStatus,
+    isLoadingUserVersion,
+    isLoadingChamadosVersion,
+    isLoadingLocalidadesVersion,
     apiVersions
   } = useServicesData()
 
   return (
-    <Drawer placement="right" onClose={onClose} isOpen={isOpen} size="sm">
+    <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay
         bg="blackAlpha.400"
         backdropFilter="blur(8px) hue-rotate(10deg)"
@@ -42,59 +95,29 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
         <DrawerCloseButton />
         <DrawerBody>
           <VStack spacing={3} align="stretch" mt={2} divider={<Divider />}>
-            <HStack spacing={2}>
-              <Skeleton isLoaded={!isLoadingUsuariosStatus}>
-                <Badge
-                  fontSize="sm"
-                  variant="subtle"
-                  colorScheme={errorUsuarios ? "red" : "green"}
-                >
-                  {errorUsuarios ? "OFF" : "ON"}
-                </Badge>
-              </Skeleton>
-              <Text>
-                Usuários{" "}
-                <Badge textTransform="lowercase" ml={1}>
-                  {apiVersions?.usuarios}
-                </Badge>
-              </Text>
-            </HStack>
+            <StatusLine
+              serviceName="Usuários"
+              status={!errorUsuarios}
+              version={apiVersions?.usuarios}
+              isLoadingStatus={isLoadingUsuariosStatus}
+              isLoadingVersion={isLoadingUserVersion}
+            />
 
-            <HStack spacing={2}>
-              <Skeleton isLoaded={!isLoadingChamadosStatus}>
-                <Badge
-                  fontSize="sm"
-                  variant="subtle"
-                  colorScheme={errorChamados ? "red" : "green"}
-                >
-                  {errorChamados ? "OFF" : "ON"}
-                </Badge>
-              </Skeleton>
-              <Text>
-                Chamados{" "}
-                <Badge textTransform="lowercase" ml={1}>
-                  {apiVersions?.chamados}
-                </Badge>
-              </Text>
-            </HStack>
+            <StatusLine
+              serviceName="Chamados"
+              status={!errorChamados}
+              version={apiVersions?.chamados}
+              isLoadingStatus={isLoadingChamadosStatus}
+              isLoadingVersion={isLoadingChamadosVersion}
+            />
 
-            <HStack spacing={2}>
-              <Skeleton isLoaded={!isLoadingLocalidadesStatus}>
-                <Badge
-                  fontSize="sm"
-                  variant="subtle"
-                  colorScheme={errorLocalidades ? "red" : "green"}
-                >
-                  {errorLocalidades ? "OFF" : "ON"}
-                </Badge>
-              </Skeleton>
-              <Text>
-                Localidades{" "}
-                <Badge textTransform="lowercase" ml={1}>
-                  {apiVersions?.localidades || "Not Released"}
-                </Badge>
-              </Text>
-            </HStack>
+            <StatusLine
+              serviceName="Localidades"
+              status={!errorLocalidades}
+              version={apiVersions?.localidades}
+              isLoadingStatus={isLoadingLocalidadesStatus}
+              isLoadingVersion={isLoadingLocalidadesVersion}
+            />
           </VStack>
         </DrawerBody>
       </DrawerContent>

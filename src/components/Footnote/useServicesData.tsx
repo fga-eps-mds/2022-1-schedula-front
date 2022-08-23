@@ -42,8 +42,10 @@ export const useServicesData = () => {
     localidadesApi
   )
 
-  const { data: usuariosVersion } = useRequest<Releases[]>(
-    process.env.NODE_ENV === "development"
+  const { data: usuariosVersion, isLoading: isLoadingUserVersion } = useRequest<
+    Releases[]
+  >(
+    process.env.NODE_ENV !== "development"
       ? {
           url: "/repos/fga-eps-mds/2022-1-schedula-gestor-de-usuarios/releases",
           method: "GET"
@@ -52,25 +54,27 @@ export const useServicesData = () => {
     githubApi
   )
 
-  const { data: chamadosVersion } = useRequest<Releases[]>(
-    process.env.NODE_ENV === "development"
-      ? {
-          url: "/repos/fga-eps-mds/2022-1-schedula-detalhador-de-chamados/releases",
-          method: "GET"
-        }
-      : null,
-    githubApi
-  )
+  const { data: chamadosVersion, isLoading: isLoadingChamadosVersion } =
+    useRequest<Releases[]>(
+      process.env.NODE_ENV !== "development"
+        ? {
+            url: "/repos/fga-eps-mds/2022-1-schedula-detalhador-de-chamados/releases",
+            method: "GET"
+          }
+        : null,
+      githubApi
+    )
 
-  const { data: localidadesVersion } = useRequest<Releases[]>(
-    process.env.NODE_ENV === "development"
-      ? {
-          url: "/repos/fga-eps-mds/2022-1-schedula-gerenciador-de-localidades/releases",
-          method: "GET"
-        }
-      : null,
-    githubApi
-  )
+  const { data: localidadesVersion, isLoading: isLoadingLocalidadesVersion } =
+    useRequest<Releases[]>(
+      process.env.NODE_ENV !== "development"
+        ? {
+            url: "/repos/fga-eps-mds/2022-1-schedula-gerenciador-de-localidades/releases",
+            method: "GET"
+          }
+        : null,
+      githubApi
+    )
 
   const apiVersions = useMemo(
     () => ({
@@ -84,12 +88,15 @@ export const useServicesData = () => {
   return {
     usuariosStatus,
     isLoadingUsuariosStatus,
+    isLoadingUserVersion,
     errorUsuarios,
     chamadosStatus,
     isLoadingChamadosStatus,
+    isLoadingChamadosVersion,
     errorChamados,
     localidadesStatus,
     isLoadingLocalidadesStatus,
+    isLoadingLocalidadesVersion,
     errorLocalidades,
     apiVersions
   }
