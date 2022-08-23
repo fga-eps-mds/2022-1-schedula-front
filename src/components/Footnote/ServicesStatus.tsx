@@ -13,9 +13,7 @@ import {
   VStack
 } from "@chakra-ui/react"
 
-import { useRequest } from "@hooks/useRequest"
-import { detalhadorApi, localidadesApi, usuariosApi } from "@services/api"
-import { serviceStatus } from "@services/request"
+import { useServicesData } from "@components/Footnote/useServicesData"
 
 interface ServicesStatusProps {
   isOpen: boolean
@@ -24,31 +22,14 @@ interface ServicesStatusProps {
 
 export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
   const {
-    data: chamadosStatus,
-    isLoading: isLoadingChamadosStatus,
-    error: errorChamados
-  } = useRequest<ServiceStatus>(
-    serviceStatus(detalhadorApi.defaults.baseURL as string),
-    detalhadorApi
-  )
-
-  const {
-    data: usuariosStatus,
-    isLoading: isLoadingUsuariosStatus,
-    error: errorUsuarios
-  } = useRequest<ServiceStatus>(
-    serviceStatus(usuariosApi.defaults.baseURL as string),
-    usuariosApi
-  )
-
-  const {
-    data: localidadesStatus,
-    isLoading: isLoadingLocalidadesStatus,
-    error: errorLocalidades
-  } = useRequest<ServiceStatus>(
-    serviceStatus(localidadesApi.defaults.baseURL as string),
-    localidadesApi
-  )
+    errorUsuarios,
+    errorChamados,
+    errorLocalidades,
+    isLoadingChamadosStatus,
+    isLoadingUsuariosStatus,
+    isLoadingLocalidadesStatus,
+    apiVersions
+  } = useServicesData()
 
   return (
     <Drawer placement="right" onClose={onClose} isOpen={isOpen} size="sm">
@@ -71,7 +52,12 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
                   {errorUsuarios ? "OFF" : "ON"}
                 </Badge>
               </Skeleton>
-              <Text>Usuários</Text>
+              <Text>
+                Usuários{" "}
+                <Badge textTransform="lowercase" ml={1}>
+                  {apiVersions?.usuarios}
+                </Badge>
+              </Text>
             </HStack>
 
             <HStack spacing={2}>
@@ -84,7 +70,12 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
                   {errorChamados ? "OFF" : "ON"}
                 </Badge>
               </Skeleton>
-              <Text>Chamados</Text>
+              <Text>
+                Chamados{" "}
+                <Badge textTransform="lowercase" ml={1}>
+                  {apiVersions?.chamados}
+                </Badge>
+              </Text>
             </HStack>
 
             <HStack spacing={2}>
@@ -97,7 +88,12 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
                   {errorLocalidades ? "OFF" : "ON"}
                 </Badge>
               </Skeleton>
-              <Text>Localidades</Text>
+              <Text>
+                Localidades{" "}
+                <Badge textTransform="lowercase" ml={1}>
+                  {apiVersions?.localidades || "Not Released"}
+                </Badge>
+              </Text>
             </HStack>
           </VStack>
         </DrawerBody>
