@@ -1,0 +1,33 @@
+name: Generate Metrics Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  send-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+
+      - name: Create Metrics SonarCloud
+        run: node metrics/sonar-metrics.ts.mjs ${{ github.event.repository.name }} ${{ github.ref_name }}
+
+      - name: Commit Metrics SonarCloud File
+        run: |
+          git config --global user.email "${{ secrets.USER_EMAIL }}"
+          git config --global user.name "${{ secrets.USER_USERNAME }}"
+          git clone --single-branch --branch main "https://x-access-token:${{ secrets.REPO_TOKEN }}@github.com/fga-eps-mds/2022-1-schedula-doc" docs
+          mkdir -p docs/analytics-raw-data
+          cp -R fga-eps-mds*.json docs/analytics-raw-data
+          cd docs
+          git add .
+          git commit -m "Métricas SonarCloud - ${{ github.event.repository.name }} ${{ github.ref_name }}"
+          git push
+          echo "Metrics File Generated Successfully."

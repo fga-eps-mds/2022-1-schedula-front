@@ -43,7 +43,8 @@
     "out",
     "bin",
     ".lintstagedrc.js",
-    "coverage"
+    "coverage",
+    "metrics/sonar-metrics.ts.mjs"
   ],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
