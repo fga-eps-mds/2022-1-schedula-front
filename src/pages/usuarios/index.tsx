@@ -3,6 +3,8 @@ import { toast } from "react-toastify"
 import { Badge, Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { DeleteButton } from "@components/ActionButtons/DeleteButton"
+import { EditButton } from "@components/ActionButtons/EditButton"
 import { UserForm } from "@components/Forms/UserForm"
 import { List } from "@components/List"
 import { ListItem } from "@components/ListItem"
@@ -52,7 +54,7 @@ const Usuarios = () => {
   const [userToEdit, setUserToEdit] = useState<User>()
 
   const handleDelete = useCallback(
-    (username: string) => async () => {
+    async ({ username }: User) => {
       const response = await request(deleteUser(username), usuariosApi)
 
       if (response.type === "success") {
@@ -82,7 +84,7 @@ const Usuarios = () => {
   )
 
   const handleEdit = useCallback(
-    (user: User) => () => {
+    (user: User) => {
       setUserToEdit(user)
       onOpen()
     },
@@ -147,7 +149,7 @@ const Usuarios = () => {
         </HStack>
       </PageHeader>
 
-      <List isLoading={isLoading || isValidating}>
+      <List<User> isLoading={isLoading || isValidating}>
         {users?.data?.map?.((item, key) => (
           <ListItem
             title={`${item?.name} [${item?.username}]`}
@@ -161,11 +163,10 @@ const Usuarios = () => {
             }
             key={key}
           >
-            <ListItem.Actions
-              itemName={item?.name}
-              onEdit={handleEdit(item)}
-              onDelete={handleDelete(item.username)}
-            />
+            <ListItem.Actions item={item}>
+              <EditButton onClick={handleEdit} label={item.name} />
+              <DeleteButton onClick={handleDelete} label={item.name} />
+            </ListItem.Actions>
           </ListItem>
         ))}
       </List>

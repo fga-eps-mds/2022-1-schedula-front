@@ -11,6 +11,8 @@ import {
 } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { DeleteButton } from "@components/ActionButtons/DeleteButton"
+import { EditButton } from "@components/ActionButtons/EditButton"
 import { CategoriaForm as ProblemTypeForm } from "@components/Forms/CategoriaForm"
 import { List } from "@components/List"
 import { ListItem } from "@components/ListItem"
@@ -51,7 +53,7 @@ const ListaProblemas = () => {
   const [problemToEdit, setProblemToEdit] = useState<ProblemType>()
 
   const handleDelete = useCallback(
-    (id: number) => async () => {
+    async ({ id }: ProblemType) => {
       const response = await request(deleteProblemType(id), detalhadorApi)
 
       if (response.type === "success") {
@@ -81,7 +83,7 @@ const ListaProblemas = () => {
   )
 
   const handleEdit = useCallback(
-    (categoria: ProblemType) => () => {
+    (categoria: ProblemType) => {
       setProblemToEdit(categoria)
       onOpen()
     },
@@ -163,18 +165,17 @@ const ListaProblemas = () => {
         </HStack>
       </PageHeader>
 
-      <List isLoading={isLoading || isValidating}>
+      <List<ProblemType> isLoading={isLoading || isValidating}>
         {problemas?.data?.map?.((item, key) => (
           <ListItem
             title={item?.name}
             description={item?.description}
             key={key}
           >
-            <ListItem.Actions
-              itemName={item?.name}
-              onEdit={handleEdit(item)}
-              onDelete={handleDelete(item.id)}
-            />
+            <ListItem.Actions item={item}>
+              <EditButton onClick={handleEdit} label={item.name} />
+              <DeleteButton onClick={handleDelete} label={item.name} />
+            </ListItem.Actions>
           </ListItem>
         ))}
       </List>
