@@ -4,10 +4,10 @@ import { Box, Fade, Flex } from "@chakra-ui/react"
 import type { ActionsProps } from "@components/ListItem/ListItemActions"
 import { Actions } from "@components/ListItem/ListItemActions"
 
-export interface ListItemProps {
+export interface ListItemProps<Data> {
   title: string | JSX.Element
   description: string | JSX.Element
-  children?: ReactElement<ActionsProps>
+  children?: ReactElement<ActionsProps<Data>>
 }
 
 export const Divider = {
@@ -19,7 +19,11 @@ export const Divider = {
   backgroundColor: "#e6e6e6"
 }
 
-export const ListItem = ({ title, description, children }: ListItemProps) => {
+export const ListItem = <Data,>({
+  title,
+  description,
+  children
+}: ListItemProps<Data>) => {
   return (
     <Fade in>
       <Flex

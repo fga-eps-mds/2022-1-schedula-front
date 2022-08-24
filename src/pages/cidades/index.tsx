@@ -3,6 +3,8 @@ import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { DeleteButton } from "@components/ActionButtons/DeleteButton"
+import { EditButton } from "@components/ActionButtons/EditButton"
 import { CidadeForm } from "@components/Forms/CidadeForm"
 import { List } from "@components/List"
 import { ListItem } from "@components/ListItem"
@@ -32,7 +34,7 @@ const ListaCidades = () => {
   } = useRequest<ICity[]>(getCities(), localidadesApi, {})
 
   const handleDelete = useCallback(
-    (id: number) => async () => {
+    async ({ id }: ICity) => {
       const response = await request(deleteCity(id), localidadesApi)
 
       if (response.type === "success") {
@@ -60,7 +62,7 @@ const ListaCidades = () => {
   )
 
   const handleEdit = useCallback(
-    (city: ICity) => () => {
+    (city: ICity) => {
       setCidades(city)
       onOpen()
     },
@@ -123,14 +125,13 @@ const ListaCidades = () => {
         </HStack>
       </PageHeader>
 
-      <List isLoading={isLoading || isValidating}>
+      <List<ICity> isLoading={isLoading || isValidating}>
         {cidades?.data?.map?.((item, key) => (
           <ListItem title={item?.name} key={key} description={""}>
-            <ListItem.Actions
-              itemName={item?.name}
-              onEdit={handleEdit(item)}
-              onDelete={handleDelete(item.id)}
-            />
+            <ListItem.Actions item={item}>
+              <EditButton onClick={handleEdit} label={item.name} />
+              <DeleteButton onClick={handleDelete} label={item.name} />
+            </ListItem.Actions>
           </ListItem>
         ))}
       </List>

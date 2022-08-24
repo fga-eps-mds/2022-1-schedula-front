@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react"
 
+import { EditButton } from "@components/ActionButtons/EditButton"
 import { ListItem } from "@components/ListItem"
 
 import { List } from "./index"
@@ -29,11 +30,9 @@ describe("List", () => {
       <List isLoading>
         {mockedData?.map?.((item, key) => (
           <ListItem title={item.title} description={item.description} key={key}>
-            <ListItem.Actions
-              itemName={item.title}
-              onEdit={jest.fn()}
-              onDelete={jest.fn()}
-            />
+            <ListItem.Actions item={item}>
+              <EditButton onClick={jest.fn()} />
+            </ListItem.Actions>
           </ListItem>
         ))}
       </List>

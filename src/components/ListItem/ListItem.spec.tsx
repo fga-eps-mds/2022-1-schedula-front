@@ -1,26 +1,29 @@
 import { render, waitFor } from "@testing-library/react"
 
+import { DeleteButton } from "@components/ActionButtons/DeleteButton"
+import { EditButton } from "@components/ActionButtons/EditButton"
+
 import { ListItem } from "./index"
 
+const callback = jest.fn((item) => item)
 const mockedProps = {
-  title: "Title",
-  description: "Description",
-  children: (
-    <ListItem.Actions itemName="test" onEdit={jest.fn()} onDelete={jest.fn()} />
-  )
+  item: {
+    title: "item name",
+    description: "item desc"
+  }
 }
 
 describe("ListItem", () => {
   it("should render with the passed props", async () => {
     const { getByText } = render(
       <ListItem
-        title={mockedProps.title}
-        description={mockedProps.description}
+        title={mockedProps.item.title}
+        description={mockedProps.item.description}
       />
     )
 
-    const title = getByText(mockedProps.title)
-    const description = getByText(mockedProps.description)
+    const title = getByText(mockedProps.item.title)
+    const description = getByText(mockedProps.item.description)
 
     expect(title).toBeInTheDocument()
     expect(description).toBeInTheDocument()
@@ -30,8 +33,14 @@ describe("ListItem", () => {
 
   it("should have actions", async () => {
     const { getByRole } = render(
-      <ListItem title={mockedProps.title} description={mockedProps.description}>
-        {mockedProps.children}
+      <ListItem
+        title={mockedProps.item.title}
+        description={mockedProps.item.description}
+      >
+        <ListItem.Actions item={mockedProps.item}>
+          <EditButton onClick={callback} />
+          <DeleteButton onClick={callback} />
+        </ListItem.Actions>
       </ListItem>
     )
 

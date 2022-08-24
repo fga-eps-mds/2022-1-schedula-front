@@ -1,32 +1,35 @@
+import { act } from "react-dom/test-utils"
 import { fireEvent, render, waitFor } from "@testing-library/react"
+
+import { DeleteButton } from "@components/ActionButtons/DeleteButton"
+import { EditButton } from "@components/ActionButtons/EditButton"
 
 import { Actions } from "./index"
 
 const mockedProps = {
-  itemName: "item name",
-  onEdit: jest.fn(),
-  onDelete: jest.fn(),
-  onAdd: jest.fn()
+  item: {
+    name: "item name",
+    someKey: "someKey",
+    anotherKey: "anotherKey"
+  },
+  callback: jest.fn((item) => item)
 }
 
 describe("ListItemActions", () => {
   it("should render into the document", () => {
     render(
-      <Actions
-        itemName={mockedProps.itemName}
-        onEdit={mockedProps.onEdit}
-        onDelete={mockedProps.onDelete}
-      />
+      <Actions<typeof mockedProps.item> item={mockedProps.item}>
+        <EditButton onClick={mockedProps.callback} />
+        <DeleteButton onClick={mockedProps.callback} />
+      </Actions>
     )
   })
 
-  it("should invoke the onEdit callback", () => {
+  it("should invoke the callback with the passed item", () => {
     const { getByRole } = render(
-      <Actions
-        itemName={mockedProps.itemName}
-        onEdit={mockedProps.onEdit}
-        onDelete={mockedProps.onDelete}
-      />
+      <Actions<typeof mockedProps.item> item={mockedProps.item}>
+        <EditButton onClick={mockedProps.callback} />
+      </Actions>
     )
 
     const editButton = getByRole("button", { name: /edit/i })
@@ -35,16 +38,18 @@ describe("ListItemActions", () => {
 
     fireEvent.click(editButton)
 
-    expect(mockedProps.onEdit).toHaveBeenCalled()
+    expect(mockedProps.callback).toHaveBeenCalled()
+    expect(mockedProps.callback.mock.results[0].value).toEqual(mockedProps.item)
   })
 
-  it("should invoke the onDelete callback", async () => {
+  it("should invoke the callback", async () => {
     const { getByRole, getByTestId, getByText } = render(
-      <Actions
-        itemName={mockedProps.itemName}
-        onEdit={mockedProps.onEdit}
-        onDelete={mockedProps.onDelete}
-      />
+      <Actions<typeof mockedProps.item> item={mockedProps.item}>
+        <DeleteButton
+          onClick={mockedProps.callback}
+          label={mockedProps.item.name}
+        />
+      </Actions>
     )
 
     const deleteButton = getByRole("button", { name: /delete/i })
@@ -57,33 +62,19 @@ describe("ListItemActions", () => {
     expect(confirmationPopover).toBeInTheDocument()
     await waitFor(() => expect(confirmationPopover).toBeVisible())
 
-    expect(getByText(mockedProps.itemName)).toBeInTheDocument()
+    expect(getByText(mockedProps.item.name)).toBeInTheDocument()
 
-    const confirmActionButton = getByRole("button", { name: /apagar/i })
-    expect(confirmActionButton).toBeInTheDocument()
-    expect(confirmActionButton).toBeVisible()
+    await act(async () => {
+      const confirmActionButton = getByRole("button", { name: /apagar/i })
+      expect(confirmActionButton).toBeInTheDocument()
+      expect(confirmActionButton).toBeVisible()
 
-    fireEvent.click(confirmActionButton)
+      fireEvent.click(confirmActionButton)
 
-    expect(mockedProps.onDelete).toHaveBeenCalled()
-  })
-
-  it("should invoke the onAdd callback", () => {
-    const { getByRole } = render(
-      <Actions
-        itemName={mockedProps.itemName}
-        onEdit={mockedProps.onEdit}
-        onDelete={mockedProps.onDelete}
-        onAdd={mockedProps.onAdd}
-      />
-    )
-
-    const addButton = getByRole("button", { name: /add/i })
-    expect(addButton).toBeInTheDocument()
-    expect(addButton).toBeVisible()
-
-    fireEvent.click(addButton)
-
-    expect(mockedProps.onAdd).toHaveBeenCalled()
+      expect(mockedProps.callback).toHaveBeenCalled()
+      expect(mockedProps.callback.mock.results[0].value).toEqual(
+        mockedProps.item
+      )
+    })
   })
 })

@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { FaServer } from "react-icons/fa"
 import {
   Flex,
@@ -23,7 +24,7 @@ const githubApi = axios.create({
 export const Footnote = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const { data, isLoading } = useRequest<Releases[]>(
+  const { data } = useRequest<Releases[]>(
     process.env.NODE_ENV !== "development"
       ? {
           url: "/repos/fga-eps-mds/2022-1-schedula-front/releases",
@@ -33,7 +34,10 @@ export const Footnote = () => {
     githubApi
   )
 
-  const version = (data as unknown as Releases[])?.[0]?.tag_name
+  const version = useMemo(
+    () => (data as unknown as Releases[])?.[0]?.tag_name,
+    [data]
+  )
 
   return (
     <>

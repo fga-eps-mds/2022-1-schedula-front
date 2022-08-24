@@ -4,6 +4,9 @@ import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { AddButton } from "@components/ActionButtons/AddButton"
+import { DeleteButton } from "@components/ActionButtons/DeleteButton"
+import { EditButton } from "@components/ActionButtons/EditButton"
 import { CategoriaForm } from "@components/Forms/CategoriaForm"
 import { List } from "@components/List"
 import { ListItem } from "@components/ListItem"
@@ -35,7 +38,7 @@ const ListaCategoria = () => {
   const [categoriaToEdit, setCategoria] = useState<IProblemCategory>()
 
   const handleDelete = useCallback(
-    (id: number) => async () => {
+    async ({ id }: IProblemCategory) => {
       const response = await request(deleteProblemCategory(id), detalhadorApi)
 
       if (response.type === "success") {
@@ -65,7 +68,7 @@ const ListaCategoria = () => {
   )
 
   const handleEdit = useCallback(
-    (categoria: IProblemCategory) => () => {
+    (categoria: IProblemCategory) => {
       setCategoria(categoria)
       onOpen()
     },
@@ -73,7 +76,7 @@ const ListaCategoria = () => {
   )
 
   const handleAddProblem = useCallback(
-    (id: number) => () => {
+    ({ id }: IProblemCategory) => {
       router.push(`/categorias/${id}/problemas`)
     },
     [router]
@@ -139,19 +142,18 @@ const ListaCategoria = () => {
         </HStack>
       </PageHeader>
 
-      <List isLoading={isLoading || isValidating}>
+      <List<IProblemCategory> isLoading={isLoading || isValidating}>
         {categorias?.data?.map?.((item, key) => (
           <ListItem
             title={item?.name}
             description={item?.description}
             key={key}
           >
-            <ListItem.Actions
-              itemName={item?.name}
-              onEdit={handleEdit(item)}
-              onDelete={handleDelete(item.id)}
-              onAdd={handleAddProblem(item?.id)}
-            />
+            <ListItem.Actions item={item}>
+              <AddButton onClick={handleAddProblem} label="Tipos de Problema" />
+              <EditButton onClick={handleEdit} label={item.name} />
+              <DeleteButton onClick={handleDelete} label={item.name} />
+            </ListItem.Actions>
           </ListItem>
         ))}
       </List>

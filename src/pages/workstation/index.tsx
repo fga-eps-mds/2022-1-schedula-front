@@ -5,6 +5,8 @@ import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { DeleteButton } from "@components/ActionButtons/DeleteButton"
+import { EditButton } from "@components/ActionButtons/EditButton"
 import { WorkstationForm } from "@components/Forms/WorkstationForm"
 import { List } from "@components/List"
 import { ListItem } from "@components/ListItem"
@@ -34,7 +36,7 @@ const Workstation = () => {
   const [workstationToEdit, setWorkstationToEdit] = useState<Workstation>()
 
   const handleDelete = useCallback(
-    (id: number) => async () => {
+    async ({ id }: Workstation) => {
       const response = await request(deleteWorkstation(id), localidadesApi)
 
       if (response.type === "success") {
@@ -64,7 +66,7 @@ const Workstation = () => {
   )
 
   const handleEdit = useCallback(
-    (workstation: Workstation) => () => {
+    (workstation: Workstation) => {
       setWorkstationToEdit(workstation)
       onOpen()
     },
@@ -133,18 +135,17 @@ const Workstation = () => {
         </HStack>
       </PageHeader>
 
-      <List isLoading={isLoading || isValidating}>
+      <List<Workstation> isLoading={isLoading || isValidating}>
         {workstation?.data?.map?.((item, key) => (
           <ListItem
             title={`${item?.name} [${item?.ip}]`}
             description={<HStack spacing={2} mt={2.5}></HStack>}
             key={key}
           >
-            <ListItem.Actions
-              itemName={item?.name}
-              onEdit={handleEdit(item)}
-              onDelete={handleDelete(item.id)}
-            />
+            <ListItem.Actions item={item}>
+              <EditButton onClick={handleEdit} label={item.name} />
+              <DeleteButton onClick={handleDelete} label={item.name} />
+            </ListItem.Actions>
           </ListItem>
         ))}
       </List>
