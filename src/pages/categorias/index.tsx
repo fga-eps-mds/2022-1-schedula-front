@@ -20,7 +20,7 @@ import {
   deleteProblemCategory,
   getProblemCategories,
   updateProblemCategory
-} from "@services/DetalhadorChamados"
+} from "@services/DetalhadorChamado/Categoria"
 import { request } from "@services/request"
 
 const ListaCategoria = () => {

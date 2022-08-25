@@ -21,13 +21,13 @@ import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { ApiData, useRequest } from "@hooks/useRequest"
 import { detalhadorApi } from "@services/api"
-import { getProblemCategory } from "@services/DetalhadorChamados"
+import { getProblemCategory } from "@services/DetalhadorChamado/Categoria"
 import {
   createProblemType,
   deleteProblemType,
   getProblemTypes,
   updateProblemType
-} from "@services/Problemas"
+} from "@services/DetalhadorChamado/Problemas"
 import { request } from "@services/request"
 
 const ListaProblemas = () => {
