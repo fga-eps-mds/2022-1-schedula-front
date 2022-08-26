@@ -19,6 +19,7 @@ interface CreateWorkstationPayload {
   adsl_vpn: boolean
   ip: string | null
   link: string | null
+  phone: number[]
   regional: boolean
   city_id: number
   regional_id?: number

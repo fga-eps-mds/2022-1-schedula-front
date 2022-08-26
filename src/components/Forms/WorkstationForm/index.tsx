@@ -9,10 +9,12 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  IconButton,
   Input,
   Select,
   Stack,
-  Text
+  Text,
+  Tooltip
 } from "@chakra-ui/react"
 
 interface WorkstationFormProps {
@@ -24,6 +26,13 @@ export const WorkstationForm = ({
   defaultValues,
   onSubmit
 }: WorkstationFormProps) => {
+  type check = {
+    adsl_vpn: boolean
+    regional: boolean
+  }
+
+  //Vê se o campo vpn e regional estão marcados para retirar ou incluir outros campos
+  const [CBox, setCBox] = useState<check>({ adsl_vpn: false, regional: false })
   const {
     register,
     handleSubmit,
@@ -34,13 +43,39 @@ export const WorkstationForm = ({
     }
   })
 
-  type check = {
-    adsl_vpn: boolean
-    regional: boolean
+  const [count, setCount] = useState<number[]>([])
+
+  // for (let i = 0; i < count; i++) {
+  //   const temp = tel
+  //   temp.push(
+  //     <>
+  //       <FormLabel key={i} htmlFor="phone">
+  //         Telefone
+  //       </FormLabel>
+  //       <Input
+  //         {...register("phone", { required: "Campo obrigatório" })}
+  //         key={i}
+  //         placeholder=""
+  //         variant="flushed"
+  //       />
+  //       {errors?.phone && (
+  //         <FormErrorMessage>{errors?.phone?.message}</FormErrorMessage>
+  //       )}
+  //     </>
+  //   )
+  //   setTel(temp)
+  // }
+
+  function Contador() {
+    if (count[0]) {
+      setCount([...count, count[count.length - 1] + 1])
+      console.log(count)
+    } else {
+      setCount([1])
+    }
   }
 
-  //Vê se o campo vpn e regional estão marcados para retirar ou incluir outros campos
-  const [CBox, setCBox] = useState<check>({ adsl_vpn: false, regional: false })
+  // useEffect(() => {}, [])
 
   const setVPN = () => {
     setCBox({ adsl_vpn: !CBox.adsl_vpn, regional: CBox.regional })
@@ -50,8 +85,12 @@ export const WorkstationForm = ({
     setCBox({ adsl_vpn: CBox.adsl_vpn, regional: !CBox.regional })
   }
 
+  const onSubmit2 = (data: CreateWorkstationPayload) => {
+    onSubmit(data)
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit2)}>
       <FormControl isInvalid={Object.keys(errors).length > 0} mb={8}>
         <Stack spacing={8}>
           <Flex gap={8}>
@@ -185,14 +224,47 @@ export const WorkstationForm = ({
             {errors?.phone && (
               <FormErrorMessage>{errors?.phone?.message}</FormErrorMessage>
             )}
+            {count.map((key) => {
+              return (
+                <Box mt={"2em"} key={key}>
+                  <FormLabel htmlFor="phone">Telefone</FormLabel>
+                  <Input
+                    {...register("phone", {
+                      required: "Campo obrigatório"
+                    })}
+                    placeholder=""
+                    variant="flushed"
+                  />
+                  {errors?.phone && (
+                    <FormErrorMessage>
+                      {errors?.phone?.message}
+                    </FormErrorMessage>
+                  )}
+                </Box>
+              )
+            })}
           </Box>
           <Text
             fontSize={"3xl"}
             w={"50%"}
-            textAlign={"right"}
+            textAlign={"left"}
             alignSelf={"flex-end"}
           >
-            <MdLibraryAdd />
+            <Tooltip
+              label="Adicionar Telefone"
+              placement="top"
+              bg="gray.100"
+              color="black"
+              openDelay={250}
+              hasArrow
+            >
+              <IconButton
+                aria-label="Add"
+                icon={<MdLibraryAdd cursor="pointer" size={24} />}
+                onClick={Contador}
+                variant="solid"
+              />
+            </Tooltip>
           </Text>
         </Flex>
       </FormControl>
