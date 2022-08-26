@@ -84,17 +84,16 @@ const Workstation = () => {
 
       if (response.type === "success") {
         toast.success(
-          `Posto de Trabalho ${
-            workstationToEdit ? "editado" : "criado"
+          `Posto de Trabalho ${workstationToEdit ? "editado" : "criado"
           } com sucesso!`
         )
 
         const newUsers = workstationToEdit
           ? workstation?.data.map((workstation) =>
-              workstation.name === workstationToEdit?.name
-                ? response.value.data
-                : workstation
-            )
+            workstation.name === workstationToEdit?.name
+              ? response.value.data
+              : workstation
+          )
           : [...(workstation?.data || []), response.value.data]
 
         mutate(

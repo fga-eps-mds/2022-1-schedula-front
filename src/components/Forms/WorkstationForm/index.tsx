@@ -1,4 +1,6 @@
+import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { MdLibraryAdd } from "react-icons/md"
 import {
   Box,
   Button,
@@ -9,7 +11,8 @@ import {
   FormLabel,
   Input,
   Select,
-  Stack
+  Stack,
+  Text
 } from "@chakra-ui/react"
 
 interface WorkstationFormProps {
@@ -21,7 +24,6 @@ export const WorkstationForm = ({
   defaultValues,
   onSubmit
 }: WorkstationFormProps) => {
-  let isUpdating = false
   const {
     register,
     handleSubmit,
@@ -32,8 +34,20 @@ export const WorkstationForm = ({
     }
   })
 
-  if (defaultValues !== undefined) {
-    isUpdating = true
+  type check = {
+    adsl_vpn: boolean
+    regional: boolean
+  }
+
+  //Vê se o campo vpn e regional estão marcados para retirar ou incluir outros campos
+  const [CBox, setCBox] = useState<check>({ adsl_vpn: false, regional: false })
+
+  const setVPN = () => {
+    setCBox({ adsl_vpn: !CBox.adsl_vpn, regional: CBox.regional })
+  }
+
+  const setRegional = () => {
+    setCBox({ adsl_vpn: CBox.adsl_vpn, regional: !CBox.regional })
   }
 
   return (
@@ -42,7 +56,7 @@ export const WorkstationForm = ({
         <Stack spacing={8}>
           <Flex gap={8}>
             <Box w="100%">
-              <FormLabel htmlFor="name">Nome do posto de trabalho</FormLabel>
+              <FormLabel htmlFor="name">Nome</FormLabel>
               <Input
                 {...register("name", { required: "Campo obrigatório" })}
                 placeholder="Nome"
@@ -52,37 +66,52 @@ export const WorkstationForm = ({
                 <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
               )}
             </Box>
+            <FormLabel htmlFor="adsl_vpn"></FormLabel>
 
-            <Box w="100%">
-              <FormLabel htmlFor="adsl_vpn"></FormLabel>
-
+            <Stack spacing={5} direction="row" w={"100%"}>
               <Stack spacing={5} direction="row">
-                <Stack spacing={5} direction="row">
-                  <Checkbox colorScheme="orange" defaultChecked>
-                    ADSL/VPN
-                  </Checkbox>
-                  <Checkbox colorScheme="orange" defaultChecked>
-                    Regional
-                  </Checkbox>
-                </Stack>
+                <Checkbox
+                  colorScheme="orange"
+                  {...register("adsl_vpn", {
+                    onChange() {
+                      setVPN()
+                    }
+                  })}
+                >
+                  ADSL/VPN
+                </Checkbox>
+                <Checkbox
+                  colorScheme="orange"
+                  {...register("regional", {
+                    onChange() {
+                      setRegional()
+                    }
+                  })}
+                >
+                  Regional
+                </Checkbox>
               </Stack>
-              {errors?.adsl_vpn && (
-                <FormErrorMessage>{errors?.adsl_vpn?.message}</FormErrorMessage>
-              )}
-            </Box>
+            </Stack>
+            {errors?.adsl_vpn && (
+              <FormErrorMessage>{errors?.adsl_vpn?.message}</FormErrorMessage>
+            )}
           </Flex>
           <Flex gap={8}>
-            <Box w="100%">
-              <FormLabel htmlFor="Link">Link</FormLabel>
-              <Input
-                {...register("Link", { required: "Campo obrigatório" })}
-                placeholder=""
-                variant="flushed"
-              />
-              {errors?.Link && (
-                <FormErrorMessage>{errors?.Link?.message}</FormErrorMessage>
-              )}
-            </Box>
+            {CBox.adsl_vpn ? (
+              <></>
+            ) : (
+              <Box w="100%">
+                <FormLabel htmlFor="Link">Link</FormLabel>
+                <Input
+                  {...register("link", { required: "Campo obrigatório" })}
+                  placeholder=""
+                  variant="flushed"
+                />
+                {errors?.link && (
+                  <FormErrorMessage>{errors?.link?.message}</FormErrorMessage>
+                )}
+              </Box>
+            )}
 
             <Box w="100%">
               <FormLabel htmlFor="ip">Faixa de IP</FormLabel>
@@ -98,33 +127,12 @@ export const WorkstationForm = ({
           </Flex>
 
           <Flex gap={8}>
-            <Box width="50%">
-              <FormLabel htmlFor="regional_id">Regional</FormLabel>
-              <Select
-                {...register("regional_id", {
-                  required: "Campo obrigatório"
-                })}
-                defaultValue=""
-                variant="flushed"
-              >
-                <option disabled value="">
-                  Selecione
-                </option>
-                <option value="0">Regional 1</option>
-                <option value="1">Regional 2</option>
-              </Select>
-              {errors?.regional_id && (
-                <FormErrorMessage>
-                  {errors?.regional_id?.message}
-                </FormErrorMessage>
-              )}
-            </Box>
+            {CBox.regional ? (
+              <Box w={"50%"}>
+                <FormLabel htmlFor="regional_id">Regional</FormLabel>
 
-            <Flex gap={8}>
-              <Box width="100%">
-                <FormLabel htmlFor="city_id">Cidade</FormLabel>
                 <Select
-                  {...register("city_id", {
+                  {...register("regional_id", {
                     required: "Campo obrigatório"
                   })}
                   defaultValue=""
@@ -133,20 +141,41 @@ export const WorkstationForm = ({
                   <option disabled value="">
                     Selecione
                   </option>
-                  <option value="0">Cidade 1</option>
-                  <option value="1">Cidade 2</option>
+                  <option value="0">Regional 1</option>
+                  <option value="1">Regional 2</option>
                 </Select>
-                {errors?.city_id && (
+                {errors?.regional_id && (
                   <FormErrorMessage>
-                    {errors?.city_id?.message}
+                    {errors?.regional_id?.message}
                   </FormErrorMessage>
                 )}
               </Box>
-            </Flex>
+            ) : (
+              <></>
+            )}
+            <Box w={"50%"}>
+              <FormLabel htmlFor="city_id">Cidade</FormLabel>
+              <Select
+                {...register("city_id", {
+                  required: "Campo obrigatório"
+                })}
+                defaultValue=""
+                variant="flushed"
+              >
+                <option disabled value="">
+                  Selecione
+                </option>
+                <option value="0">Cidade 1</option>
+                <option value="1">Cidade 2</option>
+              </Select>
+              {errors?.city_id && (
+                <FormErrorMessage>{errors?.city_id?.message}</FormErrorMessage>
+              )}
+            </Box>
           </Flex>
         </Stack>
         <Flex gap={8}>
-          <Box width="50%">
+          <Box w={"50%"} mt={"2em"}>
             <FormLabel htmlFor="phone">Telefone</FormLabel>
             <Input
               {...register("phone", { required: "Campo obrigatório" })}
@@ -157,6 +186,14 @@ export const WorkstationForm = ({
               <FormErrorMessage>{errors?.phone?.message}</FormErrorMessage>
             )}
           </Box>
+          <Text
+            fontSize={"3xl"}
+            w={"50%"}
+            textAlign={"right"}
+            alignSelf={"flex-end"}
+          >
+            <MdLibraryAdd />
+          </Text>
         </Flex>
       </FormControl>
 

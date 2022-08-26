@@ -1,3 +1,7 @@
+type Phone = {
+  number: number
+}
+
 interface Workstation {
   id: number
   name: string
@@ -11,12 +15,11 @@ interface Workstation {
 }
 
 interface CreateWorkstationPayload {
-  id: number
   name: string
   adsl_vpn: boolean
   ip: string | null
   link: string | null
   regional: boolean
   city_id: number
-  regional_id: number
+  regional_id?: number
 }

@@ -88,8 +88,8 @@ const ListaCidades = () => {
 
         const newCidades = cidadesToEdit
           ? cidades?.data.map((cidade) =>
-              cidade.id === cidadesToEdit?.id ? response.value.data : cidade
-            )
+            cidade.id === cidadesToEdit?.id ? response.value.data : cidade
+          )
           : [...(cidades?.data || []), response.value.data]
 
         mutate(
