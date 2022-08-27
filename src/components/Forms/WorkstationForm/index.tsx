@@ -18,6 +18,10 @@ import {
   Tooltip
 } from "@chakra-ui/react"
 
+import { useRequest } from "@hooks/useRequest"
+import { localidadesApi } from "@services/api"
+import { getCities } from "@services/Cidades"
+
 interface WorkstationFormProps {
   defaultValues?: Workstation | undefined
   onSubmit: (data: CreateWorkstationPayload) => void
@@ -31,6 +35,11 @@ export const WorkstationForm = ({
     adsl_vpn: boolean
     regional: boolean
   }
+
+  const { data: cidades } = useRequest<Workstation[]>(
+    getCities(),
+    localidadesApi
+  )
 
   const {
     register,
@@ -46,23 +55,7 @@ export const WorkstationForm = ({
     control,
     name: "phone"
   })
-  const [CBox, setCBox] = useState<check>({ adsl_vpn: false, regional: false })
-  // const [count, setCount] = useState<number[]>([])
-
-  // function Contador() {
-  //   if (count[0]) {
-  //     setCount([...count, count[count.length - 1] + 1])
-  //     console.log(count)
-  //   } else {
-  //     setCount([1])
-  //   }
-  // }
-
-  // const remove = (key: number) => {
-  //   setCount([...count.filter((id) => id != key)])
-  // }
-
-  // useEffect(() => {}, [])
+  const [CBox, setCBox] = useState<check>({ adsl_vpn: false, regional: true })
 
   const setVPN = () => {
     setCBox({ adsl_vpn: !CBox.adsl_vpn, regional: CBox.regional })
@@ -191,8 +184,13 @@ export const WorkstationForm = ({
                 <option disabled value="">
                   Selecione
                 </option>
-                <option value="0">Cidade 1</option>
-                <option value="1">Cidade 2</option>
+                {cidades?.data?.map((cidade) => {
+                  return (
+                    <option key={cidade.id} value={cidade.id}>
+                      {cidade.name}
+                    </option>
+                  )
+                })}
               </Select>
               {errors?.city_id && (
                 <FormErrorMessage>{errors?.city_id?.message}</FormErrorMessage>
@@ -203,15 +201,6 @@ export const WorkstationForm = ({
         <Flex gap={8}>
           <Box w={"45%"} mt={"2em"}>
             <FormLabel htmlFor="phone">Telefones:</FormLabel>
-            {/* <FormLabel htmlFor="phone">Telefone</FormLabel>
-            <Input
-              {...register("phone", { required: "Campo obrigatório" })}
-              placeholder=""
-              variant="flushed"
-            />
-            {errors?.phone && (
-              <FormErrorMessage>{errors?.phone?.message}</FormErrorMessage>
-            )} */}
             {fields.map((phone, index) => {
               return (
                 <Flex mt={"2em"} key={phone.id}>
