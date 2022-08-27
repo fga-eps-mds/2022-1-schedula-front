@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { FaTrash } from "react-icons/fa"
 import { MdLibraryAdd } from "react-icons/md"
 import {
@@ -32,10 +32,9 @@ export const WorkstationForm = ({
     regional: boolean
   }
 
-  //Vê se o campo vpn e regional estão marcados para retirar ou incluir outros campos
-  const [CBox, setCBox] = useState<check>({ adsl_vpn: false, regional: false })
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<CreateWorkstationPayload>({
@@ -43,44 +42,23 @@ export const WorkstationForm = ({
       ...defaultValues
     }
   })
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "phone"
+  })
+  const [CBox, setCBox] = useState<check>({ adsl_vpn: false, regional: false })
+  // const [count, setCount] = useState<number[]>([])
 
-  const [count, setCount] = useState<number[]>([])
-
-  // for (let i = 0; i < count; i++) {
-  //   const temp = tel
-  //   temp.push(
-  //     <>
-  //       <FormLabel key={i} htmlFor="phone">
-  //         Telefone
-  //       </FormLabel>
-  //       <Input
-  //         {...register("phone", { required: "Campo obrigatório" })}
-  //         key={i}
-  //         placeholder=""
-  //         variant="flushed"
-  //       />
-  //       {errors?.phone && (
-  //         <FormErrorMessage>{errors?.phone?.message}</FormErrorMessage>
-  //       )}
-  //     </>
-  //   )
-  //   setTel(temp)
+  // function Contador() {
+  //   if (count[0]) {
+  //     setCount([...count, count[count.length - 1] + 1])
+  //     console.log(count)
+  //   } else {
+  //     setCount([1])
+  //   }
   // }
 
-  function Contador() {
-    if (count[0]) {
-      setCount([...count, count[count.length - 1] + 1])
-      console.log(count)
-    } else {
-      setCount([1])
-    }
-  }
-
-  const remove = (key: number) => {
-    setCount([...count.filter((id) => id != key)])
-  }
-
-  // function Remove(key: number) {
+  // const remove = (key: number) => {
   //   setCount([...count.filter((id) => id != key)])
   // }
 
@@ -234,16 +212,16 @@ export const WorkstationForm = ({
             {errors?.phone && (
               <FormErrorMessage>{errors?.phone?.message}</FormErrorMessage>
             )} */}
-            {count.map((key) => {
+            {fields.map((phone, index) => {
               return (
-                <Flex mt={"2em"} key={key}>
+                <Flex mt={"2em"} key={phone.id}>
                   <Box>
-                    <FormLabel htmlFor="phone">Telefone</FormLabel>
+                    <FormLabel htmlFor={"phone"}>Telefone</FormLabel>
                     <Input
-                      {...register("phone", {
+                      {...register(`phone.${index}.number`, {
                         required: "Campo obrigatório"
                       })}
-                      placeholder=""
+                      placeholder="Novo Telefone"
                       variant="flushed"
                     />
                   </Box>
@@ -256,11 +234,11 @@ export const WorkstationForm = ({
                     openDelay={250}
                     hasArrow
                   >
-                    <Box>
+                    <Box mt={"2em"} ml={"1em"}>
                       <IconButton
                         aria-label="Delete"
                         // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- precisa passar a key
-                        onClick={() => remove(key)}
+                        onClick={() => remove(index)}
                         icon={<FaTrash />}
                         color="red.500"
                         variant="solid"
@@ -293,7 +271,8 @@ export const WorkstationForm = ({
               <IconButton
                 aria-label="Add"
                 icon={<MdLibraryAdd cursor="pointer" size={24} />}
-                onClick={Contador}
+                // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- eu de novo
+                onClick={() => append({})}
                 variant="solid"
               />
             </Tooltip>
