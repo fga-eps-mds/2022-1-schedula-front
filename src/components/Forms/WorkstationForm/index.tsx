@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { FaTrash } from "react-icons/fa"
 import { MdLibraryAdd } from "react-icons/md"
 import {
   Box,
@@ -74,6 +75,14 @@ export const WorkstationForm = ({
       setCount([1])
     }
   }
+
+  const remove = (key: number) => {
+    setCount([...count.filter((id) => id != key)])
+  }
+
+  // function Remove(key: number) {
+  //   setCount([...count.filter((id) => id != key)])
+  // }
 
   // useEffect(() => {}, [])
 
@@ -214,8 +223,9 @@ export const WorkstationForm = ({
           </Flex>
         </Stack>
         <Flex gap={8}>
-          <Box w={"50%"} mt={"2em"}>
-            <FormLabel htmlFor="phone">Telefone</FormLabel>
+          <Box w={"45%"} mt={"2em"}>
+            <FormLabel htmlFor="phone">Telefones:</FormLabel>
+            {/* <FormLabel htmlFor="phone">Telefone</FormLabel>
             <Input
               {...register("phone", { required: "Campo obrigatório" })}
               placeholder=""
@@ -223,24 +233,46 @@ export const WorkstationForm = ({
             />
             {errors?.phone && (
               <FormErrorMessage>{errors?.phone?.message}</FormErrorMessage>
-            )}
+            )} */}
             {count.map((key) => {
               return (
-                <Box mt={"2em"} key={key}>
-                  <FormLabel htmlFor="phone">Telefone</FormLabel>
-                  <Input
-                    {...register("phone", {
-                      required: "Campo obrigatório"
-                    })}
-                    placeholder=""
-                    variant="flushed"
-                  />
+                <Flex mt={"2em"} key={key}>
+                  <Box>
+                    <FormLabel htmlFor="phone">Telefone</FormLabel>
+                    <Input
+                      {...register("phone", {
+                        required: "Campo obrigatório"
+                      })}
+                      placeholder=""
+                      variant="flushed"
+                    />
+                  </Box>
+
+                  <Tooltip
+                    label={`Tirar Telefone`}
+                    placement="top"
+                    bg="red.500"
+                    color="white"
+                    openDelay={250}
+                    hasArrow
+                  >
+                    <Box>
+                      <IconButton
+                        aria-label="Delete"
+                        // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- precisa passar a key
+                        onClick={() => remove(key)}
+                        icon={<FaTrash />}
+                        color="red.500"
+                        variant="solid"
+                      />
+                    </Box>
+                  </Tooltip>
                   {errors?.phone && (
                     <FormErrorMessage>
                       {errors?.phone?.message}
                     </FormErrorMessage>
                   )}
-                </Box>
+                </Flex>
               )
             })}
           </Box>
