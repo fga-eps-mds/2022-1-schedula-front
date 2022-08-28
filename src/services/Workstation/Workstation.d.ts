@@ -1,5 +1,5 @@
 type Phone = {
-  number: number
+  number?: number
 }
 
 interface Workstation {

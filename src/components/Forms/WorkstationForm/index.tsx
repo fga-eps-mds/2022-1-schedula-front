@@ -62,7 +62,7 @@ export const WorkstationForm = ({
     name: "phones"
   })
   const [CBox, setCBox] = useState<check>({
-    adsl_vpn: watch("asdl_vpn"),
+    adsl_vpn: watch("adsl_vpn"),
     regional: watch("regional")
   })
 
@@ -98,7 +98,7 @@ export const WorkstationForm = ({
               <Stack spacing={5} direction="row">
                 <Checkbox
                   colorScheme="orange"
-                  {...register("asdl_vpn", {
+                  {...register("adsl_vpn", {
                     onChange() {
                       setVPN()
                     }
@@ -118,8 +118,8 @@ export const WorkstationForm = ({
                 </Checkbox>
               </Stack>
             </Stack>
-            {errors?.asdl_vpn && (
-              <FormErrorMessage>{errors?.asdl_vpn?.message}</FormErrorMessage>
+            {errors?.adsl_vpn && (
+              <FormErrorMessage>{errors?.adsl_vpn?.message}</FormErrorMessage>
             )}
           </Flex>
 
@@ -156,6 +156,48 @@ export const WorkstationForm = ({
             {!CBox.regional ? (
               <Box w={"50%"}>
                 <FormLabel htmlFor="regional_id">Regional</FormLabel>
+                {/* <InputGroup>
+                  <Input
+                    {...register("regional_id", {
+                      required: "Campo obrigatório"
+                    })}
+                    variant="flushed"
+                  />
+                  <InputRightElement>
+                    <Menu
+                      offset={
+                        // eslint-disable-next-line react-perf/jsx-no-new-array-as-prop -- offset array
+                        [-225, 0]
+                      }
+                      {...register("regional_id", {
+                        required: "Campo obrigatório"
+                      })}
+                    >
+                      <MenuButton
+                        as={IconButton}
+                        aria-label="Options"
+                        icon={<MdLibraryAdd cursor="pointer" size={24} />}
+                        variant="outline"
+                      />
+                      <MenuList>
+                        {regionais?.data?.map((regional) => {
+                          return (
+                            <MenuItem
+                              key={regional.id}
+                              value={regional.id}
+                              w={265}
+                            >
+                              <option key={regional.id} value={regional.id}>
+                                {regional.name}
+                              </option>
+                              {regional.name}
+                            </MenuItem>
+                          )
+                        })}
+                      </MenuList>
+                    </Menu>
+                  </InputRightElement>
+                </InputGroup> */}
                 <Select
                   {...register("regional_id", {
                     required: "Campo obrigatório"
@@ -163,9 +205,6 @@ export const WorkstationForm = ({
                   defaultValue=""
                   variant="flushed"
                 >
-                  <option disabled value="">
-                    Selecione
-                  </option>
                   {regionais?.data?.map((regional) => {
                     return (
                       <option key={regional.id} value={regional.id}>
@@ -174,6 +213,7 @@ export const WorkstationForm = ({
                     )
                   })}
                 </Select>
+
                 {errors?.regional_id && (
                   <FormErrorMessage>
                     {errors?.regional_id?.message}
@@ -224,7 +264,11 @@ export const WorkstationForm = ({
                       {...register(`phones.${index}.number`, {
                         required: "Campo obrigatório"
                       })}
-                      defaultValue={defaultValues?.phones[index]?.number}
+                      defaultValue={
+                        defaultValues?.phones[index] !== undefined
+                          ? defaultValues?.phones[index]?.number
+                          : ""
+                      }
                       placeholder="Novo Telefone"
                       variant="flushed"
                     />

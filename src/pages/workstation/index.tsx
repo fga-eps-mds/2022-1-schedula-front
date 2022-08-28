@@ -82,6 +82,10 @@ const Workstation = () => {
 
   const onSubmit = useCallback(
     async (data: CreateWorkstationPayload) => {
+      if (!data.phones) {
+        data.phones = []
+      }
+
       console.log("DATA: ", data)
 
       const response = await request<{ data: Workstation }>(
