@@ -19,9 +19,8 @@ import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
-import { ApiData, useRequest } from "@hooks/useRequest"
-import { detalhadorApi } from "@services/api"
-import { getProblemCategory } from "@services/DetalhadorChamados"
+import { useRequest } from "@hooks/useRequest"
+import { getProblemCategory } from "@services/Chamados"
 import {
   createProblemType,
   deleteProblemType,
@@ -37,8 +36,7 @@ const ListaProblemas = () => {
 
   const { data: categoria, isLoading: isLoadingCategory } =
     useRequest<CategoriaProblema>(
-      category_id ? getProblemCategory(category_id) : null,
-      detalhadorApi
+      category_id ? getProblemCategory(category_id) : null
     )
 
   const {
@@ -46,7 +44,7 @@ const ListaProblemas = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<TipoProblema[]>(getProblemTypes(category_id), detalhadorApi)
+  } = useRequest<TipoProblema[]>(getProblemTypes(category_id))
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -54,7 +52,7 @@ const ListaProblemas = () => {
 
   const handleDelete = useCallback(
     async ({ id }: TipoProblema) => {
-      const response = await request(deleteProblemType(id), detalhadorApi)
+      const response = await request(deleteProblemType(id))
 
       if (response.type === "success") {
         toast.success("Tipo de problema deletado com sucesso!")
@@ -70,7 +68,7 @@ const ListaProblemas = () => {
               message: "",
               data: newProblemas || ([] as TipoProblema[])
             }
-          } as AxiosResponse<ApiData<TipoProblema[]>>,
+          } as AxiosResponse<ApiResponse<TipoProblema[]>>,
           { revalidate: false }
         )
 
@@ -94,11 +92,10 @@ const ListaProblemas = () => {
     async (data: ProblemTypePayload) => {
       console.log("DATA: ", data)
 
-      const response = await request<{ data: TipoProblema }>(
+      const response = await request<TipoProblema>(
         problemToEdit
           ? updateProblemType(problemToEdit.id)(data)
-          : createProblemType({ ...data, category_id }),
-        detalhadorApi
+          : createProblemType({ ...data, category_id })
       )
 
       if (response.type === "success") {
@@ -112,7 +109,7 @@ const ListaProblemas = () => {
           ? problemas?.data.map((problema) =>
               problema.id === problemToEdit?.id ? response.value.data : problema
             )
-          : [...(problemas?.data || []), response.value.data]
+          : [...(problemas?.data || []), response.value?.data]
 
         mutate(
           {
@@ -121,7 +118,7 @@ const ListaProblemas = () => {
               message: "",
               data: newProblemas
             }
-          } as AxiosResponse<ApiData<TipoProblema[]>>,
+          } as AxiosResponse<ApiResponse<TipoProblema[]>>,
           { revalidate: false }
         )
 

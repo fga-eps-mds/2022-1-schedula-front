@@ -11,8 +11,7 @@ import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
-import { ApiData, useRequest } from "@hooks/useRequest"
-import { usuariosApi } from "@services/api"
+import { useRequest } from "@hooks/useRequest"
 import { request } from "@services/request"
 import {
   createUser,
@@ -47,7 +46,7 @@ const Usuarios = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<User[]>(getUsers(), usuariosApi)
+  } = useRequest<User[]>(getUsers)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -55,7 +54,7 @@ const Usuarios = () => {
 
   const handleDelete = useCallback(
     async ({ username }: User) => {
-      const response = await request(deleteUser(username), usuariosApi)
+      const response = await request(deleteUser(username))
 
       if (response.type === "success") {
         toast.success("Usuário removido com sucesso!")
@@ -71,7 +70,7 @@ const Usuarios = () => {
               message: "",
               data: newUsers || ([] as User[])
             }
-          } as AxiosResponse<ApiData<User[]>>,
+          } as AxiosResponse<ApiResponse<User[]>>,
           { revalidate: false }
         )
 
@@ -96,8 +95,7 @@ const Usuarios = () => {
       console.log("DATA: ", data)
 
       const response = await request<{ data: User }>(
-        userToEdit ? updateUser(userToEdit.username)(data) : createUser(data),
-        usuariosApi
+        userToEdit ? updateUser(userToEdit.username)(data) : createUser(data)
       )
 
       if (response.type === "success") {
@@ -120,7 +118,7 @@ const Usuarios = () => {
               message: "",
               data: newUsers
             }
-          } as AxiosResponse<ApiData<User[]>>,
+          } as AxiosResponse<ApiResponse<User[]>>,
           { revalidate: false }
         )
 

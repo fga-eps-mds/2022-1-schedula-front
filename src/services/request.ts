@@ -1,8 +1,9 @@
-import { AxiosInstance, AxiosRequestConfig } from "axios"
+import { AxiosRequestConfig } from "axios"
 
-export const request = async <Data>(
-  requestConfig: AxiosRequestConfig,
-  api: AxiosInstance
+import { api } from "@services/api"
+
+export const request = async <T, Data = ApiResponse<T>>(
+  requestConfig: AxiosRequestConfig
 ): Promise<Result<Data>> => {
   try {
     const response = await api.request<Data>(requestConfig)
@@ -12,16 +13,3 @@ export const request = async <Data>(
     return { type: "error", error: error as Error }
   }
 }
-
-export const createRequestConfig =
-  <Payload>(config: AxiosRequestConfig<Payload>) =>
-  (payload?: Payload): AxiosRequestConfig<Payload> => ({
-    ...config,
-    data: payload
-  })
-
-export const serviceStatus = (url: string): AxiosRequestConfig => ({
-  url: "/",
-  method: "GET",
-  baseURL: url
-})

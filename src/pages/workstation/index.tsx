@@ -13,8 +13,7 @@ import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
-import { ApiData, useRequest } from "@hooks/useRequest"
-import { localidadesApi } from "@services/api"
+import { useRequest } from "@hooks/useRequest"
 import { request } from "@services/request"
 import {
   createWorkstation,
@@ -29,7 +28,7 @@ const Workstation = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Workstation[]>(getWorkstation(), localidadesApi)
+  } = useRequest<Workstation[]>(getWorkstation)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -37,7 +36,7 @@ const Workstation = () => {
 
   const handleDelete = useCallback(
     async ({ id }: Workstation) => {
-      const response = await request(deleteWorkstation(id), localidadesApi)
+      const response = await request(deleteWorkstation(id))
 
       if (response.type === "success") {
         toast.success("Posto de trabalho removido com sucesso!")
@@ -53,7 +52,7 @@ const Workstation = () => {
               message: "",
               data: newWorkstation || ([] as Workstation[])
             }
-          } as AxiosResponse<ApiData<Workstation[]>>,
+          } as AxiosResponse<ApiResponse<Workstation[]>>,
           { revalidate: false }
         )
 
@@ -80,8 +79,7 @@ const Workstation = () => {
       const response = await request<{ data: Workstation }>(
         workstationToEdit
           ? updateWorkstation(workstationToEdit.id)(data)
-          : createWorkstation(data),
-        localidadesApi
+          : createWorkstation(data)
       )
 
       if (response.type === "success") {
@@ -106,7 +104,7 @@ const Workstation = () => {
               message: "",
               data: newUsers
             }
-          } as AxiosResponse<ApiData<Workstation[]>>,
+          } as AxiosResponse<ApiResponse<Workstation[]>>,
           { revalidate: false }
         )
 

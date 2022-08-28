@@ -7,7 +7,6 @@ import {
   Tooltip,
   useDisclosure
 } from "@chakra-ui/react"
-import axios from "axios"
 
 import { ServicesStatus } from "@components/Footnote/ServicesStatus"
 import { useRequest } from "@hooks/useRequest"
@@ -17,21 +16,17 @@ type Releases = {
   name: string
 }
 
-const githubApi = axios.create({
-  baseURL: "https://api.github.com"
-})
-
 export const Footnote = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { data } = useRequest<Releases[]>(
     process.env.NODE_ENV !== "development"
       ? {
+          baseURL: "https://api.github.com",
           url: "/repos/fga-eps-mds/2022-1-schedula-front/releases",
           method: "GET"
         }
-      : null,
-    githubApi
+      : null
   )
 
   const version = useMemo(

@@ -1,79 +1,64 @@
 import { useMemo } from "react"
-import axios from "axios"
 
 import { useRequest } from "@hooks/useRequest"
-import { detalhadorApi, localidadesApi, usuariosApi } from "@services/api"
-import { serviceStatus } from "@services/request"
+import { serviceStatus } from "@services"
 
 type Releases = {
   tag_name: string
   name: string
 }
 
-const githubApi = axios.create({
-  baseURL: "https://api.github.com"
-})
-
 export const useServicesData = () => {
   const {
     data: chamadosStatus,
     isLoading: isLoadingChamadosStatus,
     error: errorChamados
-  } = useRequest<ServiceStatus>(
-    serviceStatus(detalhadorApi.defaults.baseURL as string),
-    detalhadorApi
-  )
+  } = useRequest<ServiceStatus>(serviceStatus("chamados"))
 
   const {
     data: usuariosStatus,
     isLoading: isLoadingUsuariosStatus,
     error: errorUsuarios
-  } = useRequest<ServiceStatus>(
-    serviceStatus(usuariosApi.defaults.baseURL as string),
-    usuariosApi
-  )
+  } = useRequest<ServiceStatus>(serviceStatus("usuarios"))
 
   const {
     data: localidadesStatus,
     isLoading: isLoadingLocalidadesStatus,
     error: errorLocalidades
-  } = useRequest<ServiceStatus>(
-    serviceStatus(localidadesApi.defaults.baseURL as string),
-    localidadesApi
-  )
+  } = useRequest<ServiceStatus>(serviceStatus("localidades"))
 
   const { data: usuariosVersion, isLoading: isLoadingUserVersion } = useRequest<
     Releases[]
   >(
     process.env.NODE_ENV !== "development"
       ? {
+          baseURL: "https://api.github.com",
           url: "/repos/fga-eps-mds/2022-1-schedula-gestor-de-usuarios/releases",
           method: "GET"
         }
-      : null,
-    githubApi
+      : null
   )
 
   const { data: chamadosVersion, isLoading: isLoadingChamadosVersion } =
     useRequest<Releases[]>(
       process.env.NODE_ENV !== "development"
         ? {
+            baseURL: "https://api.github.com",
             url: "/repos/fga-eps-mds/2022-1-schedula-detalhador-de-chamados/releases",
             method: "GET"
           }
-        : null,
-      githubApi
+        : null
     )
 
   const { data: localidadesVersion, isLoading: isLoadingLocalidadesVersion } =
     useRequest<Releases[]>(
       process.env.NODE_ENV !== "development"
         ? {
+            baseURL: "https://api.github.com",
             url: "/repos/fga-eps-mds/2022-1-schedula-gerenciador-de-localidades/releases",
             method: "GET"
           }
-        : null,
-      githubApi
+        : null
     )
 
   const apiVersions = useMemo(

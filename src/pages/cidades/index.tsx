@@ -11,8 +11,7 @@ import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
-import { ApiData, useRequest } from "@hooks/useRequest"
-import { localidadesApi } from "@services/api"
+import { useRequest } from "@hooks/useRequest"
 import {
   createCity,
   deleteCity,
@@ -31,11 +30,11 @@ const ListaCidades = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<City[]>(getCities(), localidadesApi, {})
+  } = useRequest<City[]>(getCities)
 
   const handleDelete = useCallback(
     async ({ id }: City) => {
-      const response = await request(deleteCity(id), localidadesApi)
+      const response = await request(deleteCity(id))
 
       if (response.type === "success") {
         toast.success("Cidade deletada com sucesso!")
@@ -49,7 +48,7 @@ const ListaCidades = () => {
               message: "",
               data: newCidades || ([] as City[])
             }
-          } as AxiosResponse<ApiData<City[]>>,
+          } as AxiosResponse<ApiResponse<City[]>>,
           { revalidate: false }
         )
 
@@ -79,8 +78,7 @@ const ListaCidades = () => {
       console.log("DATA: ", data)
 
       const response = await request<{ data: City }>(
-        cidadesToEdit ? updateCity(cidadesToEdit.id)(data) : createCity(data),
-        localidadesApi
+        cidadesToEdit ? updateCity(cidadesToEdit.id)(data) : createCity(data)
       )
 
       if (response.type === "success") {
@@ -101,7 +99,7 @@ const ListaCidades = () => {
               message: "",
               data: newCidades
             }
-          } as AxiosResponse<ApiData<CategoriaProblema[]>>,
+          } as AxiosResponse<ApiResponse<CategoriaProblema[]>>,
           { revalidate: false }
         )
 
