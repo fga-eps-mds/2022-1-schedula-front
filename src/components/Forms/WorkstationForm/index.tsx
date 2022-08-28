@@ -45,12 +45,12 @@ export const WorkstationForm = ({
     getRegionais(),
     localidadesApi
   )
-
   const {
     register,
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors, isSubmitting }
   } = useForm<CreateWorkstationPayload>({
     defaultValues: {
@@ -59,7 +59,7 @@ export const WorkstationForm = ({
   })
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "phone"
+    name: "phones"
   })
   const [CBox, setCBox] = useState<check>({
     adsl_vpn: watch("asdl_vpn"),
@@ -72,6 +72,7 @@ export const WorkstationForm = ({
 
   const setRegional = () => {
     setCBox({ adsl_vpn: CBox.adsl_vpn, regional: !CBox.regional })
+    reset({ regional_id: undefined })
   }
 
   const onSubmit2 = (data: CreateWorkstationPayload) => {
@@ -145,7 +146,7 @@ export const WorkstationForm = ({
               <FormLabel htmlFor="ip">Faixa de IP</FormLabel>
               <Input
                 {...register("ip", { required: "Campo obrigatório" })}
-                placeholder=""
+                placeholder="00.000.00.0"
                 variant="flushed"
               />
               {errors?.ip && (
@@ -193,7 +194,6 @@ export const WorkstationForm = ({
                   {...register("city_id", {
                     required: "Campo obrigatório"
                   })}
-                  defaultValue=""
                   variant="flushed"
                 >
                   <option disabled value="">
@@ -219,14 +219,17 @@ export const WorkstationForm = ({
           <Box w={"45%"} mt={"2em"}>
             <FormLabel htmlFor="phone">Telefones:</FormLabel>
             {fields.map((phone, index) => {
+              console.log(index)
+
               return (
                 <Flex mt={"2em"} key={phone.id}>
                   <Box>
                     <FormLabel htmlFor={"phone"}>Telefone</FormLabel>
                     <Input
-                      {...register(`phone.${index}.number`, {
+                      {...register(`phones.${index}.number`, {
                         required: "Campo obrigatório"
                       })}
+                      defaultValue={defaultValues?.phones[index]?.number}
                       placeholder="Novo Telefone"
                       variant="flushed"
                     />
@@ -251,9 +254,9 @@ export const WorkstationForm = ({
                       />
                     </Box>
                   </Tooltip>
-                  {errors?.phone && (
+                  {errors?.phones && (
                     <FormErrorMessage>
-                      {errors?.phone?.message}
+                      {errors?.phones?.message}
                     </FormErrorMessage>
                   )}
                 </Flex>
