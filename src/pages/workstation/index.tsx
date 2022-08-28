@@ -6,7 +6,6 @@ import { AxiosResponse } from "axios"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { WorkstationForm } from "@components/Forms/WorkstationForm"
-import { ListView } from "@components/List"
 import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
@@ -31,15 +30,18 @@ const Workstation = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [workstationToEdit, setWorkstationToEdit] = useState<Workstation>()
-  const { data: cidade } = useRequest<ICity[]>(getCities(), localidadesApi)
+  // const { data: cidade } = useRequest<ICity[]>(getCities(), localidadesApi)
+  const { data: cidades } = useRequest<ICity[]>(getCities(), localidadesApi)
 
   function GetCidades(id: number) {
-    const city: ICity =
-      cidade?.data?.find((loc) => loc.id === id) === undefined
-        ? { id: 0, name: "", active: false, updated_at: 0 }
-        : cidade?.data?.find((loc) => loc.id === id)
+    // const city?: ICity =
+    // cidade?.data.find((loc) => loc.id === id)
+    //   // cidade?.data?.find((loc) => loc.id === id) === undefined
+    //   //   ? []
+    //   //   : cidade?.data?.find((loc) => loc.id === id)
+    cidades?.data?.find((loc) => loc.id === id)
 
-    return city.name
+    return cidades?.data?.find((loc) => loc.id === id)?.name
   }
 
   const handleDelete = useCallback(
@@ -156,11 +158,60 @@ const Workstation = () => {
         </HStack>
       </PageHeader>
 
-      <ListView<Workstation>
-        items={workstation?.data}
-        render={renderWorkstationItem}
-        isLoading={isLoading || isValidating}
-      />
+      {isLoading ? (
+        <ListItemSkeleton />
+      ) : (
+        <Flex flexDirection="column" gap={6}>
+          {workstation?.data?.map?.((item, key) => (
+            <ListItem
+              title={
+                <>
+                  <Flex>
+                    {item?.name}
+                    <HStack spacing={2} ml={4}>
+                      {item?.regional ? (
+                        <Badge colorScheme="yellow" variant="solid">
+                          Regional
+                        </Badge>
+                      ) : (
+                        <></>
+                      )}
+                      <Badge colorScheme="linkedin" variant="solid">
+                        {
+                          /* {cidades?.data.filter(
+                          (cidade) => cidade.id === item.city_id
+                        ) != undefined
+                          ? GetCidades(item.city_id)
+                          : "tchau"} */
+                          cidades?.data?.find((loc) => loc.id === item.city_id)
+                            ?.name
+                        }
+                      </Badge>
+                    </HStack>
+                  </Flex>
+                </>
+              }
+              description={`[${item?.link
+                  ? "Link: " + item.link + " // Faixa: " + item.ip
+                  : "ADSL_VPN"
+                }]`}
+              key={key}
+            >
+              <ListItem.Actions
+                itemName={item?.name}
+                onEdit={handleEdit(item)}
+                onDelete={handleDelete(item.id)}
+              />
+            </ListItem>
+          ))}
+        </Flex>
+      )}
+
+      {workstation && isValidating && (
+        <Box mt={6}>
+          <ListItemSkeleton />
+        </Box>
+      )}
 
       <Modal
         title={
