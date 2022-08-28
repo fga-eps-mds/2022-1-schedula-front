@@ -76,12 +76,8 @@ export const WorkstationForm = ({
     reset({ regional_id: undefined })
   }
 
-  const onSubmit2 = (data: CreateWorkstationPayload) => {
-    onSubmit(data)
-  }
-
   return (
-    <form onSubmit={handleSubmit(onSubmit2)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={Object.keys(errors).length > 0} mb={8}>
         <Stack spacing={8}>
           <Flex gap={8}>
@@ -160,7 +156,6 @@ export const WorkstationForm = ({
             {!CBox.regional ? (
               <Box w={"50%"}>
                 <FormLabel htmlFor="regional_id">Regional</FormLabel>
-
                 <Select
                   {...register("regional_id", {
                     required: "Campo obrigatório"
@@ -188,6 +183,7 @@ export const WorkstationForm = ({
             ) : (
               <></>
             )}
+
             <Box w={"50%"}>
               <FormLabel htmlFor="city_id">Cidade</FormLabel>
               <Flex>
@@ -209,19 +205,17 @@ export const WorkstationForm = ({
                   })}
                 </Select>
               </Flex>
-
               {errors?.city_id && (
                 <FormErrorMessage>{errors?.city_id?.message}</FormErrorMessage>
               )}
             </Box>
           </Flex>
         </Stack>
+
         <Flex gap={8}>
           <Box w={"45%"} mt={"2em"}>
             <FormLabel htmlFor="phone">Telefones:</FormLabel>
             {fields.map((phone, index) => {
-              console.log(index)
-
               return (
                 <Flex mt={"2em"} key={phone.id}>
                   <Box>

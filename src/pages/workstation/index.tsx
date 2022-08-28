@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair -- fixing lint
-/* eslint-disable prettier/prettier  -- fail in word limit*/
 import { useCallback, useState } from "react"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
@@ -33,6 +31,16 @@ const Workstation = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [workstationToEdit, setWorkstationToEdit] = useState<Workstation>()
+  const { data: cidade } = useRequest<ICity[]>(getCities(), localidadesApi)
+
+  function GetCidades(id: number) {
+    const city: ICity =
+      cidade?.data?.find((loc) => loc.id === id) === undefined
+        ? { id: 0, name: "", active: false, updated_at: 0 }
+        : cidade?.data?.find((loc) => loc.id === id)
+
+    return city.name
+  }
 
   const handleDelete = useCallback(
     async ({ id }: Workstation) => {
@@ -88,7 +96,7 @@ const Workstation = () => {
           } com sucesso!`
         )
 
-        const newUsers = workstationToEdit
+        const newWorkstation = workstationToEdit
           ? workstation?.data.map((workstation) =>
             workstation.name === workstationToEdit?.name
               ? response.value.data
@@ -101,7 +109,7 @@ const Workstation = () => {
             data: {
               error: null,
               message: "",
-              data: newUsers
+              data: newWorkstation
             }
           } as AxiosResponse<ApiResponse<Workstation[]>>,
           { revalidate: false }
