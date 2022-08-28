@@ -21,6 +21,7 @@ import {
 import { useRequest } from "@hooks/useRequest"
 import { localidadesApi } from "@services/api"
 import { getCities } from "@services/Cidades"
+import { getRegionais } from "@services/Workstation"
 
 interface WorkstationFormProps {
   defaultValues?: Workstation | undefined
@@ -32,12 +33,16 @@ export const WorkstationForm = ({
   onSubmit
 }: WorkstationFormProps) => {
   type check = {
-    adsl_vpn: boolean
-    regional: boolean
+    adsl_vpn: boolean | null
+    regional: boolean | null
   }
 
   const { data: cidades } = useRequest<Workstation[]>(
     getCities(),
+    localidadesApi
+  )
+  const { data: regionais } = useRequest<Workstation[]>(
+    getRegionais(),
     localidadesApi
   )
 
@@ -45,6 +50,7 @@ export const WorkstationForm = ({
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting }
   } = useForm<CreateWorkstationPayload>({
     defaultValues: {
@@ -55,7 +61,10 @@ export const WorkstationForm = ({
     control,
     name: "phone"
   })
-  const [CBox, setCBox] = useState<check>({ adsl_vpn: false, regional: true })
+  const [CBox, setCBox] = useState<check>({
+    adsl_vpn: watch("asdl_vpn"),
+    regional: watch("regional")
+  })
 
   const setVPN = () => {
     setCBox({ adsl_vpn: !CBox.adsl_vpn, regional: CBox.regional })
@@ -85,13 +94,13 @@ export const WorkstationForm = ({
                 <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
               )}
             </Box>
-            <FormLabel htmlFor="adsl_vpn"></FormLabel>
+            <FormLabel htmlFor="asdl_vpn"></FormLabel>
 
             <Stack spacing={5} direction="row" w={"100%"}>
               <Stack spacing={5} direction="row">
                 <Checkbox
                   colorScheme="orange"
-                  {...register("adsl_vpn", {
+                  {...register("asdl_vpn", {
                     onChange() {
                       setVPN()
                     }
@@ -111,8 +120,8 @@ export const WorkstationForm = ({
                 </Checkbox>
               </Stack>
             </Stack>
-            {errors?.adsl_vpn && (
-              <FormErrorMessage>{errors?.adsl_vpn?.message}</FormErrorMessage>
+            {errors?.asdl_vpn && (
+              <FormErrorMessage>{errors?.asdl_vpn?.message}</FormErrorMessage>
             )}
           </Flex>
           <Flex gap={8}>
@@ -146,7 +155,7 @@ export const WorkstationForm = ({
           </Flex>
 
           <Flex gap={8}>
-            {CBox.regional ? (
+            {!CBox.regional ? (
               <Box w={"50%"}>
                 <FormLabel htmlFor="regional_id">Regional</FormLabel>
 
@@ -160,8 +169,13 @@ export const WorkstationForm = ({
                   <option disabled value="">
                     Selecione
                   </option>
-                  <option value="0">Regional 1</option>
-                  <option value="1">Regional 2</option>
+                  {regionais?.data?.map((regional) => {
+                    return (
+                      <option key={regional.id} value={regional.id}>
+                        {regional.name}
+                      </option>
+                    )
+                  })}
                 </Select>
                 {errors?.regional_id && (
                   <FormErrorMessage>
@@ -174,24 +188,27 @@ export const WorkstationForm = ({
             )}
             <Box w={"50%"}>
               <FormLabel htmlFor="city_id">Cidade</FormLabel>
-              <Select
-                {...register("city_id", {
-                  required: "Campo obrigatório"
-                })}
-                defaultValue=""
-                variant="flushed"
-              >
-                <option disabled value="">
-                  Selecione
-                </option>
-                {cidades?.data?.map((cidade) => {
-                  return (
-                    <option key={cidade.id} value={cidade.id}>
-                      {cidade.name}
-                    </option>
-                  )
-                })}
-              </Select>
+              <Flex>
+                <Select
+                  {...register("city_id", {
+                    required: "Campo obrigatório"
+                  })}
+                  defaultValue=""
+                  variant="flushed"
+                >
+                  <option disabled value="">
+                    Selecione
+                  </option>
+                  {cidades?.data?.map((cidade) => {
+                    return (
+                      <option key={cidade.id} value={cidade.id}>
+                        {cidade.name}
+                      </option>
+                    )
+                  })}
+                </Select>
+              </Flex>
+
               {errors?.city_id && (
                 <FormErrorMessage>{errors?.city_id?.message}</FormErrorMessage>
               )}
