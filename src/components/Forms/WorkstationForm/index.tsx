@@ -68,6 +68,7 @@ export const WorkstationForm = ({
 
   const setVPN = () => {
     setCBox({ adsl_vpn: !CBox.adsl_vpn, regional: CBox.regional })
+    reset({ link: undefined, ip: undefined })
   }
 
   const setRegional = () => {
@@ -125,35 +126,35 @@ export const WorkstationForm = ({
               <FormErrorMessage>{errors?.asdl_vpn?.message}</FormErrorMessage>
             )}
           </Flex>
-          <Flex gap={8}>
-            {CBox.adsl_vpn ? (
-              <></>
-            ) : (
+
+          {CBox.adsl_vpn ? (
+            <></>
+          ) : (
+            <Flex gap={8}>
               <Box w="100%">
                 <FormLabel htmlFor="Link">Link</FormLabel>
                 <Input
                   {...register("link", { required: "Campo obrigatório" })}
-                  placeholder=""
+                  placeholder="00.00.000.1"
                   variant="flushed"
                 />
                 {errors?.link && (
                   <FormErrorMessage>{errors?.link?.message}</FormErrorMessage>
                 )}
               </Box>
-            )}
-
-            <Box w="100%">
-              <FormLabel htmlFor="ip">Faixa de IP</FormLabel>
-              <Input
-                {...register("ip", { required: "Campo obrigatório" })}
-                placeholder="00.000.00.0"
-                variant="flushed"
-              />
-              {errors?.ip && (
-                <FormErrorMessage>{errors?.ip?.message}</FormErrorMessage>
-              )}
-            </Box>
-          </Flex>
+              <Box w="100%">
+                <FormLabel htmlFor="ip">Faixa de IP</FormLabel>
+                <Input
+                  {...register("ip", { required: "Campo obrigatório" })}
+                  placeholder="00.000.00.2 a 00.00.000.3"
+                  variant="flushed"
+                />
+                {errors?.ip && (
+                  <FormErrorMessage>{errors?.ip?.message}</FormErrorMessage>
+                )}
+              </Box>
+            </Flex>
+          )}
 
           <Flex gap={8}>
             {!CBox.regional ? (
