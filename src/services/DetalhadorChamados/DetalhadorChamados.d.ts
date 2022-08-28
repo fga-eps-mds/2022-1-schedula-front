@@ -1,4 +1,4 @@
-interface IProblemCategory {
+interface CategoriaProblema {
   id: number
   active: boolean
   description: string
@@ -6,7 +6,7 @@ interface IProblemCategory {
   name: string
 }
 
-interface IProblemCategoryPayload {
+interface CategoriaProblemaPayload {
   name: string
   description: string
 }

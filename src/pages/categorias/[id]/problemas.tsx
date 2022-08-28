@@ -14,8 +14,8 @@ import { AxiosResponse } from "axios"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { CategoriaForm as ProblemTypeForm } from "@components/Forms/CategoriaForm"
-import { List } from "@components/List"
-import { ListItem } from "@components/ListItem"
+import { ListView } from "@components/List"
+import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
@@ -36,7 +36,7 @@ const ListaProblemas = () => {
   const category_id = Number(router.query?.id)
 
   const { data: categoria, isLoading: isLoadingCategory } =
-    useRequest<IProblemCategory>(
+    useRequest<CategoriaProblema>(
       category_id ? getProblemCategory(category_id) : null,
       detalhadorApi
     )
@@ -46,14 +46,14 @@ const ListaProblemas = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<ProblemType[]>(getProblemTypes(category_id), detalhadorApi)
+  } = useRequest<TipoProblema[]>(getProblemTypes(category_id), detalhadorApi)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [problemToEdit, setProblemToEdit] = useState<ProblemType>()
+  const [problemToEdit, setProblemToEdit] = useState<TipoProblema>()
 
   const handleDelete = useCallback(
-    async ({ id }: ProblemType) => {
+    async ({ id }: TipoProblema) => {
       const response = await request(deleteProblemType(id), detalhadorApi)
 
       if (response.type === "success") {
@@ -68,9 +68,9 @@ const ListaProblemas = () => {
             data: {
               error: null,
               message: "",
-              data: newProblemas || ([] as ProblemType[])
+              data: newProblemas || ([] as TipoProblema[])
             }
-          } as AxiosResponse<ApiData<ProblemType[]>>,
+          } as AxiosResponse<ApiData<TipoProblema[]>>,
           { revalidate: false }
         )
 
@@ -83,7 +83,7 @@ const ListaProblemas = () => {
   )
 
   const handleEdit = useCallback(
-    (categoria: ProblemType) => {
+    (categoria: TipoProblema) => {
       setProblemToEdit(categoria)
       onOpen()
     },
@@ -94,7 +94,7 @@ const ListaProblemas = () => {
     async (data: ProblemTypePayload) => {
       console.log("DATA: ", data)
 
-      const response = await request<{ data: ProblemType }>(
+      const response = await request<{ data: TipoProblema }>(
         problemToEdit
           ? updateProblemType(problemToEdit.id)(data)
           : createProblemType({ ...data, category_id }),
@@ -121,7 +121,7 @@ const ListaProblemas = () => {
               message: "",
               data: newProblemas
             }
-          } as AxiosResponse<ApiData<ProblemType[]>>,
+          } as AxiosResponse<ApiData<TipoProblema[]>>,
           { revalidate: false }
         )
 
@@ -140,6 +140,18 @@ const ListaProblemas = () => {
     setProblemToEdit(undefined)
     onClose()
   }, [onClose])
+
+  const renderProblemaItem = useCallback(
+    (item: CategoriaProblema) => (
+      <Item title={item?.name} description={item?.description}>
+        <Item.Actions item={item}>
+          <EditButton onClick={handleEdit} label={item.name} />
+          <DeleteButton onClick={handleDelete} label={item.name} />
+        </Item.Actions>
+      </Item>
+    ),
+    [handleDelete, handleEdit]
+  )
 
   return (
     <>
@@ -165,20 +177,11 @@ const ListaProblemas = () => {
         </HStack>
       </PageHeader>
 
-      <List<ProblemType> isLoading={isLoading || isValidating}>
-        {problemas?.data?.map?.((item, key) => (
-          <ListItem
-            title={item?.name}
-            description={item?.description}
-            key={key}
-          >
-            <ListItem.Actions item={item}>
-              <EditButton onClick={handleEdit} label={item.name} />
-              <DeleteButton onClick={handleDelete} label={item.name} />
-            </ListItem.Actions>
-          </ListItem>
-        ))}
-      </List>
+      <ListView<TipoProblema>
+        items={problemas?.data}
+        render={renderProblemaItem}
+        isLoading={isLoading || isValidating}
+      />
 
       <Modal
         title={
@@ -189,7 +192,7 @@ const ListaProblemas = () => {
       >
         <ProblemTypeForm
           // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- ignore
-          defaultValues={{ ...problemToEdit, category_id } as ProblemType}
+          defaultValues={{ ...problemToEdit, category_id } as TipoProblema}
           onSubmit={onSubmit}
         />
       </Modal>

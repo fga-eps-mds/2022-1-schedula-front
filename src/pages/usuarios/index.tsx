@@ -6,8 +6,8 @@ import { AxiosResponse } from "axios"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { UserForm } from "@components/Forms/UserForm"
-import { List } from "@components/List"
-import { ListItem } from "@components/ListItem"
+import { ListView } from "@components/List"
+import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
@@ -92,7 +92,7 @@ const Usuarios = () => {
   )
 
   const onSubmit = useCallback(
-    async (data: CreateUserPayload) => {
+    async (data: RegisterUserPayload) => {
       console.log("DATA: ", data)
 
       const response = await request<{ data: User }>(
@@ -140,6 +140,28 @@ const Usuarios = () => {
     onClose()
   }, [onClose])
 
+  const renderUserItem = useCallback(
+    (item: User) => (
+      <Item
+        title={`${item?.name} [${item?.username}]`}
+        description={
+          <HStack spacing={2} mt={2.5}>
+            <Badge colorScheme="gray" variant="outline">
+              {item?.job_role}
+            </Badge>
+            {RoleBadge(item?.acess)}
+          </HStack>
+        }
+      >
+        <Item.Actions item={item}>
+          <EditButton onClick={handleEdit} label={item.name} />
+          <DeleteButton onClick={handleDelete} label={item.name} />
+        </Item.Actions>
+      </Item>
+    ),
+    [handleDelete, handleEdit]
+  )
+
   return (
     <>
       <PageHeader title="Gerenciar Usuários">
@@ -149,27 +171,11 @@ const Usuarios = () => {
         </HStack>
       </PageHeader>
 
-      <List<User> isLoading={isLoading || isValidating}>
-        {users?.data?.map?.((item, key) => (
-          <ListItem
-            title={`${item?.name} [${item?.username}]`}
-            description={
-              <HStack spacing={2} mt={2.5}>
-                <Badge colorScheme="gray" variant="outline">
-                  {item?.job_role}
-                </Badge>
-                {RoleBadge(item?.acess)}
-              </HStack>
-            }
-            key={key}
-          >
-            <ListItem.Actions item={item}>
-              <EditButton onClick={handleEdit} label={item.name} />
-              <DeleteButton onClick={handleDelete} label={item.name} />
-            </ListItem.Actions>
-          </ListItem>
-        ))}
-      </List>
+      <ListView<User>
+        items={users?.data}
+        render={renderUserItem}
+        isLoading={isLoading || isValidating}
+      />
 
       <Modal
         title={userToEdit ? "Editar Usuário" : "Novo Usuário"}

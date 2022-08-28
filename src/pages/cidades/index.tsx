@@ -6,8 +6,8 @@ import { AxiosResponse } from "axios"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { CidadeForm } from "@components/Forms/CidadeForm"
-import { List } from "@components/List"
-import { ListItem } from "@components/ListItem"
+import { ListView } from "@components/List"
+import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
@@ -24,17 +24,17 @@ import { request } from "@services/request"
 const ListaCidades = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [cidadesToEdit, setCidades] = useState<ICity>()
+  const [cidadesToEdit, setCidades] = useState<City>()
 
   const {
     data: cidades,
     isLoading,
     isValidating,
     mutate
-  } = useRequest<ICity[]>(getCities(), localidadesApi, {})
+  } = useRequest<City[]>(getCities(), localidadesApi, {})
 
   const handleDelete = useCallback(
-    async ({ id }: ICity) => {
+    async ({ id }: City) => {
       const response = await request(deleteCity(id), localidadesApi)
 
       if (response.type === "success") {
@@ -47,9 +47,9 @@ const ListaCidades = () => {
             data: {
               error: null,
               message: "",
-              data: newCidades || ([] as ICity[])
+              data: newCidades || ([] as City[])
             }
-          } as AxiosResponse<ApiData<ICity[]>>,
+          } as AxiosResponse<ApiData<City[]>>,
           { revalidate: false }
         )
 
@@ -62,7 +62,7 @@ const ListaCidades = () => {
   )
 
   const handleEdit = useCallback(
-    (city: ICity) => {
+    (city: City) => {
       setCidades(city)
       onOpen()
     },
@@ -75,10 +75,10 @@ const ListaCidades = () => {
   }, [onClose])
 
   const onSubmit = useCallback(
-    async (data: ICityPayload) => {
+    async (data: CityPayload) => {
       console.log("DATA: ", data)
 
-      const response = await request<{ data: ICity }>(
+      const response = await request<{ data: City }>(
         cidadesToEdit ? updateCity(cidadesToEdit.id)(data) : createCity(data),
         localidadesApi
       )
@@ -101,7 +101,7 @@ const ListaCidades = () => {
               message: "",
               data: newCidades
             }
-          } as AxiosResponse<ApiData<IProblemCategory[]>>,
+          } as AxiosResponse<ApiData<CategoriaProblema[]>>,
           { revalidate: false }
         )
 
@@ -116,6 +116,18 @@ const ListaCidades = () => {
     [cidadesToEdit, cidades?.data, mutate, onClose]
   )
 
+  const renderCidadeItem = useCallback(
+    (item: City) => (
+      <Item title={item?.name} description="">
+        <Item.Actions item={item}>
+          <EditButton onClick={handleEdit} label={item.name} />
+          <DeleteButton onClick={handleDelete} label={item.name} />
+        </Item.Actions>
+      </Item>
+    ),
+    [handleDelete, handleEdit]
+  )
+
   return (
     <>
       <PageHeader title="Cidades Cadastradas">
@@ -125,16 +137,11 @@ const ListaCidades = () => {
         </HStack>
       </PageHeader>
 
-      <List<ICity> isLoading={isLoading || isValidating}>
-        {cidades?.data?.map?.((item, key) => (
-          <ListItem title={item?.name} key={key} description={""}>
-            <ListItem.Actions item={item}>
-              <EditButton onClick={handleEdit} label={item.name} />
-              <DeleteButton onClick={handleDelete} label={item.name} />
-            </ListItem.Actions>
-          </ListItem>
-        ))}
-      </List>
+      <ListView<City>
+        items={cidades?.data}
+        render={renderCidadeItem}
+        isLoading={isLoading || isValidating}
+      />
 
       <Modal
         title={cidadesToEdit ? "Editar Cidade" : "Nova Cidade"}

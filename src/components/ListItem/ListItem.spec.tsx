@@ -3,7 +3,7 @@ import { render, waitFor } from "@testing-library/react"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 
-import { ListItem } from "./index"
+import { Item } from "./index"
 
 const callback = jest.fn((item) => item)
 const mockedProps = {
@@ -13,10 +13,10 @@ const mockedProps = {
   }
 }
 
-describe("ListItem", () => {
+describe("Item", () => {
   it("should render with the passed props", async () => {
     const { getByText } = render(
-      <ListItem
+      <Item
         title={mockedProps.item.title}
         description={mockedProps.item.description}
       />
@@ -33,15 +33,15 @@ describe("ListItem", () => {
 
   it("should have actions", async () => {
     const { getByRole } = render(
-      <ListItem
+      <Item
         title={mockedProps.item.title}
         description={mockedProps.item.description}
       >
-        <ListItem.Actions item={mockedProps.item}>
+        <Item.Actions item={mockedProps.item}>
           <EditButton onClick={callback} />
           <DeleteButton onClick={callback} />
-        </ListItem.Actions>
-      </ListItem>
+        </Item.Actions>
+      </Item>
     )
 
     const actionsBar = getByRole("menubar")

@@ -11,13 +11,13 @@ export const getProblemCategory = (id: number) => ({
 })
 
 export const createProblemCategory =
-  createRequestConfig<IProblemCategoryPayload>({
+  createRequestConfig<CategoriaProblemaPayload>({
     url: "/categoria",
     method: "post"
   })
 
 export const updateProblemCategory = (id: number) =>
-  createRequestConfig<IProblemCategoryPayload>({
+  createRequestConfig<CategoriaProblemaPayload>({
     url: `/categoria/${id}`,
     method: "put"
   })

@@ -8,8 +8,8 @@ import { AxiosResponse } from "axios"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { WorkstationForm } from "@components/Forms/WorkstationForm"
-import { List } from "@components/List"
-import { ListItem } from "@components/ListItem"
+import { ListView } from "@components/List"
+import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
@@ -126,6 +126,18 @@ const Workstation = () => {
     onClose()
   }, [onClose])
 
+  const renderWorkstationItem = useCallback(
+    (item: Workstation) => (
+      <Item title={`${item?.name} [${item?.ip}]`} description="">
+        <Item.Actions item={item}>
+          <EditButton onClick={handleEdit} label={item.name} />
+          <DeleteButton onClick={handleDelete} label={item.name} />
+        </Item.Actions>
+      </Item>
+    ),
+    [handleDelete, handleEdit]
+  )
+
   return (
     <>
       <PageHeader title="Gerenciar Postos de Trabalho">
@@ -135,20 +147,11 @@ const Workstation = () => {
         </HStack>
       </PageHeader>
 
-      <List<Workstation> isLoading={isLoading || isValidating}>
-        {workstation?.data?.map?.((item, key) => (
-          <ListItem
-            title={`${item?.name} [${item?.ip}]`}
-            description={<HStack spacing={2} mt={2.5}></HStack>}
-            key={key}
-          >
-            <ListItem.Actions item={item}>
-              <EditButton onClick={handleEdit} label={item.name} />
-              <DeleteButton onClick={handleDelete} label={item.name} />
-            </ListItem.Actions>
-          </ListItem>
-        ))}
-      </List>
+      <ListView<Workstation>
+        items={workstation?.data}
+        render={renderWorkstationItem}
+        isLoading={isLoading || isValidating}
+      />
 
       <Modal
         title={

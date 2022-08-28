@@ -10,9 +10,9 @@ import {
 } from "@chakra-ui/react"
 
 interface CategoriaFormProps {
-  defaultValues?: IProblemCategory | undefined
+  defaultValues?: CategoriaProblema | undefined
   onSubmit:
-    | ((data: IProblemCategoryPayload) => void)
+    | ((data: CategoriaProblemaPayload) => void)
     | ((data: ProblemTypePayload) => void)
 }
 

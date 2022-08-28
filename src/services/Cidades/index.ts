@@ -10,13 +10,13 @@ export const getCity = (id: number) => ({
   method: "get"
 })
 
-export const createCity = createRequestConfig<ICityPayload>({
+export const createCity = createRequestConfig<CityPayload>({
   url: "/city",
   method: "post"
 })
 
 export const updateCity = (id: number) =>
-  createRequestConfig<ICityPayload>({
+  createRequestConfig<CityPayload>({
     url: `/city/${id}`,
     method: "put"
   })
