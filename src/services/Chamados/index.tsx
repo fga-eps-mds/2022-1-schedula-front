@@ -3,7 +3,7 @@ import { services } from "@services"
 const resourceURL = "/chamado"
 const chamadosService = services.chamados(resourceURL)
 
-export const createChamado = (payload: Chamado) =>
+export const createChamado = (payload: ChamadoPayload) =>
   chamadosService({
     method: "POST",
     data: payload

@@ -141,7 +141,11 @@ const ListaCategoria = () => {
             aria-label="Ver tipos de problema"
           />
           <EditButton onClick={handleEdit} label={item.name} />
-          <DeleteButton onClick={handleDelete} label={item.name} />
+          <DeleteButton
+            onClick={handleDelete}
+            label={item.name}
+            aria-label={`Apagar ${item.name}`}
+          />
         </Item.Actions>
       </Item>
     ),
@@ -152,9 +156,7 @@ const ListaCategoria = () => {
     <>
       <PageHeader title="Chamados">
         <NextLink href="/chamados/registrar" passHref>
-          <Button as="a" variant="outline">
-            Registrar Chamado
-          </Button>
+          <Button variant="primary">Registrar Chamado</Button>
         </NextLink>
       </PageHeader>
 

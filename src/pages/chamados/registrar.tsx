@@ -1,3 +1,4 @@
+import NextLink from "next/link"
 import { useForm } from "react-hook-form"
 import { Button } from "@chakra-ui/react"
 
@@ -19,7 +20,9 @@ const RegistrarChamado = () => {
   return (
     <>
       <PageHeader title="Registrar Chamado">
-        <Button variant="outline">Ver chamados</Button>
+        <NextLink href="/chamados" passHref>
+          <Button variant="outline">Ver Chamados</Button>
+        </NextLink>
       </PageHeader>
       <ChamadoForm />
     </>

@@ -13,7 +13,9 @@ export const useDropdownData = (category_id: number) => {
     data: tiposProblemas,
     isLoading: isLoadingProblems,
     error: errorProblemas
-  } = useRequest<TipoProblema[]>(getProblemTypes(category_id))
+  } = useRequest<TipoProblema[]>(
+    category_id ? getProblemTypes(category_id) : null
+  )
 
   return {
     categorias,

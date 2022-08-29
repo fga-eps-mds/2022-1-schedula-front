@@ -3,7 +3,7 @@ import { services } from "@services"
 const resourceURL = "/workstation"
 const workstationsService = services.localidades(resourceURL)
 
-export const getWorkstation = workstationsService()
+export const getWorkstations = workstationsService()
 
 export const createWorkstation = (payload: CreateWorkstationPayload) =>
   workstationsService({

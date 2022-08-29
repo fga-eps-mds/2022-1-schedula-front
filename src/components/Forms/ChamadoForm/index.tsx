@@ -26,19 +26,19 @@ interface ChamadoFormProps {
 const statusColor = (status: keyof typeof ChamadoStatus) => {
   switch (status) {
     case "pending":
-      return "yellow.500"
+      return "yellow.400"
 
     case "in_progress":
-      return "blue.500"
+      return "blue.400"
 
     case "solved":
-      return "green.500"
+      return "green.400"
 
     case "outsourced":
-      return "purple.500"
+      return "purple.400"
 
     default:
-      return "gray.500"
+      return "gray.400"
   }
 }
 
@@ -57,7 +57,7 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
     tiposProblemas,
     isLoadingProblems,
     errorProblemas
-  } = useDropdownData(getValues(`problems.${index}.category_id`))
+  } = useDropdownData(watch(`problems.${index}.category_id`))
 
   const categoriasOptions = useCreateSelectOptions({
     options: getSelectOptions(categorias?.data, "name", "id"),
@@ -76,7 +76,7 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
       <Text
         color="GrayText"
         position="relative"
-        borderBottom="3px solid"
+        borderBottom="2px solid"
         borderColor={statusColor(watch(`problems.${index}.request_status`))}
       >
         Chamado {index + 1}
@@ -106,7 +106,7 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
           <FormLabel>Status</FormLabel>
           <Select
             {...register(`problems.${index}.request_status` as const, {
-              required: false
+              required: true
             })}
           >
             {Object.entries(ChamadoStatus).map(([value, label]) => (
@@ -124,7 +124,7 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
           <FormLabel>Prioridade</FormLabel>
           <Select
             {...register(`problems.${index}.priority` as const, {
-              required: false
+              required: true
             })}
           >
             {Object.entries(ChamadoPriority).map(([value, label]) => (
@@ -143,9 +143,8 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
         >
           <FormLabel>Categoria do Problema</FormLabel>
           <Select
-            defaultValue=""
             {...register(`problems.${index}.category_id` as const, {
-              required: false
+              required: true
             })}
           >
             <option disabled value="">
@@ -161,9 +160,8 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
         <FormControl isInvalid={Boolean(errors?.problems?.[index]?.problem_id)}>
           <FormLabel>Tipo de Problema</FormLabel>
           <Select
-            defaultValue=""
             {...register(`problems.${index}.problem_id` as const, {
-              required: false
+              required: true
             })}
             disabled={!watch(`problems.${index}.category_id`)}
           >
