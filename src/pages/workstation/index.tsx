@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react"
 import { toast } from "react-toastify"
-import { Button, HStack, useDisclosure } from "@chakra-ui/react"
+import { Badge, Button, Flex, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
