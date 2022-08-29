@@ -39,11 +39,11 @@ export const routes: IRoute[] = [
     pathname: "/cidades",
     icon: MdOutlineLocationCity
   },
-  //   {
-  //     label: "Postos de Trabalho",
-  //     pathname: "/workstation",
-  //     icon: FiMapPin
-  //   },
+  {
+    label: "Postos de Trabalho",
+    pathname: "/workstation",
+    icon: FiMapPin
+  },
   {
     label: "Usuários",
     pathname: "/usuarios",
