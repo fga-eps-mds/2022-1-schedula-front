@@ -12,12 +12,13 @@ import {
   PopoverContent,
   PopoverFooter,
   PopoverHeader,
+  Text,
   useDisclosure
 } from "@chakra-ui/react"
 
-import { ActionButton } from "@components/ActionButtons"
+import { ActionButton, ActionButtonProps } from "@components/ActionButtons"
 
-type DeleteButtonProps<Data> = ActionButton<Data>
+type DeleteButtonProps<Data> = ActionButtonProps<Data>
 
 const tooltipStyle = {
   bg: "red.500",
@@ -26,7 +27,8 @@ const tooltipStyle = {
 
 export const DeleteButton = <Data,>({
   label,
-  onClick
+  onClick,
+  ...props
 }: DeleteButtonProps<Data>) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -43,33 +45,49 @@ export const DeleteButton = <Data,>({
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="auto">
       <PopoverAnchor>
         <ActionButton
-          aria-label="Delete"
-          label={`Apagar ${label}`}
+          label={`Excluir ${label}`}
           icon={<FaTrash />}
           onClick={onOpen}
           isLoading={isLoading}
           color="red.500"
           tooltipProps={tooltipStyle}
+          tabIndex={1}
+          {...props}
         />
       </PopoverAnchor>
-      <PopoverContent data-testid="delete-confirmation-popover">
+      <PopoverContent
+        data-testid="delete-confirmation-popover"
+        border={0}
+        borderRadius="base"
+        bg="blackAlpha.500"
+        backdropFilter="blur(8px)"
+        color="white"
+      >
         <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverHeader>
-          <Heading size="md" fontWeight="light">
-            Apagar &apos;{label}&apos;
+        <PopoverCloseButton color="white" top={2} right={2} />
+
+        <PopoverHeader bg="blackAlpha.600" borderTopRadius="base" border={0}>
+          <Heading size="md" color="white" fontWeight="semibold">
+            Excluir {label}
           </Heading>
         </PopoverHeader>
-        <PopoverBody>
-          Você realmente deseja excluir <strong>{label}</strong>?
+
+        <PopoverBody bg="blackAlpha.200">
+          <Text>
+            Você realmente deseja excluir <strong>{label}</strong>?
+          </Text>
+          <Text fontStyle="italic" mt={1}>
+            Está ação não poderá ser desfeita.
+          </Text>
         </PopoverBody>
-        <PopoverFooter>
+
+        <PopoverFooter borderBottomRadius="base" border={0} bg="blackAlpha.200">
           <Flex justifyContent="space-between">
-            <Button onClick={onClose} variant="outline">
+            <Button onClick={onClose} variant="solid" colorScheme="blackAlpha">
               Cancelar
             </Button>
             <Button onClick={handleDelete} colorScheme="red" variant="solid">
-              Apagar
+              Excluir
             </Button>
           </Flex>
         </PopoverFooter>

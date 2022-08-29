@@ -1,16 +1,16 @@
 import React, { ReactElement } from "react"
-import { Box, Fade, Flex } from "@chakra-ui/react"
+import { Box, Flex } from "@chakra-ui/react"
 
 import type { ActionsProps } from "@components/ListItem/ListItemActions"
 import { Actions } from "@components/ListItem/ListItemActions"
 
-export interface ListItemProps<Data> {
+export interface ItemProps<Data> {
   title: string | JSX.Element
   description: string | JSX.Element
   children?: ReactElement<ActionsProps<Data>>
 }
 
-export const Divider = {
+export const customDivider = {
   content: "''",
   position: "absolute",
   bottom: "0",
@@ -19,33 +19,36 @@ export const Divider = {
   backgroundColor: "#e6e6e6"
 }
 
-export const ListItem = <Data,>({
+export const Item = <Data,>({
   title,
   description,
   children
-}: ListItemProps<Data>) => {
+}: ItemProps<Data>) => {
   return (
-    <Fade in>
-      <Flex
-        w="100%"
-        justifyContent="space-between"
-        position="relative"
-        bg="white"
-        borderRadius="md"
-        padding={5}
-        boxShadow="medium"
-      >
-        <Box alignSelf="center">
-          <Box fontWeight="medium" mb={1} position="relative" _before={Divider}>
-            {title}
-          </Box>
-          <Box color="GrayText">{description}</Box>
+    <Flex
+      w="100%"
+      justifyContent="space-between"
+      position="relative"
+      bg="white"
+      borderRadius="md"
+      padding={5}
+      boxShadow="medium"
+    >
+      <Box alignSelf="center">
+        <Box
+          fontWeight="medium"
+          mb={1}
+          position="relative"
+          _before={customDivider}
+        >
+          {title}
         </Box>
+        <Box color="GrayText">{description}</Box>
+      </Box>
 
-        <Box alignSelf="end">{children}</Box>
-      </Flex>
-    </Fade>
+      <Box alignSelf="end">{children}</Box>
+    </Flex>
   )
 }
 
-ListItem.Actions = Actions
+Item.Actions = Actions

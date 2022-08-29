@@ -52,7 +52,7 @@ describe("ListItemActions", () => {
       </Actions>
     )
 
-    const deleteButton = getByRole("button", { name: /delete/i })
+    const deleteButton = getByRole("button", { name: /^excluir/i })
     expect(deleteButton).toBeInTheDocument()
     expect(deleteButton).toBeVisible()
 
@@ -65,7 +65,7 @@ describe("ListItemActions", () => {
     expect(getByText(mockedProps.item.name)).toBeInTheDocument()
 
     await act(async () => {
-      const confirmActionButton = getByRole("button", { name: /apagar/i })
+      const confirmActionButton = getByRole("button", { name: /^excluir$/i })
       expect(confirmActionButton).toBeInTheDocument()
       expect(confirmActionButton).toBeVisible()
 

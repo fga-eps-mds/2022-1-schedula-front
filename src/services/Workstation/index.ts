@@ -1,23 +1,26 @@
+import { services } from "@services"
 
-import { createRequestConfig } from '@services/request';
+const resourceURL = "/workstation"
+const workstationsService = services.localidades(resourceURL)
 
-export const getWorkstation = createRequestConfig({
-  url: '/workstation',
-  method: 'get'
-})
+export const getWorkstations = workstationsService()
 
-export const createWorkstation = createRequestConfig<CreateWorkstationPayload>({
-  url: '/workstation',
-  method: 'post'
-})
-
-export const updateWorkstation = (id: number) =>
-  createRequestConfig<CreateWorkstationPayload>({
-    url: `/workstation/${id}`,
-    method: 'put'
+export const createWorkstation = (payload: CreateWorkstationPayload) =>
+  workstationsService({
+    method: "post",
+    data: payload
   })
 
-export const deleteWorkstation = (id: number) => ({
-  url: `/workstation/${id}`,
-  method: 'delete'
-})
+export const updateWorkstation =
+  (id: number) => (payload: CreateWorkstationPayload) =>
+    workstationsService({
+      url: resourceURL + `/${id}`,
+      method: "put",
+      data: payload
+    })
+
+export const deleteWorkstation = (id: number) =>
+  workstationsService({
+    url: resourceURL + `/${id}`,
+    method: "delete"
+  })

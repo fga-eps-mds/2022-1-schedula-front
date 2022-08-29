@@ -8,19 +8,18 @@ import { AddButton } from "@components/ActionButtons/AddButton"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { CategoriaForm } from "@components/Forms/CategoriaForm"
-import { List } from "@components/List"
-import { ListItem } from "@components/ListItem"
+import { ListView } from "@components/List"
+import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
-import { ApiData, useRequest } from "@hooks/useRequest"
-import { detalhadorApi } from "@services/api"
+import { useRequest } from "@hooks/useRequest"
 import {
   createProblemCategory,
   deleteProblemCategory,
   getProblemCategories,
   updateProblemCategory
-} from "@services/DetalhadorChamados"
+} from "@services/Categorias"
 import { request } from "@services/request"
 
 const ListaCategoria = () => {
@@ -31,15 +30,15 @@ const ListaCategoria = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<IProblemCategory[]>(getProblemCategories(), detalhadorApi, {})
+  } = useRequest<CategoriaProblema[]>(getProblemCategories)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [categoriaToEdit, setCategoria] = useState<IProblemCategory>()
+  const [categoriaToEdit, setCategoria] = useState<CategoriaProblema>()
 
   const handleDelete = useCallback(
-    async ({ id }: IProblemCategory) => {
-      const response = await request(deleteProblemCategory(id), detalhadorApi)
+    async ({ id }: CategoriaProblema) => {
+      const response = await request(deleteProblemCategory(id))
 
       if (response.type === "success") {
         toast.success("Categoria deletada com sucesso!")
@@ -53,9 +52,9 @@ const ListaCategoria = () => {
             data: {
               error: null,
               message: "",
-              data: newCategorias || ([] as IProblemCategory[])
+              data: newCategorias || ([] as CategoriaProblema[])
             }
-          } as AxiosResponse<ApiData<IProblemCategory[]>>,
+          } as AxiosResponse<ApiResponse<CategoriaProblema[]>>,
           { revalidate: false }
         )
 
@@ -68,7 +67,7 @@ const ListaCategoria = () => {
   )
 
   const handleEdit = useCallback(
-    (categoria: IProblemCategory) => {
+    (categoria: CategoriaProblema) => {
       setCategoria(categoria)
       onOpen()
     },
@@ -76,21 +75,20 @@ const ListaCategoria = () => {
   )
 
   const handleAddProblem = useCallback(
-    ({ id }: IProblemCategory) => {
+    ({ id }: CategoriaProblema) => {
       router.push(`/categorias/${id}/problemas`)
     },
     [router]
   )
 
   const onSubmit = useCallback(
-    async (data: IProblemCategoryPayload) => {
+    async (data: CategoriaProblemaPayload) => {
       console.log("DATA: ", data)
 
-      const response = await request<{ data: IProblemCategory }>(
+      const response = await request<CategoriaProblema>(
         categoriaToEdit
           ? updateProblemCategory(categoriaToEdit.id)(data)
-          : createProblemCategory(data),
-        detalhadorApi
+          : createProblemCategory(data)
       )
 
       if (response.type === "success") {
@@ -101,10 +99,10 @@ const ListaCategoria = () => {
         const newCategorias = categoriaToEdit
           ? categorias?.data.map((categoria) =>
               categoria.id === categoriaToEdit?.id
-                ? response.value.data
+                ? response.value?.data
                 : categoria
             )
-          : [...(categorias?.data || []), response.value.data]
+          : [...(categorias?.data || []), response.value?.data]
 
         mutate(
           {
@@ -113,7 +111,7 @@ const ListaCategoria = () => {
               message: "",
               data: newCategorias
             }
-          } as AxiosResponse<ApiData<IProblemCategory[]>>,
+          } as AxiosResponse<ApiResponse<CategoriaProblema[]>>,
           { revalidate: false }
         )
 
@@ -133,6 +131,23 @@ const ListaCategoria = () => {
     onClose()
   }, [onClose])
 
+  const renderCategoriaItem = useCallback(
+    (item: CategoriaProblema) => (
+      <Item title={item?.name} description={item?.description}>
+        <Item.Actions item={item}>
+          <AddButton
+            onClick={handleAddProblem}
+            label="Tipos de Problema"
+            aria-label="Add"
+          />
+          <EditButton onClick={handleEdit} label={item.name} />
+          <DeleteButton onClick={handleDelete} label={item.name} />
+        </Item.Actions>
+      </Item>
+    ),
+    [handleAddProblem, handleDelete, handleEdit]
+  )
+
   return (
     <>
       <PageHeader title="Categorias de Problemas">
@@ -142,21 +157,11 @@ const ListaCategoria = () => {
         </HStack>
       </PageHeader>
 
-      <List<IProblemCategory> isLoading={isLoading || isValidating}>
-        {categorias?.data?.map?.((item, key) => (
-          <ListItem
-            title={item?.name}
-            description={item?.description}
-            key={key}
-          >
-            <ListItem.Actions item={item}>
-              <AddButton onClick={handleAddProblem} label="Tipos de Problema" />
-              <EditButton onClick={handleEdit} label={item.name} />
-              <DeleteButton onClick={handleDelete} label={item.name} />
-            </ListItem.Actions>
-          </ListItem>
-        ))}
-      </List>
+      <ListView<CategoriaProblema>
+        items={categorias?.data}
+        render={renderCategoriaItem}
+        isLoading={isLoading || isValidating}
+      />
 
       <Modal
         title={categoriaToEdit ? "Editar Categoria" : "Nova Categoria"}

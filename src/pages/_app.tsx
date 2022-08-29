@@ -5,7 +5,7 @@ import { ChakraProvider } from "@chakra-ui/react"
 import { DefaultLayout } from "layout/DefaultLayout"
 import { SWRConfig, SWRConfiguration } from "swr"
 
-import { ColorTheme } from "../styles/Theme"
+import { ColorTheme } from "../styles/theme"
 
 import "react-toastify/dist/ReactToastify.css"
 
@@ -33,7 +33,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                 #EB6A00,
                 #e84049
                 )"
-          startPosition={0.4}
+          startPosition={0.75}
+          stopDelayMs={50}
           height={3}
         />
         {getLayout(<Component {...pageProps} />)}

@@ -1,22 +1,31 @@
-import { createRequestConfig } from "@services/request"
+import { services } from "@services"
 
-export const getProblemTypes = (id: number) => ({
-  url: `/problema?category_id=${id}`,
-  method: "get"
-})
+const resourceURL = "/problema"
+const problemasService = services.chamados(resourceURL)
 
-export const createProblemType = createRequestConfig<ProblemTypePayload>({
-  url: "/problema",
-  method: "post"
-})
-
-export const updateProblemType = (id: number) =>
-  createRequestConfig<ProblemTypePayload>({
-    url: `/problema/${id}`,
-    method: "put"
+export const createProblemType = (payload: ProblemTypePayload) =>
+  problemasService({
+    method: "post",
+    data: payload
   })
 
-export const deleteProblemType = (id: number) => ({
-  url: `/problema/${id}`,
-  method: "delete"
-})
+export const getProblemTypes = (id: number) =>
+  problemasService({
+    params: {
+      category_id: id
+    }
+  })
+
+export const updateProblemType =
+  (id: number) => (payload: ProblemTypePayload) =>
+    problemasService({
+      url: resourceURL + `/${id}`,
+      method: "put",
+      data: payload
+    })
+
+export const deleteProblemType = (id: number) =>
+  problemasService({
+    url: resourceURL + `/${id}`,
+    method: "delete"
+  })

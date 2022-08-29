@@ -10,8 +10,8 @@ import {
 } from "@chakra-ui/react"
 
 interface CidadeFormProps {
-  defaultValues?: ICity | undefined
-  onSubmit: (data: ICityPayload) => void
+  defaultValues?: City | undefined
+  onSubmit: (data: CityPayload) => void
 }
 
 export const CidadeForm = ({ defaultValues, onSubmit }: CidadeFormProps) => {
@@ -19,7 +19,7 @@ export const CidadeForm = ({ defaultValues, onSubmit }: CidadeFormProps) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
-  } = useForm<ICityPayload>({
+  } = useForm<CityPayload>({
     defaultValues
   })
 

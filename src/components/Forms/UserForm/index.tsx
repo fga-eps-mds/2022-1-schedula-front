@@ -13,7 +13,7 @@ import {
 
 interface UserFormProps {
   defaultValues?: User | undefined
-  onSubmit: (data: CreateUserPayload) => void
+  onSubmit: (data: RegisterUserPayload) => void
 }
 
 export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
@@ -23,7 +23,7 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
     handleSubmit,
     watch,
     formState: { errors, isSubmitting }
-  } = useForm<CreateUserPayload>({
+  } = useForm<RegisterUserPayload>({
     defaultValues: {
       ...defaultValues,
       password: ""

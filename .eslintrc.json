@@ -120,6 +120,8 @@
       }
     ],
     // "eslint-comments/no-use": ["warn", { "allow": [] }],
+    "react-perf/jsx-no-new-object-as-prop": "off",
+    "react-perf/jsx-no-new-array-as-prop": "off",
     "eslint-comments/require-description": ["error", { "ignore": [] }]
   },
   "ignorePatterns": ["**/*.json", "**/*.js"],

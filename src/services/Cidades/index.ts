@@ -1,27 +1,33 @@
-import { createRequestConfig } from "@services/request"
+import { services } from "@services"
 
-export const getCities = createRequestConfig({
-  url: "/city",
-  method: "get"
-})
+const resourceURL = "/city"
 
-export const getCity = (id: number) => ({
-  url: `/city?city_id=${id}`,
-  method: "get"
-})
+const cidadesService = services.localidades(resourceURL)
 
-export const createCity = createRequestConfig<ICityPayload>({
-  url: "/city",
-  method: "post"
-})
-
-export const updateCity = (id: number) =>
-  createRequestConfig<ICityPayload>({
-    url: `/city/${id}`,
-    method: "put"
+export const createCity = (payload: CityPayload) =>
+  cidadesService({
+    method: "post",
+    data: payload
   })
 
-export const deleteCity = (id: number) => ({
-  url: `/city/${id}`,
-  method: "delete"
-})
+export const getCities = cidadesService()
+
+export const getCity = (id: number) =>
+  cidadesService({
+    params: {
+      city_id: id
+    }
+  })
+
+export const updateCity = (id: number) => (payload: CityPayload) =>
+  cidadesService({
+    url: resourceURL + `/${id}`,
+    method: "put",
+    data: payload
+  })
+
+export const deleteCity = (id: number) =>
+  cidadesService({
+    url: resourceURL + `/${id}`,
+    method: "delete"
+  })

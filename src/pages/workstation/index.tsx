@@ -8,18 +8,17 @@ import { AxiosResponse } from "axios"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { WorkstationForm } from "@components/Forms/WorkstationForm"
-import { List } from "@components/List"
-import { ListItem } from "@components/ListItem"
+import { ListView } from "@components/List"
+import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
-import { ApiData, useRequest } from "@hooks/useRequest"
-import { localidadesApi } from "@services/api"
+import { useRequest } from "@hooks/useRequest"
 import { request } from "@services/request"
 import {
   createWorkstation,
   deleteWorkstation,
-  getWorkstation,
+  getWorkstations,
   updateWorkstation
 } from "@services/Workstation"
 
@@ -29,7 +28,7 @@ const Workstation = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Workstation[]>(getWorkstation(), localidadesApi)
+  } = useRequest<Workstation[]>(getWorkstations)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -37,7 +36,7 @@ const Workstation = () => {
 
   const handleDelete = useCallback(
     async ({ id }: Workstation) => {
-      const response = await request(deleteWorkstation(id), localidadesApi)
+      const response = await request(deleteWorkstation(id))
 
       if (response.type === "success") {
         toast.success("Posto de trabalho removido com sucesso!")
@@ -53,7 +52,7 @@ const Workstation = () => {
               message: "",
               data: newWorkstation || ([] as Workstation[])
             }
-          } as AxiosResponse<ApiData<Workstation[]>>,
+          } as AxiosResponse<ApiResponse<Workstation[]>>,
           { revalidate: false }
         )
 
@@ -80,8 +79,7 @@ const Workstation = () => {
       const response = await request<{ data: Workstation }>(
         workstationToEdit
           ? updateWorkstation(workstationToEdit.id)(data)
-          : createWorkstation(data),
-        localidadesApi
+          : createWorkstation(data)
       )
 
       if (response.type === "success") {
@@ -106,7 +104,7 @@ const Workstation = () => {
               message: "",
               data: newUsers
             }
-          } as AxiosResponse<ApiData<Workstation[]>>,
+          } as AxiosResponse<ApiResponse<Workstation[]>>,
           { revalidate: false }
         )
 
@@ -126,6 +124,18 @@ const Workstation = () => {
     onClose()
   }, [onClose])
 
+  const renderWorkstationItem = useCallback(
+    (item: Workstation) => (
+      <Item title={`${item?.name} [${item?.ip}]`} description="">
+        <Item.Actions item={item}>
+          <EditButton onClick={handleEdit} label={item.name} />
+          <DeleteButton onClick={handleDelete} label={item.name} />
+        </Item.Actions>
+      </Item>
+    ),
+    [handleDelete, handleEdit]
+  )
+
   return (
     <>
       <PageHeader title="Gerenciar Postos de Trabalho">
@@ -135,20 +145,11 @@ const Workstation = () => {
         </HStack>
       </PageHeader>
 
-      <List<Workstation> isLoading={isLoading || isValidating}>
-        {workstation?.data?.map?.((item, key) => (
-          <ListItem
-            title={`${item?.name} [${item?.ip}]`}
-            description={<HStack spacing={2} mt={2.5}></HStack>}
-            key={key}
-          >
-            <ListItem.Actions item={item}>
-              <EditButton onClick={handleEdit} label={item.name} />
-              <DeleteButton onClick={handleDelete} label={item.name} />
-            </ListItem.Actions>
-          </ListItem>
-        ))}
-      </List>
+      <ListView<Workstation>
+        items={workstation?.data}
+        render={renderWorkstationItem}
+        isLoading={isLoading || isValidating}
+      />
 
       <Modal
         title={

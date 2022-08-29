@@ -13,7 +13,7 @@ export const Actions = <Data,>({ children, item }: ActionsProps<Data>) => {
     <HStack spacing={4} role="menubar">
       {Children.map(children, (child) =>
         cloneElement(child, {
-          onClick: child.props.onClick.bind(null, item)
+          onClick: child?.props?.onClick?.bind?.(null, item)
         })
       )}
     </HStack>
