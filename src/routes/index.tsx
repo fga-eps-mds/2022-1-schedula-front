@@ -1,7 +1,11 @@
 import { IconType } from "react-icons"
 import { FaUsersCog } from "react-icons/fa"
 import { FiLayout } from "react-icons/fi"
-import { MdOutlineLocationCity } from "react-icons/md"
+import {
+  MdOutlineCallToAction,
+  MdOutlineLocationCity,
+  MdOutlineViewAgenda
+} from "react-icons/md"
 
 export interface IRoute {
   label: string
@@ -15,16 +19,16 @@ export const routes: IRoute[] = [
   //     pathname: '/dashboard',
   //     icon: MdOutlineDashboard,
   //   },
-  //   {
-  //     label: 'Chamados',
-  //     pathname: '/chamados',
-  //     icon: MdOutlineViewAgenda,
-  //   },
-  //   {
-  //     label: 'Registrar Chamado',
-  //     pathname: '/registrachamado',
-  //     icon: MdOutlineCallToAction,
-  //   },
+  {
+    label: "Chamados",
+    pathname: "/chamados",
+    icon: MdOutlineViewAgenda
+  },
+  {
+    label: "Registrar Chamado",
+    pathname: "/chamados/registrar",
+    icon: MdOutlineCallToAction
+  },
   {
     label: "Categorias de Problema",
     pathname: "/categorias",

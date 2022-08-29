@@ -1,39 +1,66 @@
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
+import type { ComponentStyleConfig } from "@chakra-ui/theme"
 
-// You can also use the more specific type for
-// a single part component: ComponentSingleStyleConfig
 export const Button: ComponentStyleConfig = {
-  // The styles all button have in common
   baseStyle: {},
-  // Two sizes: sm and md
   sizes: {},
-  // Two variants: outline and solid
   variants: {
     primary: {
-      minWidth: '150px',
-      color: '#F4F7F5',
-      backgroundColor: 'primary',
-      boxShadow: 'soft',
-
+      minWidth: "175px",
+      color: "#F4F7F5",
+      backgroundColor: "primary",
       backgroundImage:
-        'linear-gradient(to right, #FF8008 0%, #FFA03A 51%, #FF8008 100%);',
-      transition: '0.5s',
-      backgroundSize: '200% auto',
-
+        "linear-gradient(to right, #FF8008 0%, #FFA03A 51%, #FF8008 100%);",
+      backgroundSize: "200% auto",
+      boxShadow: "soft",
+      transition: "0.5s",
       _hover: {
         backgroundPosition:
-          'right center' /* change the direction of the change here */,
-        textDecoration: 'none',
+          "right center" /* change the direction of the change here */,
+        textDecoration: "none",
 
         _disabled: {
-          background: '',
-        },
-      },
+          background: ""
+        }
+      }
     },
+    secondary: {
+      minWidth: "150px",
+      color: "#F4F7F5",
+      backgroundImage:
+        "linear-gradient(to right, #000428 0%, #004e92  51%, #000428  100%)",
+      backgroundSize: "200% auto",
+      boxShadow: "soft",
+      transition: "0.5s",
+      _hover: {
+        backgroundPosition:
+          "right center" /* change the direction of the change here */,
+        textDecoration: "none",
+
+        _disabled: {
+          background: ""
+        }
+      }
+    },
+    tertiary: {
+      color: "#333",
+      backgroundImage:
+        "linear-gradient(to right, #E0EAFC 0%, #CFDEF3  51%, #E0EAFC  100%)",
+      backgroundSize: "200% auto",
+      boxShadow: "sm",
+      transition: "0.5s",
+      _hover: {
+        backgroundPosition:
+          "right center" /* change the direction of the change here */,
+        textDecoration: "none",
+
+        _disabled: {
+          background: ""
+        }
+      }
+    }
   },
-  // The default size and variant values
   defaultProps: {
-    size: 'md',
-    variant: 'primary',
-  },
-};
+    size: "md",
+    variant: "primary"
+  }
+}

@@ -1,8 +1,9 @@
 import { render } from "@testing-library/react"
 
-import { ListItem } from "@components/ListItem"
+import { EditButton } from "@components/ActionButtons/EditButton"
+import { Item } from "@components/ListItem"
 
-import { List } from "./index"
+import { ListView } from "./index"
 
 const mockedData = [
   {
@@ -15,9 +16,19 @@ const mockedData = [
   }
 ]
 
+const renderItem = (item: typeof mockedData[number]) => (
+  <Item title={item.title} description={item.description}>
+    <Item.Actions item={item}>
+      <EditButton onClick={jest.fn()} />
+    </Item.Actions>
+  </Item>
+)
+
 describe("List", () => {
   it("should render with loading state", async () => {
-    const { getAllByTestId } = render(<List isLoading>{undefined}</List>)
+    const { getAllByTestId } = render(
+      <ListView isLoading items={mockedData} render={renderItem} />
+    )
 
     const skeletons = getAllByTestId("list-item-skeleton")
 
@@ -26,17 +37,7 @@ describe("List", () => {
 
   it("should render with data", async () => {
     const { getAllByText } = render(
-      <List isLoading>
-        {mockedData?.map?.((item, key) => (
-          <ListItem title={item.title} description={item.description} key={key}>
-            <ListItem.Actions
-              itemName={item.title}
-              onEdit={jest.fn()}
-              onDelete={jest.fn()}
-            />
-          </ListItem>
-        ))}
-      </List>
+      <ListView isLoading={false} items={mockedData} render={renderItem} />
     )
 
     expect(getAllByText(/Title \d/i)).toBeTruthy()

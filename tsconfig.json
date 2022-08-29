@@ -22,6 +22,7 @@
       "@contexts/*": ["contexts/*"],
       "@constants": ["constants"],
       "@constants/*": ["constants/*"],
+      "@services": ["services"],
       "@services/*": ["services/*"],
       "@database/*": ["database/*"],
       "@lib/*": ["lib/*"],

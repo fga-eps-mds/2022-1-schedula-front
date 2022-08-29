@@ -9,7 +9,7 @@ interface User {
   job_role: string
 }
 
-interface CreateUserPayload {
+interface RegisterUserPayload {
   username: string
   email: string
   name: string

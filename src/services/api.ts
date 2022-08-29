@@ -1,17 +1,7 @@
 import { toast } from "react-toastify"
 import axios from "axios"
 
-const usuariosApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_GESTOR_DE_USUARIOS_URL
-})
-
-const detalhadorApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_DETALHADOR_CHAMADOS_URL
-})
-
-const localidadesApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_GERENCIADOR_DE_LOCALIDADES_URL
-})
+const api = axios.create()
 
 export const errorResponseHandler = (error: any) => {
   if (error?.response) {
@@ -46,23 +36,6 @@ export const errorResponseHandler = (error: any) => {
 
 // api.defaults.withCredentials = true;
 
-usuariosApi.interceptors.response.use(
-  (response) => response,
-  errorResponseHandler
-)
+api.interceptors.response.use((response) => response, errorResponseHandler)
 
-detalhadorApi.interceptors.response.use(
-  (response) => response,
-  errorResponseHandler
-)
-
-localidadesApi.interceptors.response.use(
-  (response) => response,
-  errorResponseHandler
-)
-localidadesApi.interceptors.response.use(
-  (response) => response,
-  errorResponseHandler
-)
-
-export { detalhadorApi, localidadesApi, usuariosApi }
+export { api }
