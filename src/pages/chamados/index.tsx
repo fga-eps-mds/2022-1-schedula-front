@@ -11,10 +11,8 @@ import {
 } from "@chakra-ui/react"
 
 import { EditButton } from "@components/ActionButtons/EditButton"
-import {
-  ChamadoFormValues,
-  ChamadoFormWrapper as ChamadoForm
-} from "@components/Forms/ChamadoForm/ChamadoFormWrapper"
+import type { ChamadoFormValues } from "@components/Forms/ChamadoForm/ChamadoForm"
+import { ChamadoFormWrapper as ChamadoForm } from "@components/Forms/ChamadoForm/ChamadoFormWrapper"
 import { ListView } from "@components/List"
 import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"

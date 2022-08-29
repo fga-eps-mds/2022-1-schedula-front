@@ -3,10 +3,8 @@ import NextLink from "next/link"
 import { toast } from "react-toastify"
 import { Button } from "@chakra-ui/react"
 
-import {
-  ChamadoFormValues,
-  ChamadoFormWrapper as ChamadoForm
-} from "@components/Forms/ChamadoForm/ChamadoFormWrapper"
+import type { ChamadoFormValues } from "@components/Forms/ChamadoForm/ChamadoForm"
+import { ChamadoFormWrapper as ChamadoForm } from "@components/Forms/ChamadoForm/ChamadoFormWrapper"
 import { PageHeader } from "@components/PageHeader"
 import { createChamado } from "@services/Chamados"
 import { request } from "@services/request"
