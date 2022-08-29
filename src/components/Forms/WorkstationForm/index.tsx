@@ -255,7 +255,7 @@ export const WorkstationForm = ({
         <Flex gap={8}>
           <Box w={"45%"} mt={"2em"}>
             <FormLabel htmlFor="phone">Telefones:</FormLabel>
-            {fields.map((phone, index) => {
+            {fields?.map((phone, index) => {
               return (
                 <Flex mt={"2em"} key={phone.id}>
                   <Box>
@@ -265,9 +265,10 @@ export const WorkstationForm = ({
                         required: "Campo obrigatório"
                       })}
                       defaultValue={
-                        defaultValues?.phones[index] !== undefined
-                          ? defaultValues?.phones[index]?.number
-                          : ""
+                        defaultValues?.phones[index]?.number
+                        // defaultValues?.phones[index]?.number !== undefined
+                        //   ?
+                        //   : ""
                       }
                       placeholder="Novo Telefone"
                       variant="flushed"
