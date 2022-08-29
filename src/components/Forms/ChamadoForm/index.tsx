@@ -3,7 +3,6 @@ import { Box, Grid, Text } from "@chakra-ui/react"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { ControlledSelect } from "@components/ControlledSelect"
-import type { ChamadoFormValues } from "@components/Forms/ChamadoForm/ChamadoForm"
 import { useDropdownData } from "@components/Forms/ChamadoForm/useDropdowData"
 import {
   ChamadoPriority,

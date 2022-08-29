@@ -43,9 +43,15 @@ export const ColorTheme = extendTheme({
         }
       },
       sizes: {},
-      variants: {},
+      variants: {
+        outline: {
+          field: {
+            borderRadius: "lg",
+            boxShadow: "thin"
+          }
+        }
+      },
       defaultProps: {
-        // variant: "flushed",
         focusBorderColor: "primary"
       }
     },

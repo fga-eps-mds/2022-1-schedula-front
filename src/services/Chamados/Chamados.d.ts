@@ -7,7 +7,17 @@ interface Chamado {
   place: string
   workstation_id: number
   created_at: Date
-  problems: [ChamadoProblem & { request_id: number }]
+  problems: ChamadoProblem[]
+}
+
+interface ChamadoProblem {
+  category_id: number
+  problem_id: number
+  is_event: boolean
+  request_status: Status
+  priority: Priority
+  problem: TipoProblema
+  category: CategoriaProblema
 }
 
 interface ChamadoPayload {
@@ -17,10 +27,10 @@ interface ChamadoPayload {
   description: string
   place: string
   workstation_id: number
-  problems: ChamadoProblem[]
+  problems: ChamadoProblemPayload[]
 }
 
-type ChamadoProblem = {
+type ChamadoProblemPayload = {
   category_id: number
   problem_id: number
   is_event: boolean
