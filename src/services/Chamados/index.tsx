@@ -11,22 +11,21 @@ export const createChamado = (payload: ChamadoPayload) =>
 
 export const getChamados = chamadosService()
 
-export const getProblemCategory = (id: number) =>
+export const getChamado = (id: number) =>
   chamadosService({
     params: {
       category_id: id
     }
   })
 
-export const updateProblemCategory =
-  (id: number) => (payload: CategoriaProblemaPayload) =>
-    chamadosService({
-      url: resourceURL + `/${id}`,
-      method: "put",
-      data: payload
-    })
+export const updateChamado = (id: number) => (payload: ChamadoPayload) =>
+  chamadosService({
+    url: resourceURL + `/${id}`,
+    method: "put",
+    data: payload
+  })
 
-export const deleteProblemCategory = (id: number) =>
+export const deleteChamado = (id: number) =>
   chamadosService({
     url: resourceURL + `/${id}`,
     method: "delete"

@@ -1,11 +1,10 @@
 import { useFormContext } from "react-hook-form"
 import {
-  Flex,
+  Box,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Grid,
-  GridItem,
   Select,
   Text
 } from "@chakra-ui/react"
@@ -20,7 +19,8 @@ import {
 
 interface ChamadoFormProps {
   index: number
-  onRemove: () => void
+  onRemove?: () => void
+  isEdditing?: boolean
 }
 
 const statusColor = (status: keyof typeof ChamadoStatus) => {
@@ -42,10 +42,13 @@ const statusColor = (status: keyof typeof ChamadoStatus) => {
   }
 }
 
-export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
+export const ChamadoForm = ({
+  index,
+  onRemove,
+  isEdditing
+}: ChamadoFormProps) => {
   const {
     register,
-    getValues,
     watch,
     formState: { errors }
   } = useFormContext<ChamadoPayload>()
@@ -71,8 +74,10 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
     errorMessage: errorProblemas?.message
   })
 
+  console.log("ERRORS", errors)
+
   return (
-    <>
+    <Box>
       <Text
         color="GrayText"
         position="relative"
@@ -81,6 +86,7 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
       >
         Chamado {index + 1}
       </Text>
+
       <Grid
         templateColumns="repeat(2, 1fr)"
         gap={8}
@@ -89,16 +95,18 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
         bg="white"
         boxShadow="medium"
       >
-        <GridItem colSpan={2} position="absolute" top={1} right={1} zIndex={10}>
-          <Flex justifyContent="end" alignItems="center">
-            <DeleteButton
-              onClick={onRemove}
-              label="Chamado"
-              aria-label="Apagar Chamado"
-              variant="ghost"
-            />
-          </Flex>
-        </GridItem>
+        {!isEdditing && onRemove && (
+          <DeleteButton
+            zIndex={10}
+            top={1}
+            right={1}
+            position="absolute"
+            onClick={onRemove}
+            label="Chamado"
+            aria-label="Apagar Chamado"
+            variant="ghost"
+          />
+        )}
 
         <FormControl
           isInvalid={Boolean(errors?.problems?.[index]?.request_status)}
@@ -106,7 +114,7 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
           <FormLabel>Status</FormLabel>
           <Select
             {...register(`problems.${index}.request_status` as const, {
-              required: true
+              required: "Campo obrigatório"
             })}
           >
             {Object.entries(ChamadoStatus).map(([value, label]) => (
@@ -124,7 +132,7 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
           <FormLabel>Prioridade</FormLabel>
           <Select
             {...register(`problems.${index}.priority` as const, {
-              required: true
+              required: "Campo obrigatório"
             })}
           >
             {Object.entries(ChamadoPriority).map(([value, label]) => (
@@ -143,8 +151,9 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
         >
           <FormLabel>Categoria do Problema</FormLabel>
           <Select
+            defaultValue=""
             {...register(`problems.${index}.category_id` as const, {
-              required: true
+              required: "Campo obrigatório"
             })}
           >
             <option disabled value="">
@@ -160,8 +169,9 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
         <FormControl isInvalid={Boolean(errors?.problems?.[index]?.problem_id)}>
           <FormLabel>Tipo de Problema</FormLabel>
           <Select
+            defaultValue=""
             {...register(`problems.${index}.problem_id` as const, {
-              required: true
+              required: "Campo obrigatório"
             })}
             disabled={!watch(`problems.${index}.category_id`)}
           >
@@ -175,6 +185,6 @@ export const ChamadoForm = ({ index, onRemove }: ChamadoFormProps) => {
           </FormErrorMessage>
         </FormControl>
       </Grid>
-    </>
+    </Box>
   )
 }

@@ -44,7 +44,6 @@ export const DeleteButton = <Data,>({
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="auto">
       <PopoverAnchor>
         <ActionButton
-          aria-label="Delete"
           label={`Apagar ${label}`}
           icon={<FaTrash />}
           onClick={onOpen}

@@ -5,7 +5,7 @@ import { ChakraProvider } from "@chakra-ui/react"
 import { DefaultLayout } from "layout/DefaultLayout"
 import { SWRConfig, SWRConfiguration } from "swr"
 
-import { ColorTheme } from "../styles/Theme"
+import { ColorTheme } from "../styles/theme"
 
 import "react-toastify/dist/ReactToastify.css"
 

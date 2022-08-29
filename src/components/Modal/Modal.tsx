@@ -16,7 +16,10 @@ export interface ModalProps extends ChakraModalProps {
 export const Modal = ({ children, title, ...props }: ModalProps) => {
   return (
     <ModalContainer {...props}>
-      <ModalOverlay />
+      <ModalOverlay
+        bg="blackAlpha.400"
+        backdropFilter="blur(8px) hue-rotate(10deg)"
+      />
       <ModalContent p={8}>
         <ModalHeader textAlign="center">{title}</ModalHeader>
         <ModalCloseButton />

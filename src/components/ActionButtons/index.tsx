@@ -7,7 +7,10 @@ import {
   TooltipProps
 } from "@chakra-ui/react"
 
-export type ActionButtonProps<T> = Omit<IconButtonProps, "onClick"> &
+export type ActionButtonProps<T> = Omit<
+  IconButtonProps,
+  "onClick" | "aria-label"
+> &
   ActionButton<T> & {
     tooltipProps?: Partial<TooltipProps>
   }
@@ -31,6 +34,7 @@ function ActionButtonInner<T>(
       {...tooltipProps}
     >
       <IconButton
+        aria-label={label || ""}
         onClick={handleAction}
         icon={icon}
         variant="solid"

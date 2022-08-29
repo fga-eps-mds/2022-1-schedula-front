@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from "react"
 import { FormProvider, useFieldArray, useForm } from "react-hook-form"
 import { FaPlus } from "react-icons/fa"
-import { toast } from "react-toastify"
 import {
   Button,
   Flex,
@@ -10,6 +9,7 @@ import {
   FormLabel,
   Grid,
   GridItem,
+  Heading,
   Icon,
   Input,
   Select,
@@ -23,9 +23,12 @@ import {
   useCreateSelectOptions
 } from "@hooks/useCreateSelectOptions"
 import { useRequest } from "@hooks/useRequest"
-import { createChamado } from "@services/Chamados"
-import { request } from "@services/request"
 import { getWorkstations } from "@services/Workstation"
+
+interface ChamadoFormProps {
+  onSubmit: (data: ChamadoPayload) => Promise<void>
+  defaultValues?: ChamadoPayload
+}
 
 const chamadosDefaultValues: ChamadoProblem = {
   category_id: "" as unknown as number,
@@ -35,12 +38,18 @@ const chamadosDefaultValues: ChamadoProblem = {
   request_status: "pending"
 }
 
-export const ChamadoFormWrapper = () => {
+export const ChamadoFormWrapper = ({
+  onSubmit,
+  defaultValues
+}: ChamadoFormProps) => {
+  const isEdditing = Boolean(defaultValues)
+
   const methods = useForm<ChamadoPayload>({
     defaultValues: {
       attendant_name: /*user?.name*/ "Teste",
       workstation_id: "" as unknown as number,
-      problems: [chamadosDefaultValues]
+      problems: [chamadosDefaultValues],
+      ...defaultValues
     },
     mode: "onChange"
   })
@@ -49,12 +58,20 @@ export const ChamadoFormWrapper = () => {
     register,
     control,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid }
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful }
   } = methods
 
   useEffect(() => {
-    register("problems", { required: true })
+    // Register with validation, otherwise its possible to send form without 'problems' field
+    register("problems", { required: "Adicione um Chamado" })
   }, [register])
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset()
+    }
+  }, [isSubmitSuccessful, reset])
 
   const {
     data: workstations,
@@ -68,22 +85,6 @@ export const ChamadoFormWrapper = () => {
     errorMessage: errorWorkstations?.message
   })
 
-  console.log("Workstations", workstations)
-
-  const onSubmit = handleSubmit(async (data) => {
-    console.log(data)
-
-    const response = await request<Chamado>(createChamado(data))
-
-    if (response.type === "error") {
-      toast.error(response.error.message)
-
-      return
-    }
-
-    toast.success(response.value.message)
-  })
-
   const { fields, append, remove } = useFieldArray({
     control,
     name: "problems"
@@ -94,21 +95,25 @@ export const ChamadoFormWrapper = () => {
   }, [append])
 
   const handleRemove = useCallback(
-    (field: number) => () => {
-      remove(field)
+    (field: number) => {
+      // if there is only one field, show the remove button
+      if (fields.length > 1)
+        return () => {
+          remove(field)
+        }
     },
-    [remove]
+    [fields.length, remove]
   )
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Grid templateColumns="repeat(2, 1fr)" gap={8}>
           <FormControl isInvalid={Boolean(errors?.applicant_name)}>
             <FormLabel>Nome Solicitando</FormLabel>
             <Input
               {...register("applicant_name", {
-                required: true
+                required: "Campo obrigatório"
               })}
             />
             <FormErrorMessage>
@@ -118,7 +123,11 @@ export const ChamadoFormWrapper = () => {
 
           <FormControl isInvalid={Boolean(errors?.applicant_phone)}>
             <FormLabel>Contato Solicitando</FormLabel>
-            <Input {...register("applicant_phone", { required: true })} />
+            <Input
+              {...register("applicant_phone", {
+                required: "Campo obrigatório"
+              })}
+            />
             <FormErrorMessage>
               {errors?.applicant_phone?.message}
             </FormErrorMessage>
@@ -134,13 +143,19 @@ export const ChamadoFormWrapper = () => {
             <VStack spacing={8} w="100%">
               <FormControl isInvalid={Boolean(errors?.place)}>
                 <FormLabel>Local</FormLabel>
-                <Input {...register("place", { required: true })} />
+                <Input
+                  {...register("place", { required: "Campo obrigatório" })}
+                />
                 <FormErrorMessage>{errors?.place?.message}</FormErrorMessage>
               </FormControl>
 
               <FormControl isInvalid={Boolean(errors?.workstation_id)}>
                 <FormLabel>Posto de Trabalho</FormLabel>
-                <Select {...register("workstation_id", { required: true })}>
+                <Select
+                  {...register("workstation_id", {
+                    required: "Campo obrigatório"
+                  })}
+                >
                   <option value="" disabled>
                     Selecione um posto de trabalho
                   </option>
@@ -154,28 +169,44 @@ export const ChamadoFormWrapper = () => {
 
             <Flex w="100%" flexDirection="column">
               <FormLabel htmlFor="description">Descrição</FormLabel>
-              <Textarea
-                {...register("description")}
-                height="-webkit-fill-available"
-              />
+              <Textarea {...register("description")} height="100%" />
             </Flex>
           </GridItem>
 
           <GridItem colSpan={2}>
             <VStack align="stretch" spacing={8}>
-              {(!fields || !fields.length) && 0}
+              {(!fields || !fields.length) && (
+                <>
+                  <Heading
+                    as="h4"
+                    textAlign="center"
+                    fontWeight="semibold"
+                    fontSize={errors?.problems ? "3xl" : "2xl"}
+                    color={errors?.problems ? "red" : "gray.500"}
+                  >
+                    Adicione um Chamado
+                  </Heading>
+                </>
+              )}
+
               {fields?.map((field, index) => (
                 <fieldset key={field.id} disabled={isSubmitting}>
-                  <ChamadoForm index={index} onRemove={handleRemove(index)} />
+                  <ChamadoForm
+                    index={index}
+                    onRemove={handleRemove(index)}
+                    isEdditing={isEdditing}
+                  />
                 </fieldset>
               ))}
-            </VStack>
 
-            <Flex justifyContent="end" mt={8}>
-              <Button onClick={handleAdd} variant="secondary">
-                <Icon as={FaPlus} mr={2} /> Chamado
-              </Button>
-            </Flex>
+              {!isEdditing && (
+                <Flex justifyContent="end" mt={8}>
+                  <Button onClick={handleAdd} variant="secondary">
+                    <Icon as={FaPlus} mr={2} /> Chamado
+                  </Button>
+                </Flex>
+              )}
+            </VStack>
           </GridItem>
         </Grid>
 
@@ -183,12 +214,12 @@ export const ChamadoFormWrapper = () => {
           type="submit"
           width="100%"
           size="lg"
-          isDisabled={isSubmitting || !isValid}
+          isDisabled={isSubmitting}
           isLoading={isSubmitting}
           mt={8}
           boxShadow="xl"
         >
-          Finalizar Atendimento
+          Finalizar {isEdditing ? "Edição" : "Atendimento"}
         </Button>
       </form>
     </FormProvider>

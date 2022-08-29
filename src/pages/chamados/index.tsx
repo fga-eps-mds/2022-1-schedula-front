@@ -1,177 +1,139 @@
 import { useCallback, useState } from "react"
 import NextLink from "next/link"
-import { useRouter } from "next/router"
 import { toast } from "react-toastify"
-import { Button, useDisclosure } from "@chakra-ui/react"
-import { AxiosResponse } from "axios"
+import {
+  Box,
+  Button,
+  HStack,
+  Text,
+  useDisclosure,
+  VStack
+} from "@chakra-ui/react"
 
-import { AddButton } from "@components/ActionButtons/AddButton"
-import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
-import { CategoriaForm } from "@components/Forms/CategoriaForm"
+import { ChamadoFormWrapper as ChamadoForm } from "@components/Forms/ChamadoForm/ChamadoFormWrapper"
 import { ListView } from "@components/List"
 import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
+import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
-import {
-  createProblemCategory,
-  deleteProblemCategory,
-  getProblemCategories,
-  updateProblemCategory
-} from "@services/Chamados"
+import { getChamados, updateChamado } from "@services/Chamados"
 import { request } from "@services/request"
 
 const ListaCategoria = () => {
-  const router = useRouter()
-
   const {
-    data: categorias,
+    data: chamados,
     isLoading,
     isValidating,
     mutate
-  } = useRequest<CategoriaProblema[]>(getProblemCategories)
+  } = useRequest<Chamado[]>(getChamados)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [categoriaToEdit, setCategoria] = useState<CategoriaProblema>()
-
-  const handleDelete = useCallback(
-    async ({ id }: CategoriaProblema) => {
-      const response = await request(deleteProblemCategory(id))
-
-      if (response.type === "success") {
-        toast.success("Categoria deletada com sucesso!")
-
-        const newCategorias = categorias?.data.filter(
-          (categoria) => categoria.id !== id
-        )
-
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newCategorias || ([] as CategoriaProblema[])
-            }
-          } as AxiosResponse<ApiResponse<CategoriaProblema[]>>,
-          { revalidate: false }
-        )
-
-        return
-      }
-
-      toast.error("Erro ao deletar categoria!")
-    },
-    [categorias, mutate]
-  )
+  const [chamadoToEdit, setChamadoToEdit] = useState<Chamado>()
 
   const handleEdit = useCallback(
-    (categoria: CategoriaProblema) => {
-      setCategoria(categoria)
+    (chamado: Chamado) => {
+      setChamadoToEdit(chamado)
       onOpen()
     },
     [onOpen]
   )
 
-  const handleAddProblem = useCallback(
-    ({ id }: CategoriaProblema) => {
-      router.push(`/categorias/${id}/problemas`)
-    },
-    [router]
-  )
-
-  const onSubmit = useCallback(
-    async (data: CategoriaProblemaPayload) => {
-      console.log("DATA: ", data)
-
-      const response = await request<CategoriaProblema>(
-        categoriaToEdit
-          ? updateProblemCategory(categoriaToEdit.id)(data)
-          : createProblemCategory(data)
-      )
-
-      if (response.type === "success") {
-        toast.success(
-          `Categoria ${categoriaToEdit ? "editada" : "criada"} com sucesso!`
-        )
-
-        const newCategorias = categoriaToEdit
-          ? categorias?.data.map((categoria) =>
-              categoria.id === categoriaToEdit?.id
-                ? response.value?.data
-                : categoria
-            )
-          : [...(categorias?.data || []), response.value?.data]
-
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newCategorias
-            }
-          } as AxiosResponse<ApiResponse<CategoriaProblema[]>>,
-          { revalidate: false }
-        )
-
-        setCategoria(undefined)
-        onClose()
-
-        return
-      }
-
-      toast.error("Erro ao criar categoria!")
-    },
-    [categoriaToEdit, categorias?.data, mutate, onClose]
-  )
-
   const handleClose = useCallback(() => {
-    setCategoria(undefined)
+    setChamadoToEdit(undefined)
     onClose()
   }, [onClose])
 
-  const renderCategoriaItem = useCallback(
-    (item: CategoriaProblema) => (
-      <Item title={item?.name} description={item?.description}>
+  const onSubmit = useCallback(
+    async (data: ChamadoPayload) => {
+      if (!chamadoToEdit?.id) return
+
+      delete data?.attendant_name
+
+      const response = await request<Chamado>(
+        updateChamado(chamadoToEdit?.id)(data)
+      )
+
+      if (response.type === "error") {
+        toast.error(response.error.message)
+
+        return Promise.reject(response.error.message)
+      }
+
+      toast.success(response.value.message)
+      mutate()
+      handleClose()
+    },
+    [chamadoToEdit?.id, handleClose, mutate]
+  )
+
+  const renderChamadoItem = useCallback(
+    (item: Chamado) => (
+      <Item
+        title={
+          <HStack spacing={6}>
+            <Box>
+              <Text fontSize="sm" fontWeight="light" color="GrayText">
+                Solicitante
+              </Text>
+              <Text noOfLines={1}>{item?.applicant_name}</Text>
+            </Box>
+            <Box>
+              <Text fontSize="sm" fontWeight="light" color="GrayText">
+                Atendente
+              </Text>
+              <Text noOfLines={1}>{item?.attendant_name}</Text>
+            </Box>
+          </HStack>
+        }
+        description={
+          <VStack align="stretch">
+            <Text noOfLines={1}>{item?.description || "Sem descrição"}</Text>
+            {/* <HStack>
+              {item?.problems.map((problem) => (
+                <Badge key={problem.problem_id} colorScheme="red">
+                  {problem.problem_id}
+                </Badge>
+              ))}
+            </HStack> */}
+          </VStack>
+        }
+      >
         <Item.Actions item={item}>
-          <AddButton
-            onClick={handleAddProblem}
-            label="Tipos de Problema"
-            aria-label="Ver tipos de problema"
-          />
-          <EditButton onClick={handleEdit} label={item.name} />
-          <DeleteButton
-            onClick={handleDelete}
-            label={item.name}
-            aria-label={`Apagar ${item.name}`}
-          />
+          <EditButton onClick={handleEdit} label="Chamado" />
         </Item.Actions>
       </Item>
     ),
-    [handleAddProblem, handleDelete, handleEdit]
+    [handleEdit]
   )
 
   return (
     <>
       <PageHeader title="Chamados">
-        <NextLink href="/chamados/registrar" passHref>
-          <Button variant="primary">Registrar Chamado</Button>
-        </NextLink>
+        <HStack spacing={2}>
+          <RefreshButton refresh={mutate} />
+          <NextLink href="/chamados/registrar" passHref>
+            <Button variant="primary">Novo Chamado</Button>
+          </NextLink>
+        </HStack>
       </PageHeader>
 
-      <ListView<CategoriaProblema>
-        items={categorias?.data}
-        render={renderCategoriaItem}
+      <ListView<Chamado>
+        items={chamados?.data}
+        render={renderChamadoItem}
         isLoading={isLoading || isValidating}
       />
 
       <Modal
-        title={categoriaToEdit ? "Editar Categoria" : "Nova Categoria"}
+        blockScrollOnMount={false}
+        title="Editar Chamado"
         isOpen={isOpen}
         onClose={handleClose}
+        size="6xl"
       >
-        <CategoriaForm defaultValues={categoriaToEdit} onSubmit={onSubmit} />
+        <ChamadoForm defaultValues={chamadoToEdit} onSubmit={onSubmit} />
       </Modal>
     </>
   )

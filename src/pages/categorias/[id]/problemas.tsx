@@ -20,7 +20,7 @@ import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
-import { getProblemCategory } from "@services/Chamados"
+import { getProblemCategory } from "@services/Categorias"
 import {
   createProblemType,
   deleteProblemType,
@@ -143,7 +143,11 @@ const ListaProblemas = () => {
       <Item title={item?.name} description={item?.description}>
         <Item.Actions item={item}>
           <EditButton onClick={handleEdit} label={item.name} />
-          <DeleteButton onClick={handleDelete} label={item.name} />
+          <DeleteButton
+            onClick={handleDelete}
+            label={item.name}
+            aria-label={`Apagar ${item.name}`}
+          />
         </Item.Actions>
       </Item>
     ),

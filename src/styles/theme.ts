@@ -27,9 +27,7 @@ export const ColorTheme = extendTheme({
       },
       html: {
         marginLeft: "calc(100vw - 100%)", // Fix scrollbar jump
-        marginRight: 0,
-        width: "100vw",
-        overflowX: "hidden"
+        marginRight: 0
       }
     }
   },
@@ -50,6 +48,7 @@ export const ColorTheme = extendTheme({
     Select: {
       baseStyle: {
         field: {
+          cursor: "pointer",
           background: "white",
           backgroundColor: "white",
           boxShadow: "thin"

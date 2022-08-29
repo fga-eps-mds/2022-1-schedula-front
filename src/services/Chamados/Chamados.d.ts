@@ -11,7 +11,7 @@ interface Chamado {
 }
 
 interface ChamadoPayload {
-  attendant_name: string
+  attendant_name?: string
   applicant_name: string
   applicant_phone: string
   description: string

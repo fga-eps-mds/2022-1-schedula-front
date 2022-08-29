@@ -18,7 +18,7 @@ import { request } from "@services/request"
 import {
   createWorkstation,
   deleteWorkstation,
-  getWorkstation,
+  getWorkstations,
   updateWorkstation
 } from "@services/Workstation"
 
@@ -28,7 +28,7 @@ const Workstation = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Workstation[]>(getWorkstation)
+  } = useRequest<Workstation[]>(getWorkstations)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
