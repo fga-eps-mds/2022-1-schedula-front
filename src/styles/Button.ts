@@ -1,4 +1,4 @@
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
+import type { ComponentStyleConfig } from "@chakra-ui/theme"
 
 // You can also use the more specific type for
 // a single part component: ComponentSingleStyleConfig
@@ -10,30 +10,51 @@ export const Button: ComponentStyleConfig = {
   // Two variants: outline and solid
   variants: {
     primary: {
-      minWidth: '150px',
-      color: '#F4F7F5',
-      backgroundColor: 'primary',
-      boxShadow: 'soft',
+      minWidth: "150px",
+      color: "#F4F7F5",
+      backgroundColor: "primary",
+      boxShadow: "soft",
 
       backgroundImage:
-        'linear-gradient(to right, #FF8008 0%, #FFA03A 51%, #FF8008 100%);',
-      transition: '0.5s',
-      backgroundSize: '200% auto',
+        "linear-gradient(to right, #FF8008 0%, #FFA03A 51%, #FF8008 100%);",
+      transition: "0.5s",
+      backgroundSize: "200% auto",
 
       _hover: {
         backgroundPosition:
-          'right center' /* change the direction of the change here */,
-        textDecoration: 'none',
+          "right center" /* change the direction of the change here */,
+        textDecoration: "none",
 
         _disabled: {
-          background: '',
-        },
-      },
+          background: ""
+        }
+      }
     },
+    secondary: {
+      backgroundImage:
+        "linear-gradient(to right, #141E30 0%, #243B55  51%, #141E30  100%)",
+      minWidth: "150px",
+      color: "#F4F7F5",
+      backgroundColor: "primary",
+      boxShadow: "soft",
+
+      transition: "0.5s",
+      backgroundSize: "200% auto",
+
+      _hover: {
+        backgroundPosition:
+          "right center" /* change the direction of the change here */,
+        textDecoration: "none",
+
+        _disabled: {
+          background: ""
+        }
+      }
+    }
   },
   // The default size and variant values
   defaultProps: {
-    size: 'md',
-    variant: 'primary',
-  },
-};
+    size: "md",
+    variant: "primary"
+  }
+}

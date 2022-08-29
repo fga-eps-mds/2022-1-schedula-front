@@ -7,7 +7,7 @@ import {
   TooltipProps
 } from "@chakra-ui/react"
 
-type ActionButtonProps<T> = Omit<IconButtonProps, "onClick"> &
+export type ActionButtonProps<T> = Omit<IconButtonProps, "onClick"> &
   ActionButton<T> & {
     tooltipProps?: Partial<TooltipProps>
   }

@@ -15,9 +15,9 @@ import {
   useDisclosure
 } from "@chakra-ui/react"
 
-import { ActionButton } from "@components/ActionButtons"
+import { ActionButton, ActionButtonProps } from "@components/ActionButtons"
 
-type DeleteButtonProps<Data> = ActionButton<Data>
+type DeleteButtonProps<Data> = ActionButtonProps<Data>
 
 const tooltipStyle = {
   bg: "red.500",
@@ -26,7 +26,8 @@ const tooltipStyle = {
 
 export const DeleteButton = <Data,>({
   label,
-  onClick
+  onClick,
+  ...props
 }: DeleteButtonProps<Data>) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -50,6 +51,8 @@ export const DeleteButton = <Data,>({
           isLoading={isLoading}
           color="red.500"
           tooltipProps={tooltipStyle}
+          tabIndex={1}
+          {...props}
         />
       </PopoverAnchor>
       <PopoverContent data-testid="delete-confirmation-popover">

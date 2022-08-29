@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react"
+import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
-import { Button, HStack, useDisclosure } from "@chakra-ui/react"
+import { Button, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
 import { AddButton } from "@components/ActionButtons/AddButton"
@@ -12,14 +13,13 @@ import { ListView } from "@components/List"
 import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
-import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
 import {
   createProblemCategory,
   deleteProblemCategory,
   getProblemCategories,
   updateProblemCategory
-} from "@services/Categorias"
+} from "@services/Chamados"
 import { request } from "@services/request"
 
 const ListaCategoria = () => {
@@ -138,7 +138,7 @@ const ListaCategoria = () => {
           <AddButton
             onClick={handleAddProblem}
             label="Tipos de Problema"
-            aria-label="Add"
+            aria-label="Ver tipos de problema"
           />
           <EditButton onClick={handleEdit} label={item.name} />
           <DeleteButton onClick={handleDelete} label={item.name} />
@@ -150,11 +150,12 @@ const ListaCategoria = () => {
 
   return (
     <>
-      <PageHeader title="Categorias de Problemas">
-        <HStack spacing={2}>
-          <RefreshButton refresh={mutate} />
-          <Button onClick={onOpen}>Nova Categoria</Button>
-        </HStack>
+      <PageHeader title="Chamados">
+        <NextLink href="/chamados/registrar" passHref>
+          <Button as="a" variant="outline">
+            Registrar Chamado
+          </Button>
+        </NextLink>
       </PageHeader>
 
       <ListView<CategoriaProblema>

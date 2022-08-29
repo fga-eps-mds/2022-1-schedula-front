@@ -1,16 +1,33 @@
-interface CategoriaProblema {
+interface Chamado {
   id: number
-  active: boolean
+  attendant_name: string
+  applicant_name: string
+  applicant_phone: string
   description: string
-  updated_at: Date
-  name: string
+  place: string
+  workstation_id: number
+  created_at: Date
+  problems: [ChamadoProblem & { request_id: number }]
 }
 
-interface CategoriaProblemaPayload {
-  name: string
+interface ChamadoPayload {
+  attendant_name: string
+  applicant_name: string
+  applicant_phone: string
   description: string
+  place: string
+  workstation_id: number
+  problems: ChamadoProblem[]
 }
 
-type DetalhadorStatus = {
-  APP: "Detalhador de chamados is running"
+type ChamadoProblem = {
+  category_id: number
+  problem_id: number
+  is_event: false
+  request_status: Status
+  priority: Priority
 }
+
+type Status = "pending" | "in_progress" | "not_solved" | "outsourced" | "solved"
+
+type Priority = "low" | "normal" | "high" | "urgent"
