@@ -96,8 +96,8 @@ const Chamados = () => {
               </Text>
               <Box textAlign="center" fontWeight="medium">
                 <Text>
-                  {formatDate(item.created_at, "date")}{" "}
-                  {formatDate(item.created_at, "time")}
+                  {formatDate(item?.created_at, "date")}{" "}
+                  {formatDate(item?.created_at, "time")}
                 </Text>
               </Box>
             </Box>
@@ -107,12 +107,12 @@ const Chamados = () => {
           <Box>
             <HStack gap={4} mt={2} flexWrap="wrap">
               {item?.problems.map((problem) => (
-                <HStack align="start" spacing={1} key={problem.problem_id}>
+                <HStack align="start" spacing={1} key={problem?.problem_id}>
                   <Tag variant="subtle" colorScheme="gray">
-                    {problem.category.name}
+                    {problem?.category?.name}
                   </Tag>
                   <Tag variant="subtle" colorScheme="purple">
-                    {problem.problem.name}
+                    {problem?.problem?.name}
                   </Tag>
                 </HStack>
               ))}

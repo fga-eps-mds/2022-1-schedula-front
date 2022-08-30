@@ -1,33 +1,24 @@
-import { services } from "@services"
+import { Services } from "@services"
 
-const resourceURL = "/city"
+const CityService = Services.localidades.create("/city")
 
-const cidadesService = services.localidades(resourceURL)
+export const getCities = CityService.get()
+
+export const getCityById = (city_id: number) =>
+  CityService.get({ params: { city_id } })
 
 export const createCity = (payload: CityPayload) =>
-  cidadesService({
-    method: "post",
+  CityService.post({
     data: payload
   })
 
-export const getCities = cidadesService()
-
-export const getCity = (id: number) =>
-  cidadesService({
-    params: {
-      city_id: id
-    }
-  })
-
 export const updateCity = (id: number) => (payload: CityPayload) =>
-  cidadesService({
-    url: resourceURL + `/${id}`,
-    method: "put",
+  CityService.put({
+    url: CityService.newUrl(`/${id}`),
     data: payload
   })
 
 export const deleteCity = (id: number) =>
-  cidadesService({
-    url: resourceURL + `/${id}`,
-    method: "delete"
+  CityService.delete({
+    url: CityService.newUrl(`/${id}`)
   })

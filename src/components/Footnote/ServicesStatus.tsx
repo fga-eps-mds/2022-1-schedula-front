@@ -47,7 +47,9 @@ const StatusLine = ({
           {status ? "ON" : "OFF"}
         </Badge>
       </Skeleton>
+
       <Text>{serviceName}</Text>
+
       {process.env.NODE_ENV === "production" && (
         <Skeleton isLoaded={!isLoadingVersion}>
           <Badge
@@ -59,6 +61,7 @@ const StatusLine = ({
           </Badge>
         </Skeleton>
       )}
+
       {process.env.NODE_ENV === "development" && (
         <Box ml="auto">
           <Badge colorScheme="pink" variant="outline" textTransform="lowercase">
@@ -72,9 +75,9 @@ const StatusLine = ({
 
 export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
   const {
-    errorUsuarios,
-    errorChamados,
-    errorLocalidades,
+    usuariosStatus,
+    chamadosStatus,
+    localidadesStatus,
     isLoadingChamadosStatus,
     isLoadingUsuariosStatus,
     isLoadingLocalidadesStatus,
@@ -97,7 +100,7 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
           <VStack spacing={3} align="stretch" mt={2} divider={<Divider />}>
             <StatusLine
               serviceName="Usuários"
-              status={!errorUsuarios}
+              status={!usuariosStatus}
               version={apiVersions?.usuarios}
               isLoadingStatus={isLoadingUsuariosStatus}
               isLoadingVersion={isLoadingUserVersion}
@@ -105,7 +108,7 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
 
             <StatusLine
               serviceName="Chamados"
-              status={!errorChamados}
+              status={!chamadosStatus}
               version={apiVersions?.chamados}
               isLoadingStatus={isLoadingChamadosStatus}
               isLoadingVersion={isLoadingChamadosVersion}
@@ -113,7 +116,7 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
 
             <StatusLine
               serviceName="Localidades"
-              status={!errorLocalidades}
+              status={!localidadesStatus}
               version={apiVersions?.localidades}
               isLoadingStatus={isLoadingLocalidadesStatus}
               isLoadingVersion={isLoadingLocalidadesVersion}

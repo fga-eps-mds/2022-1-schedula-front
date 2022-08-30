@@ -1,5 +1,5 @@
 import { useRequest } from "@hooks/useRequest"
-import { getProblemCategories } from "@services/Categorias"
+import { getCategories } from "@services/Categorias"
 import { getProblemTypes } from "@services/Problemas"
 
 export const useDropdownData = (category_id: number) => {
@@ -7,7 +7,7 @@ export const useDropdownData = (category_id: number) => {
     data: categorias,
     isLoading: isLoadingCategories,
     error: errorCategorias
-  } = useRequest<CategoriaProblema[]>(getProblemCategories)
+  } = useRequest<Category[]>(getCategories)
 
   const {
     data: tiposProblemas,

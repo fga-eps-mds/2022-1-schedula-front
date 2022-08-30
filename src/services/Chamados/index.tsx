@@ -1,32 +1,24 @@
-import { services } from "@services"
+import { Services } from "@services"
 
-const resourceURL = "/chamado"
-const chamadosService = services.chamados(resourceURL)
+const ChamadoService = Services.chamados.create("/chamado")
+
+export const getChamados = ChamadoService.get()
+
+export const getChamadoById = (id: number) =>
+  ChamadoService.get({ params: { id } })
 
 export const createChamado = (payload: ChamadoPayload) =>
-  chamadosService({
-    method: "POST",
+  ChamadoService.post({
     data: payload
-  })
-
-export const getChamados = chamadosService()
-
-export const getChamado = (id: number) =>
-  chamadosService({
-    params: {
-      category_id: id
-    }
   })
 
 export const updateChamado = (id: number) => (payload: ChamadoPayload) =>
-  chamadosService({
-    url: resourceURL + `/${id}`,
-    method: "put",
+  ChamadoService.put({
+    url: ChamadoService.newUrl(`/${id}`),
     data: payload
   })
 
-export const deleteChamado = (id: number) =>
-  chamadosService({
-    url: resourceURL + `/${id}`,
-    method: "delete"
+export const deleteUser = (id: number) =>
+  ChamadoService.delete({
+    url: ChamadoService.newUrl(`/${id}`)
   })

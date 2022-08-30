@@ -17,7 +17,7 @@ interface ChamadoProblem {
   request_status: Status
   priority: Priority
   problem: TipoProblema
-  category: CategoriaProblema
+  category: Category
 }
 
 interface ChamadoPayload {

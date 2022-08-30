@@ -20,7 +20,7 @@ import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
-import { getProblemCategory } from "@services/Categorias"
+import { getCategoryById } from "@services/Categorias"
 import {
   createProblemType,
   deleteProblemType,
@@ -35,9 +35,7 @@ const ListaProblemas = () => {
   const category_id = Number(router.query?.id)
 
   const { data: categoria, isLoading: isLoadingCategory } =
-    useRequest<CategoriaProblema>(
-      category_id ? getProblemCategory(category_id) : null
-    )
+    useRequest<Category>(category_id ? getCategoryById(category_id) : null)
 
   const {
     data: problemas,
@@ -139,7 +137,7 @@ const ListaProblemas = () => {
   }, [onClose])
 
   const renderProblemaItem = useCallback(
-    (item: CategoriaProblema) => (
+    (item: Category) => (
       <Item title={item?.name} description={item?.description}>
         <Item.Actions item={item}>
           <EditButton onClick={handleEdit} label={item.name} />

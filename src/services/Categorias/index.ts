@@ -1,33 +1,24 @@
-import { services } from "@services"
+import { Services } from "@services"
 
-const resourceURL = "/categoria"
-const categoriasService = services.chamados(resourceURL)
+const CategoryService = Services.chamados.create("/categoria")
 
-export const createProblemCategory = (payload: CategoriaProblemaPayload) =>
-  categoriasService({
-    method: "POST",
+export const getCategories = CategoryService.get()
+
+export const getCategoryById = (category_id: number) =>
+  CategoryService.get({ params: { category_id } })
+
+export const createCategory = (payload: CategoryPayload) =>
+  CategoryService.post({
     data: payload
   })
 
-export const getProblemCategories = categoriasService()
-
-export const getProblemCategory = (id: number) =>
-  categoriasService({
-    params: {
-      category_id: id
-    }
+export const updateCategory = (id: number) => (payload: CategoryPayload) =>
+  CategoryService.put({
+    url: CategoryService.newUrl(`/${id}`),
+    data: payload
   })
 
-export const updateProblemCategory =
-  (id: number) => (payload: CategoriaProblemaPayload) =>
-    categoriasService({
-      url: resourceURL + `/${id}`,
-      method: "put",
-      data: payload
-    })
-
-export const deleteProblemCategory = (id: number) =>
-  categoriasService({
-    url: resourceURL + `/${id}`,
-    method: "delete"
+export const deleteCategory = (id: number) =>
+  CategoryService.delete({
+    url: CategoryService.newUrl(`/${id}`)
   })
