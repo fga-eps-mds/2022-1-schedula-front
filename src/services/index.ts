@@ -29,41 +29,44 @@ export class Service {
     }
   }
 
-  get(config?: AxiosRequestConfig): AxiosRequestConfig {
-    return {
-      ...this.baseConfig,
-      ...config,
-      method: "GET"
-    }
-  }
+  get = (config?: AxiosRequestConfig): AxiosRequestConfig => ({
+    ...this.baseConfig,
+    method: "GET",
+    ...config
+  })
 
-  post<Payload = void>(
+  post = <Payload = void>(
+    payload: Payload,
     config?: AxiosRequestConfig<Payload>
-  ): AxiosRequestConfig<Payload> {
-    return {
-      ...this.baseConfig,
-      method: "POST",
-      ...config
-    }
-  }
+  ): AxiosRequestConfig<Payload> => ({
+    ...this.baseConfig,
+    method: "POST",
+    data: payload,
+    ...config
+  })
 
-  put<Payload = void>(
-    config?: AxiosRequestConfig<Payload>
-  ): AxiosRequestConfig<Payload> {
-    return {
+  put =
+    <Payload>(id: number | string) =>
+    (
+      payload: Payload,
+      config?: AxiosRequestConfig<Payload>
+    ): AxiosRequestConfig<Payload> => ({
       ...this.baseConfig,
+      url: this.resourceURL + "/" + id,
       method: "PUT",
+      data: payload,
       ...config
-    }
-  }
+    })
 
-  delete(config?: AxiosRequestConfig): AxiosRequestConfig {
-    return {
-      ...this.baseConfig,
-      ...config,
-      method: "DELETE"
-    }
-  }
+  delete = (
+    id: number | string,
+    config?: AxiosRequestConfig
+  ): AxiosRequestConfig => ({
+    ...this.baseConfig,
+    url: this.resourceURL + "/" + id,
+    method: "DELETE",
+    ...config
+  })
 
   status = () => this.get()
 

@@ -7,19 +7,10 @@ export const getWorkstations = WorkstationService.get()
 export const getWorkstationById = (workstation_id: number) =>
   WorkstationService.get({ params: { workstation_id } })
 
-export const createWorkstation = (payload: CreateWorkstationPayload) =>
-  WorkstationService.post({
-    data: payload
-  })
+export const createWorkstation =
+  WorkstationService.post<CreateWorkstationPayload>
 
 export const updateWorkstation =
-  (id: number) => (payload: CreateWorkstationPayload) =>
-    WorkstationService.put({
-      url: WorkstationService.newUrl(`/${id}`),
-      data: payload
-    })
+  WorkstationService.put<CreateWorkstationPayload>
 
-export const deleteWorkstation = (id: number) =>
-  WorkstationService.delete({
-    url: WorkstationService.newUrl(`/${id}`)
-  })
+export const deleteWorkstation = WorkstationService.delete

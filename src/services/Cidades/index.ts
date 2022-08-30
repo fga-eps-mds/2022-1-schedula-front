@@ -7,18 +7,8 @@ export const getCities = CityService.get()
 export const getCityById = (city_id: number) =>
   CityService.get({ params: { city_id } })
 
-export const createCity = (payload: CityPayload) =>
-  CityService.post({
-    data: payload
-  })
+export const createCity = CityService.post<CityPayload>
 
-export const updateCity = (id: number) => (payload: CityPayload) =>
-  CityService.put({
-    url: CityService.newUrl(`/${id}`),
-    data: payload
-  })
+export const updateCity = CityService.put<CityPayload>
 
-export const deleteCity = (id: number) =>
-  CityService.delete({
-    url: CityService.newUrl(`/${id}`)
-  })
+export const deleteCity = CityService.delete

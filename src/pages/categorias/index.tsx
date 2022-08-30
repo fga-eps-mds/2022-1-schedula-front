@@ -30,7 +30,7 @@ const ListaCategoria = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Category[]>(getCategories)
+  } = useRequest<Category[]>(getCategories())
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 

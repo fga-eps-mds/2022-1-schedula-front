@@ -12,19 +12,8 @@ export const getProblemTypes = (category_id: number) =>
 export const getProblemTypeById = (problem_id: number) =>
   ProblemTypeService.get({ params: { problem_id } })
 
-export const createProblemType = (payload: ProblemTypePayload) =>
-  ProblemTypeService.post({
-    data: payload
-  })
+export const createProblemType = ProblemTypeService.post<ProblemTypePayload>
 
-export const updateProblemType =
-  (id: number) => (payload: ProblemTypePayload) =>
-    ProblemTypeService.put({
-      url: ProblemTypeService.newUrl(`/${id}`),
-      data: payload
-    })
+export const updateProblemType = ProblemTypeService.put<ProblemTypePayload>
 
-export const deleteProblemType = (id: number) =>
-  ProblemTypeService.delete({
-    url: ProblemTypeService.newUrl(`/${id}`)
-  })
+export const deleteProblemType = ProblemTypeService.delete
