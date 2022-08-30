@@ -7,14 +7,19 @@ export const useDropdownData = (category_id: number) => {
     data: categorias,
     isLoading: isLoadingCategories,
     error: errorCategorias
-  } = useRequest<Category[]>(getCategories())
+  } = useRequest<Category[]>(getCategories(), {
+    revalidateIfStale: false
+  })
 
   const {
     data: tiposProblemas,
     isLoading: isLoadingProblems,
     error: errorProblemas
   } = useRequest<TipoProblema[]>(
-    category_id ? getProblemTypes(category_id) : null
+    category_id ? getProblemTypes(category_id) : null,
+    {
+      revalidateIfStale: false
+    }
   )
 
   return {

@@ -72,7 +72,6 @@ export const ControlledSelect = <FormValues,>({
         value={value}
         chakraStyles={chakraStyles}
         selectedOptionColor="orange"
-        isClearable
         openMenuOnFocus
         {...props}
       />

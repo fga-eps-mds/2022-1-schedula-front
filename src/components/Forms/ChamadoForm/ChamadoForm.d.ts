@@ -8,8 +8,9 @@ type ChamadoFormValues = {
   problems: {
     category_id: SelectOption
     problem_id: SelectOption
-    is_event: boolean
     request_status: { label: string; value: Status }
     priority: { label: string; value: Priority }
+    is_event: boolean
+    event_date: Date
   }[]
 }

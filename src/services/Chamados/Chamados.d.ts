@@ -13,11 +13,12 @@ interface Chamado {
 interface ChamadoProblem {
   category_id: number
   problem_id: number
-  is_event: boolean
   request_status: Status
   priority: Priority
   problem: TipoProblema
   category: Category
+  is_event: boolean
+  event_date: Date
 }
 
 interface ChamadoPayload {
@@ -33,9 +34,10 @@ interface ChamadoPayload {
 type ChamadoProblemPayload = {
   category_id: number
   problem_id: number
-  is_event: boolean
   request_status: Status
   priority: Priority
+  is_event: boolean
+  event_date: Date
 }
 
 type Status = "pending" | "in_progress" | "not_solved" | "outsourced" | "solved"
