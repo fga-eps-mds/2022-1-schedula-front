@@ -1,26 +1,13 @@
-import { services } from "@services"
+import { Services } from "@services"
 
-const resourceURL = "/user"
-const userService = services.usuarios(resourceURL)
+const UserService = Services.usuarios.create("/user")
 
-export const getUsers = userService()
+export const getUsers = UserService.get()
 
-export const createUser = (payload: RegisterUserPayload) =>
-  userService({
-    method: "post",
-    data: payload
-  })
+export const getUserById = (id: number) => UserService.get({ params: { id } })
 
-export const updateUser =
-  (username: string) => (payload: RegisterUserPayload) =>
-    userService({
-      url: resourceURL + `/${username}`,
-      method: "put",
-      data: payload
-    })
+export const createUser = UserService.post<RegisterUserPayload>
 
-export const deleteUser = (username: string) =>
-  userService({
-    url: resourceURL + `/${username}`,
-    method: "delete"
-  })
+export const updateUser = UserService.put<RegisterUserPayload>
+
+export const deleteUser = UserService.delete

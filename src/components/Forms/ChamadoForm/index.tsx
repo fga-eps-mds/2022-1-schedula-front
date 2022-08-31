@@ -1,9 +1,9 @@
 import { useFormContext } from "react-hook-form"
-import { Box, Grid, Text } from "@chakra-ui/react"
+import { Box, Checkbox, Grid, GridItem, Text } from "@chakra-ui/react"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { ControlledSelect } from "@components/ControlledSelect"
-import type { ChamadoFormValues } from "@components/Forms/ChamadoForm/ChamadoForm"
+import { Datepicker } from "@components/Datepicker"
 import { useDropdownData } from "@components/Forms/ChamadoForm/useDropdowData"
 import {
   ChamadoPriority,
@@ -23,7 +23,9 @@ export const ChamadoForm = ({
   onRemove,
   isEdditing
 }: ChamadoFormProps) => {
-  const { watch, control } = useFormContext<ChamadoFormValues>()
+  const { register, watch, control } = useFormContext<ChamadoFormValues>()
+
+  const watchIsEvent = watch(`problems.${index}.is_event` as const, false)
 
   const {
     categorias,
@@ -35,6 +37,8 @@ export const ChamadoForm = ({
   } = useDropdownData(
     Number(watch(`problems.${index}.category_id` as const)?.value)
   )
+
+  console.log("HOOKFORM: ", watch(`problems.${index}.event_date` as const))
 
   return (
     <Box>
@@ -50,7 +54,7 @@ export const ChamadoForm = ({
           watch(`problems.${index}.request_status`)?.value
         )}
         bg="whiteAlpha.300"
-        boxShadow="medium"
+        boxShadow="soft"
       >
         {!isEdditing && onRemove && (
           <DeleteButton
@@ -113,6 +117,25 @@ export const ChamadoForm = ({
           rules={{ required: "Campo obrigatório" }}
           isDisabled={!watch(`problems.${index}.category_id`)?.value}
         />
+
+        <GridItem>
+          <Checkbox
+            {...register(`problems.${index}.is_event` as const)}
+            size="lg"
+          >
+            Evento
+          </Checkbox>
+        </GridItem>
+
+        {watchIsEvent && (
+          <Datepicker
+            label="Data"
+            control={control}
+            name={`problems.${index}.event_date` as const}
+            id={`problems.${index}.event_date` as const}
+            rules={{ required: "Campo obrigatório", shouldUnregister: true }}
+          />
+        )}
       </Grid>
     </Box>
   )

@@ -1,63 +1,69 @@
 import { useMemo } from "react"
+import { toast } from "react-toastify"
 
 import { useRequest } from "@hooks/useRequest"
-import { serviceStatus } from "@services"
+import { Service, Services } from "@services"
 
 type Releases = {
   tag_name: string
   name: string
 }
 
+const GithubService = new Service(
+  "https://api.github.com",
+  "/repos/fga-eps-mds"
+)
+
 export const useServicesData = () => {
-  const {
-    data: chamadosStatus,
-    isLoading: isLoadingChamadosStatus,
-    error: errorChamados
-  } = useRequest<ServiceStatus>(serviceStatus("chamados"))
+  const { isLoading: isLoadingChamadosStatus, error: errorChamados } =
+    useRequest<ServiceStatus>(Services.chamados.status(), {
+      onLoadingSlow: () => toast.warn("A API de chamados está lenta. 😕")
+    })
 
-  const {
-    data: usuariosStatus,
-    isLoading: isLoadingUsuariosStatus,
-    error: errorUsuarios
-  } = useRequest<ServiceStatus>(serviceStatus("usuarios"))
+  const { isLoading: isLoadingUsuariosStatus, error: errorUsuarios } =
+    useRequest<ServiceStatus>(Services.usuarios.status(), {
+      onLoadingSlow: () => toast.warn("A API de usuários está lenta. 😕")
+    })
 
-  const {
-    data: localidadesStatus,
-    isLoading: isLoadingLocalidadesStatus,
-    error: errorLocalidades
-  } = useRequest<ServiceStatus>(serviceStatus("localidades"))
+  const { isLoading: isLoadingLocalidadesStatus, error: errorLocalidades } =
+    useRequest<ServiceStatus>(Services.localidades.status(), {
+      onLoadingSlow: () =>
+        toast.warn("A API de localidades está lenta. 😕", {
+          autoClose: false
+        })
+    })
 
   const { data: usuariosVersion, isLoading: isLoadingUserVersion } = useRequest<
     Releases[]
   >(
     process.env.NODE_ENV !== "development"
-      ? {
-          baseURL: "https://api.github.com",
-          url: "/repos/fga-eps-mds/2022-1-schedula-gestor-de-usuarios/releases",
-          method: "GET"
-        }
+      ? GithubService.get({
+          url: GithubService?.newUrl(
+            "/2022-1-schedula-gestor-de-usuarios/releases"
+          )
+        })
       : null
   )
 
   const { data: chamadosVersion, isLoading: isLoadingChamadosVersion } =
     useRequest<Releases[]>(
       process.env.NODE_ENV !== "development"
-        ? {
-            baseURL: "https://api.github.com",
-            url: "/repos/fga-eps-mds/2022-1-schedula-detalhador-de-chamados/releases",
-            method: "GET"
-          }
+        ? GithubService.get({
+            url: GithubService?.newUrl(
+              "/2022-1-schedula-detalhador-de-chamados/releases"
+            )
+          })
         : null
     )
 
   const { data: localidadesVersion, isLoading: isLoadingLocalidadesVersion } =
     useRequest<Releases[]>(
       process.env.NODE_ENV !== "development"
-        ? {
-            baseURL: "https://api.github.com",
-            url: "/repos/fga-eps-mds/2022-1-schedula-gerenciador-de-localidades/releases",
-            method: "GET"
-          }
+        ? GithubService.get({
+            url: GithubService?.newUrl(
+              "/2022-1-schedula-gerenciador-de-localidades/releases"
+            )
+          })
         : null
     )
 
@@ -71,18 +77,15 @@ export const useServicesData = () => {
   )
 
   return {
-    usuariosStatus,
+    usuariosStatus: !errorUsuarios,
     isLoadingUsuariosStatus,
     isLoadingUserVersion,
-    errorUsuarios,
-    chamadosStatus,
+    chamadosStatus: !errorChamados,
     isLoadingChamadosStatus,
     isLoadingChamadosVersion,
-    errorChamados,
-    localidadesStatus,
+    localidadesStatus: !errorLocalidades,
     isLoadingLocalidadesStatus,
     isLoadingLocalidadesVersion,
-    errorLocalidades,
     apiVersions
   }
 }
