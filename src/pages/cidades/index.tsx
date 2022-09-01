@@ -99,7 +99,7 @@ const ListaCidades = () => {
               message: "",
               data: newCidades
             }
-          } as AxiosResponse<ApiResponse<CategoriaProblema[]>>,
+          } as AxiosResponse<ApiResponse<Category[]>>,
           { revalidate: false }
         )
 

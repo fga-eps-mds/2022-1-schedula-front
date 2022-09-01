@@ -17,6 +17,7 @@ const chakraStyles: ChakraStylesConfig = {
   downChevron: (provided, state) => ({
     ...provided,
     transform: state?.isFocused ? "rotate(180deg)" : "rotate(0deg)",
+    fontSize: "1.4rem",
     transition: "transform 0.2s ease-in-out"
   }),
   menu: (provided) => ({
@@ -71,7 +72,6 @@ export const ControlledSelect = <FormValues,>({
         value={value}
         chakraStyles={chakraStyles}
         selectedOptionColor="orange"
-        isClearable
         openMenuOnFocus
         {...props}
       />
