@@ -6,11 +6,13 @@ import { AxiosResponse } from "axios"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { WorkstationForm } from "@components/Forms/WorkstationForm"
+import { ListView } from "@components/List"
 import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
+import { getCities } from "@services/Cidades"
 import { request } from "@services/request"
 import {
   createWorkstation,
@@ -18,6 +20,39 @@ import {
   getWorkstations,
   updateWorkstation
 } from "@services/Workstation"
+
+/*const workstation = {
+  data: [
+    {
+      name: "equino",
+      adsl_vpn: false,
+      regional: true,
+      link: "111111111",
+      ip: "11111111111",
+      city_id: "3",
+      phone: ["85858585858", "58558585858"]
+    },
+    {
+      name: "equino",
+      adsl_vpn: false,
+      regional: true,
+      link: "111111111",
+      ip: "11111111111",
+      city_id: "3",
+      phone: ["85858585858", "58558585858"]
+    },
+    {
+      name: "equino",
+      adsl_vpn: false,
+      regional: true,
+      link: "111111111",
+      ip: "11111111111",
+      city_id: "3",
+
+      phone: ["85858585858", "58558585858"]
+    }
+  ]
+}*/
 
 const Workstation = () => {
   const {
@@ -30,19 +65,7 @@ const Workstation = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [workstationToEdit, setWorkstationToEdit] = useState<Workstation>()
-  // const { data: cidade } = useRequest<ICity[]>(getCities(), localidadesApi)
-  const { data: cidades } = useRequest<ICity[]>(getCities(), localidadesApi)
-
-  function GetCidades(id: number) {
-    // const city?: ICity =
-    // cidade?.data.find((loc) => loc.id === id)
-    //   // cidade?.data?.find((loc) => loc.id === id) === undefined
-    //   //   ? []
-    //   //   : cidade?.data?.find((loc) => loc.id === id)
-    cidades?.data?.find((loc) => loc.id === id)
-
-    return cidades?.data?.find((loc) => loc.id === id)?.name
-  }
+  const { data: cidades } = useRequest<City[]>(getCities)
 
   const handleDelete = useCallback(
     async ({ id }: Workstation) => {
@@ -84,8 +107,8 @@ const Workstation = () => {
 
   const onSubmit = useCallback(
     async (data: CreateWorkstationPayload) => {
-      if (!data.phones) {
-        data.phones = []
+      if (!data.phone) {
+        data.phone = []
       }
 
       console.log("DATA: ", data)
@@ -98,16 +121,17 @@ const Workstation = () => {
 
       if (response.type === "success") {
         toast.success(
-          `Posto de Trabalho ${workstationToEdit ? "editado" : "criado"
+          `Posto de Trabalho ${
+            workstationToEdit ? "editado" : "criado"
           } com sucesso!`
         )
 
         const newWorkstation = workstationToEdit
           ? workstation?.data.map((workstation) =>
-            workstation.name === workstationToEdit?.name
-              ? response.value.data
-              : workstation
-          )
+              workstation.name === workstationToEdit?.name
+                ? response.value.data
+                : workstation
+            )
           : [...(workstation?.data || []), response.value.data]
 
         mutate(
@@ -139,7 +163,39 @@ const Workstation = () => {
 
   const renderWorkstationItem = useCallback(
     (item: Workstation) => (
-      <Item title={`${item?.name} [${item?.ip}]`} description="">
+      <Item
+        title={
+          <>
+            <Flex>
+              {item?.name}
+              <HStack spacing={2} ml={4}>
+                {item?.regional ? (
+                  <Badge colorScheme="yellow" variant="solid">
+                    Regional
+                  </Badge>
+                ) : (
+                  <></>
+                )}
+                <Badge colorScheme="linkedin" variant="solid">
+                  {
+                    /* {cidades?.data.filter(
+                    (cidade) => cidade.id === item.city_id
+                  ) != undefined
+                    ? GetCidades(item.city_id)
+                    : "tchau"} */
+                    cidades?.data?.find((loc) => loc.id === item.city_id)?.name
+                  }
+                </Badge>
+              </HStack>
+            </Flex>
+          </>
+        }
+        description={`[${
+          item?.link
+            ? "Link: " + item.link + " // Faixa: " + item.ip
+            : "ADSL_VPN"
+        }]`}
+      >
         <Item.Actions item={item}>
           <EditButton onClick={handleEdit} label={item.name} />
           <DeleteButton onClick={handleDelete} label={item.name} />
@@ -158,60 +214,11 @@ const Workstation = () => {
         </HStack>
       </PageHeader>
 
-      {isLoading ? (
-        <ListItemSkeleton />
-      ) : (
-        <Flex flexDirection="column" gap={6}>
-          {workstation?.data?.map?.((item, key) => (
-            <ListItem
-              title={
-                <>
-                  <Flex>
-                    {item?.name}
-                    <HStack spacing={2} ml={4}>
-                      {item?.regional ? (
-                        <Badge colorScheme="yellow" variant="solid">
-                          Regional
-                        </Badge>
-                      ) : (
-                        <></>
-                      )}
-                      <Badge colorScheme="linkedin" variant="solid">
-                        {
-                          /* {cidades?.data.filter(
-                          (cidade) => cidade.id === item.city_id
-                        ) != undefined
-                          ? GetCidades(item.city_id)
-                          : "tchau"} */
-                          cidades?.data?.find((loc) => loc.id === item.city_id)
-                            ?.name
-                        }
-                      </Badge>
-                    </HStack>
-                  </Flex>
-                </>
-              }
-              description={`[${item?.link
-                  ? "Link: " + item.link + " // Faixa: " + item.ip
-                  : "ADSL_VPN"
-                }]`}
-              key={key}
-            >
-              <ListItem.Actions
-                itemName={item?.name}
-                onEdit={handleEdit(item)}
-                onDelete={handleDelete(item.id)}
-              />
-            </ListItem>
-          ))}
-        </Flex>
-      )}
-
-      {workstation && isValidating && (
-        <Box mt={6}>
-          <ListItemSkeleton />
-        </Box>
-      )}
+      <ListView<Workstation>
+        items={workstation?.data}
+        render={renderWorkstationItem}
+        isLoading={isLoading || isValidating}
+      />
 
       <Modal
         title={

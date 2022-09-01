@@ -24,3 +24,8 @@ export const deleteWorkstation = (id: number) =>
     url: resourceURL + `/${id}`,
     method: "delete"
   })
+
+export const getRegionais = workstationsService({
+  url: "/regional",
+  method: "get"
+})

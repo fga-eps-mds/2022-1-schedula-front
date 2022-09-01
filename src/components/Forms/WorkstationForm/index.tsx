@@ -19,7 +19,6 @@ import {
 } from "@chakra-ui/react"
 
 import { useRequest } from "@hooks/useRequest"
-import { localidadesApi } from "@services/api"
 import { getCities } from "@services/Cidades"
 import { getRegionais } from "@services/Workstation"
 
@@ -37,14 +36,8 @@ export const WorkstationForm = ({
     regional: boolean | null
   }
 
-  const { data: cidades } = useRequest<Workstation[]>(
-    getCities(),
-    localidadesApi
-  )
-  const { data: regionais } = useRequest<Workstation[]>(
-    getRegionais(),
-    localidadesApi
-  )
+  const { data: cidades } = useRequest<Workstation[]>(getCities)
+  const { data: regionais } = useRequest<Workstation[]>(getRegionais)
   const {
     register,
     control,
@@ -59,7 +52,7 @@ export const WorkstationForm = ({
   })
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "phones"
+    name: "phone"
   })
   const [CBox, setCBox] = useState<check>({
     adsl_vpn: watch("adsl_vpn"),
@@ -75,6 +68,8 @@ export const WorkstationForm = ({
     setCBox({ adsl_vpn: CBox.adsl_vpn, regional: !CBox.regional })
     reset({ regional_id: undefined })
   }
+
+  console.log(watch(`phone`))
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -156,48 +151,6 @@ export const WorkstationForm = ({
             {!CBox.regional ? (
               <Box w={"50%"}>
                 <FormLabel htmlFor="regional_id">Regional</FormLabel>
-                {/* <InputGroup>
-                  <Input
-                    {...register("regional_id", {
-                      required: "Campo obrigatório"
-                    })}
-                    variant="flushed"
-                  />
-                  <InputRightElement>
-                    <Menu
-                      offset={
-                        // eslint-disable-next-line react-perf/jsx-no-new-array-as-prop -- offset array
-                        [-225, 0]
-                      }
-                      {...register("regional_id", {
-                        required: "Campo obrigatório"
-                      })}
-                    >
-                      <MenuButton
-                        as={IconButton}
-                        aria-label="Options"
-                        icon={<MdLibraryAdd cursor="pointer" size={24} />}
-                        variant="outline"
-                      />
-                      <MenuList>
-                        {regionais?.data?.map((regional) => {
-                          return (
-                            <MenuItem
-                              key={regional.id}
-                              value={regional.id}
-                              w={265}
-                            >
-                              <option key={regional.id} value={regional.id}>
-                                {regional.name}
-                              </option>
-                              {regional.name}
-                            </MenuItem>
-                          )
-                        })}
-                      </MenuList>
-                    </Menu>
-                  </InputRightElement>
-                </InputGroup> */}
                 <Select
                   {...register("regional_id", {
                     required: "Campo obrigatório"
@@ -261,15 +214,9 @@ export const WorkstationForm = ({
                   <Box>
                     <FormLabel htmlFor={"phone"}>Telefone</FormLabel>
                     <Input
-                      {...register(`phones.${index}.number`, {
+                      {...register(`phone.${index}` as const, {
                         required: "Campo obrigatório"
                       })}
-                      defaultValue={
-                        defaultValues?.phones[index]?.number
-                        // defaultValues?.phones[index]?.number !== undefined
-                        //   ?
-                        //   : ""
-                      }
                       placeholder="Novo Telefone"
                       variant="flushed"
                     />
@@ -294,9 +241,9 @@ export const WorkstationForm = ({
                       />
                     </Box>
                   </Tooltip>
-                  {errors?.phones && (
+                  {errors?.phone && (
                     <FormErrorMessage>
-                      {errors?.phones?.message}
+                      {errors?.phone?.message}
                     </FormErrorMessage>
                   )}
                 </Flex>
@@ -321,7 +268,7 @@ export const WorkstationForm = ({
                 aria-label="Add"
                 icon={<MdLibraryAdd cursor="pointer" size={24} />}
                 // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- eu de novo
-                onClick={() => append({})}
+                onClick={() => append("")}
                 variant="solid"
               />
             </Tooltip>
