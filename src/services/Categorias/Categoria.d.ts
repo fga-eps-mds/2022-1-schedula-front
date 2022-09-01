@@ -1,4 +1,4 @@
-interface CategoriaProblema {
+interface Category {
   id: number
   active: boolean
   description: string
@@ -6,11 +6,7 @@ interface CategoriaProblema {
   name: string
 }
 
-interface CategoriaProblemaPayload {
+interface CategoryPayload {
   name: string
   description: string
-}
-
-type DetalhadorStatus = {
-  APP: "Detalhador de chamados is running"
 }

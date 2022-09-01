@@ -59,7 +59,7 @@ export const DeleteButton = <Data,>({
         data-testid="delete-confirmation-popover"
         border={0}
         borderRadius="base"
-        bg="blackAlpha.500"
+        bg="blackAlpha.600"
         backdropFilter="blur(8px)"
         color="white"
       >
@@ -72,7 +72,7 @@ export const DeleteButton = <Data,>({
           </Heading>
         </PopoverHeader>
 
-        <PopoverBody bg="blackAlpha.200">
+        <PopoverBody bg="blackAlpha.300">
           <Text>
             Você realmente deseja excluir <strong>{label}</strong>?
           </Text>
@@ -81,7 +81,7 @@ export const DeleteButton = <Data,>({
           </Text>
         </PopoverBody>
 
-        <PopoverFooter borderBottomRadius="base" border={0} bg="blackAlpha.200">
+        <PopoverFooter borderBottomRadius="base" border={0} bg="blackAlpha.300">
           <Flex justifyContent="space-between">
             <Button onClick={onClose} variant="solid" colorScheme="blackAlpha">
               Cancelar

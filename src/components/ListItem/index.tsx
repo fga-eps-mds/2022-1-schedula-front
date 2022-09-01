@@ -32,7 +32,7 @@ export const Item = <Data,>({
       bg="white"
       borderRadius="md"
       padding={5}
-      boxShadow="medium"
+      boxShadow="lg"
     >
       <Box alignSelf="center">
         <Box

@@ -18,7 +18,6 @@ import {
 
 import { ControlledSelect } from "@components/ControlledSelect"
 import { ChamadoForm } from "@components/Forms/ChamadoForm"
-import type { ChamadoFormValues } from "@components/Forms/ChamadoForm/ChamadoForm"
 import { ChamadoStatus } from "@constants/Chamados"
 import { getSelectOptions } from "@hooks/useCreateSelectOptions"
 import { useRequest } from "@hooks/useRequest"
@@ -68,7 +67,7 @@ export const ChamadoFormWrapper = ({
     control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful }
+    formState: { errors, isSubmitting, isSubmitSuccessful, isDirty }
   } = methods
 
   useEffect(() => {
@@ -214,7 +213,7 @@ export const ChamadoFormWrapper = ({
           type="submit"
           width="100%"
           size="lg"
-          isDisabled={isSubmitting}
+          isDisabled={isSubmitting || !isDirty}
           isLoading={isSubmitting}
           mt={8}
           boxShadow="xl"

@@ -15,10 +15,10 @@ import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
 import {
-  createProblemCategory,
-  deleteProblemCategory,
-  getProblemCategories,
-  updateProblemCategory
+  createCategory,
+  deleteCategory,
+  getCategories,
+  updateCategory
 } from "@services/Categorias"
 import { request } from "@services/request"
 
@@ -30,15 +30,15 @@ const ListaCategoria = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<CategoriaProblema[]>(getProblemCategories)
+  } = useRequest<Category[]>(getCategories())
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [categoriaToEdit, setCategoria] = useState<CategoriaProblema>()
+  const [categoriaToEdit, setCategoria] = useState<Category>()
 
   const handleDelete = useCallback(
-    async ({ id }: CategoriaProblema) => {
-      const response = await request(deleteProblemCategory(id))
+    async ({ id }: Category) => {
+      const response = await request(deleteCategory(id))
 
       if (response.type === "success") {
         toast.success("Categoria deletada com sucesso!")
@@ -52,9 +52,9 @@ const ListaCategoria = () => {
             data: {
               error: null,
               message: "",
-              data: newCategorias || ([] as CategoriaProblema[])
+              data: newCategorias || ([] as Category[])
             }
-          } as AxiosResponse<ApiResponse<CategoriaProblema[]>>,
+          } as AxiosResponse<ApiResponse<Category[]>>,
           { revalidate: false }
         )
 
@@ -67,7 +67,7 @@ const ListaCategoria = () => {
   )
 
   const handleEdit = useCallback(
-    (categoria: CategoriaProblema) => {
+    (categoria: Category) => {
       setCategoria(categoria)
       onOpen()
     },
@@ -75,20 +75,20 @@ const ListaCategoria = () => {
   )
 
   const handleAddProblem = useCallback(
-    ({ id }: CategoriaProblema) => {
+    ({ id }: Category) => {
       router.push(`/categorias/${id}/problemas`)
     },
     [router]
   )
 
   const onSubmit = useCallback(
-    async (data: CategoriaProblemaPayload) => {
+    async (data: CategoryPayload) => {
       console.log("DATA: ", data)
 
-      const response = await request<CategoriaProblema>(
+      const response = await request<Category>(
         categoriaToEdit
-          ? updateProblemCategory(categoriaToEdit.id)(data)
-          : createProblemCategory(data)
+          ? updateCategory(categoriaToEdit.id)(data)
+          : createCategory(data)
       )
 
       if (response.type === "success") {
@@ -111,7 +111,7 @@ const ListaCategoria = () => {
               message: "",
               data: newCategorias
             }
-          } as AxiosResponse<ApiResponse<CategoriaProblema[]>>,
+          } as AxiosResponse<ApiResponse<Category[]>>,
           { revalidate: false }
         )
 
@@ -132,7 +132,7 @@ const ListaCategoria = () => {
   }, [onClose])
 
   const renderCategoriaItem = useCallback(
-    (item: CategoriaProblema) => (
+    (item: Category) => (
       <Item title={item?.name} description={item?.description}>
         <Item.Actions item={item}>
           <AddButton
@@ -157,7 +157,7 @@ const ListaCategoria = () => {
         </HStack>
       </PageHeader>
 
-      <ListView<CategoriaProblema>
+      <ListView<Category>
         items={categorias?.data}
         render={renderCategoriaItem}
         isLoading={isLoading || isValidating}
