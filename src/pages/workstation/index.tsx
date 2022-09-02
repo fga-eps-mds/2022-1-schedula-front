@@ -107,8 +107,8 @@ const Workstation = () => {
 
   const onSubmit = useCallback(
     async (data: CreateWorkstationPayload) => {
-      if (!data.phone) {
-        data.phone = []
+      if (!data.phones) {
+        data.phones = []
       }
 
       console.log("DATA: ", data)
@@ -202,7 +202,7 @@ const Workstation = () => {
         </Item.Actions>
       </Item>
     ),
-    [handleDelete, handleEdit]
+    [cidades?.data, handleDelete, handleEdit]
   )
 
   return (

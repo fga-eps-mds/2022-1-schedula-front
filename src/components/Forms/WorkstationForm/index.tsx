@@ -52,7 +52,7 @@ export const WorkstationForm = ({
   })
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "phone"
+    name: "phones"
   })
   const [CBox, setCBox] = useState<check>({
     adsl_vpn: watch("adsl_vpn"),
@@ -69,7 +69,7 @@ export const WorkstationForm = ({
     reset({ regional_id: undefined })
   }
 
-  console.log(watch(`phone`))
+  console.log(watch(`phones`))
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -157,6 +157,7 @@ export const WorkstationForm = ({
                   })}
                   defaultValue=""
                   variant="flushed"
+                  textColor={"Orange"}
                 >
                   {regionais?.data?.map((regional) => {
                     return (
@@ -185,10 +186,11 @@ export const WorkstationForm = ({
                     required: "Campo obrigatório"
                   })}
                   variant="flushed"
+                  textColor={"Orange"}
                 >
-                  <option disabled value="">
+                  {/* <option disabled value="">
                     Selecione
-                  </option>
+                  </option> */}
                   {cidades?.data?.map((cidade) => {
                     return (
                       <option key={cidade.id} value={cidade.id}>
@@ -214,7 +216,7 @@ export const WorkstationForm = ({
                   <Box>
                     <FormLabel htmlFor={"phone"}>Telefone</FormLabel>
                     <Input
-                      {...register(`phone.${index}` as const, {
+                      {...register(`phones.${index}.number` as const, {
                         required: "Campo obrigatório"
                       })}
                       placeholder="Novo Telefone"
@@ -241,9 +243,9 @@ export const WorkstationForm = ({
                       />
                     </Box>
                   </Tooltip>
-                  {errors?.phone && (
+                  {errors?.phones && (
                     <FormErrorMessage>
-                      {errors?.phone?.message}
+                      {errors?.phones?.message}
                     </FormErrorMessage>
                   )}
                 </Flex>
@@ -268,7 +270,7 @@ export const WorkstationForm = ({
                 aria-label="Add"
                 icon={<MdLibraryAdd cursor="pointer" size={24} />}
                 // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- eu de novo
-                onClick={() => append("")}
+                onClick={() => append([{ number: "" }])}
                 variant="solid"
               />
             </Tooltip>
