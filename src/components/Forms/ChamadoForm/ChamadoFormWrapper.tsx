@@ -32,25 +32,25 @@ interface ChamadoFormProps {
   defaultValues?: ChamadoFormValues
 }
 
-const chamadosDefaultValues = {
-  workstation_id: undefined,
+const chamadosDefaultValues: ChamadoFormValues = {
+  attendant_name: "",
+  applicant_name: "",
+  applicant_phone: "",
+  city_id: null,
+  workstation_id: null,
   problems: [
     {
-      category_id: undefined,
-      problem_id: undefined,
-      //   priority: {
-      //     value: "normal" as Priority,
-      //     label: "Normal"
-      //   },
-      //   request_status: {
-      //     value: "solved" as keyof typeof ChamadoStatus,
-      //     label: "Resolvido"
-      //   },
       request_status: {
         value: "solved" as const,
         label: "Resolvido"
-      }
-      //   is_event: false
+      },
+      priority: {
+        value: "normal" as const,
+        label: "Normal"
+      },
+      is_event: false,
+      category_id: null,
+      problem_id: null
     }
   ]
 }
@@ -63,17 +63,19 @@ export const ChamadoFormWrapper = ({
 
   const methods = useForm<ChamadoFormValues>({
     defaultValues: {
-      attendant_name: /*user?.name*/ "Teste",
       ...chamadosDefaultValues,
-      ...defaultValues
+      ...defaultValues,
+      attendant_name: /*user?.name*/ "Teste"
     },
     mode: "onChange"
   })
 
   const {
     register,
+    watch,
     control,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors, isSubmitting, isSubmitSuccessful, isDirty }
   } = methods
@@ -92,7 +94,8 @@ export const ChamadoFormWrapper = ({
     if (isSubmitSuccessful) {
       reset()
     }
-  }, [isSubmitSuccessful, reset])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- ignore reset
+  }, [isSubmitSuccessful])
 
   const {
     data: cities,

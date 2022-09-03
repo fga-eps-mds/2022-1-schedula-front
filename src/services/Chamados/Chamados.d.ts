@@ -20,7 +20,7 @@ type ChamadoProblem = {
 } & ChamadoEvent
 
 interface ChamadoEvent {
-  is_event: true
+  is_event: boolean
   event_date?: Date
   alert_date?: Date[]
   description?: string

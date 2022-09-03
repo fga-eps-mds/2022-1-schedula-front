@@ -2,13 +2,18 @@ type ChamadoFormValues = {
   attendant_name?: string
   applicant_name: string
   applicant_phone: string
-  city_id: { label: string; value: number }
-  workstation_id: { label: string; value: number }
+  city_id: SelectOption | null
+  workstation_id: SelectOption | null
   problems: ({
-    category_id: { label: string; value: number }
-    problem_id: { label: string; value: number }
-    request_status: { label: string; value: Status }
-    priority: { label: string; value: Priority }
+    category_id: SelectOption | null
+    problem_id: SelectOption | null
+    request_status: SelectOption<Status>
+    priority: SelectOption<Priority>
     is_event: boolean
-  } & ChamadoEvent)[]
+  } & Omit<ChamadoEvent, "is_event">)[]
+}
+
+type SelectOption<Value = number> = {
+  label: string
+  value: Value
 }

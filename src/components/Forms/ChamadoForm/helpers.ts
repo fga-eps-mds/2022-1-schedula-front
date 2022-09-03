@@ -4,12 +4,12 @@ export const formValuesToPayload = (
   values: ChamadoFormValues
 ): ChamadoPayload => ({
   ...values,
-  city_id: Number(values.city_id.value),
-  workstation_id: Number(values.workstation_id.value),
+  city_id: Number(values?.city_id?.value),
+  workstation_id: Number(values?.workstation_id?.value),
   problems: values.problems.map((problem) => ({
     ...problem,
-    category_id: Number(problem.category_id.value),
-    problem_id: Number(problem.problem_id.value),
+    category_id: Number(problem?.category_id?.value),
+    problem_id: Number(problem?.problem_id?.value),
     request_status: problem.request_status.value,
     priority: problem?.priority?.value
   }))
