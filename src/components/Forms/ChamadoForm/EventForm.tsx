@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react"
+import { useCallback } from "react"
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
 import { FaPlus } from "react-icons/fa"
 import {
@@ -48,12 +48,6 @@ export const EventForm = ({ defaultValues, onSubmit }: EventFormProps) => {
     },
     [remove]
   )
-
-  useEffect(() => {
-    // this a hack to render the first field without default value
-    update(0, "" as unknown as Date)
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- this is a hack
-  }, [])
 
   return (
     <>

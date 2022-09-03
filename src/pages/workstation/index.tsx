@@ -21,39 +21,6 @@ import {
   updateWorkstation
 } from "@services/Workstation"
 
-/*const workstation = {
-  data: [
-    {
-      name: "equino",
-      adsl_vpn: false,
-      regional: true,
-      link: "111111111",
-      ip: "11111111111",
-      city_id: "3",
-      phone: ["85858585858", "58558585858"]
-    },
-    {
-      name: "equino",
-      adsl_vpn: false,
-      regional: true,
-      link: "111111111",
-      ip: "11111111111",
-      city_id: "3",
-      phone: ["85858585858", "58558585858"]
-    },
-    {
-      name: "equino",
-      adsl_vpn: false,
-      regional: true,
-      link: "111111111",
-      ip: "11111111111",
-      city_id: "3",
-
-      phone: ["85858585858", "58558585858"]
-    }
-  ]
-}*/
-
 const Workstation = () => {
   const {
     data: workstation,
@@ -165,36 +132,28 @@ const Workstation = () => {
     (item: Workstation) => (
       <Item
         title={
-          <>
-            <Flex>
-              {item?.name}
-              <HStack spacing={2} ml={4}>
-                {item?.regional ? (
-                  <Badge colorScheme="yellow" variant="solid">
-                    Regional
-                  </Badge>
-                ) : (
-                  <></>
-                )}
-                <Badge colorScheme="linkedin" variant="solid">
-                  {
-                    /* {cidades?.data.filter(
-                    (cidade) => cidade.id === item.city_id
-                  ) != undefined
-                    ? GetCidades(item.city_id)
-                    : "tchau"} */
-                    cidades?.data?.find((loc) => loc.id === item.city_id)?.name
-                  }
+          <Flex>
+            {item?.name}
+            <HStack spacing={2} ml={4}>
+              {item?.regional && (
+                <Badge colorScheme="purple" variant="solid">
+                  Regional
                 </Badge>
-              </HStack>
-            </Flex>
-          </>
+              )}
+              <Badge
+                colorScheme="linkedin"
+                variant={item?.link ? "outline  " : "subtle"}
+              >
+                {item?.link
+                  ? "Link: " + item.link + " // Faixa: " + item.ip
+                  : "ADSL_VPN"}
+              </Badge>
+            </HStack>
+          </Flex>
         }
-        description={`[${
-          item?.link
-            ? "Link: " + item.link + " // Faixa: " + item.ip
-            : "ADSL_VPN"
-        }]`}
+        description={
+          cidades?.data?.find((loc) => loc.id === item.city_id)?.name || ""
+        }
       >
         <Item.Actions item={item}>
           <EditButton onClick={handleEdit} label={item.name} />

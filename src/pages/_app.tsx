@@ -8,6 +8,7 @@ import { SWRConfig, SWRConfiguration } from "swr"
 import { ColorTheme } from "../styles/theme"
 
 import "react-toastify/dist/ReactToastify.css"
+import "@styles/react-datepicker.scss"
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout

@@ -1,12 +1,22 @@
 import { useCallback, useEffect } from "react"
 import { useFormContext } from "react-hook-form"
 import { BsCalendar3 } from "react-icons/bs"
-import { Box, Flex, Grid, HStack, Text, useDisclosure } from "@chakra-ui/react"
+import {
+  Box,
+  Divider,
+  Flex,
+  Grid,
+  HStack,
+  Text,
+  useDisclosure,
+  VStack
+} from "@chakra-ui/react"
 
 import { ActionButton } from "@components/ActionButtons"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { ControlledSelect } from "@components/ControlledSelect"
 import { EventForm } from "@components/Forms/ChamadoForm/EventForm"
+import { EventInfo } from "@components/Forms/ChamadoForm/EventInfo"
 import { useDropdownData } from "@components/Forms/ChamadoForm/useDropdowData"
 import { Modal } from "@components/Modal/Modal"
 import { statusColor } from "@constants/Chamados"
@@ -194,11 +204,29 @@ export const ChamadoForm = ({
         </Grid>
       </Box>
 
-      <Modal title="Agendar Serviço" isOpen={isOpen} onClose={onClose}>
-        <EventForm
-          onSubmit={handleCreateEvent}
-          defaultValues={getValues(`problems.${index}`)}
-        />
+      <Modal
+        size="xl"
+        title="Agendar Serviço"
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <VStack align="stretch" spacing={2} divider={<Divider />}>
+          <EventInfo
+            applicant_name={getValues("applicant_name")}
+            applicant_phone={getValues("applicant_phone")}
+            city={getValues("city_id")?.label as string}
+            workstation={getValues("workstation_id")?.label as string}
+            category={
+              getValues(`problems.${index}.category_id`)?.label as string
+            }
+            problem={getValues(`problems.${index}.problem_id`)?.label as string}
+          />
+
+          <EventForm
+            onSubmit={handleCreateEvent}
+            defaultValues={getValues(`problems.${index}`)}
+          />
+        </VStack>
       </Modal>
     </>
   )
