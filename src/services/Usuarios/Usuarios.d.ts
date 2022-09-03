@@ -1,6 +1,7 @@
 type Accesses = "basic" | "manager" | "admin"
 
 interface User {
+  token?: string
   username: string
   email: string
   name: string
@@ -17,4 +18,9 @@ interface RegisterUserPayload {
   job_role: string
   password: string
   confirmPassword: string
+}
+
+interface CredentialUser {
+  credential: string
+  value: string
 }

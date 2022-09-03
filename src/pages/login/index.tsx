@@ -1,29 +1,19 @@
-import React from "react"
+import { signIn } from "next-auth/react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import {
-  Box,
-  Button,
-  Center,
-  Grid,
-  GridItem,
-  Input,
-  Text
-} from "@chakra-ui/react"
-
-interface userData {
-  fullName: string
-  loginName: string
-  passWord: string
-  confirmedPassWord: string
-}
+import { Box, Button, Center, Input, Text } from "@chakra-ui/react"
 
 const Login: NextPageWithLayout = () => {
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<userData>()
-  const onSubmit: SubmitHandler<userData> = (data) => console.log(data)
+  } = useForm<credentialUser>()
+  const onSubmit: SubmitHandler<credentialUser> = (data) =>
+    signIn("credentials", {
+      credential: data.credential,
+      value: data.value,
+      callbackUrl: `${window.location.origin}/account_page`
+    })
 
   return (
     <>
@@ -36,70 +26,68 @@ const Login: NextPageWithLayout = () => {
           <Box
             bg="white"
             borderRadius="10px"
-            boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25), 
-            0px 4px 4px rgba(0, 0, 0, 0.25), 
-            0px 1px 1px rgba(0, 0, 0, 0.12), 
-            0px 2px 2px rgba(0, 0, 0, 0.12), 
-            0px 8px 8px rgba(0, 0, 0, 0.12);"
+            boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25),  0px 4px 4px rgba(0, 0, 0, 0.25),  0px 1px 1px rgba(0, 0, 0, 0.12),  0px 2px 2px rgba(0, 0, 0, 0.12),  0px 8px 8px rgba(0, 0, 0, 0.12);"
             color="black"
-            paddingY={7}
-            paddingX={20}
+            paddingY="20"
+            paddingX="20"
           >
-            <Text marginBottom={12} fontSize="4xl">
+            <Text
+              mb="39px"
+              color="#605555"
+              fontWeight="semibold"
+              fontSize="4xl"
+            >
               Bem-vindo
             </Text>
-            <Grid
-              h="400px"
-              w="300px"
-              templateRows="repeat(1, 1fr)"
-              templateColumns="repeat(1, 1fr)"
-              gap={14}
-            >
-              <GridItem paddingEnd={5}>
-                <Box marginBottom={5}>
-                  <h2>Login</h2>
-                  <Input
-                    {...register("fullName", {
-                      required: true
-                    })}
-                    placeholder="E-mail ou nome de usuário"
-                  />
-                  {errors.fullName && (
-                    <span>
-                      <Text color="red.400">Este campo é obrigatório</Text>
-                    </span>
-                  )}
-                </Box>
-
-                <Box>
-                  <h2>Senha</h2>
-                  <Input
-                    {...register("passWord", {
-                      required: true
-                    })}
-                    type="password"
-                    placeholder="Digite sua senha"
-                  />
-                  {errors.passWord && (
-                    <span>
-                      <Text color="red.400">Este campo é obrigatório</Text>
-                    </span>
-                  )}
-                </Box>
-              </GridItem>
-            </Grid>
-
-            <Center>
-              <Button
-                type="submit"
-                paddingX={10}
-                paddingTop={5}
-                paddingBottom={5}
-                borderRadius="50px"
-                bg="primary"
-                boxShadow="1px 4px 4px rgba(0, 0, 0, 0.25);"
-                color="white"
+            <Box marginBottom={10}>
+              <Text
+                pl="5px"
+                pb="8px"
+                color="#605555"
+                fontWeight="medium"
+                fontSize="lg"
               >
+                Login
+              </Text>
+              <Input
+                size="lg"
+                fontSize="lg"
+                {...register("credential", { required: true })}
+                placeholder="E-mail ou nome de usuário"
+              />
+              {errors.credential && (
+                <span>
+                  <Text color="red.400">Este campo é obrigatório</Text>
+                </span>
+              )}
+            </Box>
+            <Box mb="70px">
+              {" "}
+              <Text
+                pl="5px"
+                pb="8px"
+                color="#605555"
+                fontWeight="medium"
+                fontSize="lg"
+              >
+                {" "}
+                Senha{" "}
+              </Text>
+              <Input
+                size="lg"
+                fontSize="lg"
+                {...register("value", { required: true })}
+                type="password"
+                placeholder="Digite sua senha"
+              />
+              {errors.value && (
+                <span>
+                  <Text color="red.400">Este campo é obrigatório</Text>
+                </span>
+              )}
+            </Box>
+            <Center>
+              <Button mb="70px" type="submit" paddingX="24" width="sm">
                 ENTRAR
               </Button>
             </Center>
