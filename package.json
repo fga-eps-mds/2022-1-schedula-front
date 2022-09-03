@@ -40,6 +40,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "18.0.6",
     "@types/nprogress": "^0.2.0",
     "@types/react": "18.0.15",

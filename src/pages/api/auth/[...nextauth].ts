@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import NextAuth, { Session } from "next-auth"
-import { JWT } from "next-auth/jwt"
+import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import jwt from "jsonwebtoken"
 
 import { request } from "@services/request"
 import { loginUser } from "@services/Usuarios"
@@ -13,41 +13,68 @@ const providers = [
       credentials: { label: "Username", type: "text " },
       value: { label: "Password", type: "password" }
     },
-    authorize: async (credentials: any) => {
-      const response = await request(loginUser(credentials))
+    authorize: async (credentials) => {
+      let response
 
-      if (response.type === "success") {
-        const user = {}
+      try {
+        if (credentials?.credentials && credentials.value) {
+          response = await request(
+            loginUser({
+              credential: credentials.credentials,
+              value: credentials.value
+            })
+          )
 
-        return user
-      } else {
+          if (response.type === "success") {
+            const token = response.value.data
+            const user = jwt.verify(
+              token as string,
+              process.env.SECRET as string
+            ) as LoggedUser
+
+            return { ...user, token }
+          }
+        }
+
         return null
+      } catch (error) {
+        throw new Error()
       }
     }
   })
 ]
 
-const callbacks = {
-  // Getting the JWT token from API response
-  async jwt(token: JWT, user: User) {
+const callbacks: Partial<CallbacksOptions> = {
+  async jwt({ token, user }) {
     if (user) {
       token.accessToken = user.token
     }
 
     return token
   },
+  redirect({ url, baseUrl }) {
+    if (url.startsWith(baseUrl)) return url
+    // Allows relative callback URLs
+    if (url.startsWith("/")) return new URL(url, baseUrl).toString()
 
-  async session(session: Session, token: JWT) {
+    return baseUrl
+  },
+  async session({ session, token }) {
     session.accessToken = token.accessToken
 
     return session
   }
 }
 
-const options = {
+const options: NextAuthOptions = {
   providers,
-  callbacks
+  callbacks,
+  pages: {
+    error: "/login",
+    signIn: "/login"
+  }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export -- desabilitando
 export default (req: NextApiRequest, res: NextApiResponse) =>
   NextAuth(req, res, options)
