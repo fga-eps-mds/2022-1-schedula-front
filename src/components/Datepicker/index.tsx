@@ -1,6 +1,6 @@
 import ReactDatePicker, { ReactDatePickerProps } from "react-datepicker"
 import { useController, UseControllerProps } from "react-hook-form"
-import { FaCalendar } from "react-icons/fa"
+import { BsCalendar3 } from "react-icons/bs"
 import {
   FormControl,
   FormErrorMessage,
@@ -55,9 +55,9 @@ export const Datepicker = <FormValues,>({
           // customTimeInput={<Input />}
           {...props}
         />
-        <InputRightElement color="gray.500" pointerEvents="none">
+        <InputRightElement color="gray.500" pointerEvents="none" zIndex={-1}>
           {/* <Icon as={FaBackspace} fontSize="lg" color="red" /> */}
-          <Icon as={FaCalendar} fontSize="lg" />
+          <Icon as={BsCalendar3} color="primary" fontSize="lg" />
         </InputRightElement>
       </InputGroup>
 

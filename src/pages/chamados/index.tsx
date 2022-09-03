@@ -117,7 +117,6 @@ const Chamados = () => {
                 </HStack>
               ))}
             </HStack>
-            <Text noOfLines={1}>{item?.description || "Sem descrição"}</Text>
           </Box>
         }
       >

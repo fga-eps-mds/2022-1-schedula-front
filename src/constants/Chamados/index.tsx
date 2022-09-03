@@ -13,10 +13,10 @@ export enum ChamadoPriority {
   "urgent" = "Urgente"
 }
 
-export const statusColor = (status: keyof typeof ChamadoStatus) => {
+export const statusColor = (status: keyof typeof ChamadoStatus | undefined) => {
   switch (status) {
     case "pending":
-      return "yellow.300"
+      return "yellow.500"
 
     case "in_progress":
       return "blue.400"

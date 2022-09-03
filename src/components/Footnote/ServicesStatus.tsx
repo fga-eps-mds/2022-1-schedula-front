@@ -100,7 +100,7 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
           <VStack spacing={3} align="stretch" mt={2} divider={<Divider />}>
             <StatusLine
               serviceName="Usuários"
-              status={!usuariosStatus}
+              status={usuariosStatus}
               version={apiVersions?.usuarios}
               isLoadingStatus={isLoadingUsuariosStatus}
               isLoadingVersion={isLoadingUserVersion}
@@ -108,7 +108,7 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
 
             <StatusLine
               serviceName="Chamados"
-              status={!chamadosStatus}
+              status={chamadosStatus}
               version={apiVersions?.chamados}
               isLoadingStatus={isLoadingChamadosStatus}
               isLoadingVersion={isLoadingChamadosVersion}
@@ -116,7 +116,7 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
 
             <StatusLine
               serviceName="Localidades"
-              status={!localidadesStatus}
+              status={localidadesStatus}
               version={apiVersions?.localidades}
               isLoadingStatus={isLoadingLocalidadesStatus}
               isLoadingVersion={isLoadingLocalidadesVersion}
