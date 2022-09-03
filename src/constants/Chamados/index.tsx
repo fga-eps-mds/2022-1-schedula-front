@@ -16,7 +16,7 @@ export enum ChamadoPriority {
 export const statusColor = (status: keyof typeof ChamadoStatus) => {
   switch (status) {
     case "pending":
-      return "yellow.300"
+      return "yellow.500"
 
     case "in_progress":
       return "blue.400"

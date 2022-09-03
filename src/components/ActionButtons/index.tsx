@@ -27,10 +27,9 @@ function ActionButtonInner<T>(
     <Tooltip
       label={label}
       placement="top"
-      bg="gray.100"
-      color="black"
+      bg="blackAlpha.600"
+      color="white"
       openDelay={250}
-      hasArrow
       {...tooltipProps}
     >
       <IconButton

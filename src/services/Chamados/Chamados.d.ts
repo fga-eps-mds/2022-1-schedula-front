@@ -3,14 +3,13 @@ interface Chamado {
   attendant_name: string
   applicant_name: string
   applicant_phone: string
-  description: string
-  place: string
+  city_id: number
   workstation_id: number
   created_at: Date
   problems: ChamadoProblem[]
 }
 
-interface ChamadoProblem {
+type ChamadoProblem = {
   category_id: number
   problem_id: number
   request_status: Status
@@ -18,15 +17,20 @@ interface ChamadoProblem {
   problem: TipoProblema
   category: Category
   is_event: boolean
-  event_date: Date
+} & ChamadoEvent
+
+interface ChamadoEvent {
+  is_event: true
+  event_date?: Date
+  alert_date?: Date[]
+  description?: string
 }
 
 interface ChamadoPayload {
   attendant_name?: string
   applicant_name: string
   applicant_phone: string
-  description: string
-  place: string
+  city_id: number
   workstation_id: number
   problems: ChamadoProblemPayload[]
 }
@@ -34,10 +38,11 @@ interface ChamadoPayload {
 type ChamadoProblemPayload = {
   category_id: number
   problem_id: number
-  request_status: Status
+  request_status: Status = "solved"
   priority: Priority
   is_event: boolean
-  event_date: Date
+  event_date?: Date
+  description?: string
 }
 
 type Status = "pending" | "in_progress" | "not_solved" | "outsourced" | "solved"
