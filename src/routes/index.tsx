@@ -1,6 +1,6 @@
 import { IconType } from "react-icons"
 import { FaUsersCog } from "react-icons/fa"
-import { FiLayout } from "react-icons/fi"
+import { FiLayout, FiMapPin } from "react-icons/fi"
 import {
   MdOutlineCallToAction,
   MdOutlineLocationCity,
@@ -39,11 +39,11 @@ export const routes: IRoute[] = [
     pathname: "/cidades",
     icon: MdOutlineLocationCity
   },
-  //   {
-  //     label: "Postos de Trabalho",
-  //     pathname: "/workstation",
-  //     icon: FiMapPin
-  //   },
+  {
+    label: "Postos de Trabalho",
+    pathname: "/workstation",
+    icon: FiMapPin
+  },
   {
     label: "Usuários",
     pathname: "/usuarios",
