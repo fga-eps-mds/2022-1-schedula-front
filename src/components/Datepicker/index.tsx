@@ -1,6 +1,9 @@
-import ReactDatePicker, { ReactDatePickerProps } from "react-datepicker"
+import ReactDatePicker, {
+  ReactDatePickerProps,
+  registerLocale
+} from "react-datepicker"
 import { useController, UseControllerProps } from "react-hook-form"
-import { FaCalendar } from "react-icons/fa"
+import { BsCalendar3 } from "react-icons/bs"
 import {
   FormControl,
   FormErrorMessage,
@@ -10,8 +13,11 @@ import {
   InputGroup,
   InputRightElement
 } from "@chakra-ui/react"
+import pt from "date-fns/locale/pt-BR"
 
 import "react-datepicker/dist/react-datepicker.css"
+
+registerLocale("pt", pt)
 
 type Props<FormValues> = Omit<ReactDatePickerProps, "onChange"> &
   UseControllerProps<FormValues> & {
@@ -47,17 +53,19 @@ export const Datepicker = <FormValues,>({
           onChange={onChange}
           onBlur={onBlur}
           value={value as string}
-          locale="pt-BR"
+          locale="pt"
           dateFormat="dd/MM/yyyy h:mm aa"
+          minDate={new Date()}
           showTimeInput
           timeInputLabel="Hora"
+          fixedHeight
           customInput={<Input />}
           // customTimeInput={<Input />}
           {...props}
         />
-        <InputRightElement color="gray.500" pointerEvents="none">
+        <InputRightElement color="gray.500" pointerEvents="none" zIndex={-1}>
           {/* <Icon as={FaBackspace} fontSize="lg" color="red" /> */}
-          <Icon as={FaCalendar} fontSize="lg" />
+          <Icon as={BsCalendar3} color="primary" fontSize="lg" />
         </InputRightElement>
       </InputGroup>
 

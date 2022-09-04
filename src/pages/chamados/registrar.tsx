@@ -11,7 +11,22 @@ import { request } from "@services/request"
 
 const RegistrarChamado = () => {
   const onSubmit = useCallback(async (data: ChamadoFormValues) => {
-    const payload = formValuesToPayload(data)
+    console.log("data", data)
+
+    const newData: ChamadoFormValues = { ...data, problems: [] }
+
+    // For each entry in the problem_id array, create a new object with only one problem_id.
+    // NOTE: This is a workaround for the API not accepting multiple problem_id in the same problem object.
+    data.problems.forEach((problem) => {
+      if (Array.isArray(problem.problem_id)) {
+        problem.problem_id.forEach((problem_id) => {
+          // Create a new object with only one problem_id
+          newData.problems.push({ ...problem, problem_id: [problem_id] })
+        })
+      } else newData.problems.push(problem)
+    })
+
+    const payload = formValuesToPayload(newData)
     console.log("payload", payload)
 
     const response = await request<Chamado>(createChamado(payload))

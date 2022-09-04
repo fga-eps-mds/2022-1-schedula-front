@@ -1,11 +1,8 @@
 import { IconType } from "react-icons"
+import { BsSignpost2, BsTags, BsTelephonePlus } from "react-icons/bs"
 import { FaUsersCog } from "react-icons/fa"
-import { FiLayout } from "react-icons/fi"
-import {
-  MdOutlineCallToAction,
-  MdOutlineLocationCity,
-  MdOutlineViewAgenda
-} from "react-icons/md"
+import { FiMapPin } from "react-icons/fi"
+import { MdOutlineViewAgenda } from "react-icons/md"
 
 export interface IRoute {
   label: string
@@ -27,23 +24,23 @@ export const routes: IRoute[] = [
   {
     label: "Registrar Chamado",
     pathname: "/chamados/registrar",
-    icon: MdOutlineCallToAction
+    icon: BsTelephonePlus
   },
   {
     label: "Categorias de Problema",
     pathname: "/categorias",
-    icon: FiLayout
+    icon: BsTags
   },
   {
     label: "Cidades",
     pathname: "/cidades",
-    icon: MdOutlineLocationCity
+    icon: BsSignpost2
   },
-  //   {
-  //     label: "Postos de Trabalho",
-  //     pathname: "/workstation",
-  //     icon: FiMapPin
-  //   },
+  {
+    label: "Postos de Trabalho",
+    pathname: "/workstation",
+    icon: FiMapPin
+  },
   {
     label: "Usuários",
     pathname: "/usuarios",
