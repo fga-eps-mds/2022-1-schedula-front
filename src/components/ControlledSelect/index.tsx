@@ -17,10 +17,10 @@ const chakraStyles: ChakraStylesConfig = {
   }),
   dropdownIndicator: (provided, state) => ({
     ...provided,
-    color: "white",
+    color: state.isFocused ? "white" : "gray.800",
     paddingInlineStart: 3,
     paddingInlineEnd: 3,
-    background: state.isFocused ? "blackAlpha.600" : "blackAlpha.300"
+    background: state.isFocused ? "blackAlpha.600" : "blackAlpha.50"
   }),
   downChevron: (provided, state) => ({
     ...provided,

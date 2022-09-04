@@ -29,13 +29,11 @@ const Chamados = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [chamadoToEdit, setChamadoToEdit] = useState<
-    ChamadoFormValues & { id: number }
-  >()
+  const [chamadoToEdit, setChamadoToEdit] = useState<Chamado>()
 
   const handleEdit = useCallback(
     (chamado: Chamado) => {
-      setChamadoToEdit(chamadoToFormValues(chamado))
+      setChamadoToEdit(chamado)
       onOpen()
     },
     [onOpen]
@@ -152,7 +150,10 @@ const Chamados = () => {
         onClose={handleClose}
         size="6xl"
       >
-        <ChamadoForm defaultValues={chamadoToEdit} onSubmit={onSubmit} />
+        <ChamadoForm
+          defaultValues={chamadoToEdit && chamadoToFormValues(chamadoToEdit)}
+          onSubmit={onSubmit}
+        />
       </Modal>
     </>
   )

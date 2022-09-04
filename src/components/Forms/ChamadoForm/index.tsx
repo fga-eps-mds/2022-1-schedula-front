@@ -40,8 +40,11 @@ export const ChamadoForm = ({
     watch,
     control,
     getValues,
+    resetField,
     reset,
-    formState: { isSubmitSuccessful }
+    trigger,
+    formState: { isSubmitSuccessful },
+    getFieldState
   } = useFormContext<ChamadoFormValues>()
 
   useEffect(() => {
@@ -49,6 +52,18 @@ export const ChamadoForm = ({
       reset()
     }
   }, [isSubmitSuccessful, reset])
+
+  const category = watch(`problems.${index}.category_id.value`)
+  useEffect(() => {
+    resetField(`problems.${index}.problem_id`, {
+      keepError: true,
+      keepDirty: true,
+      keepTouched: true
+    })
+    if (getFieldState(`problems.${index}.problem_id`).isTouched)
+      trigger(`problems.${index}.problem_id`) // trigger validation for problem_id field if it was touched by the user
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Clear problem_id  when category changes
+  }, [category])
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 

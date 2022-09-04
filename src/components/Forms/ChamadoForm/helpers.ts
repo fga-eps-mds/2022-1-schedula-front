@@ -15,9 +15,7 @@ export const formValuesToPayload = (
   }))
 })
 
-export const chamadoToFormValues = (
-  chamado: Chamado
-): ChamadoFormValues & { id: number } => ({
+export const chamadoToFormValues = (chamado: Chamado): ChamadoFormValues => ({
   ...chamado,
   city_id: {
     value: chamado.city_id,
