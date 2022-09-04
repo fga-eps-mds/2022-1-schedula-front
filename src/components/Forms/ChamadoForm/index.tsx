@@ -25,8 +25,8 @@ import { getSelectOptions } from "@utils/getSelectOptions"
 
 interface ChamadoFormProps {
   index: number
+  onUpdate: UseFieldArrayUpdate<ChamadoFormValues, "problems">
   onRemove?: () => void
-  onUpdate?: UseFieldArrayUpdate<ChamadoFormValues, "problems">
   isEdditing?: boolean
 }
 
@@ -36,6 +36,8 @@ export const ChamadoForm = ({
   onUpdate,
   isEdditing
 }: ChamadoFormProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const {
     watch,
     control,
@@ -49,8 +51,6 @@ export const ChamadoForm = ({
       reset()
     }
   }, [isSubmitSuccessful, reset])
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const {
     categorias,
@@ -68,19 +68,37 @@ export const ChamadoForm = ({
       onUpdate?.(index, {
         ...getValues(`problems.${index}` as const),
         is_event: true,
+        event_date: eventData.event_date,
+        alert_dates: eventData.alert_dates,
+        description: eventData.description,
         request_status: {
           value: "pending",
           label: "Pendente"
-        },
-        event_date: eventData.event_date,
-        alert_dates: eventData.alert_dates,
-        description: eventData.description
+        }
       })
 
-      //   trigger()
       onClose()
     },
     [getValues, index, onClose, onUpdate]
+  )
+
+  const handleCategorySelect = useCallback(
+    (value: SelectOption) => {
+      onUpdate?.(index, {
+        ...getValues(`problems.${index}` as const),
+        category_id: value,
+        problem_id: null
+      })
+
+      //   resetField(`problems.${index}.problem_id`, {
+      //     keepError: true,
+      //     keepDirty: true,
+      //     keepTouched: true
+      //   })
+      //   if (getFieldState(`problems.${index}.problem_id`).isTouched)
+      //     trigger(`problems.${index}.problem_id`)
+    },
+    [getValues, index, onUpdate]
   )
 
   const isEvent = watch(`problems.${index}.is_event` as const)
@@ -138,6 +156,7 @@ export const ChamadoForm = ({
             name={`problems.${index}.category_id` as const}
             id={`problems.${index}.category_id` as const}
             options={getSelectOptions(categorias?.data, "name", "id")}
+            onChange={handleCategorySelect}
             isLoading={isLoadingCategories}
             placeholder="Categoria do Problema"
             label="Categoria do Problema"
@@ -149,11 +168,13 @@ export const ChamadoForm = ({
             name={`problems.${index}.problem_id` as const}
             id={`problems.${index}.problem_id` as const}
             options={getSelectOptions(tiposProblemas?.data, "name", "id")}
+            isMulti
             isLoading={isLoadingProblems}
             placeholder="Tipo de Problema"
             label="Tipo de Problema"
             rules={{ required: "Campo obrigatório" }}
             isDisabled={!watch(`problems.${index}.category_id`)?.value}
+            colorScheme="purple"
           />
         </Grid>
       </Box>
@@ -173,7 +194,9 @@ export const ChamadoForm = ({
             category={
               getValues(`problems.${index}.category_id`)?.label as string
             }
-            problem={getValues(`problems.${index}.problem_id`)?.label as string}
+            problem={
+              getValues(`problems.${index}.problem_id`)?.[0]?.label as string
+            }
           />
 
           <EventForm
