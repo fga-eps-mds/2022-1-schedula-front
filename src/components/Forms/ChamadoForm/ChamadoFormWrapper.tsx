@@ -6,6 +6,7 @@ import {
   useForm
 } from "react-hook-form"
 import { FaPlus } from "react-icons/fa"
+import InputMask from "react-input-mask"
 import {
   Button,
   Flex,
@@ -73,6 +74,7 @@ export const ChamadoFormWrapper = ({
   const {
     register,
     setValue,
+    watch,
     control,
     handleSubmit,
     reset,
@@ -107,7 +109,7 @@ export const ChamadoFormWrapper = ({
     data: workstations,
     isLoading: isLoadingWorkstations,
     error: errorWorkstations
-  } = useRequest<Workstation[]>(getWorkstations)
+  } = useRequest<Workstation[]>(getWorkstations())
 
   useEffect(() => {
     // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE ID OF THE CITY/WORKSTATION
@@ -184,6 +186,12 @@ export const ChamadoFormWrapper = ({
         <FormControl isInvalid={Boolean(errors?.applicant_phone)}>
           <FormLabel>Telefone</FormLabel>
           <Input
+            as={InputMask}
+            mask="9999-9999"
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- maskChar is not in the lib types
+            // @ts-ignore
+            maskChar={null}
+            placeholder="0000-0000"
             {...register("applicant_phone", {
               required: "Campo obrigatório"
             })}

@@ -34,7 +34,7 @@ const Workstation = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Workstation[]>(getWorkstations)
+  } = useRequest<Workstation[]>(getWorkstations())
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 

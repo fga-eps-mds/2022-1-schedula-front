@@ -76,8 +76,6 @@ export const useServicesData = () => {
     [chamadosVersion, localidadesVersion, usuariosVersion]
   )
 
-  console.log("CHAMADOS", errorChamados)
-
   return {
     usuariosStatus: !errorUsuarios,
     isLoadingUsuariosStatus,
