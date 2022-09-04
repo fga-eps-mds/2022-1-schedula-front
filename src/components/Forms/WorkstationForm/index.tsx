@@ -20,7 +20,7 @@ import {
 import { ControlledSelect } from "@components/ControlledSelect"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
-import { getRegionais } from "@services/Workstation"
+import { getWorkstations } from "@services/Workstation"
 import { getSelectOptions } from "@utils/getSelectOptions"
 
 interface WorkstationFormProps {
@@ -39,8 +39,15 @@ export const WorkstationForm = ({
 }: WorkstationFormProps) => {
   const { data: cidades, isLoading: isLoadingCidades } =
     useRequest<Workstation[]>(getCities)
-  const { data: regionais, isLoading: isLoadingRegionais } =
-    useRequest<Workstation[]>(getRegionais)
+  const { data: regionais, isLoading: isLoadingRegionais } = useRequest<
+    Workstation[]
+  >(
+    getWorkstations({
+      params: {
+        regional: true
+      }
+    })
+  )
 
   const {
     register,
@@ -93,7 +100,7 @@ export const WorkstationForm = ({
                 <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
               )}
             </Box>
-            <FormLabel htmlFor="asdl_vpn"></FormLabel>
+            <FormLabel htmlFor="adsl_vpn"></FormLabel>
 
             <Stack spacing={5} direction="row" w={"100%"}>
               <Stack spacing={5} direction="row">

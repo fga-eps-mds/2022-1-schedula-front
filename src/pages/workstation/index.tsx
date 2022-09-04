@@ -171,7 +171,7 @@ const Workstation = () => {
                       </Badge>
                     </>
                   )
-                }[item?.asdl_vpn?.toString()]
+                }[item?.adsl_vpn?.toString()]
               }
             </HStack>
           </Flex>

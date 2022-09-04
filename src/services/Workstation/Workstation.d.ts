@@ -5,7 +5,7 @@ type Phone = {
 interface Workstation {
   id: number
   name: string
-  asdl_vpn: boolean
+  adsl_vpn: boolean
   ip: string | null
   link: string | null
   city_id: number
