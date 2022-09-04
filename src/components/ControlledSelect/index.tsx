@@ -11,16 +11,22 @@ type ControlledSelectProps<FormValues> = UseControllerProps<FormValues> &
   }
 
 const chakraStyles: ChakraStylesConfig = {
+  loadingIndicator: (provided, state) => ({
+    ...provided,
+    color: state.isDisabled ? "gray.300" : "primary"
+  }),
   dropdownIndicator: (provided, state) => ({
     ...provided,
-    color: "white",
-    background: state.isFocused ? "blackAlpha.600" : "blackAlpha.300"
+    color: state.isFocused ? "white" : "gray.800",
+    paddingInlineStart: 3,
+    paddingInlineEnd: 3,
+    background: state.isFocused ? "blackAlpha.600" : "blackAlpha.50"
   }),
   downChevron: (provided, state) => ({
     ...provided,
-    transform: state?.isFocused ? "rotate(180deg)" : "rotate(0deg)",
+    transform: state?.isFocused ? "rotate(-180deg)" : "rotate(0deg)",
     fontSize: "1.4rem",
-    transition: "transform 0.2s ease-in-out"
+    transition: "transform 0.2s ease"
   }),
   menu: (provided) => ({
     ...provided,

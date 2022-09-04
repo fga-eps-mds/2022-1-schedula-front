@@ -40,8 +40,11 @@ export const ChamadoForm = ({
     watch,
     control,
     getValues,
+    resetField,
     reset,
-    formState: { isSubmitSuccessful }
+    trigger,
+    formState: { isSubmitSuccessful },
+    getFieldState
   } = useFormContext<ChamadoFormValues>()
 
   useEffect(() => {
@@ -49,6 +52,18 @@ export const ChamadoForm = ({
       reset()
     }
   }, [isSubmitSuccessful, reset])
+
+  const category = watch(`problems.${index}.category_id.value`)
+  useEffect(() => {
+    resetField(`problems.${index}.problem_id`, {
+      keepError: true,
+      keepDirty: true,
+      keepTouched: true
+    })
+    if (getFieldState(`problems.${index}.problem_id`).isTouched)
+      trigger(`problems.${index}.problem_id`) // trigger validation for problem_id field if it was touched by the user
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Clear problem_id  when category changes
+  }, [category])
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -149,11 +164,13 @@ export const ChamadoForm = ({
             name={`problems.${index}.problem_id` as const}
             id={`problems.${index}.problem_id` as const}
             options={getSelectOptions(tiposProblemas?.data, "name", "id")}
+            isMulti
             isLoading={isLoadingProblems}
             placeholder="Tipo de Problema"
             label="Tipo de Problema"
             rules={{ required: "Campo obrigatório" }}
             isDisabled={!watch(`problems.${index}.category_id`)?.value}
+            colorScheme="purple"
           />
         </Grid>
       </Box>
@@ -173,7 +190,9 @@ export const ChamadoForm = ({
             category={
               getValues(`problems.${index}.category_id`)?.label as string
             }
-            problem={getValues(`problems.${index}.problem_id`)?.label as string}
+            problem={
+              getValues(`problems.${index}.problem_id`)?.[0]?.label as string
+            }
           />
 
           <EventForm

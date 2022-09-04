@@ -11,7 +11,20 @@ import { request } from "@services/request"
 
 const RegistrarChamado = () => {
   const onSubmit = useCallback(async (data: ChamadoFormValues) => {
-    const payload = formValuesToPayload(data)
+    console.log("data", data)
+
+    const teste: ChamadoFormValues = { ...data, problems: [] }
+
+    data.problems.forEach((problem) => {
+      if (Array.isArray(problem.problem_id)) {
+        problem.problem_id.forEach((problem_id) => {
+          console.log("problemId", problem_id)
+          teste.problems.push({ ...problem, problem_id: [problem_id] })
+        })
+      } else teste.problems.push(problem)
+    })
+
+    const payload = formValuesToPayload(teste)
     console.log("payload", payload)
 
     const response = await request<Chamado>(createChamado(payload))
