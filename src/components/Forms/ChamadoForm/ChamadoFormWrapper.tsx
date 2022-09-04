@@ -22,10 +22,10 @@ import {
 
 import { ControlledSelect } from "@components/ControlledSelect"
 import { ChamadoForm } from "@components/Forms/ChamadoForm"
-import { getSelectOptions } from "@hooks/useCreateSelectOptions"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
 import { getWorkstations } from "@services/Workstation"
+import { getSelectOptions } from "@utils/getSelectOptions"
 
 interface ChamadoFormProps {
   onSubmit: SubmitHandler<ChamadoFormValues>

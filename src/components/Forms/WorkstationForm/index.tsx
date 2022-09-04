@@ -12,32 +12,36 @@ import {
   FormLabel,
   IconButton,
   Input,
-  Select,
   Stack,
   Text,
   Tooltip
 } from "@chakra-ui/react"
 
+import { ControlledSelect } from "@components/ControlledSelect"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
 import { getRegionais } from "@services/Workstation"
+import { getSelectOptions } from "@utils/getSelectOptions"
 
 interface WorkstationFormProps {
   defaultValues?: Workstation | undefined
   onSubmit: (data: CreateWorkstationPayload) => void
 }
 
+type check = {
+  adsl_vpn: boolean | null
+  regional: boolean | null
+}
+
 export const WorkstationForm = ({
   defaultValues,
   onSubmit
 }: WorkstationFormProps) => {
-  type check = {
-    adsl_vpn: boolean | null
-    regional: boolean | null
-  }
+  const { data: cidades, isLoading: isLoadingCidades } =
+    useRequest<Workstation[]>(getCities)
+  const { data: regionais, isLoading: isLoadingRegionais } =
+    useRequest<Workstation[]>(getRegionais)
 
-  const { data: cidades } = useRequest<Workstation[]>(getCities)
-  const { data: regionais } = useRequest<Workstation[]>(getRegionais)
   const {
     register,
     control,
@@ -50,10 +54,12 @@ export const WorkstationForm = ({
       ...defaultValues
     }
   })
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "phones"
   })
+
   const [CBox, setCBox] = useState<check>({
     adsl_vpn: watch("adsl_vpn"),
     regional: watch("regional")
@@ -125,7 +131,10 @@ export const WorkstationForm = ({
               <Box w="100%">
                 <FormLabel htmlFor="Link">Link</FormLabel>
                 <Input
-                  {...register("link", { required: "Campo obrigatório" })}
+                  {...register("link", {
+                    required: "Campo obrigatório",
+                    shouldUnregister: true
+                  })}
                   placeholder="00.00.000.1"
                   variant="flushed"
                 />
@@ -136,7 +145,10 @@ export const WorkstationForm = ({
               <Box w="100%">
                 <FormLabel htmlFor="ip">Faixa de IP</FormLabel>
                 <Input
-                  {...register("ip", { required: "Campo obrigatório" })}
+                  {...register("ip", {
+                    required: "Campo obrigatório",
+                    shouldUnregister: true
+                  })}
                   placeholder="00.000.00.2 a 00.00.000.3"
                   variant="flushed"
                 />
@@ -150,59 +162,35 @@ export const WorkstationForm = ({
           <Flex gap={8}>
             {!CBox.regional ? (
               <Box w={"50%"}>
-                <FormLabel htmlFor="regional_id">Regional</FormLabel>
-                <Select
-                  {...register("regional_id", {
-                    required: "Campo obrigatório"
-                  })}
-                  defaultValue=""
-                  variant="flushed"
-                  textColor={"Orange"}
-                >
-                  {regionais?.data?.map((regional) => {
-                    return (
-                      <option key={regional.id} value={regional.id}>
-                        {regional.name}
-                      </option>
-                    )
-                  })}
-                </Select>
-
-                {errors?.regional_id && (
-                  <FormErrorMessage>
-                    {errors?.regional_id?.message}
-                  </FormErrorMessage>
-                )}
+                <ControlledSelect
+                  control={control}
+                  name="regional_id"
+                  id="regional_id"
+                  options={getSelectOptions(regionais?.data, "name", "id")}
+                  isLoading={isLoadingRegionais}
+                  placeholder="Regional"
+                  label="Regional"
+                  rules={{
+                    required: "Campo obrigatório",
+                    shouldUnregister: true
+                  }}
+                />
               </Box>
             ) : (
               <></>
             )}
 
             <Box w={"50%"}>
-              <FormLabel htmlFor="city_id">Cidade</FormLabel>
-              <Flex>
-                <Select
-                  {...register("city_id", {
-                    required: "Campo obrigatório"
-                  })}
-                  variant="flushed"
-                  textColor={"Orange"}
-                >
-                  {/* <option disabled value="">
-                    Selecione
-                  </option> */}
-                  {cidades?.data?.map((cidade) => {
-                    return (
-                      <option key={cidade.id} value={cidade.id}>
-                        {cidade.name}
-                      </option>
-                    )
-                  })}
-                </Select>
-              </Flex>
-              {errors?.city_id && (
-                <FormErrorMessage>{errors?.city_id?.message}</FormErrorMessage>
-              )}
+              <ControlledSelect
+                control={control}
+                name="city_id"
+                id="city_id"
+                options={getSelectOptions(cidades?.data, "name", "id")}
+                isLoading={isLoadingCidades}
+                placeholder="Cidade"
+                label="Cidade"
+                rules={{ required: "Campo obrigatório" }}
+              />
             </Box>
           </Flex>
         </Stack>

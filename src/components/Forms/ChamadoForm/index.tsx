@@ -20,8 +20,8 @@ import { EventInfo } from "@components/Forms/ChamadoForm/EventInfo"
 import { useDropdownData } from "@components/Forms/ChamadoForm/useDropdowData"
 import { Modal } from "@components/Modal/Modal"
 import { statusColor } from "@constants/Chamados"
-import { getSelectOptions } from "@hooks/useCreateSelectOptions"
 import { formatDate } from "@utils/formatDate"
+import { getSelectOptions } from "@utils/getSelectOptions"
 
 interface ChamadoFormProps {
   index: number

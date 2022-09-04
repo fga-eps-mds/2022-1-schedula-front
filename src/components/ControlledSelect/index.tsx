@@ -3,6 +3,8 @@ import { useController, UseControllerProps } from "react-hook-form"
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react"
 import { ChakraStylesConfig, Props, Select } from "chakra-react-select"
 
+import { handleEmptyOptions } from "@components/ControlledSelect/handleEmptyOptions"
+
 type ControlledSelectProps<FormValues> = UseControllerProps<FormValues> &
   Props & {
     label: string
@@ -73,10 +75,11 @@ export const ControlledSelect = <FormValues,>({
         chakraStyles={chakraStyles}
         selectedOptionColor="orange"
         openMenuOnFocus
+        noOptionsMessage={handleEmptyOptions}
         {...props}
       />
 
-      <FormErrorMessage>{error && error.message}</FormErrorMessage>
+      <FormErrorMessage>{error && error?.message}</FormErrorMessage>
     </FormControl>
   )
 }
