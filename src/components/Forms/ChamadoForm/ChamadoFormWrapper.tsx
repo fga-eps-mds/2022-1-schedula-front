@@ -72,9 +72,11 @@ export const ChamadoFormWrapper = ({
 
   const {
     register,
+    setValue,
     control,
     handleSubmit,
     reset,
+    resetField,
     formState: { errors, isSubmitting, isSubmitSuccessful, isDirty }
   } = methods
 
@@ -107,6 +109,45 @@ export const ChamadoFormWrapper = ({
     error: errorWorkstations
   } = useRequest<Workstation[]>(getWorkstations)
 
+  useEffect(() => {
+    // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE ID OF THE CITY/WORKSTATION
+    // Get workstation label from defaultValues and set it on the select
+    if (defaultValues?.workstation_id && workstations) {
+      const label = workstations?.data.find(
+        (workstation) =>
+          workstation?.id === defaultValues?.workstation_id?.value
+      )?.name
+
+      if (label)
+        resetField("workstation_id", {
+          defaultValue: {
+            value: defaultValues?.workstation_id?.value,
+            label
+          }
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
+  }, [defaultValues, workstations])
+
+  useEffect(() => {
+    // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE ID OF THE CITY/WORKSTATION
+    // Get workstation label from defaultValues and set it on the select
+    if (defaultValues?.city_id && cities) {
+      const label = cities?.data.find(
+        (city) => city?.id === defaultValues?.city_id?.value
+      )?.name
+
+      if (label)
+        resetField("city_id", {
+          defaultValue: {
+            value: defaultValues?.city_id?.value,
+            label
+          }
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
+  }, [cities, defaultValues])
+
   const handleAdd = useCallback(() => {
     append(chamadosDefaultValues.problems[0])
   }, [append])
@@ -131,7 +172,7 @@ export const ChamadoFormWrapper = ({
           isInvalid={Boolean(errors?.applicant_name)}
           position="relative"
         >
-          <FormLabel>Nome Solicitando</FormLabel>
+          <FormLabel>Solicitante</FormLabel>
           <Input
             {...register("applicant_name", {
               required: "Campo obrigatório"
@@ -141,7 +182,7 @@ export const ChamadoFormWrapper = ({
         </FormControl>
 
         <FormControl isInvalid={Boolean(errors?.applicant_phone)}>
-          <FormLabel>Contato</FormLabel>
+          <FormLabel>Telefone</FormLabel>
           <Input
             {...register("applicant_phone", {
               required: "Campo obrigatório"

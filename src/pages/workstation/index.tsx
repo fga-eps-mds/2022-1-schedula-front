@@ -1,6 +1,13 @@
 import { useCallback, useState } from "react"
 import { toast } from "react-toastify"
-import { Badge, Button, Flex, HStack, useDisclosure } from "@chakra-ui/react"
+import {
+  Badge,
+  Button,
+  Flex,
+  HStack,
+  Tooltip,
+  useDisclosure
+} from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
@@ -140,14 +147,32 @@ const Workstation = () => {
                   Regional
                 </Badge>
               )}
-              <Badge
-                colorScheme="linkedin"
-                variant={item?.link ? "outline  " : "subtle"}
-              >
-                {item?.link
-                  ? "Link: " + item.link + " // Faixa: " + item.ip
-                  : "ADSL_VPN"}
-              </Badge>
+              {
+                {
+                  true: (
+                    <Badge colorScheme="cyan" variant="subtle">
+                      ADSL_VPN
+                    </Badge>
+                  ),
+                  false: (
+                    <>
+                      <Tooltip
+                        colorScheme="blackAlpha"
+                        label="IP"
+                        placement="top"
+                        openDelay={350}
+                      >
+                        <Badge colorScheme="orange" variant="outline">
+                          {item.ip}
+                        </Badge>
+                      </Tooltip>
+                      <Badge colorScheme="orange" variant="subtle">
+                        {item.link}
+                      </Badge>
+                    </>
+                  )
+                }[item?.asdl_vpn?.toString()]
+              }
             </HStack>
           </Flex>
         }

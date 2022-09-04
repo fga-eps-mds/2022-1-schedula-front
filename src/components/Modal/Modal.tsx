@@ -34,7 +34,7 @@ export const Modal = ({ children, title, ...props }: ModalProps) => {
           </Heading>
         </ModalHeader>
 
-        <ModalBody p={[6, 8, 10, 12]} bg="blackAlpha.200">
+        <ModalBody p={[6, 8, 10, 12]} bg="blackAlpha.100">
           {children}
         </ModalBody>
       </ModalContent>
