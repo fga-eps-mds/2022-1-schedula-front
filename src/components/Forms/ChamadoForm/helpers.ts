@@ -29,6 +29,8 @@ export const chamadoToFormValues = (
   },
   problems: chamado.problems.map((problem) => ({
     ...problem,
+    event_date: problem.event_date ? new Date(problem.event_date) : undefined,
+    alert_dates: problem.alert_dates?.map?.((date) => new Date(date)) ?? [],
     category_id: {
       value: problem.category_id,
       label: problem.category.name

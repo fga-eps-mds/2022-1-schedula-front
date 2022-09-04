@@ -19,22 +19,17 @@ interface EventFormProps {
 }
 
 export const EventForm = ({ defaultValues, onSubmit }: EventFormProps) => {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitting }
-  } = useForm<ChamadoEvent>({
+  const { register, handleSubmit, control } = useForm<ChamadoEvent>({
     defaultValues: {
-      alert_date: [new Date()],
+      alert_dates: [new Date()],
       ...defaultValues
     },
     shouldUnregister: true
   })
 
-  const { fields, append, remove, update } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
-    name: "alert_date",
+    name: "alert_dates",
     shouldUnregister: true
   })
 
@@ -68,8 +63,8 @@ export const EventForm = ({ defaultValues, onSubmit }: EventFormProps) => {
                 <Datepicker
                   label="Data do Alerta"
                   control={control}
-                  name={`alert_date.${index}` as const}
-                  id={`alert_date.${index}` as const}
+                  name={`alert_dates.${index}`}
+                  id={`alert_dates.${index}`}
                   showTimeInput={false}
                   dateFormat="dd/MM/yyyy"
                 />

@@ -72,15 +72,13 @@ export const ChamadoFormWrapper = ({
 
   const {
     register,
-    watch,
     control,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors, isSubmitting, isSubmitSuccessful, isDirty }
   } = methods
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: "problems"
   })
@@ -197,6 +195,7 @@ export const ChamadoFormWrapper = ({
                 <ChamadoForm
                   index={index}
                   onRemove={handleRemove(index)}
+                  onUpdate={update}
                   isEdditing={isEdditing}
                 />
               </fieldset>

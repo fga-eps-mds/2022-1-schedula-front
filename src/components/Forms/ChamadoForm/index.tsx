@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react"
-import { useFormContext } from "react-hook-form"
+import { UseFieldArrayUpdate, useFormContext } from "react-hook-form"
 import { BsCalendar3 } from "react-icons/bs"
 import {
   Box,
@@ -26,16 +26,17 @@ import { formatDate } from "@utils/formatDate"
 interface ChamadoFormProps {
   index: number
   onRemove?: () => void
+  onUpdate?: UseFieldArrayUpdate<ChamadoFormValues, "problems">
   isEdditing?: boolean
 }
 
 export const ChamadoForm = ({
   index,
   onRemove,
+  onUpdate,
   isEdditing
 }: ChamadoFormProps) => {
   const {
-    setValue,
     watch,
     control,
     getValues,
@@ -64,18 +65,22 @@ export const ChamadoForm = ({
 
   const handleCreateEvent = useCallback(
     (eventData: ChamadoEvent) => {
-      console.log("EVENT DATA:: ", eventData)
-      setValue(`problems.${index}.is_event`, true)
-      setValue(`problems.${index}.request_status`, {
-        value: "pending",
-        label: "Pendente"
+      onUpdate?.(index, {
+        ...getValues(`problems.${index}` as const),
+        is_event: true,
+        request_status: {
+          value: "pending",
+          label: "Pendente"
+        },
+        event_date: eventData.event_date,
+        alert_dates: eventData.alert_dates,
+        description: eventData.description
       })
-      setValue(`problems.${index}.event_date`, eventData.event_date)
-      setValue(`problems.${index}.alert_date`, eventData.alert_date)
-      setValue(`problems.${index}.description`, eventData.description)
+
+      //   trigger()
       onClose()
     },
-    [index, onClose, setValue]
+    [getValues, index, onClose, onUpdate]
   )
 
   const isEvent = watch(`problems.${index}.is_event` as const)
@@ -90,31 +95,6 @@ export const ChamadoForm = ({
                 formatDate(getValues(`problems.${index}.event_date`) || "")
               : "Problema"
           }`}</Text>
-
-          {/* {isEvent ? (
-            <Button
-              size="sm"
-              onClick={onOpen}
-              variant="solid"
-              colorScheme="blue"
-            >
-              <Icon as={FaPen} mr={2} />
-              Editar Evento
-            </Button>
-          ) : (
-            <Tooltip label="Realizar o agendamento do serviço" placement="top">
-              <Button
-                size="sm"
-                mb={1}
-                onClick={onOpen}
-                variant="outline"
-                colorScheme="blue"
-              >
-                <Icon as={FaCalendar} mr={2} />
-                Agendar
-              </Button>
-            </Tooltip>
-          )} */}
         </Flex>
 
         <Grid
@@ -152,32 +132,6 @@ export const ChamadoForm = ({
               />
             )}
           </HStack>
-
-          {/* <ControlledSelect
-          control={control}
-          name={`problems.${index}.request_status` as const}
-          id={`problems.${index}.request_status` as const}
-          options={Object.entries(ChamadoStatus).map(([value, label]) => ({
-            value,
-            label
-          }))}
-          placeholder="Status"
-          label="Status"
-          rules={{ required: "Campo obrigatório" }}
-        />
-
-        <ControlledSelect
-          control={control}
-          name={`problems.${index}.priority` as const}
-          id={`problems.${index}.priority` as const}
-          options={Object.entries(ChamadoPriority).map(([value, label]) => ({
-            value,
-            label
-          }))}
-          placeholder="Prioridade"
-          label="Prioridade"
-          rules={{ required: "Campo obrigatório" }}
-        /> */}
 
           <ControlledSelect
             control={control}
