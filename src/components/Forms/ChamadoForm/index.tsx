@@ -149,11 +149,13 @@ export const ChamadoForm = ({
             name={`problems.${index}.problem_id` as const}
             id={`problems.${index}.problem_id` as const}
             options={getSelectOptions(tiposProblemas?.data, "name", "id")}
+            isMulti
             isLoading={isLoadingProblems}
             placeholder="Tipo de Problema"
             label="Tipo de Problema"
             rules={{ required: "Campo obrigatório" }}
             isDisabled={!watch(`problems.${index}.category_id`)?.value}
+            colorScheme="purple"
           />
         </Grid>
       </Box>
@@ -173,7 +175,9 @@ export const ChamadoForm = ({
             category={
               getValues(`problems.${index}.category_id`)?.label as string
             }
-            problem={getValues(`problems.${index}.problem_id`)?.label as string}
+            problem={
+              getValues(`problems.${index}.problem_id`)?.[0]?.label as string
+            }
           />
 
           <EventForm

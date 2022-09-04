@@ -6,7 +6,7 @@ type ChamadoFormValues = {
   workstation_id: SelectOption | null
   problems: ({
     category_id: SelectOption | null
-    problem_id: SelectOption | null
+    problem_id: SelectOption[] | null
     request_status: SelectOption<Status>
     priority: SelectOption<Priority>
     is_event: boolean
