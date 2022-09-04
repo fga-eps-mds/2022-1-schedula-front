@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import NextLink from "next/link"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Box, Button, HStack, Tag, Text, useDisclosure } from "@chakra-ui/react"
 
@@ -26,6 +27,8 @@ const Chamados = () => {
     isValidating,
     mutate
   } = useRequest<Chamado[]>(getChamados)
+  const session = useSession()
+  console.log(session)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 

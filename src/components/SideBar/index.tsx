@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react"
 import { FaRegUser } from "react-icons/fa"
 import { RiLogoutCircleFill } from "react-icons/ri"
 import { Box, Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react"
@@ -7,6 +8,8 @@ import { routes } from "@routes"
 import { SideBarItem } from "./SidebarItem/SideBarItem"
 
 export const SideBar = () => {
+  const session = useSession()
+
   return (
     <Flex
       flexDirection="column"
@@ -33,7 +36,7 @@ export const SideBar = () => {
         <Flex gap={2} justifyContent={"space-between"} alignItems={"center"}>
           <FaRegUser size={25} />
           <Text maxWidth={140} noOfLines={1}>
-            Nome de user
+            {session.data?.user?.name ?? "Nome do user"}
           </Text>
           <RiLogoutCircleFill size={25} />
         </Flex>

@@ -1,7 +1,6 @@
 type Accesses = "basic" | "manager" | "admin"
 
 interface User {
-  token?: string
   username: string
   email: string
   name: string
@@ -28,6 +27,11 @@ interface RegisterUserPayload {
 }
 
 interface CredentialUser {
+  username: string
+  password: string
+}
+
+interface CredentialUserPayload {
   credential: string
   value: string
 }
