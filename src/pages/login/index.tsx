@@ -7,8 +7,8 @@ const Login: NextPageWithLayout = () => {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<credentialUser>()
-  const onSubmit: SubmitHandler<credentialUser> = (data) =>
+  } = useForm<CredentialUser>()
+  const onSubmit: SubmitHandler<CredentialUser> = (data) =>
     signIn("credentials", {
       credential: data.credential,
       value: data.value,
