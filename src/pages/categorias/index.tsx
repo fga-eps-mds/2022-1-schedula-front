@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
@@ -23,7 +24,14 @@ import {
 import { request } from "@services/request"
 
 const ListaCategoria = () => {
+  const { data: session } = useSession()
   const router = useRouter()
+
+  async function controlAccess() {
+    if (!session) router.push("/login")
+  }
+
+  controlAccess()
 
   const {
     data: categorias,

@@ -1,5 +1,7 @@
 import { useCallback, useState } from "react"
 import NextLink from "next/link"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Box, Button, HStack, Tag, Text, useDisclosure } from "@chakra-ui/react"
 
@@ -20,6 +22,14 @@ import { request } from "@services/request"
 import { formatDate } from "@utils/formatDate"
 
 const Chamados = () => {
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  async function controlAccess() {
+    if (!session) router.push("/login")
+  }
+
+  controlAccess()
   const {
     data: chamados,
     isLoading,
