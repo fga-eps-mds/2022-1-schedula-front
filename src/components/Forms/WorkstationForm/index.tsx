@@ -1,7 +1,6 @@
-import { useState } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
-import { FaTrash } from "react-icons/fa"
-import { MdLibraryAdd } from "react-icons/md"
+import { useCallback, useEffect, useState } from "react"
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
+import { FaPlus } from "react-icons/fa"
 import {
   Box,
   Button,
@@ -10,22 +9,26 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  IconButton,
   Input,
   Stack,
-  Text,
-  Tooltip
+  Text
 } from "@chakra-ui/react"
 
+import { ActionButton } from "@components/ActionButtons"
+import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { ControlledSelect } from "@components/ControlledSelect"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
 import { getWorkstations } from "@services/Workstation"
 import { getSelectOptions } from "@utils/getSelectOptions"
 
-interface WorkstationFormProps {
+export interface WorkstationFormProps {
   defaultValues?: Workstation | undefined
-  onSubmit: (data: CreateWorkstationPayload) => void
+  onSubmit: SubmitHandler<CreateWorkstationPayload>
+}
+
+type FormValues = CreateWorkstationPayload & {
+  phones: { number: string }[]
 }
 
 type check = {
@@ -39,6 +42,7 @@ export const WorkstationForm = ({
 }: WorkstationFormProps) => {
   const { data: cidades, isLoading: isLoadingCidades } =
     useRequest<Workstation[]>(getCities)
+
   const { data: regionais, isLoading: isLoadingRegionais } = useRequest<
     Workstation[]
   >(
@@ -55,17 +59,70 @@ export const WorkstationForm = ({
     handleSubmit,
     watch,
     reset,
+    resetField,
     formState: { errors, isSubmitting }
-  } = useForm<CreateWorkstationPayload>({
+  } = useForm<FormValues>({
     defaultValues: {
-      ...defaultValues
+      ...defaultValues,
+      phones: defaultValues?.phones?.map((phone) => ({ number: phone }))
     }
   })
+
+  useEffect(() => {
+    // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE NAME OF THE CITY/WORKSTATION
+    // Get workstation label from defaultValues and set it on the select
+    if (defaultValues?.regional_id && regionais) {
+      const label = regionais?.data.find(
+        (regional) => regional?.id === defaultValues?.regional_id
+      )?.name
+
+      if (label)
+        resetField("regional_id", {
+          defaultValue: {
+            value: defaultValues?.regional_id,
+            label
+          }
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
+  }, [defaultValues])
+
+  useEffect(() => {
+    // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE NAME OF THE CITY/WORKSTATION
+    // Get workstation label from defaultValues and set it on the select
+    if (defaultValues?.city_id && cidades) {
+      const label = cidades?.data.find(
+        (city) => city?.id === defaultValues?.city_id
+      )?.name
+
+      if (label)
+        resetField("city_id", {
+          defaultValue: {
+            value: defaultValues?.city_id,
+            label
+          }
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
+  }, [defaultValues])
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "phones"
   })
+
+  const handleAddPhone = useCallback(() => {
+    append({
+      number: ""
+    })
+  }, [append])
+
+  const handleRemovePhone = useCallback(
+    (index: number) => () => {
+      remove(index)
+    },
+    [remove]
+  )
 
   const [CBox, setCBox] = useState<check>({
     adsl_vpn: watch("adsl_vpn"),
@@ -81,8 +138,6 @@ export const WorkstationForm = ({
     setCBox({ adsl_vpn: CBox.adsl_vpn, regional: !CBox.regional })
     reset({ regional_id: undefined })
   }
-
-  console.log(watch(`phones`))
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -218,26 +273,13 @@ export const WorkstationForm = ({
                       variant="flushed"
                     />
                   </Box>
-
-                  <Tooltip
-                    label={`Tirar Telefone`}
-                    placement="top"
-                    bg="red.500"
-                    color="white"
-                    openDelay={250}
-                    hasArrow
-                  >
-                    <Box mt={"2em"} ml={"1em"}>
-                      <IconButton
-                        aria-label="Delete"
-                        // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- precisa passar a key
-                        onClick={() => remove(index)}
-                        icon={<FaTrash />}
-                        color="red.500"
-                        variant="solid"
-                      />
-                    </Box>
-                  </Tooltip>
+                  <Box mt={"2em"} ml={"1em"}>
+                    <DeleteButton
+                      label="Telefone"
+                      onClick={handleRemovePhone(index)}
+                      variant="ghost"
+                    />
+                  </Box>
                   {errors?.phones && (
                     <FormErrorMessage>
                       {errors?.phones?.message}
@@ -253,22 +295,13 @@ export const WorkstationForm = ({
             textAlign={"left"}
             alignSelf={"flex-end"}
           >
-            <Tooltip
+            <ActionButton
               label="Adicionar Telefone"
-              placement="top"
-              bg="gray.100"
-              color="black"
-              openDelay={250}
-              hasArrow
-            >
-              <IconButton
-                aria-label="Add"
-                icon={<MdLibraryAdd cursor="pointer" size={24} />}
-                // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop -- eu de novo
-                onClick={() => append([{ number: "" }])}
-                variant="solid"
-              />
-            </Tooltip>
+              icon={<FaPlus />}
+              variant="ghost"
+              color="primary"
+              onClick={handleAddPhone}
+            />
           </Text>
         </Flex>
       </FormControl>
