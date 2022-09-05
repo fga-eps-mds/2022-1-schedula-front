@@ -26,6 +26,6 @@ export const formatDate = (
 
     return formatedDate
   } catch (error) {
-    return "-"
+    return "--/--/----"
   }
 }

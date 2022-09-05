@@ -3,21 +3,30 @@ import { useController, UseControllerProps } from "react-hook-form"
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react"
 import { ChakraStylesConfig, Props, Select } from "chakra-react-select"
 
+import { handleEmptyOptions } from "@components/ControlledSelect/handleEmptyOptions"
+
 type ControlledSelectProps<FormValues> = UseControllerProps<FormValues> &
-  Props & {
+  Props<any> & {
     label: string
   }
 
 const chakraStyles: ChakraStylesConfig = {
+  loadingIndicator: (provided, state) => ({
+    ...provided,
+    color: state.isDisabled ? "gray.300" : "primary"
+  }),
   dropdownIndicator: (provided, state) => ({
     ...provided,
-    color: "white",
-    background: state.isFocused ? "blackAlpha.600" : "blackAlpha.300"
+    color: state.isFocused ? "white" : "gray.800",
+    paddingInlineStart: 3,
+    paddingInlineEnd: 3,
+    background: state.isFocused ? "blackAlpha.600" : "blackAlpha.50"
   }),
   downChevron: (provided, state) => ({
     ...provided,
-    transform: state?.isFocused ? "rotate(180deg)" : "rotate(0deg)",
-    transition: "transform 0.2s ease-in-out"
+    transform: state?.isFocused ? "rotate(-180deg)" : "rotate(0deg)",
+    fontSize: "1.4rem",
+    transition: "transform 0.2s ease"
   }),
   menu: (provided) => ({
     ...provided,
@@ -71,12 +80,12 @@ export const ControlledSelect = <FormValues,>({
         value={value}
         chakraStyles={chakraStyles}
         selectedOptionColor="orange"
-        isClearable
         openMenuOnFocus
+        noOptionsMessage={handleEmptyOptions}
         {...props}
       />
 
-      <FormErrorMessage>{error && error.message}</FormErrorMessage>
+      <FormErrorMessage>{error && error?.message}</FormErrorMessage>
     </FormControl>
   )
 }

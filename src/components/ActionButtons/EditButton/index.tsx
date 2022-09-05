@@ -11,7 +11,7 @@ export const EditButton = <Data,>({
 }: EditButtonProps<Data>) => {
   return (
     <ActionButton
-      label={`Editar ${label}`}
+      label={`Editar ${label || ""}`}
       icon={<RiEdit2Fill size={22} />}
       onClick={onClick}
       color="gray.700"

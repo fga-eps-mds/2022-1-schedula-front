@@ -3,25 +3,30 @@ import NextLink from "next/link"
 import { toast } from "react-toastify"
 import { Button } from "@chakra-ui/react"
 
-import type { ChamadoFormValues } from "@components/Forms/ChamadoForm/ChamadoForm"
 import { ChamadoFormWrapper as ChamadoForm } from "@components/Forms/ChamadoForm/ChamadoFormWrapper"
+import { formValuesToPayload } from "@components/Forms/ChamadoForm/helpers"
 import { PageHeader } from "@components/PageHeader"
 import { createChamado } from "@services/Chamados"
 import { request } from "@services/request"
 
 const RegistrarChamado = () => {
   const onSubmit = useCallback(async (data: ChamadoFormValues) => {
-    const payload: ChamadoPayload = {
-      ...data,
-      workstation_id: Number(data.workstation_id.value),
-      problems: data.problems.map((problem) => ({
-        ...problem,
-        category_id: Number(problem.category_id.value),
-        problem_id: Number(problem.problem_id.value),
-        request_status: problem.request_status.value,
-        priority: problem.priority.value
-      }))
-    }
+    console.log("data", data)
+
+    const newData: ChamadoFormValues = { ...data, problems: [] }
+
+    // For each entry in the problem_id array, create a new object with only one problem_id.
+    // NOTE: This is a workaround for the API not accepting multiple problem_id in the same problem object.
+    data.problems.forEach((problem) => {
+      if (Array.isArray(problem.problem_id)) {
+        problem.problem_id.forEach((problem_id) => {
+          // Create a new object with only one problem_id
+          newData.problems.push({ ...problem, problem_id: [problem_id] })
+        })
+      } else newData.problems.push(problem)
+    })
+
+    const payload = formValuesToPayload(newData)
     console.log("payload", payload)
 
     const response = await request<Chamado>(createChamado(payload))

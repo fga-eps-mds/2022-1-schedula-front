@@ -1,26 +1,24 @@
-import { services } from "@services"
+import { Services } from "@services"
 
-const resourceURL = "/workstation"
-const workstationsService = services.localidades(resourceURL)
+const WorkstationService = Services.localidades.create("/workstation")
+const RegionalService = Services.localidades.create("/regional")
 
-export const getWorkstations = workstationsService()
+export const getWorkstations = WorkstationService.get
 
-export const createWorkstation = (payload: CreateWorkstationPayload) =>
-  workstationsService({
-    method: "post",
-    data: payload
-  })
+export const getWorkstationById = (workstation_id: number) =>
+  WorkstationService.get({ params: { workstation_id } })
+
+export const createWorkstation =
+  WorkstationService.post<CreateWorkstationPayload>
 
 export const updateWorkstation =
-  (id: number) => (payload: CreateWorkstationPayload) =>
-    workstationsService({
-      url: resourceURL + `/${id}`,
-      method: "put",
-      data: payload
-    })
+  WorkstationService.put<CreateWorkstationPayload>
 
-export const deleteWorkstation = (id: number) =>
-  workstationsService({
-    url: resourceURL + `/${id}`,
-    method: "delete"
-  })
+export const deleteWorkstation = WorkstationService.delete
+
+export const getRegionais = RegionalService.get()
+
+// export const getRegionais = workstationsService({
+//   url: "/regional",
+//   method: "get"
+// })

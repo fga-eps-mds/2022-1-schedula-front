@@ -3,29 +3,46 @@ interface Chamado {
   attendant_name: string
   applicant_name: string
   applicant_phone: string
-  description: string
-  place: string
+  city_id: number
   workstation_id: number
   created_at: Date
-  problems: [ChamadoProblem & { request_id: number }]
-}
-
-interface ChamadoPayload {
-  attendant_name?: string
-  applicant_name: string
-  applicant_phone: string
-  description: string
-  place: string
-  workstation_id: number
   problems: ChamadoProblem[]
 }
 
 type ChamadoProblem = {
   category_id: number
   problem_id: number
-  is_event: boolean
   request_status: Status
   priority: Priority
+  problem: TipoProblema
+  category: Category
+  is_event: boolean
+} & ChamadoEvent
+
+interface ChamadoEvent {
+  is_event: boolean
+  event_date?: Date
+  alert_dates?: Date[]
+  description?: string
+}
+
+interface ChamadoPayload {
+  attendant_name?: string
+  applicant_name: string
+  applicant_phone: string
+  city_id: number
+  workstation_id: number
+  problems: ChamadoProblemPayload[]
+}
+
+type ChamadoProblemPayload = {
+  category_id: number
+  problem_id: number
+  request_status: Status = "solved"
+  priority: Priority
+  is_event: boolean
+  event_date?: Date
+  description?: string
 }
 
 type Status = "pending" | "in_progress" | "not_solved" | "outsourced" | "solved"

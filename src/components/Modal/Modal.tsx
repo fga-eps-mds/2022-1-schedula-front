@@ -17,13 +17,10 @@ export interface ModalProps extends ChakraModalProps {
 export const Modal = ({ children, title, ...props }: ModalProps) => {
   return (
     <ModalContainer {...props}>
-      <ModalOverlay
-        bg="blackAlpha.300"
-        backdropFilter="blur(16px) hue-rotate(10deg)"
-      />
+      <ModalOverlay bg="blackAlpha.500" />
       <ModalContent
         bg="blackAlpha.600"
-        backdropFilter="blur(10px)"
+        backdropFilter="blur(8px)"
         color="white"
       >
         <ModalCloseButton />
@@ -31,14 +28,13 @@ export const Modal = ({ children, title, ...props }: ModalProps) => {
           textAlign="center"
           borderTopRadius="md"
           bg="blackAlpha.600"
-          boxShadow="lg"
         >
           <Heading fontSize="2xl" color="white" fontWeight="semibold">
             {title}
           </Heading>
         </ModalHeader>
 
-        <ModalBody p={[6, 8, 10, 12]} bg="blackAlpha.200">
+        <ModalBody p={[6, 8, 10, 12]} bg="blackAlpha.100">
           {children}
         </ModalBody>
       </ModalContent>
