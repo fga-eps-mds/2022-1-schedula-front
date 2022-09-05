@@ -19,7 +19,11 @@ import { EventForm } from "@components/Forms/ChamadoForm/EventForm"
 import { EventInfo } from "@components/Forms/ChamadoForm/EventInfo"
 import { useDropdownData } from "@components/Forms/ChamadoForm/useDropdowData"
 import { Modal } from "@components/Modal/Modal"
-import { statusColor } from "@constants/Chamados"
+import {
+  ChamadoPriority,
+  ChamadoStatus,
+  statusColor
+} from "@constants/Chamados"
 import { formatDate } from "@utils/formatDate"
 import { getSelectOptions } from "@utils/getSelectOptions"
 
@@ -176,6 +180,40 @@ export const ChamadoForm = ({
             isDisabled={!watch(`problems.${index}.category_id`)?.value}
             colorScheme="purple"
           />
+
+          {isEdditing && (
+            <>
+              <ControlledSelect
+                control={control}
+                name={`problems.${index}.request_status` as const}
+                id={`problems.${index}.request_status` as const}
+                options={Object.entries(ChamadoStatus).map(
+                  ([value, label]) => ({
+                    value,
+                    label
+                  })
+                )}
+                placeholder="Status"
+                label="Status"
+                rules={{ required: "Campo obrigatório" }}
+              />
+
+              <ControlledSelect
+                control={control}
+                name={`problems.${index}.priority` as const}
+                id={`problems.${index}.priority` as const}
+                options={Object.entries(ChamadoPriority).map(
+                  ([value, label]) => ({
+                    value,
+                    label
+                  })
+                )}
+                placeholder="Prioridade"
+                label="Prioridade"
+                rules={{ required: "Campo obrigatório" }}
+              />
+            </>
+          )}
         </Grid>
       </Box>
 
