@@ -6,7 +6,7 @@ import { ChakraStylesConfig, Props, Select } from "chakra-react-select"
 import { handleEmptyOptions } from "@components/ControlledSelect/handleEmptyOptions"
 
 type ControlledSelectProps<FormValues> = UseControllerProps<FormValues> &
-  Props & {
+  Props<any> & {
     label: string
   }
 

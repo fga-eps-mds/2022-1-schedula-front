@@ -34,7 +34,7 @@ const Workstation = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Workstation[]>(getWorkstations)
+  } = useRequest<Workstation[]>(getWorkstations())
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -87,10 +87,17 @@ const Workstation = () => {
 
       console.log("DATA: ", data)
 
-      const response = await request<{ data: Workstation }>(
+      const payload = {
+        ...data,
+        phones: (data.phones as unknown as { number: string }[])?.map(
+          (phone) => phone?.number
+        )
+      }
+
+      const response = await request<Workstation>(
         workstationToEdit
-          ? updateWorkstation(workstationToEdit.id)(data)
-          : createWorkstation(data)
+          ? updateWorkstation(workstationToEdit.id)(payload)
+          : createWorkstation(payload)
       )
 
       if (response.type === "success") {
@@ -171,7 +178,7 @@ const Workstation = () => {
                       </Badge>
                     </>
                   )
-                }[item?.asdl_vpn?.toString()]
+                }[item?.adsl_vpn?.toString()]
               }
             </HStack>
           </Flex>

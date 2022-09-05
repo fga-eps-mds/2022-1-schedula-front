@@ -49,3 +49,26 @@ export const chamadoToFormValues = (chamado: Chamado): ChamadoFormValues => ({
     }
   }))
 })
+
+export const chamadosDefaultValues: ChamadoFormValues = {
+  attendant_name: "",
+  applicant_name: "",
+  applicant_phone: "",
+  city_id: null,
+  workstation_id: null,
+  problems: [
+    {
+      request_status: {
+        value: "solved" as const,
+        label: "Resolvido"
+      },
+      priority: {
+        value: "normal" as const,
+        label: "Normal"
+      },
+      is_event: false,
+      category_id: null,
+      problem_id: null
+    }
+  ]
+}

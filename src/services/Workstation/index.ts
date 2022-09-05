@@ -3,7 +3,7 @@ import { Services } from "@services"
 const WorkstationService = Services.localidades.create("/workstation")
 const RegionalService = Services.localidades.create("/regional")
 
-export const getWorkstations = WorkstationService.get()
+export const getWorkstations = WorkstationService.get
 
 export const getWorkstationById = (workstation_id: number) =>
   WorkstationService.get({ params: { workstation_id } })

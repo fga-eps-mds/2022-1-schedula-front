@@ -19,14 +19,18 @@ import { EventForm } from "@components/Forms/ChamadoForm/EventForm"
 import { EventInfo } from "@components/Forms/ChamadoForm/EventInfo"
 import { useDropdownData } from "@components/Forms/ChamadoForm/useDropdowData"
 import { Modal } from "@components/Modal/Modal"
-import { statusColor } from "@constants/Chamados"
+import {
+  ChamadoPriority,
+  ChamadoStatus,
+  statusColor
+} from "@constants/Chamados"
 import { formatDate } from "@utils/formatDate"
 import { getSelectOptions } from "@utils/getSelectOptions"
 
 interface ChamadoFormProps {
   index: number
+  onUpdate: UseFieldArrayUpdate<ChamadoFormValues, "problems">
   onRemove?: () => void
-  onUpdate?: UseFieldArrayUpdate<ChamadoFormValues, "problems">
   isEdditing?: boolean
 }
 
@@ -36,15 +40,14 @@ export const ChamadoForm = ({
   onUpdate,
   isEdditing
 }: ChamadoFormProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const {
     watch,
     control,
     getValues,
-    resetField,
     reset,
-    trigger,
-    formState: { isSubmitSuccessful },
-    getFieldState
+    formState: { isSubmitSuccessful }
   } = useFormContext<ChamadoFormValues>()
 
   useEffect(() => {
@@ -52,20 +55,6 @@ export const ChamadoForm = ({
       reset()
     }
   }, [isSubmitSuccessful, reset])
-
-  const category = watch(`problems.${index}.category_id.value`)
-  useEffect(() => {
-    resetField(`problems.${index}.problem_id`, {
-      keepError: true,
-      keepDirty: true,
-      keepTouched: true
-    })
-    if (getFieldState(`problems.${index}.problem_id`).isTouched)
-      trigger(`problems.${index}.problem_id`) // trigger validation for problem_id field if it was touched by the user
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Clear problem_id  when category changes
-  }, [category])
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const {
     categorias,
@@ -83,19 +72,37 @@ export const ChamadoForm = ({
       onUpdate?.(index, {
         ...getValues(`problems.${index}` as const),
         is_event: true,
+        event_date: eventData.event_date,
+        alert_dates: eventData.alert_dates,
+        description: eventData.description,
         request_status: {
           value: "pending",
           label: "Pendente"
-        },
-        event_date: eventData.event_date,
-        alert_dates: eventData.alert_dates,
-        description: eventData.description
+        }
       })
 
-      //   trigger()
       onClose()
     },
     [getValues, index, onClose, onUpdate]
+  )
+
+  const handleCategorySelect = useCallback(
+    (value: SelectOption) => {
+      onUpdate?.(index, {
+        ...getValues(`problems.${index}` as const),
+        category_id: value,
+        problem_id: null
+      })
+
+      //   resetField(`problems.${index}.problem_id`, {
+      //     keepError: true,
+      //     keepDirty: true,
+      //     keepTouched: true
+      //   })
+      //   if (getFieldState(`problems.${index}.problem_id`).isTouched)
+      //     trigger(`problems.${index}.problem_id`)
+    },
+    [getValues, index, onUpdate]
   )
 
   const isEvent = watch(`problems.${index}.is_event` as const)
@@ -153,6 +160,7 @@ export const ChamadoForm = ({
             name={`problems.${index}.category_id` as const}
             id={`problems.${index}.category_id` as const}
             options={getSelectOptions(categorias?.data, "name", "id")}
+            onChange={handleCategorySelect}
             isLoading={isLoadingCategories}
             placeholder="Categoria do Problema"
             label="Categoria do Problema"
@@ -172,6 +180,40 @@ export const ChamadoForm = ({
             isDisabled={!watch(`problems.${index}.category_id`)?.value}
             colorScheme="purple"
           />
+
+          {isEdditing && (
+            <>
+              <ControlledSelect
+                control={control}
+                name={`problems.${index}.request_status` as const}
+                id={`problems.${index}.request_status` as const}
+                options={Object.entries(ChamadoStatus).map(
+                  ([value, label]) => ({
+                    value,
+                    label
+                  })
+                )}
+                placeholder="Status"
+                label="Status"
+                rules={{ required: "Campo obrigatório" }}
+              />
+
+              <ControlledSelect
+                control={control}
+                name={`problems.${index}.priority` as const}
+                id={`problems.${index}.priority` as const}
+                options={Object.entries(ChamadoPriority).map(
+                  ([value, label]) => ({
+                    value,
+                    label
+                  })
+                )}
+                placeholder="Prioridade"
+                label="Prioridade"
+                rules={{ required: "Campo obrigatório" }}
+              />
+            </>
+          )}
         </Grid>
       </Box>
 
