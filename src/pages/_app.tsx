@@ -7,6 +7,7 @@ import { ChakraProvider } from "@chakra-ui/react"
 import { DefaultLayout } from "layout/DefaultLayout"
 import { SWRConfig, SWRConfiguration } from "swr"
 
+import { theme } from "@styles/theme"
 import "react-toastify/dist/ReactToastify.css"
 import "@styles/react-datepicker.scss"
 
@@ -29,7 +30,7 @@ function MyApp({
 
   return (
     <SessionProvider session={session}>
-      <ChakraProvider resetCSS theme={ColorTheme}>
+      <ChakraProvider resetCSS theme={theme}>
         <SWRConfig value={swrConfig}>
           <NextNprogress
             color="linear-gradient(
