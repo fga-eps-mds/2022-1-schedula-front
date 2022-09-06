@@ -97,10 +97,17 @@ const Workstation = () => {
 
       console.log("DATA: ", data)
 
-      const response = await request<{ data: Workstation }>(
+      const payload = {
+        ...data,
+        phones: (data.phones as unknown as { number: string }[])?.map(
+          (phone) => phone?.number
+        )
+      }
+
+      const response = await request<Workstation>(
         workstationToEdit
-          ? updateWorkstation(workstationToEdit.id)(data)
-          : createWorkstation(data)
+          ? updateWorkstation(workstationToEdit.id)(payload)
+          : createWorkstation(payload)
       )
 
       if (response.type === "success") {

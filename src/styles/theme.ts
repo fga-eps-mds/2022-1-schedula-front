@@ -3,7 +3,7 @@ import { extendTheme, theme as baseTheme } from "@chakra-ui/react"
 import { Button } from "./Button"
 import { colors } from "./Colors"
 
-export const ColorTheme = extendTheme({
+export const theme = extendTheme({
   ...baseTheme,
   colors,
   fonts: {
@@ -55,24 +55,6 @@ export const ColorTheme = extendTheme({
         focusBorderColor: "primary"
       }
     },
-    // Select: {
-    //   baseStyle: {
-    //     field: {
-    //       cursor: "pointer",
-
-    //       _disabled: {
-    //         cursor: "not-allowed",
-    //         color: "gray.400"
-    //       }
-    //     }
-    //   },
-    //   sizes: {},
-    //   variants: {},
-    //   defaultProps: {
-    //     variant: "flushed",
-    //     focusBorderColor: "primary"
-    //   }
-    // },
     Textarea: {
       baseStyle: {
         field: {}

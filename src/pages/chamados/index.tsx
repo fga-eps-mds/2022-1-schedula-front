@@ -59,8 +59,6 @@ const Chamados = () => {
     async (data: ChamadoFormValues) => {
       if (!chamadoToEdit?.id) return
 
-      delete data?.attendant_name
-
       const payload = formValuesToPayload(data)
       console.log("payload", payload)
 
