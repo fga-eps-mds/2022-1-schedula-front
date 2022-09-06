@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
@@ -21,16 +20,12 @@ import {
   updateCity
 } from "@services/Cidades"
 import { request } from "@services/request"
+import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const ListaCidades = () => {
-  const { data: session } = useSession()
   const router = useRouter()
+  RedirectUnauthenticated(router)
 
-  const controlAccess = () => {
-    if (!session) router.push("/login")
-  }
-
-  controlAccess()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [cidadesToEdit, setCidades] = useState<City>()

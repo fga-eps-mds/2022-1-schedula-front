@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Badge, Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
@@ -21,16 +20,11 @@ import {
   getUsers,
   updateUser
 } from "@services/Usuarios"
+import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const RoleBadge = (role: Accesses) => {
-  const { data: session } = useSession()
   const router = useRouter()
-
-  const controlAccess = () => {
-    if (!session) router.push("/login")
-  }
-
-  controlAccess()
+  RedirectUnauthenticated(router)
 
   switch (role) {
     case "admin":
