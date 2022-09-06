@@ -29,6 +29,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                 value: credentials.password
               })
             )
+
             const cookies = response.headers["set-cookie"]
             let token
 
@@ -63,8 +64,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
   const callbacks: Partial<CallbacksOptions> = {
     async jwt({ token, user }) {
-      console.log("jwt", token, user)
-
       if (user) {
         token.accessToken = user.token
       }
