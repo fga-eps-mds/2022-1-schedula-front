@@ -5,21 +5,22 @@ import { Box, Button, Center, Input, Text } from "@chakra-ui/react"
 
 const Login: NextPageWithLayout = () => {
   const router = useRouter()
-
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<CredentialUser>()
 
-  const onSubmit: SubmitHandler<CredentialUser> = (data) => {
-    signIn("credentials", {
-      credential: data.credential,
-      value: data.value,
-      callbackUrl: `${window.location.origin}/account_page`
+  const onSubmit: SubmitHandler<CredentialUser> = async (data) => {
+    const response = await signIn("credentials", {
+      username: data.username,
+      password: data.password,
+      redirect: false
     })
 
-    router.push("/chamados")
+    if (!response?.error) {
+      await router.push("/chamados")
+    }
   }
 
   return (
@@ -59,10 +60,10 @@ const Login: NextPageWithLayout = () => {
               <Input
                 size="lg"
                 fontSize="lg"
-                {...register("credential", { required: true })}
+                {...register("username", { required: true })}
                 placeholder="E-mail ou nome de usuário"
               />
-              {errors.credential && (
+              {errors.username && (
                 <span>
                   <Text color="red.400">Este campo é obrigatório</Text>
                 </span>
@@ -83,11 +84,11 @@ const Login: NextPageWithLayout = () => {
               <Input
                 size="lg"
                 fontSize="lg"
-                {...register("value", { required: true })}
+                {...register("password", { required: true })}
                 type="password"
                 placeholder="Digite sua senha"
               />
-              {errors.value && (
+              {errors.password && (
                 <span>
                   <Text color="red.400">Este campo é obrigatório</Text>
                 </span>

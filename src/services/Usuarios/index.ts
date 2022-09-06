@@ -9,7 +9,7 @@ export const getUserById = (id: number) => UserService.get({ params: { id } })
 
 export const createUser = UserService.post<RegisterUserPayload>
 
-export const loginUser = AuthService.post<CredentialUser>
+export const loginUser = AuthService.post<CredentialUserPayload>
 
 export const updateUser = UserService.put<RegisterUserPayload>
 

@@ -18,9 +18,8 @@ export const RefreshButton = ({ refresh }: RefreshButtonProps) => {
     <Tooltip
       label="Atualizar Dados"
       placement="top"
-      bg="gray.100"
-      color="black"
-      hasArrow
+      bg="blackAlpha.600"
+      color="white"
       openDelay={250}
     >
       <IconButton

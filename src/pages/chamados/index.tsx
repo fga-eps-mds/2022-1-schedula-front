@@ -36,16 +36,15 @@ const Chamados = () => {
     isValidating,
     mutate
   } = useRequest<Chamado[]>(getChamados)
+  console.log(session)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [chamadoToEdit, setChamadoToEdit] = useState<
-    ChamadoFormValues & { id: number }
-  >()
+  const [chamadoToEdit, setChamadoToEdit] = useState<Chamado>()
 
   const handleEdit = useCallback(
     (chamado: Chamado) => {
-      setChamadoToEdit(chamadoToFormValues(chamado))
+      setChamadoToEdit(chamado)
       onOpen()
     },
     [onOpen]
@@ -127,7 +126,6 @@ const Chamados = () => {
                 </HStack>
               ))}
             </HStack>
-            <Text noOfLines={1}>{item?.description || "Sem descrição"}</Text>
           </Box>
         }
       >
@@ -163,7 +161,10 @@ const Chamados = () => {
         onClose={handleClose}
         size="6xl"
       >
-        <ChamadoForm defaultValues={chamadoToEdit} onSubmit={onSubmit} />
+        <ChamadoForm
+          defaultValues={chamadoToEdit && chamadoToFormValues(chamadoToEdit)}
+          onSubmit={onSubmit}
+        />
       </Modal>
     </>
   )

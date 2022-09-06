@@ -1,10 +1,15 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair -- fixing lint
-/* eslint-disable prettier/prettier  -- fail in word limit*/
 import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
-import { Button, HStack, useDisclosure } from "@chakra-ui/react"
+import {
+  Badge,
+  Button,
+  Flex,
+  HStack,
+  Tooltip,
+  useDisclosure
+} from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
@@ -16,6 +21,7 @@ import { Modal } from "@components/Modal/Modal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
+import { getCities } from "@services/Cidades"
 import { request } from "@services/request"
 import {
   createWorkstation,
@@ -38,11 +44,12 @@ const Workstation = () => {
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Workstation[]>(getWorkstations)
+  } = useRequest<Workstation[]>(getWorkstations())
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [workstationToEdit, setWorkstationToEdit] = useState<Workstation>()
+  const { data: cidades } = useRequest<City[]>(getCities)
 
   const handleDelete = useCallback(
     async ({ id }: Workstation) => {
@@ -84,6 +91,10 @@ const Workstation = () => {
 
   const onSubmit = useCallback(
     async (data: CreateWorkstationPayload) => {
+      if (!data.phones) {
+        data.phones = []
+      }
+
       console.log("DATA: ", data)
 
       const response = await request<{ data: Workstation }>(
@@ -99,7 +110,7 @@ const Workstation = () => {
           } com sucesso!`
         )
 
-        const newUsers = workstationToEdit
+        const newWorkstation = workstationToEdit
           ? workstation?.data.map((workstation) =>
               workstation.name === workstationToEdit?.name
                 ? response.value.data
@@ -112,7 +123,7 @@ const Workstation = () => {
             data: {
               error: null,
               message: "",
-              data: newUsers
+              data: newWorkstation
             }
           } as AxiosResponse<ApiResponse<Workstation[]>>,
           { revalidate: false }
@@ -136,14 +147,56 @@ const Workstation = () => {
 
   const renderWorkstationItem = useCallback(
     (item: Workstation) => (
-      <Item title={`${item?.name} [${item?.ip}]`} description="">
+      <Item
+        title={
+          <Flex>
+            {item?.name}
+            <HStack spacing={2} ml={4}>
+              {item?.regional && (
+                <Badge colorScheme="purple" variant="solid">
+                  Regional
+                </Badge>
+              )}
+              {
+                {
+                  true: (
+                    <Badge colorScheme="cyan" variant="subtle">
+                      ADSL_VPN
+                    </Badge>
+                  ),
+                  false: (
+                    <>
+                      <Tooltip
+                        colorScheme="blackAlpha"
+                        label="IP"
+                        placement="top"
+                        openDelay={350}
+                      >
+                        <Badge colorScheme="orange" variant="outline">
+                          {item.ip}
+                        </Badge>
+                      </Tooltip>
+                      <Badge colorScheme="orange" variant="subtle">
+                        {item.link}
+                      </Badge>
+                    </>
+                  )
+                }[item?.adsl_vpn?.toString()]
+              }
+            </HStack>
+          </Flex>
+        }
+        description={
+          cidades?.data?.find((loc) => loc.id === item.city_id)?.name || ""
+        }
+      >
         <Item.Actions item={item}>
           <EditButton onClick={handleEdit} label={item.name} />
           <DeleteButton onClick={handleDelete} label={item.name} />
         </Item.Actions>
       </Item>
     ),
-    [handleDelete, handleEdit]
+    [cidades?.data, handleDelete, handleEdit]
   )
 
   return (

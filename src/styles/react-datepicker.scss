@@ -1,0 +1,88 @@
+.react-datepicker__month-container {
+  min-width: 260px !important;
+}
+
+.react-datepicker__header {
+  padding-top: 0.25rem !important; //smaller padding !important;
+  background-color: white !important;
+}
+
+.react-datepicker__day {
+  color: black !important;
+  font-weight: 500 !important;
+  transition: all 0.15s ease-out !important;
+
+  &-name {
+    font-weight: 500 !important;
+  }
+
+  &-name:first-child,
+  &-name:last-child {
+    font-weight: 400 !important;
+  }
+
+  &--today {
+    position: relative !important;
+    border: 1px solid transparent !important;
+    border-image-slice: 1 !important;
+    border-image-source: conic-gradient(
+      from 0deg,
+      #5cace2,
+      #71b8e7,
+      #696fdf,
+      #8287dd,
+      #9599e2,
+      #5cace2
+    ) !important;
+  }
+
+  &--weekend {
+    color: var(--chakra-colors-gray-500) !important;
+    font-weight: 500 !important;
+  }
+
+  &--outside-month {
+    color: var(--chakra-colors-gray-300) !important;
+    font-weight: 200 !important;
+  }
+
+  &--weekend.react-datepicker__day--outside-month {
+    color: var(--chakra-colors-gray-200) !important;
+    font-weight: 100 !important;
+  }
+
+  &--selected {
+    border-radius: 50% !important;
+    color: white !important;
+    background-color: var(--chakra-colors-primary) !important;
+  }
+
+  &--keyboard-selected {
+    color: inherit !important;
+    background-color: transparent !important;
+  }
+
+  &--in-selecting-range {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+  }
+
+  &--in-range {
+    color: white !important;
+    background-color: #111 !important;
+  }
+
+  &--selecting-range-start,
+  &--selecting-range-end {
+    background-color: green !important;
+  }
+
+  &--range-end,
+  &--range-start {
+    background-color: green !important;
+  }
+
+  &--disabled {
+    color: #f1f1f1 !important;
+    font-weight: 300 !important;
+  }
+}

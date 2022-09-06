@@ -3,6 +3,11 @@ name: Generate Metrics Release
 on:
   release:
     types: [published]
+  pull_request_review:
+    types: [submitted]
+    branches:
+      - main
+      - develop
 
 jobs:
   send-release:
