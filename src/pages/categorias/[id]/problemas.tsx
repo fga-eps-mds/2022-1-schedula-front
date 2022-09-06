@@ -28,10 +28,11 @@ import {
   updateProblemType
 } from "@services/Problemas"
 import { request } from "@services/request"
+import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const ListaProblemas = () => {
   const router = useRouter()
-
+  RedirectUnauthenticated(router)
   const category_id = Number(router.query?.id)
 
   const { data: categoria, isLoading: isLoadingCategory } =
