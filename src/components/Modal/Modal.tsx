@@ -19,6 +19,7 @@ export const Modal = ({ children, title, ...props }: ModalProps) => {
     <ModalContainer {...props}>
       <ModalOverlay bg="blackAlpha.500" />
       <ModalContent
+        transform="auto-gpu" // force the browser use GPU acceleration for that particular element instead of the CPU
         bg="blackAlpha.600"
         backdropFilter="blur(8px)"
         color="white"

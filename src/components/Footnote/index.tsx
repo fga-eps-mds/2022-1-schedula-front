@@ -7,6 +7,7 @@ import {
   Tooltip,
   useDisclosure
 } from "@chakra-ui/react"
+import { SWRConfig } from "swr"
 
 import { ServicesStatus } from "@components/Footnote/ServicesStatus"
 import { useRequest } from "@hooks/useRequest"
@@ -67,7 +68,13 @@ export const Footnote = () => {
         </Tooltip>
       </Flex>
 
-      <ServicesStatus isOpen={isOpen} onClose={onClose} />
+      <SWRConfig
+        value={{
+          revalidateIfStale: false
+        }}
+      >
+        <ServicesStatus isOpen={isOpen} onClose={onClose} />
+      </SWRConfig>
     </>
   )
 }
