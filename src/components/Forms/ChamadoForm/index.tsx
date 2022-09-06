@@ -173,6 +173,7 @@ export const ChamadoForm = ({
             id={`problems.${index}.problem_id` as const}
             options={getSelectOptions(tiposProblemas?.data, "name", "id")}
             isMulti
+            closeMenuOnSelect={false}
             isLoading={isLoadingProblems}
             placeholder="Tipo de Problema"
             label="Tipo de Problema"
