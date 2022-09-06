@@ -5,8 +5,7 @@ import { ChakraProvider } from "@chakra-ui/react"
 import { DefaultLayout } from "layout/DefaultLayout"
 import { SWRConfig, SWRConfiguration } from "swr"
 
-import { ColorTheme } from "../styles/theme"
-
+import { theme } from "@styles/theme"
 import "react-toastify/dist/ReactToastify.css"
 import "@styles/react-datepicker.scss"
 
@@ -24,7 +23,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>)
 
   return (
-    <ChakraProvider resetCSS theme={ColorTheme}>
+    <ChakraProvider resetCSS theme={theme}>
       <SWRConfig value={swrConfig}>
         <NextNprogress
           color="linear-gradient(
