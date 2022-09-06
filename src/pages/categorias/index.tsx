@@ -27,7 +27,7 @@ const ListaCategoria = () => {
   const { data: session } = useSession()
   const router = useRouter()
 
-  async function controlAccess() {
+  const controlAccess = () => {
     if (!session) router.push("/login")
   }
 
