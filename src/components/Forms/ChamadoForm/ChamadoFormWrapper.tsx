@@ -34,7 +34,7 @@ import { request } from "@services/request"
 import { getWorkstations, updateWorkstation } from "@services/Workstation"
 import { getSelectOptions } from "@utils/getSelectOptions"
 
-interface ChamadoFormProps {
+export interface ChamadoFormProps {
   onSubmit: SubmitHandler<ChamadoFormValues>
   defaultValues?: ChamadoFormValues
 }

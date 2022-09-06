@@ -17,6 +17,14 @@ const nextConfig = (phase, { defaultConfig }) => ({
         permanent: false
       }
     ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/eventos",
+        destination: "/chamados?is_event=true"
+      }
+    ]
   }
   //   typescript: {
   //     // !! WARN !!
