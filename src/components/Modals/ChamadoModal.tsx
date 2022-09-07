@@ -1,33 +1,35 @@
 import { useCallback, useMemo } from "react"
+import { ModalProps } from "@chakra-ui/react"
 
 import { ChamadoFormWrapper } from "@components/Forms/ChamadoForm/ChamadoFormWrapper"
 import {
   chamadoToFormValues,
   formValuesToPayload
 } from "@components/Forms/ChamadoForm/helpers"
-import { Modal } from "@components/Modal/Modal"
+import { Modal } from "@components/Modal"
 import { updateChamado } from "@services/Chamados"
 import { request } from "@services/request"
 
-interface ChamadoModalProps {
+interface ChamadoModalProps extends Partial<ModalProps> {
   chamado?: Chamado | undefined
-  onEdit: (result: Result<ApiResponse<Chamado>>) => void
+  onSubmit: (result: Result<ApiResponse<Chamado>>) => void
   isOpen: boolean
   onClose: () => void
 }
 
 export const ChamadoModal = ({
   chamado,
-  onEdit,
+  onSubmit,
   isOpen,
-  onClose
+  onClose,
+  ...props
 }: ChamadoModalProps) => {
   const isEvent = useMemo(
     () => chamado?.problems?.some((item) => item?.is_event),
     [chamado?.problems]
   )
 
-  const onSubmit = useCallback(
+  const handleSubmit = useCallback(
     async (data: ChamadoFormValues) => {
       if (!chamado?.id) return
 
@@ -38,15 +40,16 @@ export const ChamadoModal = ({
         updateChamado(chamado?.id)(payload)
       )
 
-      onEdit?.(response)
-      onClose()
+      onSubmit?.(response)
 
       if (response.type === "error") {
         // Let hook form know that submit was not successful
-        return Promise.reject(response.error.message)
+        return Promise.reject(response.error?.message)
+      } else {
+        onClose?.()
       }
     },
-    [chamado?.id, onClose, onEdit]
+    [chamado?.id, onClose, onSubmit]
   )
 
   return (
@@ -55,10 +58,11 @@ export const ChamadoModal = ({
       isOpen={isOpen}
       onClose={onClose}
       size="6xl"
+      {...props}
     >
       <ChamadoFormWrapper
         defaultValues={chamado && chamadoToFormValues(chamado)}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
       />
     </Modal>
   )

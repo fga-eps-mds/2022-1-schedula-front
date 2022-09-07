@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 
-import { ChamadoItem } from "@components/ChamadoItem"
+import { ChamadoItem } from "@components/Items/ChamadoItem"
 import { ListView } from "@components/List"
 import { ChamadoModal } from "@components/Modals/ChamadoModal"
 import { PageHeader } from "@components/PageHeader"
@@ -32,7 +32,7 @@ const Chamados = () => {
     mutate
   } = useRequest<Chamado[]>(getChamados)
 
-  const onEdit = useCallback(
+  const onSubmit = useCallback(
     (result: Result<ApiResponse<Chamado>>) => {
       if (result.type === "error") {
         toast.error(result.error.message)
@@ -42,6 +42,7 @@ const Chamados = () => {
 
       toast.success(result.value.message)
       mutate()
+      setChamadoToEdit(undefined)
     },
     [mutate]
   )
@@ -53,6 +54,11 @@ const Chamados = () => {
     },
     [onOpen]
   )
+
+  const handleClose = useCallback(() => {
+    setChamadoToEdit(undefined)
+    onClose()
+  }, [onClose])
 
   const renderChamadoItem = useCallback(
     (chamado: Chamado) => (
@@ -80,9 +86,9 @@ const Chamados = () => {
 
       <ChamadoModal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleClose}
         chamado={chamadoToEdit}
-        onEdit={onEdit}
+        onSubmit={onSubmit}
       />
     </>
   )

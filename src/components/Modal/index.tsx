@@ -11,7 +11,6 @@ import {
 
 export interface ModalProps extends ChakraModalProps {
   title: string
-  children: React.ReactNode
 }
 
 export const Modal = ({ children, title, ...props }: ModalProps) => {

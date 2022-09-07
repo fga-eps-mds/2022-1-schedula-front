@@ -2,7 +2,7 @@ import type { AppProps } from "next/app"
 import type { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 import NextNprogress from "nextjs-progressbar"
-import { ToastContainer, Zoom } from "react-toastify"
+import { Slide, ToastContainer } from "react-toastify"
 import { ChakraProvider } from "@chakra-ui/react"
 import { DefaultLayout } from "layout/DefaultLayout"
 import { SWRConfig, SWRConfiguration } from "swr"
@@ -49,7 +49,8 @@ function MyApp({
         <ToastContainer
           position="bottom-right"
           hideProgressBar
-          transition={Zoom}
+          autoClose={3000}
+          transition={Slide}
         />
       </ChakraProvider>
     </SessionProvider>

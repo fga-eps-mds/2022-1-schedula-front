@@ -18,7 +18,7 @@ import { ControlledSelect } from "@components/ControlledSelect"
 import { EventForm } from "@components/Forms/ChamadoForm/EventForm"
 import { EventInfo } from "@components/Forms/ChamadoForm/EventInfo"
 import { useDropdownData } from "@components/Forms/ChamadoForm/useDropdowData"
-import { Modal } from "@components/Modal/Modal"
+import { Modal } from "@components/Modal"
 import {
   ChamadoPriority,
   ChamadoStatus,

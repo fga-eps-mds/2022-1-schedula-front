@@ -67,7 +67,7 @@ export const ChamadoItem = ({ chamado, handleEdit }: ChamadoItemProps) => {
           </Text>
         )}
       </HStack>
-      <Item
+      <Item<Chamado>
         title={
           <>
             <HStack spacing={6}>

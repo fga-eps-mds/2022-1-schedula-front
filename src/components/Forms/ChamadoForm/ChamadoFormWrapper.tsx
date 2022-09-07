@@ -30,8 +30,7 @@ import { chamadosDefaultValues } from "@components/Forms/ChamadoForm/helpers"
 import { WorkstationModal } from "@components/Modals/WorkstationModal"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
-import { request } from "@services/request"
-import { getWorkstations, updateWorkstation } from "@services/Workstation"
+import { getWorkstations } from "@services/Workstation"
 import { getSelectOptions } from "@utils/getSelectOptions"
 
 export interface ChamadoFormProps {
@@ -157,28 +156,17 @@ export const ChamadoFormWrapper = ({
   )
 
   const handleWorkstationEdit = useCallback(
-    async (data: CreateWorkstationPayload) => {
-      const payload = {
-        ...data,
-        phones: (data.phones as unknown as { number: string }[])?.map(
-          (phone) => phone?.number
-        )
-      }
-
-      const response = await request<Workstation>(
-        updateWorkstation(getValues("workstation_id.value"))(payload)
-      )
-
-      if (response.type === "success") {
-        toast.success(response.value?.message)
+    (result: Result<ApiResponse<Workstation>>) => {
+      if (result.type === "success") {
+        toast.success(result.value?.message)
         mutateWorkstations()
       } else {
-        toast.error(response.error?.message)
+        toast.error(result.error?.message)
       }
 
       closeWorkstationModal()
     },
-    [getValues, closeWorkstationModal, mutateWorkstations]
+    [closeWorkstationModal, mutateWorkstations]
   )
 
   return (
@@ -310,7 +298,7 @@ export const ChamadoFormWrapper = ({
       </FormProvider>
 
       <WorkstationModal
-        defaultValues={workstations?.data?.find(
+        workstation={workstations?.data?.find(
           (station) => station.id === getValues("workstation_id.value")
         )}
         isOpen={isWorkstationModalOpen}

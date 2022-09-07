@@ -44,7 +44,6 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
               <Input
                 {...register("name", { required: "Campo obrigatório" })}
                 placeholder="Nome completo"
-                variant="flushed"
               />
               {errors?.name && (
                 <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
@@ -56,7 +55,6 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
               <Input
                 {...register("username", { required: "Campo obrigatório" })}
                 placeholder="Nome de Usuário"
-                variant="flushed"
               />
               {errors?.username && (
                 <FormErrorMessage>{errors?.username?.message}</FormErrorMessage>
@@ -66,11 +64,7 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
 
           <Box>
             <FormLabel htmlFor="email">E-mail</FormLabel>
-            <Input
-              {...register("email")}
-              placeholder="Descrição"
-              variant="flushed"
-            />
+            <Input {...register("email")} placeholder="Descrição" />
             {errors?.email && (
               <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
             )}
@@ -86,7 +80,6 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
                   isUpdating ? {} : { required: "Campo obrigatório" }
                 )}
                 placeholder="Senha"
-                variant="flushed"
               />
               {errors?.password && (
                 <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
@@ -111,7 +104,6 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
                       }
                 )}
                 placeholder="Confirmar Senha"
-                variant="flushed"
               />
               {errors?.confirmPassword && (
                 <FormErrorMessage>
@@ -129,7 +121,6 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
                   required: "Campo obrigatório"
                 })}
                 defaultValue=""
-                variant="flushed"
               >
                 <option disabled value="">
                   Escolha um Acesso
@@ -148,7 +139,6 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
               <Input
                 {...register("job_role", { required: "Campo obrigatório" })}
                 placeholder="Cargo"
-                variant="flushed"
               />
               {errors?.job_role && (
                 <FormErrorMessage>{errors?.job_role?.message}</FormErrorMessage>

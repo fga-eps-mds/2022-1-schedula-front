@@ -11,4 +11,4 @@ export const createChamado = ChamadoService.post<ChamadoPayload>
 
 export const updateChamado = ChamadoService.put<ChamadoPayload>
 
-export const deleteUser = ChamadoService.delete
+export const deleteChamado = ChamadoService.delete

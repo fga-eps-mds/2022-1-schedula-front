@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import {
   Box,
   Button,
@@ -11,9 +11,7 @@ import {
 
 interface CategoriaFormProps {
   defaultValues?: Category | undefined
-  onSubmit:
-    | ((data: CategoryPayload) => void)
-    | ((data: ProblemTypePayload) => void)
+  onSubmit: SubmitHandler<CategoryPayload> | SubmitHandler<ProblemTypePayload>
 }
 
 export const CategoriaForm = ({
@@ -37,7 +35,6 @@ export const CategoriaForm = ({
             <Input
               {...register("name", { required: "Campo obrigatório" })}
               placeholder="Nome"
-              variant="flushed"
             />
             {errors?.name && (
               <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
@@ -49,7 +46,6 @@ export const CategoriaForm = ({
             <Input
               {...register("description", { required: "Campo obrigatório" })}
               placeholder="Descrição"
-              variant="flushed"
             />
             {errors?.description && (
               <FormErrorMessage>

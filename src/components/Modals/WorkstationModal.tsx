@@ -1,30 +1,58 @@
-import {
-  WorkstationForm,
-  WorkstationFormProps
-} from "@components/Forms/WorkstationForm"
-import { Modal } from "@components/Modal/Modal"
+import { useCallback } from "react"
+import { ModalProps } from "@chakra-ui/react"
 
-interface WorkstationModalProps extends WorkstationFormProps {
+import { WorkstationForm } from "@components/Forms/WorkstationForm"
+import { Modal } from "@components/Modal"
+import { request } from "@services/request"
+import { createWorkstation, updateWorkstation } from "@services/Workstation"
+
+interface WorkstationModalProps extends Partial<ModalProps> {
+  workstation?: Workstation | undefined
+  onSubmit: (result: Result<ApiResponse<Workstation>>) => void
   isOpen: boolean
   onClose: () => void
 }
 
 export const WorkstationModal = ({
-  isOpen,
+  workstation,
+  onSubmit,
   onClose,
-  defaultValues,
-  onSubmit
+  ...props
 }: WorkstationModalProps) => {
+  const handleSubmit = useCallback(
+    async (data: CreateWorkstationPayload) => {
+      const payload = {
+        ...data,
+        phones: (data.phones as unknown as { number: string }[])?.map(
+          (phone) => phone?.number
+        )
+      }
+
+      const response = await request<Workstation>(
+        workstation
+          ? updateWorkstation(workstation.id)(payload)
+          : createWorkstation(payload)
+      )
+
+      onSubmit?.(response)
+      onClose?.()
+
+      if (response.type === "error") {
+        // Let hook form know that submit was not successful
+        return Promise.reject(response.error?.message)
+      }
+    },
+    [onClose, onSubmit, workstation]
+  )
+
   return (
     <Modal
-      title={
-        defaultValues ? "Editar Posto de Trabalho" : "Novo Posto de Trabalho"
-      }
-      isOpen={isOpen}
-      onClose={onClose}
+      title={`${workstation ? "Editar" : "Novo"} Posto de Trabalho`}
       size="2xl"
+      onClose={onClose}
+      {...props}
     >
-      <WorkstationForm defaultValues={defaultValues} onSubmit={onSubmit} />
+      <WorkstationForm defaultValues={workstation} onSubmit={handleSubmit} />
     </Modal>
   )
 }
