@@ -1,6 +1,6 @@
 import type { ThemingProps } from "@chakra-ui/react"
 
-export enum ChamadoStatus {
+export enum CHAMADO_STATUS {
   "pending" = "Pendente",
   "in_progress" = "Em andamento",
   "not_solved" = "Não resolvido",
@@ -8,14 +8,16 @@ export enum ChamadoStatus {
   "solved" = "Resolvido"
 }
 
-export enum ChamadoPriority {
+export enum CHAMADO_PRIORITY {
   "low" = "Baixa",
   "normal" = "Normal",
   "high" = "Alta",
   "urgent" = "Urgente"
 }
 
-export const statusColor = (status: keyof typeof ChamadoStatus | undefined) => {
+export const statusColor = (
+  status: keyof typeof CHAMADO_STATUS | undefined
+) => {
   switch (status) {
     case "pending":
       return "yellow.500"
@@ -38,7 +40,7 @@ export const statusColor = (status: keyof typeof ChamadoStatus | undefined) => {
 }
 
 export const priorityColorMap = (
-  priority: keyof typeof ChamadoPriority | undefined
+  priority: keyof typeof CHAMADO_PRIORITY | undefined
 ): ThemingProps["colorScheme"] => {
   switch (priority) {
     case "low":

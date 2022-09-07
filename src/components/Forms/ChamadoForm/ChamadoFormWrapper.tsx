@@ -5,26 +5,25 @@ import {
   useFieldArray,
   useForm
 } from "react-hook-form"
+import { BsPersonCircle, BsTelephoneFill } from "react-icons/bs"
 import { FaPlus } from "react-icons/fa"
 import InputMask from "react-input-mask"
 import { toast } from "react-toastify"
 import {
   Button,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
   Grid,
   GridItem,
   Heading,
   Icon,
-  Input,
+  InputLeftElement,
   useDisclosure,
   VStack
 } from "@chakra-ui/react"
 
 import { EditButton } from "@components/ActionButtons/EditButton"
-import { ControlledSelect } from "@components/ControlledSelect"
+import { ControlledSelect } from "@components/FormFields/ControlledSelect"
+import { Input } from "@components/FormFields/Input"
 import { ChamadoForm } from "@components/Forms/ChamadoForm"
 import { chamadosDefaultValues } from "@components/Forms/ChamadoForm/helpers"
 import { WorkstationModal } from "@components/Modals/WorkstationModal"
@@ -42,7 +41,7 @@ export const ChamadoFormWrapper = ({
   onSubmit,
   defaultValues
 }: ChamadoFormProps) => {
-  const isEdditing = Boolean(defaultValues)
+  const isEditing = Boolean(defaultValues)
 
   const methods = useForm<ChamadoFormValues>({
     defaultValues: {
@@ -175,38 +174,37 @@ export const ChamadoFormWrapper = ({
         {/* Self-enclosing form to avoid nested forms submiting the main form */}
         <form id="chamado-form-wrapper" onSubmit={handleSubmit(onSubmit)} />
         <Grid templateColumns="repeat(2, 1fr)" gap={8}>
-          <FormControl
-            isInvalid={Boolean(errors?.applicant_name)}
-            position="relative"
-          >
-            <FormLabel>Solicitante</FormLabel>
-            <Input
-              {...register("applicant_name", {
-                required: "Campo obrigatório"
-              })}
-            />
-            <FormErrorMessage>
-              {errors?.applicant_name?.message}
-            </FormErrorMessage>
-          </FormControl>
+          <Input
+            label="Solicitante"
+            {...register("applicant_name", {
+              required: "Campo obrigatório"
+            })}
+            errors={errors?.applicant_name}
+            leftElement={
+              <InputLeftElement>
+                <Icon as={BsPersonCircle} fontSize={20} />
+              </InputLeftElement>
+            }
+          />
 
-          <FormControl isInvalid={Boolean(errors?.applicant_phone)}>
-            <FormLabel>Telefone</FormLabel>
-            <Input
-              as={InputMask}
-              mask="9999-9999"
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- maskChar is not in the lib types
-              // @ts-ignore
-              maskChar={null}
-              placeholder="0000-0000"
-              {...register("applicant_phone", {
-                required: "Campo obrigatório"
-              })}
-            />
-            <FormErrorMessage>
-              {errors?.applicant_phone?.message}
-            </FormErrorMessage>
-          </FormControl>
+          <Input
+            label="Telefone"
+            as={InputMask}
+            mask="9999-9999"
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- maskChar is not in the lib types
+            // @ts-ignore
+            maskChar={null}
+            placeholder="0000-0000"
+            {...register("applicant_phone", {
+              required: "Campo obrigatório"
+            })}
+            errors={errors?.applicant_phone}
+            leftElement={
+              <InputLeftElement>
+                <Icon as={BsTelephoneFill} fontSize={20} />
+              </InputLeftElement>
+            }
+          />
 
           <ControlledSelect
             control={control}
@@ -229,7 +227,6 @@ export const ChamadoFormWrapper = ({
               position="absolute"
               top={0}
               right={0}
-              aria-label="Editar Posto de Trabalho"
               zIndex={5}
               tabIndex={-1}
             />
@@ -267,12 +264,12 @@ export const ChamadoFormWrapper = ({
                     index={index}
                     onRemove={handleRemove(index)}
                     onUpdate={update}
-                    isEdditing={isEdditing}
+                    isEditing={isEditing}
                   />
                 </fieldset>
               ))}
 
-              {!isEdditing && (
+              {!isEditing && (
                 <Flex justifyContent="end" mt={8}>
                   <Button onClick={handleAdd} variant="tertiary">
                     <Icon as={FaPlus} mr={2} /> Chamado
@@ -293,7 +290,7 @@ export const ChamadoFormWrapper = ({
           mt={8}
           boxShadow="xl"
         >
-          Finalizar {isEdditing ? "Edição" : "Atendimento"}
+          Finalizar {isEditing ? "Edição" : "Atendimento"}
         </Button>
       </FormProvider>
 

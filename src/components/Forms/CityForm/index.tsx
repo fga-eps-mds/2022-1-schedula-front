@@ -1,11 +1,7 @@
 import { useForm } from "react-hook-form"
-import {
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input
-} from "@chakra-ui/react"
+import { Button } from "@chakra-ui/react"
+
+import { Input } from "@components/FormFields"
 
 interface CityFormProps {
   defaultValues?: City | undefined
@@ -23,16 +19,14 @@ export const CityForm = ({ defaultValues, onSubmit }: CityFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl isInvalid={Boolean(errors?.name)} mb={8}>
-        <FormLabel>Nome</FormLabel>
-        <Input
-          {...register("name", { required: "Campo obrigatório" })}
-          placeholder="Nome"
-        />
-        <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
-      </FormControl>
+      <Input
+        label="Nome"
+        {...register("name", { required: "Campo obrigatório" })}
+        errors={errors?.name}
+        placeholder="Nome"
+      />
 
-      <Button type="submit" width="100%" isLoading={isSubmitting}>
+      <Button type="submit" width="100%" mt={8} isLoading={isSubmitting}>
         Registrar
       </Button>
     </form>

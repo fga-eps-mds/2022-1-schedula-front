@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
-import { Datepicker } from "@components/Datepicker"
+import { Datepicker } from "@components/FormFields/Datepicker"
 
 interface EventFormProps {
   defaultValues?: ChamadoEvent | undefined

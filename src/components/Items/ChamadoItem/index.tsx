@@ -11,7 +11,7 @@ import {
 
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
-import { ChamadoPriority, priorityColorMap } from "@constants/Chamados"
+import { CHAMADO_PRIORITY, priorityColorMap } from "@constants/Chamados"
 import { useRequest } from "@hooks/useRequest"
 import { getCityById } from "@services/Cidades"
 import { getWorkstationById } from "@services/Workstation"
@@ -56,7 +56,7 @@ export const ChamadoItem = ({ chamado, handleEdit }: ChamadoItemProps) => {
             }
             key={index}
           >
-            {ChamadoPriority[problem.priority]}
+            {CHAMADO_PRIORITY[problem.priority]}
           </Badge>
         ))}
         <Spacer />

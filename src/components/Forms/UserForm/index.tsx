@@ -1,15 +1,9 @@
+import { useMemo } from "react"
 import { useForm } from "react-hook-form"
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Select,
-  Stack
-} from "@chakra-ui/react"
+import { Button, Grid, GridItem } from "@chakra-ui/react"
+
+import { ControlledSelect, Input } from "@components/FormFields"
+import { USER_ACCESS } from "@constants/User"
 
 interface UserFormProps {
   defaultValues?: User | undefined
@@ -17,9 +11,11 @@ interface UserFormProps {
 }
 
 export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
-  let isUpdating = false
+  const isEditing = useMemo(() => Boolean(defaultValues), [defaultValues])
+
   const {
     register,
+    control,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting }
@@ -30,127 +26,77 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
     }
   })
 
-  if (defaultValues !== undefined) {
-    isUpdating = true
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl isInvalid={Object.keys(errors).length > 0} mb={8}>
-        <Stack spacing={8}>
-          <Flex gap={8}>
-            <Box w="100%">
-              <FormLabel htmlFor="name">Nome Completo</FormLabel>
-              <Input
-                {...register("name", { required: "Campo obrigatório" })}
-                placeholder="Nome completo"
-              />
-              {errors?.name && (
-                <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
-              )}
-            </Box>
+      <Grid templateColumns="1fr 1fr" gap={6}>
+        <Input
+          label="Nome Completo"
+          {...register("name", { required: "Campo obrigatório" })}
+          errors={errors?.name}
+          placeholder="Nome completo"
+        />
+        <Input
+          label="Nome de Usuário"
+          {...register("username", { required: "Campo obrigatório" })}
+          errors={errors?.username}
+          placeholder="Username"
+        />
 
-            <Box w="100%">
-              <FormLabel htmlFor="username">Nome de Usuário</FormLabel>
-              <Input
-                {...register("username", { required: "Campo obrigatório" })}
-                placeholder="Nome de Usuário"
-              />
-              {errors?.username && (
-                <FormErrorMessage>{errors?.username?.message}</FormErrorMessage>
-              )}
-            </Box>
-          </Flex>
+        <GridItem colSpan={2}>
+          <Input
+            label="Email"
+            {...register("email")}
+            errors={errors?.email}
+            placeholder="exemplo@email.com"
+          />
+        </GridItem>
 
-          <Box>
-            <FormLabel htmlFor="email">E-mail</FormLabel>
-            <Input {...register("email")} placeholder="Descrição" />
-            {errors?.email && (
-              <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
-            )}
-          </Box>
+        <Input
+          label="Senha"
+          type="password"
+          {...register("password", {
+            required: isEditing ? false : "Campo obrigatório"
+          })}
+          errors={errors?.password}
+          placeholder="Senha"
+        />
+        <Input
+          label="Confirmar senha"
+          type="password"
+          {...register("confirmPassword", {
+            required: isEditing ? false : "Campo obrigatório",
+            validate: (value) =>
+              value === watch("password") || "Senhas não conferem"
+          })}
+          errors={errors?.confirmPassword}
+          placeholder="Confirmar Senha"
+        />
 
-          <Flex gap={8}>
-            <Box w="100%">
-              <FormLabel htmlFor="password">Senha</FormLabel>
-              <Input
-                type="password"
-                {...register(
-                  "password",
-                  isUpdating ? {} : { required: "Campo obrigatório" }
-                )}
-                placeholder="Senha"
-              />
-              {errors?.password && (
-                <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
-              )}
-            </Box>
+        <ControlledSelect
+          label="Acesso"
+          control={control}
+          name="acess" // NOTE: fix 'acess' typo in backend
+          id="acess" // NOTE: fix 'acess' typo in backend
+          options={Object.entries(USER_ACCESS).map(([value, label]) => ({
+            value,
+            label
+          }))}
+          placeholder="Acesso"
+          rules={{ required: "Campo obrigatório" }}
+        />
+        <Input
+          label="Cargo"
+          {...register("job_role", { required: "Campo obrigatório" })}
+          errors={errors?.job_role}
+          placeholder="Cargo"
+        />
 
-            <Box w="100%">
-              <FormLabel htmlFor="confirmPassword">Confirmar Senha</FormLabel>
-              <Input
-                type="password"
-                {...register(
-                  "confirmPassword",
-                  isUpdating
-                    ? {
-                        validate: (value) =>
-                          value === watch("password") || "Senhas não conferem"
-                      }
-                    : {
-                        required: "Campo obrigatório",
-                        validate: (value) =>
-                          value === watch("password") || "Senhas não conferem"
-                      }
-                )}
-                placeholder="Confirmar Senha"
-              />
-              {errors?.confirmPassword && (
-                <FormErrorMessage>
-                  {errors?.confirmPassword?.message}
-                </FormErrorMessage>
-              )}
-            </Box>
-          </Flex>
-
-          <Flex gap={8}>
-            <Box width="100%">
-              <FormLabel htmlFor="acess">Acesso</FormLabel>
-              <Select
-                {...register("acess", {
-                  required: "Campo obrigatório"
-                })}
-                defaultValue=""
-              >
-                <option disabled value="">
-                  Escolha um Acesso
-                </option>
-                <option value="basic">Basico</option>
-                <option value="manager">Gerente</option>
-                <option value="admin">Administrador</option>
-              </Select>
-              {errors?.acess && (
-                <FormErrorMessage>{errors?.acess?.message}</FormErrorMessage>
-              )}
-            </Box>
-
-            <Box width="100%">
-              <FormLabel htmlFor="job_role">Cargo</FormLabel>
-              <Input
-                {...register("job_role", { required: "Campo obrigatório" })}
-                placeholder="Cargo"
-              />
-              {errors?.job_role && (
-                <FormErrorMessage>{errors?.job_role?.message}</FormErrorMessage>
-              )}
-            </Box>
-          </Flex>
-        </Stack>
-      </FormControl>
-
-      <Button type="submit" width="100%" isLoading={isSubmitting}>
-        Registrar
-      </Button>
+        <GridItem colSpan={2}>
+          <Button type="submit" width="100%" isLoading={isSubmitting}>
+            Registrar
+          </Button>
+        </GridItem>
+      </Grid>
     </form>
   )
 }
