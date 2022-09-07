@@ -13,7 +13,7 @@ import { AxiosResponse } from "axios"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
-import { WorkstationForm } from "@components/Forms/WorkstationForm"
+import { WorkstationPageForm } from "@components/Forms/WorkstationForm/WorkstationPageForm"
 import { ListView } from "@components/List"
 import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
@@ -40,10 +40,21 @@ const Workstation = () => {
     mutate
   } = useRequest<Workstation[]>(getWorkstations())
 
+  const { data: regionais, isLoading: isLoadingRegionais } = useRequest<
+    Workstation[]
+  >(
+    getWorkstations({
+      params: {
+        regional: true
+      }
+    })
+  )
+
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [workstationToEdit, setWorkstationToEdit] = useState<Workstation>()
-  const { data: cidades } = useRequest<City[]>(getCities)
+  const { data: cidades, isLoading: isLoadingCidades } =
+    useRequest<City[]>(getCities)
 
   const handleDelete = useCallback(
     async ({ id }: Workstation) => {
@@ -225,9 +236,13 @@ const Workstation = () => {
         onClose={handleClose}
         size="2xl"
       >
-        <WorkstationForm
+        <WorkstationPageForm
           defaultValues={workstationToEdit}
           onSubmit={onSubmit}
+          cidades={cidades}
+          isLoadingCidades={isLoadingCidades}
+          isLoadingRegionais={isLoadingRegionais}
+          regionais={regionais}
         />
       </Modal>
     </>
