@@ -1,3 +1,4 @@
+import { memo } from "react"
 import { useSession } from "next-auth/react"
 import { FaRegUser } from "react-icons/fa"
 import { RiLogoutCircleFill } from "react-icons/ri"
@@ -7,7 +8,7 @@ import { routes } from "@routes"
 
 import { SideBarItem } from "./SidebarItem/SideBarItem"
 
-export const SideBar = () => {
+export const SideBar = memo(() => {
   const session = useSession()
 
   return (
@@ -43,4 +44,6 @@ export const SideBar = () => {
       </Box>
     </Flex>
   )
-}
+})
+
+SideBar.displayName = "SideBar"

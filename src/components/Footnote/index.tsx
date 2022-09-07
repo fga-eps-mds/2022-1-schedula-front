@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { memo, useMemo } from "react"
 import { FaServer } from "react-icons/fa"
 import {
   Flex,
@@ -17,7 +17,7 @@ type Releases = {
   name: string
 }
 
-export const Footnote = () => {
+export const Footnote = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { data } = useRequest<Releases[]>(
@@ -77,4 +77,6 @@ export const Footnote = () => {
       </SWRConfig>
     </>
   )
-}
+})
+
+Footnote.displayName = "Footnote"
