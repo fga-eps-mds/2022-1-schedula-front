@@ -2,7 +2,7 @@ import { Services } from "@services"
 
 const ChamadoService = Services.chamados.create("/chamado")
 
-export const getChamados = ChamadoService.get()
+export const getChamados = ChamadoService.get
 
 export const getChamadoById = (id: number) =>
   ChamadoService.get({ params: { id } })

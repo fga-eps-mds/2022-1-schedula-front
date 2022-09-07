@@ -52,7 +52,8 @@ export const useServicesData = () => {
       ? GithubService.get({
           url: GithubService?.newUrl(
             "/2022-1-schedula-gestor-de-usuarios/releases"
-          )
+          ),
+          withCredentials: false
         })
       : null
   )
@@ -63,7 +64,8 @@ export const useServicesData = () => {
         ? GithubService.get({
             url: GithubService?.newUrl(
               "/2022-1-schedula-detalhador-de-chamados/releases"
-            )
+            ),
+            withCredentials: false
           })
         : null
     )
@@ -74,7 +76,8 @@ export const useServicesData = () => {
         ? GithubService.get({
             url: GithubService?.newUrl(
               "/2022-1-schedula-gerenciador-de-localidades/releases"
-            )
+            ),
+            withCredentials: false
           })
         : null
     )

@@ -31,30 +31,26 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             )
 
             const cookies = response.headers["set-cookie"]
-            let token
 
             if (cookies) {
               res.setHeader("Set-Cookie", cookies)
               api.defaults.headers.common.Cookie =
                 cookies[0] || (cookies as unknown as string)
 
-              token = cookies[0].split(";")[0].split("=")[1] // NAO RELE A MAO NESTA GAMBIARRA
-            }
-
-            if (response.data.error === null) {
-              console.log(token)
+              const authToken = cookies[0].split(";")[0].split("=")[1]
 
               const user = jwt.verify(
-                token as string,
-                process.env.SECRET as string
+                authToken,
+                process.env.NEXTAUTH_SECRET as string
               ) as LoggedUser
 
-              return { ...user, token }
+              return { ...user } ?? null
             }
           }
 
           return null
         } catch (error) {
+          console.log("AUTHORIZE ERROR: ", error)
           // eslint-disable-next-line @typescript-eslint/no-explicit-any -- era p unico jeito
           throw new Error(error as any)
         }
@@ -65,7 +61,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const callbacks: Partial<CallbacksOptions> = {
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = user.token
+        token.user = user
       }
 
       return token
@@ -78,11 +74,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       return baseUrl
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken
-      session.user = jwt.verify(
-        token.accessToken as string,
-        process.env.SECRET as string
-      ) as LoggedUser
+      console.log("SESSION: ", session, token)
+
+      session.user = token.user as LoggedUser
+      session.token = token
 
       return session
     }

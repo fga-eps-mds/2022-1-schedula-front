@@ -11,23 +11,31 @@ import { SWRConfig } from "swr"
 
 import { ServicesStatus } from "@components/Footnote/ServicesStatus"
 import { useRequest } from "@hooks/useRequest"
+import { Service } from "@services"
 
 type Releases = {
   tag_name: string
   name: string
 }
 
+const GithubService = new Service(
+  "https://api.github.com",
+  "/repos/fga-eps-mds"
+)
+
 export const Footnote = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { data } = useRequest<Releases[]>(
     process.env.NODE_ENV !== "development"
-      ? {
-          baseURL: "https://api.github.com",
-          url: "/repos/fga-eps-mds/2022-1-schedula-front/releases",
-          method: "GET"
-        }
-      : null
+      ? GithubService.get({
+          url: GithubService?.newUrl("/2022-1-schedula-front/releases"),
+          withCredentials: false
+        })
+      : null,
+    {
+      revalidateIfStale: false
+    }
   )
 
   const version = useMemo(
@@ -70,7 +78,9 @@ export const Footnote = memo(() => {
 
       <SWRConfig
         value={{
-          revalidateIfStale: false
+          revalidateIfStale: false,
+          revalidateOnFocus: false,
+          revalidateOnReconnect: true
         }}
       >
         <ServicesStatus isOpen={isOpen} onClose={onClose} />

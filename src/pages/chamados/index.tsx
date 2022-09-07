@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 
@@ -14,8 +13,6 @@ import { useRequest } from "@hooks/useRequest"
 import { getChamados } from "@services/Chamados"
 
 const Chamados = () => {
-  const { data: session, status } = useSession()
-  console.log("session", session, status)
   const router = useRouter()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -23,14 +20,20 @@ const Chamados = () => {
   const [chamadoToEdit, setChamadoToEdit] = useState<Chamado>()
 
   const showEvents = router.query?.is_event
-  console.log("router", router.query, showEvents)
+  console.log("router query: ", router.query, showEvents)
 
   const {
     data: chamados,
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Chamado[]>(getChamados)
+  } = useRequest<Chamado[]>(
+    getChamados({
+      params: {
+        is_event: showEvents
+      }
+    })
+  )
 
   const onSubmit = useCallback(
     (result: Result<ApiResponse<Chamado>>) => {
