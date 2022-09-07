@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import NextLink from "next/link"
+import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import { Box, Button, HStack, Tag, Text, useDisclosure } from "@chakra-ui/react"
 
@@ -18,8 +19,12 @@ import { useRequest } from "@hooks/useRequest"
 import { getChamados, updateChamado } from "@services/Chamados"
 import { request } from "@services/request"
 import { formatDate } from "@utils/formatDate"
+import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const Chamados = () => {
+  const router = useRouter()
+
+  RedirectUnauthenticated(router)
   const {
     data: chamados,
     isLoading,

@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react"
+import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import {
   Badge,
@@ -27,8 +28,11 @@ import {
   getWorkstations,
   updateWorkstation
 } from "@services/Workstation"
+import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const Workstation = () => {
+  const router = useRouter()
+  RedirectUnauthenticated(router)
   const {
     data: workstation,
     isLoading,

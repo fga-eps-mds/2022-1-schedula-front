@@ -9,6 +9,13 @@ interface User {
   job_role: string
 }
 
+interface LoggedUser {
+  username: string
+  name: string
+  job_role: string
+  access: strings
+}
+
 interface RegisterUserPayload {
   username: string
   email: string
@@ -17,4 +24,14 @@ interface RegisterUserPayload {
   job_role: string
   password: string
   confirmPassword: string
+}
+
+interface CredentialUser {
+  username: string
+  password: string
+}
+
+interface CredentialUserPayload {
+  credential: string
+  value: string
 }
