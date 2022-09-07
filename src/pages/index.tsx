@@ -1,6 +1,6 @@
 import React from "react"
 
-const Home: NextPageWithLayout = () => {
+const Home: NextPageWithProps = () => {
   return <></>
 }
 

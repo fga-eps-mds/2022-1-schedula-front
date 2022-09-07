@@ -1,6 +1,4 @@
 import { useCallback, useState } from "react"
-import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import {
   Badge,
@@ -29,12 +27,8 @@ import {
   getWorkstations,
   updateWorkstation
 } from "@services/Workstation"
-import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const Workstation = () => {
-  const router = useRouter()
-  RedirectUnauthenticated(router)
-  const { data: session } = useSession()
   const {
     data: workstation,
     isLoading,
@@ -59,56 +53,47 @@ const Workstation = () => {
 
   const handleDelete = useCallback(
     async ({ id }: Workstation) => {
-      if (session?.user.access === "admin") {
-        const response = await request(deleteWorkstation(id))
+      const response = await request(deleteWorkstation(id))
 
-        if (response.type === "success") {
-          toast.success("Cidade deletada com sucesso!")
+      if (response.type === "success") {
+        toast.success("Posto de trabalho removido com sucesso!")
 
-          const newWorkstation = workstation?.data.filter(
-            (workstation) => workstation.id !== id
-          )
+        const newWorkstation = workstation?.data.filter(
+          (workstation) => workstation.id !== id
+        )
 
-          mutate(
-            {
-              data: {
-                error: null,
-                message: "",
-                data: newWorkstation || ([] as Workstation[])
-              }
-            } as AxiosResponse<ApiResponse<Workstation[]>>,
-            { revalidate: false }
-          )
+        mutate(
+          {
+            data: {
+              error: null,
+              message: "",
+              data: newWorkstation || ([] as Workstation[])
+            }
+          } as AxiosResponse<ApiResponse<Workstation[]>>,
+          { revalidate: false }
+        )
 
-          return
-        }
-
-        toast.error("Erro ao deletar posto de trabalho!")
-      } else {
-        toast.error("Acesso Negado!")
+        return
       }
+
+      toast.error("Erro ao deletar posto de trabalho!")
     },
-    [workstation?.data, mutate, session?.user.access]
+    [workstation?.data, mutate]
   )
 
   const handleEdit = useCallback(
     (workstation: Workstation) => {
-      if (session?.user.access !== "basic") {
-        setWorkstationToEdit(workstation)
-        onOpen()
-      } else {
-        toast.error("Acesso Negado!")
-      }
+      setWorkstationToEdit(workstation)
+      onOpen()
     },
-    [onOpen, session?.user.access]
+    [onOpen]
   )
 
   const onSubmit = useCallback(
     async (data: CreateWorkstationPayload) => {
-      if (session?.user.access !== "basic")
-        if (!data.phones) {
-          data.phones = []
-        }
+      if (!data.phones) {
+        data.phones = []
+      }
 
       console.log("DATA: ", data)
 
@@ -213,20 +198,12 @@ const Workstation = () => {
         }
       >
         <Item.Actions item={item}>
-          {session?.user.access !== "basic" ? (
-            <></>
-          ) : (
-            <EditButton onClick={handleEdit} label={item.name} />
-          )}
-          {session?.user.access === "admin" ? (
-            <DeleteButton onClick={handleDelete} label={item.name} />
-          ) : (
-            <></>
-          )}
+          <EditButton onClick={handleEdit} label={item.name} />
+          <DeleteButton onClick={handleDelete} label={item.name} />
         </Item.Actions>
       </Item>
     ),
-    [cidades?.data, handleDelete, handleEdit, session?.user.access]
+    [cidades?.data, handleDelete, handleEdit]
   )
 
   return (
@@ -272,7 +249,3 @@ const Workstation = () => {
 }
 
 export default Workstation
-
-function setWorkstationToEdit(workstation: Workstation) {
-  throw new Error("Function not implemented.")
-}

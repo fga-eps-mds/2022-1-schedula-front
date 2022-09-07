@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 
@@ -11,12 +12,11 @@ import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
 import { getChamados } from "@services/Chamados"
-import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const Chamados = () => {
+  const { data: session, status } = useSession()
+  console.log("session", session, status)
   const router = useRouter()
-
-  RedirectUnauthenticated(router)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 

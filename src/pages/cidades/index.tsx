@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
@@ -21,12 +20,10 @@ import {
   updateCity
 } from "@services/Cidades"
 import { request } from "@services/request"
-import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const ListaCidades = () => {
   const router = useRouter()
   RedirectUnauthenticated(router)
-  const { data: session } = useSession()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -41,46 +38,38 @@ const ListaCidades = () => {
 
   const handleDelete = useCallback(
     async ({ id }: City) => {
-      if (session?.user.access === "admin") {
-        const response = await request(deleteCity(id))
+      const response = await request(deleteCity(id))
 
-        if (response.type === "success") {
-          toast.success("Cidade deletada com sucesso!")
+      if (response.type === "success") {
+        toast.success("Cidade deletada com sucesso!")
 
-          const newCidades = cidades?.data.filter((cidade) => cidade.id !== id)
+        const newCidades = cidades?.data.filter((cidade) => cidade.id !== id)
 
-          mutate(
-            {
-              data: {
-                error: null,
-                message: "",
-                data: newCidades || ([] as City[])
-              }
-            } as AxiosResponse<ApiResponse<City[]>>,
-            { revalidate: false }
-          )
+        mutate(
+          {
+            data: {
+              error: null,
+              message: "",
+              data: newCidades || ([] as City[])
+            }
+          } as AxiosResponse<ApiResponse<City[]>>,
+          { revalidate: false }
+        )
 
-          return
-        }
-
-        toast.error("Erro ao deletar cidade!")
-      } else {
-        toast.error("Acesso Negado!")
+        return
       }
+
+      toast.error("Erro ao deletar cidade!")
     },
-    [cidades?.data, mutate, session?.user.access]
+    [cidades, mutate]
   )
 
   const handleEdit = useCallback(
     (city: City) => {
-      if (session?.user.access !== "basic") {
-        setCidades(city)
-        onOpen()
-      } else {
-        toast.error("Acesso Negado!")
-      }
+      setCidades(city)
+      onOpen()
     },
-    [onOpen, session?.user.access]
+    [onOpen]
   )
 
   const handleClose = useCallback(() => {
@@ -90,101 +79,79 @@ const ListaCidades = () => {
 
   const onSubmit = useCallback(
     async (data: CityPayload) => {
-      if (session?.user.access !== "basic") {
-        console.log("DATA: ", data)
+      console.log("DATA: ", data)
 
-        const response = await request<{ data: City }>(
-          cidadesToEdit ? updateCity(cidadesToEdit.id)(data) : createCity(data)
+      const response = await request<{ data: City }>(
+        cidadesToEdit ? updateCity(cidadesToEdit.id)(data) : createCity(data)
+      )
+
+      if (response.type === "success") {
+        toast.success(
+          `Cidade ${cidadesToEdit ? "editada" : "criada"} com sucesso!`
         )
 
-        if (response.type === "success") {
-          toast.success(
-            `Cidade ${cidadesToEdit ? "editada" : "criada"} com sucesso!`
-          )
+        const newCidades = cidadesToEdit
+          ? cidades?.data.map((cidade) =>
+              cidade.id === cidadesToEdit?.id ? response.value.data : cidade
+            )
+          : [...(cidades?.data || []), response.value.data]
 
-          const newCidades = cidadesToEdit
-            ? cidades?.data.map((cidade) =>
-                cidade.id === cidadesToEdit?.id ? response.value.data : cidade
-              )
-            : [...(cidades?.data || []), response.value.data]
+        mutate(
+          {
+            data: {
+              error: null,
+              message: "",
+              data: newCidades
+            }
+          } as AxiosResponse<ApiResponse<Category[]>>,
+          { revalidate: false }
+        )
 
-          mutate(
-            {
-              data: {
-                error: null,
-                message: "",
-                data: newCidades
-              }
-            } as AxiosResponse<ApiResponse<Category[]>>,
-            { revalidate: false }
-          )
+        setCidades(undefined)
+        onClose()
 
-          setCidades(undefined)
-          onClose()
-
-          return
-        }
-
-        toast.error("Erro ao criar cidade!")
-      } else {
-        toast.error("Acesso Negado!")
+        return
       }
+
+      toast.error("Erro ao criar cidade!")
     },
-    [session?.user.access, cidadesToEdit, cidades?.data, mutate, onClose]
+    [cidadesToEdit, cidades?.data, mutate, onClose]
   )
 
   const renderCidadeItem = useCallback(
     (item: City) => (
       <Item title={item?.name} description="">
         <Item.Actions item={item}>
-          {session?.user.access === "basic" ? (
-            <></>
-          ) : (
-            <EditButton onClick={handleEdit} label={item.name} />
-          )}
-          {session?.user.access === "admin" ? (
-            <DeleteButton onClick={handleDelete} label={item.name} />
-          ) : (
-            <></>
-          )}
+          <EditButton onClick={handleEdit} label={item.name} />
+          <DeleteButton onClick={handleDelete} label={item.name} />
         </Item.Actions>
       </Item>
     ),
-    [handleDelete, handleEdit, session?.user.access]
+    [handleDelete, handleEdit]
   )
 
   return (
     <>
-      {session ? (
-        <>
-          <PageHeader title="Cidades Cadastradas">
-            <HStack spacing={2}>
-              <RefreshButton refresh={mutate} />
-              {session?.user.access === "basic" ? (
-                <></>
-              ) : (
-                <Button onClick={onOpen}>Nova Cidade</Button>
-              )}
-            </HStack>
-          </PageHeader>
+      <PageHeader title="Cidades Cadastradas">
+        <HStack spacing={2}>
+          <RefreshButton refresh={mutate} />
+          <Button onClick={onOpen}>Nova Cidade</Button>
+        </HStack>
+      </PageHeader>
 
-          <ListView<City>
-            items={cidades?.data}
-            render={renderCidadeItem}
-            isLoading={isLoading || isValidating}
-          />
+      <ListView<City>
+        items={cidades?.data}
+        render={renderCidadeItem}
+        isLoading={isLoading || isValidating}
+      />
 
-          <Modal
-            title={cidadesToEdit ? "Editar Cidade" : "Nova Cidade"}
-            isOpen={isOpen}
-            onClose={handleClose}
-          >
-            <CidadeForm defaultValues={cidadesToEdit} onSubmit={onSubmit} />
-          </Modal>
-        </>
-      ) : (
-        <></>
-      )}
+      <Modal
+        title={cidadesToEdit ? "Editar Cidade" : "Nova Cidade"}
+        isOpen={isOpen}
+        onClose={handleClose}
+      >
+        <CidadeForm defaultValues={cidadesToEdit} onSubmit={onSubmit} />
+      </Modal>
     </>
   )
 }

@@ -3,7 +3,7 @@ import { signIn } from "next-auth/react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Box, Button, Center, Input, Text } from "@chakra-ui/react"
 
-const Login: NextPageWithLayout = () => {
+const Login: NextPageWithProps = () => {
   const router = useRouter()
   const {
     register,

@@ -21,12 +21,10 @@ import {
   updateCategory
 } from "@services/Categorias"
 import { request } from "@services/request"
-import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const ListaCategoria = () => {
   const router = useRouter()
 
-  RedirectUnauthenticated(router)
   const {
     data: categorias,
     isLoading,

@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css"
 import "@styles/react-datepicker.scss"
 
 type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout
+  Component: NextPageWithProps
   pageProps: { session: Session; pageProps: unknown }
 }
 
