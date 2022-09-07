@@ -13,7 +13,7 @@ import { AxiosResponse } from "axios"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
-import { WorkstationPageForm } from "@components/Forms/WorkstationPageForm"
+import { WorkstationPageForm } from "@components/Forms/WorkstationForm/WorkstationPageForm"
 import { ListView } from "@components/List"
 import { Item } from "@components/ListItem"
 import { Modal } from "@components/Modal/Modal"
