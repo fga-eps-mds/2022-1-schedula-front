@@ -17,14 +17,15 @@ import {
 import { ActionButton } from "@components/ActionButtons"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { ControlledSelect } from "@components/ControlledSelect"
-import { useRequest } from "@hooks/useRequest"
-import { getCities } from "@services/Cidades"
-import { getWorkstations } from "@services/Workstation"
 import { getSelectOptions } from "@utils/getSelectOptions"
 
-export interface WorkstationFormProps {
+type WorkstationPageFormProps = {
   defaultValues?: Workstation | undefined
   onSubmit: SubmitHandler<CreateWorkstationPayload>
+  cidades?: ApiResponse<City[]> | undefined
+  regionais?: ApiResponse<Workstation[]> | undefined
+  isLoadingRegionais?: boolean
+  isLoadingCidades?: boolean
 }
 
 type FormValues = CreateWorkstationPayload & {
@@ -36,28 +37,18 @@ type check = {
   regional: boolean | null
 }
 
-export const WorkstationForm = ({
+export const WorkstationPageForm = ({
   defaultValues,
-  onSubmit
-}: WorkstationFormProps) => {
-  const { data: cidades, isLoading: isLoadingCidades } =
-    useRequest<Workstation[]>(getCities)
-
-  const { data: regionais, isLoading: isLoadingRegionais } = useRequest<
-    Workstation[]
-  >(
-    getWorkstations({
-      params: {
-        regional: true
-      }
-    })
-  )
-
+  onSubmit,
+  cidades,
+  regionais,
+  isLoadingRegionais,
+  isLoadingCidades
+}: WorkstationPageFormProps) => {
   const {
     register,
     control,
     handleSubmit,
-    watch,
     reset,
     resetField,
     formState: { errors, isSubmitting }
