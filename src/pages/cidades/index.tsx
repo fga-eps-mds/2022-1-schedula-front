@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
@@ -25,6 +26,7 @@ import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 const ListaCidades = () => {
   const router = useRouter()
   RedirectUnauthenticated(router)
+  const { data: session } = useSession()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -123,36 +125,54 @@ const ListaCidades = () => {
     (item: City) => (
       <Item title={item?.name} description="">
         <Item.Actions item={item}>
-          <EditButton onClick={handleEdit} label={item.name} />
-          <DeleteButton onClick={handleDelete} label={item.name} />
+          {session?.user.access === "basic" ? (
+            <></>
+          ) : (
+            <EditButton onClick={handleEdit} label={item.name} />
+          )}
+          {session?.user.access === "admin" ? (
+            <DeleteButton onClick={handleDelete} label={item.name} />
+          ) : (
+            <></>
+          )}
         </Item.Actions>
       </Item>
     ),
-    [handleDelete, handleEdit]
+    [handleDelete, handleEdit, session?.user.access]
   )
 
   return (
     <>
-      <PageHeader title="Cidades Cadastradas">
-        <HStack spacing={2}>
-          <RefreshButton refresh={mutate} />
-          <Button onClick={onOpen}>Nova Cidade</Button>
-        </HStack>
-      </PageHeader>
+      {session ? (
+        <>
+          <PageHeader title="Cidades Cadastradas">
+            <HStack spacing={2}>
+              <RefreshButton refresh={mutate} />
+              {session?.user.access === "basic" ? (
+                <></>
+              ) : (
+                <Button onClick={onOpen}>Nova Cidade</Button>
+              )}
+            </HStack>
+          </PageHeader>
 
-      <ListView<City>
-        items={cidades?.data}
-        render={renderCidadeItem}
-        isLoading={isLoading || isValidating}
-      />
+          <ListView<City>
+            items={cidades?.data}
+            render={renderCidadeItem}
+            isLoading={isLoading || isValidating}
+          />
 
-      <Modal
-        title={cidadesToEdit ? "Editar Cidade" : "Nova Cidade"}
-        isOpen={isOpen}
-        onClose={handleClose}
-      >
-        <CidadeForm defaultValues={cidadesToEdit} onSubmit={onSubmit} />
-      </Modal>
+          <Modal
+            title={cidadesToEdit ? "Editar Cidade" : "Nova Cidade"}
+            isOpen={isOpen}
+            onClose={handleClose}
+          >
+            <CidadeForm defaultValues={cidadesToEdit} onSubmit={onSubmit} />
+          </Modal>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   )
 }
