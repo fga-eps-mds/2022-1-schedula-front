@@ -41,38 +41,46 @@ const ListaCidades = () => {
 
   const handleDelete = useCallback(
     async ({ id }: City) => {
-      const response = await request(deleteCity(id))
+      if (session?.user.access === "admin") {
+        const response = await request(deleteCity(id))
 
-      if (response.type === "success") {
-        toast.success("Cidade deletada com sucesso!")
+        if (response.type === "success") {
+          toast.success("Cidade deletada com sucesso!")
 
-        const newCidades = cidades?.data.filter((cidade) => cidade.id !== id)
+          const newCidades = cidades?.data.filter((cidade) => cidade.id !== id)
 
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newCidades || ([] as City[])
-            }
-          } as AxiosResponse<ApiResponse<City[]>>,
-          { revalidate: false }
-        )
+          mutate(
+            {
+              data: {
+                error: null,
+                message: "",
+                data: newCidades || ([] as City[])
+              }
+            } as AxiosResponse<ApiResponse<City[]>>,
+            { revalidate: false }
+          )
 
-        return
+          return
+        }
+
+        toast.error("Erro ao deletar cidade!")
+      } else {
+        toast.error("Acesso Negado!")
       }
-
-      toast.error("Erro ao deletar cidade!")
     },
-    [cidades, mutate]
+    [cidades?.data, mutate, session?.user.access]
   )
 
   const handleEdit = useCallback(
     (city: City) => {
-      setCidades(city)
-      onOpen()
+      if (session?.user.access !== "basic") {
+        setCidades(city)
+        onOpen()
+      } else {
+        toast.error("Acesso Negado!")
+      }
     },
-    [onOpen]
+    [onOpen, session?.user.access]
   )
 
   const handleClose = useCallback(() => {
@@ -82,43 +90,47 @@ const ListaCidades = () => {
 
   const onSubmit = useCallback(
     async (data: CityPayload) => {
-      console.log("DATA: ", data)
+      if (session?.user.access !== "basic") {
+        console.log("DATA: ", data)
 
-      const response = await request<{ data: City }>(
-        cidadesToEdit ? updateCity(cidadesToEdit.id)(data) : createCity(data)
-      )
-
-      if (response.type === "success") {
-        toast.success(
-          `Cidade ${cidadesToEdit ? "editada" : "criada"} com sucesso!`
+        const response = await request<{ data: City }>(
+          cidadesToEdit ? updateCity(cidadesToEdit.id)(data) : createCity(data)
         )
 
-        const newCidades = cidadesToEdit
-          ? cidades?.data.map((cidade) =>
-              cidade.id === cidadesToEdit?.id ? response.value.data : cidade
-            )
-          : [...(cidades?.data || []), response.value.data]
+        if (response.type === "success") {
+          toast.success(
+            `Cidade ${cidadesToEdit ? "editada" : "criada"} com sucesso!`
+          )
 
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newCidades
-            }
-          } as AxiosResponse<ApiResponse<Category[]>>,
-          { revalidate: false }
-        )
+          const newCidades = cidadesToEdit
+            ? cidades?.data.map((cidade) =>
+                cidade.id === cidadesToEdit?.id ? response.value.data : cidade
+              )
+            : [...(cidades?.data || []), response.value.data]
 
-        setCidades(undefined)
-        onClose()
+          mutate(
+            {
+              data: {
+                error: null,
+                message: "",
+                data: newCidades
+              }
+            } as AxiosResponse<ApiResponse<Category[]>>,
+            { revalidate: false }
+          )
 
-        return
+          setCidades(undefined)
+          onClose()
+
+          return
+        }
+
+        toast.error("Erro ao criar cidade!")
+      } else {
+        toast.error("Acesso Negado!")
       }
-
-      toast.error("Erro ao criar cidade!")
     },
-    [cidadesToEdit, cidades?.data, mutate, onClose]
+    [session?.user.access, cidadesToEdit, cidades?.data, mutate, onClose]
   )
 
   const renderCidadeItem = useCallback(
