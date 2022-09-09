@@ -23,9 +23,6 @@ import {
 import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const RoleBadge = (role: Accesses) => {
-  const router = useRouter()
-  RedirectUnauthenticated(router)
-
   switch (role) {
     case "admin":
       return (
@@ -52,6 +49,8 @@ const Usuarios = () => {
     isValidating,
     mutate
   } = useRequest<User[]>(getUsers)
+  const router = useRouter()
+  RedirectUnauthenticated(router)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
