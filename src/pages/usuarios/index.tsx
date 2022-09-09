@@ -1,6 +1,6 @@
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import { toast } from "react-toastify"
-import { Button, HStack } from "@chakra-ui/react"
+import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
 import { UserItem } from "@components/Items/UserItem"
@@ -11,27 +11,11 @@ import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
 import { getUsers } from "@services/Usuarios"
 
-const RoleBadge = (role: Accesses) => {
-  switch (role) {
-    case "admin":
-      return (
-        <Badge colorScheme="purple" variant="solid">
-          Admin
-        </Badge>
-      )
-
-    case "basic":
-      return <Badge>Basico</Badge>
-
-    case "manager":
-      return <Badge colorScheme="green">Gerente</Badge>
-
-    default:
-      return <Badge>Basico</Badge>
-  }
-}
-
 const Usuarios = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const [userToEdit, setUserToEdit] = useState<User>()
+
   const {
     data: users,
     isLoading,

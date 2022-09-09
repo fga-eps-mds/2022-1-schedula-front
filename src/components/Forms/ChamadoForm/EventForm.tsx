@@ -93,7 +93,7 @@ export const EventForm = ({ defaultValues, onSubmit }: EventFormProps) => {
           <Textarea {...register("description")} height="100%" />
         </Flex>
 
-        <Button type="submit" form="event-form" width="100%">
+        <Button type="submit" size="lg" form="event-form" width="100%">
           Agendar Serviço
         </Button>
       </Flex>

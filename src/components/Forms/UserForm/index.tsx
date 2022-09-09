@@ -92,7 +92,7 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
         />
 
         <GridItem colSpan={2}>
-          <Button type="submit" width="100%" isLoading={isSubmitting}>
+          <Button type="submit" size="lg" width="100%" isLoading={isSubmitting}>
             Registrar
           </Button>
         </GridItem>

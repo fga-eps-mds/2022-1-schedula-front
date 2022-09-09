@@ -26,7 +26,13 @@ export const CityForm = ({ defaultValues, onSubmit }: CityFormProps) => {
         placeholder="Nome"
       />
 
-      <Button type="submit" width="100%" mt={8} isLoading={isSubmitting}>
+      <Button
+        type="submit"
+        size="lg"
+        width="100%"
+        mt={8}
+        isLoading={isSubmitting}
+      >
         Registrar
       </Button>
     </form>

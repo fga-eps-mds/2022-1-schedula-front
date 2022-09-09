@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react"
-import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
@@ -13,9 +12,6 @@ import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
 
 const ListaCidades = () => {
-  const router = useRouter()
-  RedirectUnauthenticated(router)
-
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [cityToEdit, setCityToEdit] = useState<City>()

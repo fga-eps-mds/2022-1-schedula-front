@@ -35,11 +35,10 @@ export const CategoriaForm = ({
           {...register("description")}
           errors={errors?.description}
         />
+        <Button type="submit" size="lg" width="100%" isLoading={isSubmitting}>
+          Registrar
+        </Button>
       </VStack>
-
-      <Button type="submit" width="100%" isLoading={isSubmitting}>
-        Registrar
-      </Button>
     </form>
   )
 }
