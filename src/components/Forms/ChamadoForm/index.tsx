@@ -3,7 +3,6 @@ import { UseFieldArrayUpdate, useFormContext } from "react-hook-form"
 import { BsCalendar3 } from "react-icons/bs"
 import {
   Box,
-  Divider,
   Flex,
   Grid,
   HStack,
@@ -224,7 +223,7 @@ export const ChamadoForm = ({
         isOpen={isOpen}
         onClose={onClose}
       >
-        <VStack align="stretch" spacing={2} divider={<Divider />}>
+        <VStack align="stretch" spacing={3}>
           <EventInfo
             applicant_name={getValues("applicant_name")}
             applicant_phone={getValues("applicant_phone")}
