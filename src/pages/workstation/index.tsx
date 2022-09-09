@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import {
   Badge,
@@ -33,6 +34,7 @@ import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 const Workstation = () => {
   const router = useRouter()
   RedirectUnauthenticated(router)
+  const { data: session } = useSession()
   const {
     data: workstation,
     isLoading,
@@ -41,53 +43,62 @@ const Workstation = () => {
   } = useRequest<Workstation[]>(getWorkstations())
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-
   const [workstationToEdit, setWorkstationToEdit] = useState<Workstation>()
-  const { data: cidades } = useRequest<City[]>(getCities)
+  const { data: cidades, isLoading: isLoadingCidades } =
+    useRequest<City[]>(getCities)
 
   const handleDelete = useCallback(
     async ({ id }: Workstation) => {
-      const response = await request(deleteWorkstation(id))
+      if (session?.user.access === "admin") {
+        const response = await request(deleteWorkstation(id))
 
-      if (response.type === "success") {
-        toast.success("Posto de trabalho removido com sucesso!")
+        if (response.type === "success") {
+          toast.success("Cidade deletada com sucesso!")
 
-        const newWorkstation = workstation?.data.filter(
-          (workstation) => workstation.id !== id
-        )
+          const newWorkstation = workstation?.data.filter(
+            (workstation) => workstation.id !== id
+          )
 
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newWorkstation || ([] as Workstation[])
-            }
-          } as AxiosResponse<ApiResponse<Workstation[]>>,
-          { revalidate: false }
-        )
+          mutate(
+            {
+              data: {
+                error: null,
+                message: "",
+                data: newWorkstation || ([] as Workstation[])
+              }
+            } as AxiosResponse<ApiResponse<Workstation[]>>,
+            { revalidate: false }
+          )
 
-        return
+          return
+        }
+
+        toast.error("Erro ao deletar posto de trabalho!")
+      } else {
+        toast.error("Acesso Negado!")
       }
-
-      toast.error("Erro ao deletar posto de trabalho!")
     },
-    [workstation?.data, mutate]
+    [workstation?.data, mutate, session?.user.access]
   )
 
   const handleEdit = useCallback(
     (workstation: Workstation) => {
-      setWorkstationToEdit(workstation)
-      onOpen()
+      if (session?.user.access !== "basic") {
+        setWorkstationToEdit(workstation)
+        onOpen()
+      } else {
+        toast.error("Acesso Negado!")
+      }
     },
-    [onOpen]
+    [onOpen, session?.user.access]
   )
 
   const onSubmit = useCallback(
     async (data: CreateWorkstationPayload) => {
-      if (!data.phones) {
-        data.phones = []
-      }
+      if (session?.user.access !== "basic")
+        if (!data.phones) {
+          data.phones = []
+        }
 
       console.log("DATA: ", data)
 
@@ -192,12 +203,20 @@ const Workstation = () => {
         }
       >
         <Item.Actions item={item}>
-          <EditButton onClick={handleEdit} label={item.name} />
-          <DeleteButton onClick={handleDelete} label={item.name} />
+          {session?.user.access !== "basic" ? (
+            <></>
+          ) : (
+            <EditButton onClick={handleEdit} label={item.name} />
+          )}
+          {session?.user.access === "admin" ? (
+            <DeleteButton onClick={handleDelete} label={item.name} />
+          ) : (
+            <></>
+          )}
         </Item.Actions>
       </Item>
     ),
-    [cidades?.data, handleDelete, handleEdit]
+    [cidades?.data, handleDelete, handleEdit, session?.user.access]
   )
 
   return (
@@ -205,7 +224,11 @@ const Workstation = () => {
       <PageHeader title="Gerenciar Postos de Trabalho">
         <HStack spacing={2}>
           <RefreshButton refresh={mutate} />
-          <Button onClick={onOpen}>Novo Posto de Trabalho</Button>
+          {session?.user.access !== "basic" ? (
+            <></>
+          ) : (
+            <Button onClick={onOpen}>Novo Posto de Trabalho</Button>
+          )}
         </HStack>
       </PageHeader>
 
@@ -235,3 +258,7 @@ const Workstation = () => {
 }
 
 export default Workstation
+
+function setWorkstationToEdit(workstation: Workstation) {
+  throw new Error("Function not implemented.")
+}
