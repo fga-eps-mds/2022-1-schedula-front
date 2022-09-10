@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Box, Button, HStack, Tag, Text, useDisclosure } from "@chakra-ui/react"
 
@@ -23,6 +24,7 @@ import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
 
 const Chamados = () => {
   const router = useRouter()
+  const { data: session } = useSession()
 
   RedirectUnauthenticated(router)
   const {
@@ -52,6 +54,7 @@ const Chamados = () => {
   const onSubmit = useCallback(
     async (data: ChamadoFormValues) => {
       if (!chamadoToEdit?.id) return
+      if (session?.user.access == "basic") return
 
       const payload = formValuesToPayload(data)
       console.log("payload", payload)
@@ -122,7 +125,11 @@ const Chamados = () => {
         }
       >
         <Item.Actions item={item}>
-          <EditButton onClick={handleEdit} label="Chamado" />
+          {session?.user.access === "basic" ? (
+            <></>
+          ) : (
+            <EditButton onClick={handleEdit} label="Chamado" />
+          )}
         </Item.Actions>
       </Item>
     ),
