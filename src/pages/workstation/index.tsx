@@ -159,7 +159,13 @@ const Workstation = () => {
 
       toast.error(response.error?.message)
     },
-    [workstationToEdit, workstation?.data, mutate, onClose]
+    [
+      session?.user.access,
+      workstationToEdit,
+      workstation?.data,
+      mutate,
+      onClose
+    ]
   )
 
   const handleClose = useCallback(() => {
@@ -213,7 +219,7 @@ const Workstation = () => {
         }
       >
         <Item.Actions item={item}>
-          {session?.user.access !== "basic" ? (
+          {session?.user.access === "basic" ? (
             <></>
           ) : (
             <EditButton onClick={handleEdit} label={item.name} />
@@ -234,7 +240,7 @@ const Workstation = () => {
       <PageHeader title="Gerenciar Postos de Trabalho">
         <HStack spacing={2}>
           <RefreshButton refresh={mutate} />
-          {session?.user.access !== "basic" ? (
+          {session?.user.access === "basic" ? (
             <></>
           ) : (
             <Button onClick={onOpen}>Novo Posto de Trabalho</Button>
@@ -272,7 +278,3 @@ const Workstation = () => {
 }
 
 export default Workstation
-
-function setWorkstationToEdit(workstation: Workstation) {
-  throw new Error("Function not implemented.")
-}
