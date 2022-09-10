@@ -159,7 +159,13 @@ const Workstation = () => {
 
       toast.error(response.error?.message)
     },
-    [workstationToEdit, workstation?.data, mutate, onClose]
+    [
+      session?.user.access,
+      workstationToEdit,
+      workstation?.data,
+      mutate,
+      onClose
+    ]
   )
 
   const handleClose = useCallback(() => {
@@ -272,7 +278,3 @@ const Workstation = () => {
 }
 
 export default Workstation
-
-function setWorkstationToEdit(workstation: Workstation) {
-  throw new Error("Function not implemented.")
-}

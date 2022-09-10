@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 import { toast } from "react-toastify"
 import { Badge, Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
@@ -51,6 +52,7 @@ const Usuarios = () => {
   } = useRequest<User[]>(getUsers)
   const router = useRouter()
   RedirectUnauthenticated(router)
+  const { data: session } = useSession()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -58,45 +60,53 @@ const Usuarios = () => {
 
   const handleDelete = useCallback(
     async ({ username }: User) => {
-      const response = await request(deleteUser(username))
+      if (session?.user.access === "admin") {
+        const response = await request(deleteUser(username))
 
-      if (response.type === "success") {
-        toast.success("Usuário removido com sucesso!")
+        if (response.type === "success") {
+          toast.success("Usuário removido com sucesso!")
 
-        const newUsers = users?.data.filter(
-          (user) => user.username !== username
-        )
+          const newUsers = users?.data.filter(
+            (user) => user.username !== username
+          )
 
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newUsers || ([] as User[])
-            }
-          } as AxiosResponse<ApiResponse<User[]>>,
-          { revalidate: false }
-        )
+          mutate(
+            {
+              data: {
+                error: null,
+                message: "",
+                data: newUsers || ([] as User[])
+              }
+            } as AxiosResponse<ApiResponse<User[]>>,
+            { revalidate: false }
+          )
 
-        return
+          return
+        }
+
+        toast.error("Erro ao deletar Usuário!")
+      } else {
+        toast.error("Acesso Negado!")
       }
-
-      toast.error("Erro ao deletar Usuário!")
     },
-    [users?.data, mutate]
+    [session?.user.access, users?.data, mutate]
   )
 
   const handleEdit = useCallback(
     (user: User) => {
-      setUserToEdit(user)
-      onOpen()
+      if (session?.user.access !== "basic") {
+        setUserToEdit(user)
+        onOpen()
+      } else {
+        toast.error("Acesso Negado!")
+      }
     },
-    [onOpen]
+    [onOpen, session?.user.access]
   )
 
   const onSubmit = useCallback(
     async (data: RegisterUserPayload) => {
-      console.log("DATA: ", data)
+      if (session?.user.access !== "basic") console.log("DATA: ", data)
 
       const response = await request<{ data: User }>(
         userToEdit ? updateUser(userToEdit.username)(data) : createUser(data)
@@ -106,7 +116,6 @@ const Usuarios = () => {
         toast.success(
           `Usuário ${userToEdit ? "editado" : "criado"} com sucesso!`
         )
-
         const newUsers = userToEdit
           ? users?.data.map((user) =>
               user.username === userToEdit?.username
@@ -134,7 +143,7 @@ const Usuarios = () => {
 
       toast.error(response.error?.message)
     },
-    [userToEdit, users?.data, mutate, onClose]
+    [session?.user.access, userToEdit, users?.data, mutate, onClose]
   )
 
   const handleClose = useCallback(() => {
@@ -169,7 +178,11 @@ const Usuarios = () => {
       <PageHeader title="Gerenciar Usuários">
         <HStack spacing={2}>
           <RefreshButton refresh={mutate} />
-          <Button onClick={onOpen}>Novo Usuário</Button>
+          {session?.user.access !== "basic" ? (
+            <></>
+          ) : (
+            <Button onClick={onOpen}>Novo Usuário</Button>
+          )}
         </HStack>
       </PageHeader>
 
@@ -178,7 +191,6 @@ const Usuarios = () => {
         render={renderUserItem}
         isLoading={isLoading || isValidating}
       />
-
       <Modal
         title={userToEdit ? "Editar Usuário" : "Novo Usuário"}
         isOpen={isOpen}
