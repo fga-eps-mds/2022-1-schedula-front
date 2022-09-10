@@ -133,7 +133,7 @@ const Chamados = () => {
         </Item.Actions>
       </Item>
     ),
-    [handleEdit]
+    [handleEdit, session?.user.access]
   )
 
   return (
