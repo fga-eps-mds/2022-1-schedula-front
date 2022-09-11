@@ -88,7 +88,17 @@ const Workstation = () => {
       setWorkstationToEdit(undefined)
       onClose()
     },
+
+    [
+      session?.user.access,
+      workstationToEdit,
+      workstation?.data,
+      mutate,
+      onClose
+    ]
+
     [onClose, refresh, workstationToEdit, workstations?.data]
+
   )
 
   const handleClose = useCallback(() => {
