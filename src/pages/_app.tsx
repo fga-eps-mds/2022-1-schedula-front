@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app"
-import { Session } from "next-auth"
+import type { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 import NextNprogress from "nextjs-progressbar"
 import { Slide, ToastContainer } from "react-toastify"
@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css"
 import "@styles/react-datepicker.scss"
 
 type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout
+  Component: NextPageWithProps
   pageProps: { session: Session; pageProps: unknown }
 }
 
@@ -49,6 +49,7 @@ function MyApp({
         <ToastContainer
           position="bottom-right"
           hideProgressBar
+          autoClose={3000}
           transition={Slide}
         />
       </ChakraProvider>

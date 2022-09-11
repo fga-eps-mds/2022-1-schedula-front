@@ -1,4 +1,4 @@
-import { ChamadoPriority, ChamadoStatus } from "@constants/Chamados"
+import { CHAMADO_PRIORITY, CHAMADO_STATUS } from "@constants/Chamados"
 
 export const formValuesToPayload = (
   values: ChamadoFormValues
@@ -41,11 +41,11 @@ export const chamadoToFormValues = (chamado: Chamado): ChamadoFormValues => ({
     ],
     request_status: {
       value: problem.request_status,
-      label: ChamadoStatus[problem.request_status]
+      label: CHAMADO_STATUS[problem.request_status]
     },
     priority: {
       value: problem.priority,
-      label: ChamadoPriority[problem.priority]
+      label: CHAMADO_PRIORITY[problem.priority]
     }
   }))
 })

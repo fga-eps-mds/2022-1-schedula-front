@@ -89,10 +89,7 @@ export const ServicesStatus = ({ isOpen, onClose }: ServicesStatusProps) => {
 
   return (
     <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
-      <DrawerOverlay
-        bg="blackAlpha.400"
-        backdropFilter="blur(8px) hue-rotate(10deg)"
-      />
+      <DrawerOverlay bg="blackAlpha.500" backdropFilter="blur(8px)" />
       <DrawerContent>
         <DrawerHeader borderBottomWidth="1px">Status dos Serviços</DrawerHeader>
         <DrawerCloseButton />

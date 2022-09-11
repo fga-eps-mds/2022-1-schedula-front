@@ -1,11 +1,11 @@
-type Accesses = "basic" | "manager" | "admin"
+type Access = "basic" | "manager" | "admin"
 
 interface User {
   username: string
   email: string
   name: string
   active: boolean
-  acess: Accesses // todo: fix on backend
+  acess: Access // NOTE: fix 'acess' typo on backend
   job_role: string
 }
 
@@ -20,7 +20,7 @@ interface RegisterUserPayload {
   username: string
   email: string
   name: string
-  acess: Accesses
+  acess: Access
   job_role: string
   password: string
   confirmPassword: string

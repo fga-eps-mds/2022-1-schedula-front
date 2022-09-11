@@ -6,6 +6,8 @@ api.defaults.withCredentials = true
 
 export const errorResponseHandler = (error: any) => {
   if (error?.response) {
+    console.log("ERROR RESPONSE: ", error?.response?.data)
+
     if (typeof error?.response?.data === "string") {
       return Promise.reject(new Error(error.response.data))
     }
@@ -34,8 +36,6 @@ export const errorResponseHandler = (error: any) => {
 
   return Promise.reject(error)
 }
-
-// api.defaults.withCredentials = true;
 
 api.interceptors.response.use((response) => response, errorResponseHandler)
 

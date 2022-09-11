@@ -63,22 +63,18 @@ export const customComponents: SelectComponentsConfig<
   boolean,
   GroupBase<unknown>
 > = {
-  Option: ({ children, ...props }) => {
-    console.log("Option", props)
-
-    return (
-      <chakraComponents.Option {...props}>
-        <Flex alignItems="center" gap={2}>
-          {props.isMulti && (
-            <Checkbox
-              isChecked={props.isSelected}
-              colorScheme="orange"
-              size="lg"
-            />
-          )}
-          {children}
-        </Flex>
-      </chakraComponents.Option>
-    )
-  }
+  Option: ({ children, ...props }) => (
+    <chakraComponents.Option {...props}>
+      <Flex alignItems="center" gap={2}>
+        {props.isMulti && (
+          <Checkbox
+            isChecked={props.isSelected}
+            colorScheme="orange"
+            size="lg"
+          />
+        )}
+        {children}
+      </Flex>
+    </chakraComponents.Option>
+  )
 }

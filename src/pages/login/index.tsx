@@ -1,9 +1,10 @@
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { Box, Button, Center, Input, Text } from "@chakra-ui/react"
 
-const Login: NextPageWithLayout = () => {
+const Login: NextPageWithProps = () => {
   const router = useRouter()
   const {
     register,
@@ -13,14 +14,18 @@ const Login: NextPageWithLayout = () => {
 
   const onSubmit: SubmitHandler<CredentialUser> = async (data) => {
     const response = await signIn("credentials", {
-      username: data.username,
-      password: data.password,
-      redirect: true
+      ...data,
+      redirect: false
     })
 
     if (!response?.error) {
-      await router.push("/chamados")
+      router.push((router?.query?.callbackUrl as string) || "/")
+
+      return
     }
+
+    console.log("Sign in response: ", response)
+    toast.error(response.error)
   }
 
   return (

@@ -5,8 +5,8 @@ const RegionalService = Services.localidades.create("/regional")
 
 export const getWorkstations = WorkstationService.get
 
-export const getWorkstationById = (workstation_id: number) =>
-  WorkstationService.get({ params: { workstation_id } })
+export const getWorkstationById = (id: number) =>
+  WorkstationService.get({ params: { id } })
 
 export const createWorkstation =
   WorkstationService.post<CreateWorkstationPayload>
