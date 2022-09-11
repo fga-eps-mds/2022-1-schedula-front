@@ -11,125 +11,96 @@ import {
 } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
-import { DeleteButton } from "@components/ActionButtons/DeleteButton"
-import { EditButton } from "@components/ActionButtons/EditButton"
-import { CategoriaForm as ProblemTypeForm } from "@components/Forms/CategoriaForm"
+import { ProblemTypeItem } from "@components/Items/ProblemTypeItem"
 import { ListView } from "@components/List"
-import { Item } from "@components/ListItem"
-import { Modal } from "@components/Modal/Modal"
+import { ProblemTypeModal } from "@components/Modals/ProblemTypeModal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
 import { getCategoryById } from "@services/Categorias"
-import {
-  createProblemType,
-  deleteProblemType,
-  getProblemTypes,
-  updateProblemType
-} from "@services/Problemas"
-import { request } from "@services/request"
-import { RedirectUnauthenticated } from "@utils/redirectUnautheticated"
+import { getProblemTypes } from "@services/Problemas"
 
 const ListaProblemas = () => {
   const router = useRouter()
-  RedirectUnauthenticated(router)
+
   const category_id = Number(router.query?.id)
 
   const { data: categoria, isLoading: isLoadingCategory } =
     useRequest<Category>(category_id ? getCategoryById(category_id) : null)
 
   const {
-    data: problemas,
+    data: problemTypes,
     isLoading,
     isValidating,
     mutate
   } = useRequest<TipoProblema[]>(getProblemTypes(category_id))
 
+  const refresh = useCallback(
+    (data?: TipoProblema[]) =>
+      mutate(
+        {
+          data: {
+            error: null,
+            message: "",
+            data: data ?? []
+          }
+        } as AxiosResponse<ApiResponse<TipoProblema[]>>,
+        { revalidate: !data }
+      ),
+    [mutate]
+  )
+
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [problemToEdit, setProblemToEdit] = useState<TipoProblema>()
 
-  const handleDelete = useCallback(
-    async ({ id }: TipoProblema) => {
-      const response = await request(deleteProblemType(id))
+  const onDelete = useCallback(
+    (result: Result<ApiResponse<null>>, { id }: TipoProblema) => {
+      if (result.type === "success") {
+        toast.success(result.value?.message)
 
-      if (response.type === "success") {
-        toast.success("Tipo de problema deletado com sucesso!")
-
-        const newProblemas = problemas?.data.filter(
-          (problema) => problema.id !== id
+        const newProblemTypes = problemTypes?.data.filter(
+          (problem) => problem.id !== id
         )
-
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newProblemas || ([] as TipoProblema[])
-            }
-          } as AxiosResponse<ApiResponse<TipoProblema[]>>,
-          { revalidate: false }
-        )
+        refresh(newProblemTypes)
 
         return
       }
 
-      toast.error("Erro ao deletar Tipo de Problema!")
+      toast.error(result.error?.message)
     },
-    [problemas?.data, mutate]
+    [problemTypes?.data, refresh]
   )
 
-  const handleEdit = useCallback(
-    (categoria: TipoProblema) => {
-      setProblemToEdit(categoria)
+  const onEdit = useCallback(
+    (problemType: TipoProblema) => {
+      setProblemToEdit(problemType)
       onOpen()
     },
     [onOpen]
   )
 
   const onSubmit = useCallback(
-    async (data: ProblemTypePayload) => {
-      console.log("DATA: ", data)
-
-      const response = await request<TipoProblema>(
-        problemToEdit
-          ? updateProblemType(problemToEdit.id)(data)
-          : createProblemType({ ...data, category_id })
-      )
-
-      if (response.type === "success") {
-        toast.success(
-          `Tipo de Problema ${
-            problemToEdit ? "editado" : "criado"
-          } com sucesso!`
-        )
-
-        const newProblemas = problemToEdit
-          ? problemas?.data.map((problema) =>
-              problema.id === problemToEdit?.id ? response.value.data : problema
-            )
-          : [...(problemas?.data || []), response.value?.data]
-
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newProblemas
-            }
-          } as AxiosResponse<ApiResponse<TipoProblema[]>>,
-          { revalidate: false }
-        )
-
-        setProblemToEdit(undefined)
-        onClose()
+    (result: Result<ApiResponse<TipoProblema>>) => {
+      if (result.type === "error") {
+        toast.error(result.error?.message)
 
         return
       }
 
-      toast.error("Erro ao criar Tipo de Problema!")
+      toast.success(result.value?.message)
+
+      const newProblemTypes = problemToEdit
+        ? problemTypes?.data.map((problem) =>
+            problem.id === problemToEdit?.id ? result.value.data : problem
+          )
+        : [...(problemTypes?.data || []), result.value?.data]
+
+      refresh(newProblemTypes)
+      setProblemToEdit(undefined)
+      onClose()
     },
-    [problemToEdit, category_id, problemas?.data, mutate, onClose]
+    [onClose, problemToEdit, problemTypes?.data, refresh]
   )
 
   const handleClose = useCallback(() => {
@@ -137,20 +108,15 @@ const ListaProblemas = () => {
     onClose()
   }, [onClose])
 
-  const renderProblemaItem = useCallback(
-    (item: Category) => (
-      <Item title={item?.name} description={item?.description}>
-        <Item.Actions item={item}>
-          <EditButton onClick={handleEdit} label={item.name} />
-          <DeleteButton
-            onClick={handleDelete}
-            label={item.name}
-            aria-label={`Apagar ${item.name}`}
-          />
-        </Item.Actions>
-      </Item>
+  const renderProblemTypeItem = useCallback(
+    (problemType: TipoProblema) => (
+      <ProblemTypeItem
+        problemType={problemType}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
     ),
-    [handleDelete, handleEdit]
+    [onDelete, onEdit]
   )
 
   return (
@@ -178,24 +144,18 @@ const ListaProblemas = () => {
       </PageHeader>
 
       <ListView<TipoProblema>
-        items={problemas?.data}
-        render={renderProblemaItem}
+        items={problemTypes?.data}
+        render={renderProblemTypeItem}
         isLoading={isLoading || isValidating}
       />
 
-      <Modal
-        title={
-          problemToEdit ? "Editar Tipo de Problema" : "Novo Tipo de Problema"
-        }
+      <ProblemTypeModal
         isOpen={isOpen}
         onClose={handleClose}
-      >
-        <ProblemTypeForm
-          // eslint-disable-next-line react-perf/jsx-no-new-object-as-prop -- ignore
-          defaultValues={{ ...problemToEdit, category_id } as TipoProblema}
-          onSubmit={onSubmit}
-        />
-      </Modal>
+        problemType={problemToEdit}
+        categoryId={category_id}
+        onSubmit={onSubmit}
+      />
     </>
   )
 }

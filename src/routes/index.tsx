@@ -3,6 +3,7 @@ import { BsSignpost2, BsTags, BsTelephonePlus } from "react-icons/bs"
 import { FaUsersCog } from "react-icons/fa"
 import { FiMapPin } from "react-icons/fi"
 import { MdOutlineViewAgenda } from "react-icons/md"
+import { RiCalendarEventLine } from "react-icons/ri"
 
 export interface IRoute {
   label: string
@@ -20,6 +21,11 @@ export const routes: IRoute[] = [
     label: "Chamados",
     pathname: "/chamados",
     icon: MdOutlineViewAgenda
+  },
+  {
+    label: "Eventos",
+    pathname: "/eventos",
+    icon: RiCalendarEventLine
   },
   {
     label: "Registrar Chamado",
