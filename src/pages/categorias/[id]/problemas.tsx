@@ -11,16 +11,18 @@ import {
 } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { RefreshButton } from "@components/ActionButtons/RefreshButton"
 import { ProblemTypeItem } from "@components/Items/ProblemTypeItem"
 import { ListView } from "@components/List"
 import { ProblemTypeModal } from "@components/Modals/ProblemTypeModal"
 import { PageHeader } from "@components/PageHeader"
-import { RefreshButton } from "@components/RefreshButton"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCategoryById } from "@services/Categorias"
 import { getProblemTypes } from "@services/Problemas"
 
 const ListaProblemas = () => {
+  const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
   const router = useRouter()
 
   const category_id = Number(router.query?.id)
@@ -139,7 +141,9 @@ const ListaProblemas = () => {
       >
         <HStack spacing={2}>
           <RefreshButton refresh={mutate} />
-          <Button onClick={onOpen}>Novo Tipo de Problema</Button>
+          {isCreateAuthorized && (
+            <Button onClick={onOpen}>Novo Tipo de Problema</Button>
+          )}
         </HStack>
       </PageHeader>
 

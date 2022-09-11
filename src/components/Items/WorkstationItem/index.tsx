@@ -1,9 +1,10 @@
-import { useCallback } from "react"
+import { ReactElement, useCallback } from "react"
 import { Badge, Flex, HStack, Skeleton, Text, Tooltip } from "@chakra-ui/react"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCityById } from "@services/Cidades"
 import { request } from "@services/request"
@@ -23,6 +24,9 @@ export const WorkstationItem = ({
   onEdit,
   onDelete
 }: WorkstationItemProps) => {
+  const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
+  const { isAuthorized: isDeleteAuthorized } = useAuthorization()
+
   const { data: city, isLoading: isLoadingCity } = useRequest<City>(
     workstation ? getCityById(workstation?.city_id) : null
   )
@@ -83,8 +87,16 @@ export const WorkstationItem = ({
       }
     >
       <Item.Actions item={workstation}>
-        <EditButton onClick={onEdit} label={workstation?.name} />
-        <DeleteButton onClick={handleDelete} label={workstation?.name} />
+        {
+          (isEditAuthorized && (
+            <EditButton onClick={onEdit} label={workstation?.name} />
+          )) as ReactElement
+        }
+        {
+          (isDeleteAuthorized && (
+            <DeleteButton onClick={handleDelete} label={workstation?.name} />
+          )) as ReactElement
+        }
       </Item.Actions>
     </Item>
   )

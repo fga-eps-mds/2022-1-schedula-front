@@ -3,15 +3,18 @@ import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { RefreshButton } from "@components/ActionButtons/RefreshButton"
 import { CityItem } from "@components/Items/CityItem"
 import { ListView } from "@components/List"
 import { CityModal } from "@components/Modals/CityModal"
 import { PageHeader } from "@components/PageHeader"
-import { RefreshButton } from "@components/RefreshButton"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
 
 const ListaCidades = () => {
+  const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
+
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [cityToEdit, setCityToEdit] = useState<City>()
@@ -102,7 +105,7 @@ const ListaCidades = () => {
       <PageHeader title="Cidades Cadastradas">
         <HStack spacing={2}>
           <RefreshButton refresh={mutate} />
-          <Button onClick={onOpen}>Nova Cidade</Button>
+          {isCreateAuthorized && <Button onClick={onOpen}>Nova Cidade</Button>}
         </HStack>
       </PageHeader>
 

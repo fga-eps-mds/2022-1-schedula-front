@@ -3,15 +3,20 @@ import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { RefreshButton } from "@components/ActionButtons/RefreshButton"
 import { UserItem } from "@components/Items/UserItem"
 import { ListView } from "@components/List"
 import { UserModal } from "@components/Modals/UserModal"
 import { PageHeader } from "@components/PageHeader"
-import { RefreshButton } from "@components/RefreshButton"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getUsers } from "@services/Usuarios"
 
 const Usuarios = () => {
+  const { isAuthorized: isCreateAuthorized, status } = useAuthorization([
+    "manager"
+  ])
+
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [userToEdit, setUserToEdit] = useState<User>()
@@ -104,7 +109,7 @@ const Usuarios = () => {
       <PageHeader title="Gerenciar Usuários">
         <HStack spacing={2}>
           <RefreshButton refresh={mutate} />
-          <Button onClick={onOpen}>Novo Usuário</Button>
+          {isCreateAuthorized && <Button onClick={onOpen}>Novo Usuário</Button>}
         </HStack>
       </PageHeader>
 

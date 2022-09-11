@@ -14,8 +14,8 @@ interface CityItemProps {
 }
 
 export const CityItem = ({ city, onEdit, onDelete }: CityItemProps) => {
-  const isEditAuthorized = useAuthorization(["manager"])
-  const isDeleteAuthorized = useAuthorization()
+  const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
+  const { isAuthorized: isDeleteAuthorized } = useAuthorization()
 
   const handleDelete = useCallback(
     async ({ id }: City) => {

@@ -1,14 +1,14 @@
 import { useMemo } from "react"
 import { useSession } from "next-auth/react"
 
-export function useAuthorization(access?: Access[]): boolean {
-  const { data: session } = useSession()
+export function useAuthorization(access?: Access[]) {
+  const { data: session, status } = useSession()
 
   const isAuthorized = useMemo(() => {
     if (session?.user?.access === "admin") return true
 
-    return access?.includes(session?.user?.access) || false
+    return access?.includes(session?.user?.access)
   }, [access, session])
 
-  return isAuthorized
+  return { isAuthorized, status }
 }

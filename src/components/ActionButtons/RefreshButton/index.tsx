@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react"
 import { FaSyncAlt } from "react-icons/fa"
-import { IconButton, Tooltip } from "@chakra-ui/react"
+
+import { ActionButton } from "@components/ActionButtons"
 
 interface RefreshButtonProps {
   refresh: () => Promise<unknown>
@@ -15,20 +16,12 @@ export const RefreshButton = ({ refresh }: RefreshButtonProps) => {
   }, [refresh])
 
   return (
-    <Tooltip
+    <ActionButton
+      icon={<FaSyncAlt />}
       label="Atualizar Dados"
-      placement="top"
-      bg="blackAlpha.600"
-      color="white"
-      openDelay={250}
-    >
-      <IconButton
-        icon={<FaSyncAlt />}
-        aria-label="Atualizar Dados"
-        variant="outline"
-        onClick={handleRefresh}
-        disabled={isLoading}
-      />
-    </Tooltip>
+      onClick={handleRefresh}
+      isLoading={isLoading}
+      variant="outline"
+    />
   )
 }

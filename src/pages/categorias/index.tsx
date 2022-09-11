@@ -3,15 +3,18 @@ import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { RefreshButton } from "@components/ActionButtons/RefreshButton"
 import { CategoryItem } from "@components/Items/CategoryItem"
 import { ListView } from "@components/List"
 import { CategoryModal } from "@components/Modals/CategoryModal"
 import { PageHeader } from "@components/PageHeader"
-import { RefreshButton } from "@components/RefreshButton"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCategories } from "@services/Categorias"
 
 const ListaCategoria = () => {
+  const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
+
   const {
     data: categorias,
     isLoading,
@@ -106,7 +109,9 @@ const ListaCategoria = () => {
       <PageHeader title="Categorias de Problemas">
         <HStack spacing={2}>
           <RefreshButton refresh={refreshCategories} />
-          <Button onClick={onOpen}>Nova Categoria</Button>
+          {isCreateAuthorized && (
+            <Button onClick={onOpen}>Nova Categoria</Button>
+          )}
         </HStack>
       </PageHeader>
 

@@ -28,6 +28,7 @@ import { Input } from "@components/FormFields/Input"
 import { ChamadoForm } from "@components/Forms/ChamadoForm"
 import { chamadosDefaultValues } from "@components/Forms/ChamadoForm/helpers"
 import { WorkstationModal } from "@components/Modals/WorkstationModal"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
 import { getWorkstations } from "@services/Workstation"
@@ -43,6 +44,9 @@ export const ChamadoFormWrapper = ({
   defaultValues
 }: ChamadoFormProps) => {
   const { data: session } = useSession()
+  const { isAuthorized: isEditWorkstationAuthorized } = useAuthorization([
+    "manager"
+  ])
 
   const isEditing = Boolean(defaultValues)
 
@@ -234,7 +238,9 @@ export const ChamadoFormWrapper = ({
             <EditButton
               label="Posto de Trabalho"
               onClick={openWorkstationModal}
-              disabled={!watch("workstation_id")}
+              disabled={
+                !watch("workstation_id") || !isEditWorkstationAuthorized
+              }
               size="sm"
               variant="ghost"
               position="absolute"

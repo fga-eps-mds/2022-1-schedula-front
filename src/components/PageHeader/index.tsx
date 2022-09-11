@@ -19,10 +19,7 @@ export const PageHeader = memo(
         <Box>{children}</Box>
       </Flex>
     )
-  },
-  (prevProps, nextProps) =>
-    prevProps.title === nextProps.title &&
-    prevProps.subtitle === nextProps.subtitle
+  }
 )
 
 PageHeader.displayName = "PageHeader"

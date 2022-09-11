@@ -1,8 +1,9 @@
-import { useCallback } from "react"
+import { ReactElement, useCallback } from "react"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { deleteProblemType } from "@services/Problemas"
 import { request } from "@services/request"
 
@@ -20,6 +21,9 @@ export const ProblemTypeItem = ({
   onEdit,
   onDelete
 }: ProblemTypeItemProps) => {
+  const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
+  const { isAuthorized: isDeleteAuthorized } = useAuthorization()
+
   const handleDelete = useCallback(
     async ({ id }: TipoProblema) => {
       const response = await request<null>(deleteProblemType(id))
@@ -35,8 +39,16 @@ export const ProblemTypeItem = ({
       description={problemType?.description}
     >
       <Item.Actions item={problemType}>
-        <EditButton onClick={onEdit} label={problemType.name} />
-        <DeleteButton onClick={handleDelete} label={problemType.name} />
+        {
+          (isEditAuthorized && (
+            <EditButton onClick={onEdit} label={problemType.name} />
+          )) as ReactElement
+        }
+        {
+          (isDeleteAuthorized && (
+            <DeleteButton onClick={handleDelete} label={problemType.name} />
+          )) as ReactElement
+        }
       </Item.Actions>
     </Item>
   )

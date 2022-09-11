@@ -47,11 +47,11 @@ export const chakraStyles: ChakraStylesConfig = {
     // Keyboard navigation highlight
     ...(state.isFocused &&
       (!state.isSelected || state.isMulti) && {
-        background: "blackAlpha.400"
+        background: "whiteAlpha.300"
       }),
 
     _hover: {
-      background: "blackAlpha.500"
+      background: state.isSelected ? "primary" : "whiteAlpha.400"
     }
   })
 }

@@ -3,17 +3,17 @@ import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
+import { RefreshButton } from "@components/ActionButtons/RefreshButton"
 import { WorkstationItem } from "@components/Items/WorkstationItem"
 import { ListView } from "@components/List"
 import { WorkstationModal } from "@components/Modals/WorkstationModal"
 import { PageHeader } from "@components/PageHeader"
-import { RefreshButton } from "@components/RefreshButton"
 import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getWorkstations } from "@services/Workstation"
 
 const Workstation = () => {
-  const isCreateAuthorized = useAuthorization(["manager"])
+  const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
 
   const {
     data: workstations,

@@ -4,11 +4,11 @@ import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 
+import { RefreshButton } from "@components/ActionButtons/RefreshButton"
 import { ChamadoItem } from "@components/Items/ChamadoItem"
 import { ListView } from "@components/List"
 import { ChamadoModal } from "@components/Modals/ChamadoModal"
 import { PageHeader } from "@components/PageHeader"
-import { RefreshButton } from "@components/RefreshButton"
 import { useRequest } from "@hooks/useRequest"
 import { getChamados } from "@services/Chamados"
 

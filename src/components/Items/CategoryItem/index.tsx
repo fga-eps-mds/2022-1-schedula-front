@@ -1,10 +1,11 @@
-import { useCallback } from "react"
+import { ReactElement, useCallback } from "react"
 import { useRouter } from "next/router"
 
 import { AddButton } from "@components/ActionButtons/AddButton"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { deleteCategory } from "@services/Categorias"
 import { request } from "@services/request"
 
@@ -19,6 +20,9 @@ export const CategoryItem = ({
   onEdit,
   onDelete
 }: CategoryItemProps) => {
+  const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
+  const { isAuthorized: isDeleteAuthorized } = useAuthorization()
+
   const router = useRouter()
 
   const handleAddProblem = useCallback(
@@ -45,8 +49,16 @@ export const CategoryItem = ({
           label="Tipos de Problema"
           aria-label="Add"
         />
-        <EditButton onClick={onEdit} label={category?.name} />
-        <DeleteButton onClick={handleDelete} label={category?.name} />
+        {
+          (isEditAuthorized && (
+            <EditButton onClick={onEdit} label={category?.name} />
+          )) as ReactElement
+        }
+        {
+          (isDeleteAuthorized && (
+            <DeleteButton onClick={handleDelete} label={category?.name} />
+          )) as ReactElement
+        }
       </Item.Actions>
     </Item>
   )
