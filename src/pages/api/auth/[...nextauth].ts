@@ -42,8 +42,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             }
 
             if (response.data.error === null) {
-              console.log(token)
-
               const user = jwt.verify(
                 token as string,
                 process.env.SECRET as string

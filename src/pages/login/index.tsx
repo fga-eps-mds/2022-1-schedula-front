@@ -15,7 +15,7 @@ const Login: NextPageWithLayout = () => {
     const response = await signIn("credentials", {
       username: data.username,
       password: data.password,
-      redirect: true
+      callbackUrl: "/chamados"
     })
 
     if (!response?.error) {
