@@ -34,7 +34,8 @@ export const Footnote = memo(() => {
         })
       : null,
     {
-      revalidateIfStale: false
+      revalidateIfStale: false,
+      revalidateOnFocus: false
     }
   )
 

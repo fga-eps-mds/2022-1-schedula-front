@@ -153,6 +153,7 @@ const ListaProblemas = () => {
         isOpen={isOpen}
         onClose={handleClose}
         problemType={problemToEdit}
+        categoryId={category_id}
         onSubmit={onSubmit}
       />
     </>

@@ -23,11 +23,13 @@ import { getSelectOptions } from "@utils/getSelectOptions"
 
 export interface WorkstationFormProps {
   defaultValues?: Workstation | undefined
-  onSubmit: SubmitHandler<CreateWorkstationPayload>
+  onSubmit: SubmitHandler<WorkstationFormValues>
 }
 
-type FormValues = CreateWorkstationPayload & {
+export type WorkstationFormValues = CreateWorkstationPayload & {
   phones: { number: string }[]
+  city_id: SelectOption<number>
+  regional_id: SelectOption<number>
 }
 
 export const WorkstationForm = ({
@@ -58,7 +60,7 @@ export const WorkstationForm = ({
     watch,
     resetField,
     formState: { errors, isSubmitting }
-  } = useForm<FormValues>({
+  } = useForm<WorkstationFormValues>({
     defaultValues: {
       ...defaultValues,
       phones: defaultValues?.phones?.map((phone) => ({ number: phone }))
@@ -84,8 +86,7 @@ export const WorkstationForm = ({
           }
         })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
-  }, [defaultValues])
+  }, [defaultValues, regionais, resetField])
 
   useEffect(() => {
     // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE NAME OF THE CITY/WORKSTATION
@@ -103,8 +104,7 @@ export const WorkstationForm = ({
           }
         })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
-  }, [defaultValues])
+  }, [cidades, defaultValues, resetField])
 
   const { fields, append, remove } = useFieldArray({
     control,

@@ -8,6 +8,7 @@ import { request } from "@services/request"
 
 interface ProblemModalProps extends Partial<ModalProps> {
   problemType?: TipoProblema | undefined
+  categoryId: number
   onSubmit: (result: Result<ApiResponse<TipoProblema>>) => void
   isOpen: boolean
   onClose: () => void
@@ -16,6 +17,7 @@ interface ProblemModalProps extends Partial<ModalProps> {
 export const ProblemTypeModal = ({
   onClose,
   problemType,
+  categoryId,
   onSubmit,
   ...props
 }: ProblemModalProps) => {
@@ -26,7 +28,7 @@ export const ProblemTypeModal = ({
       const response = await request<TipoProblema>(
         problemType
           ? updateProblemType(problemType.id)(data)
-          : createProblemType(data)
+          : createProblemType({ ...data, category_id: categoryId })
       )
 
       onSubmit?.(response)
@@ -38,7 +40,7 @@ export const ProblemTypeModal = ({
         onClose?.()
       }
     },
-    [problemType, onClose, onSubmit]
+    [problemType, categoryId, onSubmit, onClose]
   )
 
   return (

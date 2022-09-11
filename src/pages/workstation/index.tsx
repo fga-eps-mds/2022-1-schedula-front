@@ -8,10 +8,13 @@ import { ListView } from "@components/List"
 import { WorkstationModal } from "@components/Modals/WorkstationModal"
 import { PageHeader } from "@components/PageHeader"
 import { RefreshButton } from "@components/RefreshButton"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getWorkstations } from "@services/Workstation"
 
 const Workstation = () => {
+  const isCreateAuthorized = useAuthorization(["manager"])
+
   const {
     data: workstations,
     isLoading,
@@ -105,9 +108,7 @@ const Workstation = () => {
       <PageHeader title="Gerenciar Postos de Trabalho">
         <HStack spacing={2}>
           <RefreshButton refresh={mutate} />
-          {session?.user.access !== "basic" ? (
-            <></>
-          ) : (
+          {isCreateAuthorized && (
             <Button onClick={onOpen}>Novo Posto de Trabalho</Button>
           )}
         </HStack>

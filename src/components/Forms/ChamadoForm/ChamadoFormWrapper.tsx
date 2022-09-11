@@ -1,4 +1,5 @@
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useMemo } from "react"
+import { useSession } from "next-auth/react"
 import {
   FormProvider,
   SubmitHandler,
@@ -41,14 +42,19 @@ export const ChamadoFormWrapper = ({
   onSubmit,
   defaultValues
 }: ChamadoFormProps) => {
+  const { data: session } = useSession()
+
   const isEditing = Boolean(defaultValues)
 
   const methods = useForm<ChamadoFormValues>({
-    defaultValues: {
-      ...chamadosDefaultValues,
-      ...defaultValues,
-      attendant_name: /*user?.name*/ "Teste"
-    },
+    defaultValues: useMemo(
+      () => ({
+        ...chamadosDefaultValues,
+        ...defaultValues,
+        attendant_name: session?.user?.name
+      }),
+      [defaultValues, session?.user?.name]
+    ),
     mode: "onChange"
   })
 
@@ -73,6 +79,13 @@ export const ChamadoFormWrapper = ({
     isOpen: isWorkstationModalOpen,
     onClose: closeWorkstationModal
   } = useDisclosure()
+
+  useEffect(() => {
+    resetField("attendant_name", {
+      defaultValue: session?.user?.name
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- ignore resetField
+  }, [session?.user])
 
   useEffect(() => {
     // Register with validation, otherwise its possible to send form without 'problems' field

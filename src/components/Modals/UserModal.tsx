@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { ModalProps } from "@chakra-ui/react"
 
-import { UserForm } from "@components/Forms/UserForm"
+import { UserForm, UserFormValues } from "@components/Forms/UserForm"
 import { Modal } from "@components/Modal"
 import { request } from "@services/request"
 import { createUser, updateUser } from "@services/Usuarios"
@@ -20,11 +20,16 @@ export const UserModal = ({
   ...props
 }: UserModalProps) => {
   const handleSubmit = useCallback(
-    async (data: RegisterUserPayload) => {
+    async (data: UserFormValues) => {
       console.log("DATA: ", data)
 
+      const payload: RegisterUserPayload = {
+        ...data,
+        acess: data?.acess?.value
+      }
+
       const response = await request<User>(
-        user ? updateUser(user.username)(data) : createUser(data)
+        user ? updateUser(user.username)(payload) : createUser(payload)
       )
 
       onSubmit?.(response)

@@ -7,7 +7,11 @@ import { USER_ACCESS } from "@constants/User"
 
 interface UserFormProps {
   defaultValues?: User | undefined
-  onSubmit: (data: RegisterUserPayload) => void
+  onSubmit: (data: UserFormValues) => void
+}
+
+export type UserFormValues = Omit<RegisterUserPayload, "acess"> & {
+  acess: SelectOption<Access>
 }
 
 export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
@@ -19,9 +23,13 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
     handleSubmit,
     watch,
     formState: { errors, isSubmitting }
-  } = useForm<RegisterUserPayload>({
+  } = useForm<UserFormValues>({
     defaultValues: {
       ...defaultValues,
+      acess: defaultValues?.acess && {
+        label: USER_ACCESS[defaultValues.acess],
+        value: defaultValues.acess
+      },
       password: ""
     }
   })
