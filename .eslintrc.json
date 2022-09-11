@@ -158,7 +158,7 @@
       }
     },
     {
-      "files": ["src/pages/**/*"],
+      "files": ["src/pages/**/*", "middleware.ts"],
       "rules": { "import/no-default-export": "off" }
     }
   ]

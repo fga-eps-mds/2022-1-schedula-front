@@ -9,6 +9,18 @@ type Releases = {
   name: string
 }
 
+const onError = (service: string) => () =>
+  toast.error(`O Serviço de ${service} está fora do ar`, {
+    autoClose: false,
+    theme: "dark"
+  })
+
+const onLoadingSlow = (service: string) => () =>
+  toast.warn(`A API de ${service} está lenta`, {
+    autoClose: false,
+    theme: "colored"
+  })
+
 const GithubService = new Service(
   "https://api.github.com",
   "/repos/fga-eps-mds"
@@ -17,20 +29,20 @@ const GithubService = new Service(
 export const useServicesData = () => {
   const { isLoading: isLoadingChamadosStatus, error: errorChamados } =
     useRequest<ServiceStatus>(Services.chamados.status(), {
-      onLoadingSlow: () => toast.warn("A API de chamados está lenta. 😕")
+      onLoadingSlow: onLoadingSlow("Chamados"),
+      onError: onError("Chamados")
     })
 
   const { isLoading: isLoadingUsuariosStatus, error: errorUsuarios } =
     useRequest<ServiceStatus>(Services.usuarios.status(), {
-      onLoadingSlow: () => toast.warn("A API de usuários está lenta. 😕")
+      onLoadingSlow: onLoadingSlow("Usuários"),
+      onError: onError("Usuários")
     })
 
   const { isLoading: isLoadingLocalidadesStatus, error: errorLocalidades } =
     useRequest<ServiceStatus>(Services.localidades.status(), {
-      onLoadingSlow: () =>
-        toast.warn("A API de localidades está lenta. 😕", {
-          autoClose: false
-        })
+      onLoadingSlow: onLoadingSlow("Localidades"),
+      onError: onError("Localidades")
     })
 
   const { data: usuariosVersion, isLoading: isLoadingUserVersion } = useRequest<
@@ -40,7 +52,8 @@ export const useServicesData = () => {
       ? GithubService.get({
           url: GithubService?.newUrl(
             "/2022-1-schedula-gestor-de-usuarios/releases"
-          )
+          ),
+          withCredentials: false
         })
       : null
   )
@@ -51,7 +64,8 @@ export const useServicesData = () => {
         ? GithubService.get({
             url: GithubService?.newUrl(
               "/2022-1-schedula-detalhador-de-chamados/releases"
-            )
+            ),
+            withCredentials: false
           })
         : null
     )
@@ -62,7 +76,8 @@ export const useServicesData = () => {
         ? GithubService.get({
             url: GithubService?.newUrl(
               "/2022-1-schedula-gerenciador-de-localidades/releases"
-            )
+            ),
+            withCredentials: false
           })
         : null
     )

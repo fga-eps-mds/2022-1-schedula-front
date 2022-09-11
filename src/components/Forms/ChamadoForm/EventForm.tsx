@@ -2,16 +2,19 @@ import { useCallback } from "react"
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
 import { FaPlus } from "react-icons/fa"
 import {
+  Box,
   Button,
+  Divider,
   Flex,
   FormLabel,
-  IconButton,
-  Textarea,
-  VStack
+  Grid,
+  Text,
+  Textarea
 } from "@chakra-ui/react"
 
+import { ActionButton } from "@components/ActionButtons"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
-import { Datepicker } from "@components/Datepicker"
+import { Datepicker } from "@components/FormFields/Datepicker"
 
 interface EventFormProps {
   defaultValues?: ChamadoEvent | undefined
@@ -23,8 +26,7 @@ export const EventForm = ({ defaultValues, onSubmit }: EventFormProps) => {
     defaultValues: {
       alert_dates: [new Date()],
       ...defaultValues
-    },
-    shouldUnregister: true
+    }
   })
 
   const { fields, append, remove } = useFieldArray({
@@ -56,44 +58,53 @@ export const EventForm = ({ defaultValues, onSubmit }: EventFormProps) => {
           id="event_date"
         />
 
-        <Flex alignItems="flex-end" gap={4}>
-          <VStack align="start" spacing={6}>
-            {fields?.map?.((field, index) => (
-              <Flex gap={4} key={field.id} alignItems="flex-end">
-                <Datepicker
-                  label="Data do Alerta"
-                  control={control}
-                  name={`alert_dates.${index}`}
-                  id={`alert_dates.${index}`}
-                  showTimeInput={false}
-                  dateFormat="dd/MM/yyyy"
-                />
-                {index > 0 && (
+        <Box>
+          <Text>Alertas</Text>
+          <Divider mb={4} />
+          <Grid templateColumns="repeat(auto-fill, minmax(220px, 1fr))" gap={6}>
+            {fields?.map((field, index) => {
+              return (
+                <Flex key={field.id} gap={1}>
+                  <Datepicker
+                    label={`Data do Alerta ${index + 1}`}
+                    control={control}
+                    name={`alert_dates.${index}`}
+                    id={`alert_dates.${index}`}
+                    showTimeInput={false}
+                    dateFormat="dd/MM/yyyy"
+                  />
                   <DeleteButton
-                    label="Data"
+                    label={`Alerta ${index + 1}`}
                     onClick={handleRemoveDate(index)}
                     variant="ghost"
-                    aria-label="Remover Alerta"
+                    alignSelf="flex-end"
+                    _hover={{
+                      backgroundColor: "blackAlpha.300"
+                    }}
                   />
-                )}
-              </Flex>
-            ))}
-          </VStack>
-          <IconButton
+                </Flex>
+              )
+            })}
+          </Grid>
+          <ActionButton
+            label="Adicionar Alerta"
             icon={<FaPlus />}
             onClick={handleAddDate}
-            variant="ghost"
+            variant="outline"
             color="primary"
-            aria-label="Adicionar Alerta"
+            tooltipProps={{
+              placement: "right"
+            }}
+            mt={4}
           />
-        </Flex>
+        </Box>
 
         <Flex w="100%" flexDirection="column">
           <FormLabel htmlFor="description">Descrição</FormLabel>
           <Textarea {...register("description")} height="100%" />
         </Flex>
 
-        <Button type="submit" form="event-form" width="100%">
+        <Button type="submit" size="lg" form="event-form" width="100%">
           Agendar Serviço
         </Button>
       </Flex>
