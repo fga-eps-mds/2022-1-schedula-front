@@ -240,7 +240,7 @@ const Workstation = () => {
       <PageHeader title="Gerenciar Postos de Trabalho">
         <HStack spacing={2}>
           <RefreshButton refresh={mutate} />
-          {session?.user.access === "basic" ? (
+          {session?.user.access === "basic" || !session ? (
             <></>
           ) : (
             <Button onClick={onOpen}>Novo Posto de Trabalho</Button>

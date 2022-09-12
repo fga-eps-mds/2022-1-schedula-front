@@ -155,36 +155,30 @@ const ListaCidades = () => {
 
   return (
     <>
-      {session ? (
-        <>
-          <PageHeader title="Cidades Cadastradas">
-            <HStack spacing={2}>
-              <RefreshButton refresh={mutate} />
-              {session?.user.access === "basic" ? (
-                <></>
-              ) : (
-                <Button onClick={onOpen}>Nova Cidade</Button>
-              )}
-            </HStack>
-          </PageHeader>
+      <PageHeader title="Cidades Cadastradas">
+        <HStack spacing={2}>
+          <RefreshButton refresh={mutate} />
+          {session?.user.access === "basic" || !session ? (
+            <></>
+          ) : (
+            <Button onClick={onOpen}>Nova Cidade</Button>
+          )}
+        </HStack>
+      </PageHeader>
 
-          <ListView<City>
-            items={cidades?.data}
-            render={renderCidadeItem}
-            isLoading={isLoading || isValidating}
-          />
+      <ListView<City>
+        items={cidades?.data}
+        render={renderCidadeItem}
+        isLoading={isLoading || isValidating}
+      />
 
-          <Modal
-            title={cidadesToEdit ? "Editar Cidade" : "Nova Cidade"}
-            isOpen={isOpen}
-            onClose={handleClose}
-          >
-            <CidadeForm defaultValues={cidadesToEdit} onSubmit={onSubmit} />
-          </Modal>
-        </>
-      ) : (
-        <></>
-      )}
+      <Modal
+        title={cidadesToEdit ? "Editar Cidade" : "Nova Cidade"}
+        isOpen={isOpen}
+        onClose={handleClose}
+      >
+        <CidadeForm defaultValues={cidadesToEdit} onSubmit={onSubmit} />
+      </Modal>
     </>
   )
 }
