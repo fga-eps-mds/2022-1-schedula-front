@@ -1,6 +1,7 @@
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { Box, Button, Center, Input, Text } from "@chakra-ui/react"
 
 const Login: NextPageWithLayout = () => {
@@ -22,6 +23,10 @@ const Login: NextPageWithLayout = () => {
       await router.push("/chamados")
     }
   }
+
+  const validateEmail = new RegExp(
+    "^{a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$"
+  )
 
   return (
     <>
@@ -63,11 +68,7 @@ const Login: NextPageWithLayout = () => {
                 {...register("username", { required: true })}
                 placeholder="E-mail ou nome de usuário"
               />
-              {errors.username && (
-                <span>
-                  <Text color="red.400">Este campo é obrigatório</Text>
-                </span>
-              )}
+              {errors.username && toast.warn("Preencha todos os campos")}
             </Box>
             <Box mb="70px">
               {" "}
@@ -88,14 +89,10 @@ const Login: NextPageWithLayout = () => {
                 type="password"
                 placeholder="Digite sua senha"
               />
-              {errors.password && (
-                <span>
-                  <Text color="red.400">Este campo é obrigatório</Text>
-                </span>
-              )}
+              {errors.password && toast.warn("Preencha todos os campos")}
             </Box>
             <Center>
-              <Button mb="70px" type="submit" paddingX="24" width="sm">
+              <Button mb="55px" type="submit" paddingX="24" width="sm">
                 ENTRAR
               </Button>
             </Center>
