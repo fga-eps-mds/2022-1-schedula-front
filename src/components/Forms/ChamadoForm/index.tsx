@@ -3,7 +3,6 @@ import { UseFieldArrayUpdate, useFormContext } from "react-hook-form"
 import { BsCalendar3 } from "react-icons/bs"
 import {
   Box,
-  Divider,
   Flex,
   Grid,
   HStack,
@@ -14,14 +13,14 @@ import {
 
 import { ActionButton } from "@components/ActionButtons"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
-import { ControlledSelect } from "@components/ControlledSelect"
+import { ControlledSelect } from "@components/FormFields/ControlledSelect"
 import { EventForm } from "@components/Forms/ChamadoForm/EventForm"
 import { EventInfo } from "@components/Forms/ChamadoForm/EventInfo"
 import { useDropdownData } from "@components/Forms/ChamadoForm/useDropdowData"
-import { Modal } from "@components/Modal/Modal"
+import { Modal } from "@components/Modal"
 import {
-  ChamadoPriority,
-  ChamadoStatus,
+  CHAMADO_PRIORITY,
+  CHAMADO_STATUS,
   statusColor
 } from "@constants/Chamados"
 import { formatDate } from "@utils/formatDate"
@@ -31,14 +30,14 @@ interface ChamadoFormProps {
   index: number
   onUpdate: UseFieldArrayUpdate<ChamadoFormValues, "problems">
   onRemove?: () => void
-  isEdditing?: boolean
+  isEditing?: boolean
 }
 
 export const ChamadoForm = ({
   index,
   onRemove,
   onUpdate,
-  isEdditing
+  isEditing
 }: ChamadoFormProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -143,7 +142,7 @@ export const ChamadoForm = ({
               tabIndex={-1}
             />
 
-            {!isEdditing && onRemove && (
+            {!isEditing && onRemove && (
               <DeleteButton
                 onClick={onRemove}
                 label="Chamado"
@@ -173,6 +172,7 @@ export const ChamadoForm = ({
             id={`problems.${index}.problem_id` as const}
             options={getSelectOptions(tiposProblemas?.data, "name", "id")}
             isMulti
+            closeMenuOnSelect={false}
             isLoading={isLoadingProblems}
             placeholder="Tipo de Problema"
             label="Tipo de Problema"
@@ -181,13 +181,13 @@ export const ChamadoForm = ({
             colorScheme="purple"
           />
 
-          {isEdditing && (
+          {isEditing && (
             <>
               <ControlledSelect
                 control={control}
                 name={`problems.${index}.request_status` as const}
                 id={`problems.${index}.request_status` as const}
-                options={Object.entries(ChamadoStatus).map(
+                options={Object.entries(CHAMADO_STATUS).map(
                   ([value, label]) => ({
                     value,
                     label
@@ -202,7 +202,7 @@ export const ChamadoForm = ({
                 control={control}
                 name={`problems.${index}.priority` as const}
                 id={`problems.${index}.priority` as const}
-                options={Object.entries(ChamadoPriority).map(
+                options={Object.entries(CHAMADO_PRIORITY).map(
                   ([value, label]) => ({
                     value,
                     label
@@ -223,7 +223,7 @@ export const ChamadoForm = ({
         isOpen={isOpen}
         onClose={onClose}
       >
-        <VStack align="stretch" spacing={2} divider={<Divider />}>
+        <VStack align="stretch" spacing={3}>
           <EventInfo
             applicant_name={getValues("applicant_name")}
             applicant_phone={getValues("applicant_phone")}

@@ -1,22 +1,21 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect } from "react"
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
 import { FaPlus } from "react-icons/fa"
 import {
-  Box,
   Button,
   Checkbox,
+  Divider,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Stack,
+  Grid,
+  GridItem,
+  HStack,
   Text
 } from "@chakra-ui/react"
 
 import { ActionButton } from "@components/ActionButtons"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
-import { ControlledSelect } from "@components/ControlledSelect"
+import { Input } from "@components/FormFields"
+import { ControlledSelect } from "@components/FormFields/ControlledSelect"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
 import { getWorkstations } from "@services/Workstation"
@@ -24,24 +23,22 @@ import { getSelectOptions } from "@utils/getSelectOptions"
 
 export interface WorkstationFormProps {
   defaultValues?: Workstation | undefined
-  onSubmit: SubmitHandler<CreateWorkstationPayload>
+  onSubmit: SubmitHandler<WorkstationFormValues>
 }
 
-type FormValues = CreateWorkstationPayload & {
+export type WorkstationFormValues = CreateWorkstationPayload & {
   phones: { number: string }[]
-}
-
-type check = {
-  adsl_vpn: boolean | null
-  regional: boolean | null
+  city_id: SelectOption<number>
+  regional_id: SelectOption<number>
 }
 
 export const WorkstationForm = ({
   defaultValues,
   onSubmit
 }: WorkstationFormProps) => {
-  const { data: cidades, isLoading: isLoadingCidades } =
-    useRequest<Workstation[]>(getCities)
+  const { data: cidades, isLoading: isLoadingCidades } = useRequest<
+    Workstation[]
+  >(getCities, { revalidateIfStale: false })
 
   const { data: regionais, isLoading: isLoadingRegionais } = useRequest<
     Workstation[]
@@ -50,7 +47,10 @@ export const WorkstationForm = ({
       params: {
         regional: true
       }
-    })
+    }),
+    {
+      revalidateIfStale: false
+    }
   )
 
   const {
@@ -58,15 +58,17 @@ export const WorkstationForm = ({
     control,
     handleSubmit,
     watch,
-    reset,
     resetField,
     formState: { errors, isSubmitting }
-  } = useForm<FormValues>({
+  } = useForm<WorkstationFormValues>({
     defaultValues: {
       ...defaultValues,
       phones: defaultValues?.phones?.map((phone) => ({ number: phone }))
     }
   })
+
+  const isADSL = watch("adsl_vpn")
+  const isRegional = watch("regional")
 
   useEffect(() => {
     // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE NAME OF THE CITY/WORKSTATION
@@ -84,8 +86,7 @@ export const WorkstationForm = ({
           }
         })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
-  }, [defaultValues])
+  }, [defaultValues, regionais, resetField])
 
   useEffect(() => {
     // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE NAME OF THE CITY/WORKSTATION
@@ -103,8 +104,7 @@ export const WorkstationForm = ({
           }
         })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
-  }, [defaultValues])
+  }, [cidades, defaultValues, resetField])
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -124,191 +124,124 @@ export const WorkstationForm = ({
     [remove]
   )
 
-  const [CBox, setCBox] = useState<check>({
-    adsl_vpn: watch("adsl_vpn"),
-    regional: watch("regional")
-  })
-
-  const setVPN = () => {
-    setCBox({ adsl_vpn: !CBox.adsl_vpn, regional: CBox.regional })
-    reset({ link: undefined, ip: undefined })
-  }
-
-  const setRegional = () => {
-    setCBox({ adsl_vpn: CBox.adsl_vpn, regional: !CBox.regional })
-    reset({ regional_id: undefined })
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl isInvalid={Object.keys(errors).length > 0} mb={8}>
-        <Stack spacing={8}>
-          <Flex gap={8}>
-            <Box w="100%">
-              <FormLabel htmlFor="name">Nome</FormLabel>
-              <Input
-                {...register("name", { required: "Campo obrigatório" })}
-                placeholder="Nome"
-                variant="flushed"
-              />
-              {errors?.name && (
-                <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
-              )}
-            </Box>
-            <FormLabel htmlFor="adsl_vpn"></FormLabel>
+      <Grid templateColumns="1fr 1fr" gap={6}>
+        <Input
+          label="Nome"
+          {...register("name", { required: "Campo obrigatório" })}
+          errors={errors?.name}
+          placeholder="Nome"
+        />
 
-            <Stack spacing={5} direction="row" w={"100%"}>
-              <Stack spacing={5} direction="row">
-                <Checkbox
-                  colorScheme="orange"
-                  {...register("adsl_vpn", {
-                    onChange() {
-                      setVPN()
-                    }
-                  })}
-                >
-                  ADSL/VPN
-                </Checkbox>
-                <Checkbox
-                  colorScheme="orange"
-                  {...register("regional", {
-                    onChange() {
-                      setRegional()
-                    }
-                  })}
-                >
-                  Regional
-                </Checkbox>
-              </Stack>
-            </Stack>
-            {errors?.adsl_vpn && (
-              <FormErrorMessage>{errors?.adsl_vpn?.message}</FormErrorMessage>
-            )}
-          </Flex>
+        <GridItem alignSelf="center">
+          <HStack spacing={6}>
+            <Checkbox {...register("regional")} size="lg" colorScheme="orange">
+              Regional
+            </Checkbox>
+            <Checkbox {...register("adsl_vpn")} size="lg" colorScheme="orange">
+              ADSL/VPN
+            </Checkbox>
+          </HStack>
+        </GridItem>
 
-          {CBox.adsl_vpn ? (
-            <></>
-          ) : (
-            <Flex gap={8}>
-              <Box w="100%">
-                <FormLabel htmlFor="Link">Link</FormLabel>
-                <Input
-                  {...register("link", {
-                    required: "Campo obrigatório",
-                    shouldUnregister: true
-                  })}
-                  placeholder="00.00.000.1"
-                  variant="flushed"
-                />
-                {errors?.link && (
-                  <FormErrorMessage>{errors?.link?.message}</FormErrorMessage>
-                )}
-              </Box>
-              <Box w="100%">
-                <FormLabel htmlFor="ip">Faixa de IP</FormLabel>
-                <Input
-                  {...register("ip", {
-                    required: "Campo obrigatório",
-                    shouldUnregister: true
-                  })}
-                  placeholder="00.000.00.2 a 00.00.000.3"
-                  variant="flushed"
-                />
-                {errors?.ip && (
-                  <FormErrorMessage>{errors?.ip?.message}</FormErrorMessage>
-                )}
-              </Box>
-            </Flex>
-          )}
+        {!isADSL && (
+          <>
+            <Input
+              label="Link"
+              {...register("link", {
+                required: "Campo obrigatório",
+                shouldUnregister: true
+              })}
+              errors={errors?.link}
+              placeholder="00.00.000.1"
+            />
 
-          <Flex gap={8}>
-            {!CBox.regional ? (
-              <Box w={"50%"}>
-                <ControlledSelect
-                  control={control}
-                  name="regional_id"
-                  id="regional_id"
-                  options={getSelectOptions(regionais?.data, "name", "id")}
-                  isLoading={isLoadingRegionais}
-                  placeholder="Regional"
-                  label="Regional"
-                  rules={{
-                    required: "Campo obrigatório",
-                    shouldUnregister: true
-                  }}
-                />
-              </Box>
-            ) : (
-              <></>
-            )}
+            <Input
+              label="IP"
+              {...register("ip", {
+                required: "Campo obrigatório",
+                shouldUnregister: true
+              })}
+              errors={errors?.ip}
+              placeholder="00.000.00.2 a 00.00.000.3"
+            />
+          </>
+        )}
 
-            <Box w={"50%"}>
-              <ControlledSelect
-                control={control}
-                name="city_id"
-                id="city_id"
-                options={getSelectOptions(cidades?.data, "name", "id")}
-                isLoading={isLoadingCidades}
-                placeholder="Cidade"
-                label="Cidade"
-                rules={{ required: "Campo obrigatório" }}
-              />
-            </Box>
-          </Flex>
-        </Stack>
+        <ControlledSelect
+          control={control}
+          name="city_id"
+          id="city_id"
+          options={getSelectOptions(cidades?.data, "name", "id")}
+          isLoading={isLoadingCidades}
+          placeholder="Cidade"
+          label="Cidade"
+          rules={{ required: "Campo obrigatório" }}
+        />
 
-        <Flex gap={8}>
-          <Box w={"45%"} mt={"2em"}>
-            <FormLabel htmlFor="phone">Telefones:</FormLabel>
+        {!isRegional && (
+          <ControlledSelect
+            control={control}
+            name="regional_id"
+            id="regional_id"
+            options={getSelectOptions(regionais?.data, "name", "id")}
+            isLoading={isLoadingRegionais}
+            placeholder="Regional"
+            label="Regional"
+            rules={{
+              required: "Campo obrigatório",
+              shouldUnregister: true
+            }}
+          />
+        )}
+
+        <GridItem colSpan={2}>
+          <Text>Telefones</Text>
+          <Divider mb={4} />
+          <Grid templateColumns="repeat(auto-fill, minmax(220px, 1fr))" gap={6}>
             {fields?.map((phone, index) => {
               return (
-                <Flex mt={"2em"} key={phone.id}>
-                  <Box>
-                    <FormLabel htmlFor={"phone"}>Telefone</FormLabel>
-                    <Input
-                      {...register(`phones.${index}.number` as const, {
-                        required: "Campo obrigatório"
-                      })}
-                      placeholder="Novo Telefone"
-                      variant="flushed"
-                    />
-                  </Box>
-                  <Box mt={"2em"} ml={"1em"}>
-                    <DeleteButton
-                      label="Telefone"
-                      onClick={handleRemovePhone(index)}
-                      variant="ghost"
-                    />
-                  </Box>
-                  {errors?.phones && (
-                    <FormErrorMessage>
-                      {errors?.phones?.message}
-                    </FormErrorMessage>
-                  )}
+                <Flex key={phone.id} gap={1}>
+                  <Input
+                    label={`Telefone ${index + 1}`}
+                    {...register(`phones.${index}.number` as const, {
+                      required: "Campo obrigatório"
+                    })}
+                    errors={errors?.phones?.[index]?.number}
+                  />
+                  <DeleteButton
+                    label={`Telefone ${index + 1}`}
+                    onClick={handleRemovePhone(index)}
+                    variant="ghost"
+                    alignSelf="flex-end"
+                    _hover={{
+                      backgroundColor: "blackAlpha.300"
+                    }}
+                  />
                 </Flex>
               )
             })}
-          </Box>
-          <Text
-            fontSize={"3xl"}
-            w={"50%"}
-            textAlign={"left"}
-            alignSelf={"flex-end"}
-          >
-            <ActionButton
-              label="Adicionar Telefone"
-              icon={<FaPlus />}
-              variant="ghost"
-              color="primary"
-              onClick={handleAddPhone}
-            />
-          </Text>
-        </Flex>
-      </FormControl>
+          </Grid>
+          <ActionButton
+            label="Adicionar Telefone"
+            icon={<FaPlus />}
+            onClick={handleAddPhone}
+            variant="outline"
+            color="primary"
+            tooltipProps={{
+              placement: "right"
+            }}
+            mt={4}
+          />
+        </GridItem>
 
-      <Button type="submit" width="100%" isLoading={isSubmitting}>
-        Registrar
-      </Button>
+        <GridItem colSpan={2}>
+          <Button type="submit" size="lg" width="100%" isLoading={isSubmitting}>
+            Registrar
+          </Button>
+        </GridItem>
+      </Grid>
     </form>
   )
 }

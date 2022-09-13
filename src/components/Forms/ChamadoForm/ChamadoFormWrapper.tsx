@@ -1,40 +1,40 @@
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useMemo } from "react"
+import { useSession } from "next-auth/react"
 import {
   FormProvider,
   SubmitHandler,
   useFieldArray,
   useForm
 } from "react-hook-form"
+import { BsPersonCircle, BsTelephoneFill } from "react-icons/bs"
 import { FaPlus } from "react-icons/fa"
 import InputMask from "react-input-mask"
 import { toast } from "react-toastify"
 import {
   Button,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
   Grid,
   GridItem,
   Heading,
   Icon,
-  Input,
+  InputLeftElement,
   useDisclosure,
   VStack
 } from "@chakra-ui/react"
 
 import { EditButton } from "@components/ActionButtons/EditButton"
-import { ControlledSelect } from "@components/ControlledSelect"
+import { ControlledSelect } from "@components/FormFields/ControlledSelect"
+import { Input } from "@components/FormFields/Input"
 import { ChamadoForm } from "@components/Forms/ChamadoForm"
 import { chamadosDefaultValues } from "@components/Forms/ChamadoForm/helpers"
 import { WorkstationModal } from "@components/Modals/WorkstationModal"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
-import { request } from "@services/request"
-import { getWorkstations, updateWorkstation } from "@services/Workstation"
+import { getWorkstations } from "@services/Workstation"
 import { getSelectOptions } from "@utils/getSelectOptions"
 
-interface ChamadoFormProps {
+export interface ChamadoFormProps {
   onSubmit: SubmitHandler<ChamadoFormValues>
   defaultValues?: ChamadoFormValues
 }
@@ -43,14 +43,22 @@ export const ChamadoFormWrapper = ({
   onSubmit,
   defaultValues
 }: ChamadoFormProps) => {
-  const isEdditing = Boolean(defaultValues)
+  const { data: session } = useSession()
+  const { isAuthorized: isEditWorkstationAuthorized } = useAuthorization([
+    "manager"
+  ])
+
+  const isEditing = Boolean(defaultValues)
 
   const methods = useForm<ChamadoFormValues>({
-    defaultValues: {
-      ...chamadosDefaultValues,
-      ...defaultValues,
-      attendant_name: /*user?.name*/ "Teste"
-    },
+    defaultValues: useMemo(
+      () => ({
+        ...chamadosDefaultValues,
+        ...defaultValues,
+        attendant_name: session?.user?.name
+      }),
+      [defaultValues, session?.user?.name]
+    ),
     mode: "onChange"
   })
 
@@ -75,6 +83,13 @@ export const ChamadoFormWrapper = ({
     isOpen: isWorkstationModalOpen,
     onClose: closeWorkstationModal
   } = useDisclosure()
+
+  useEffect(() => {
+    resetField("attendant_name", {
+      defaultValue: session?.user?.name
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- ignore resetField
+  }, [session?.user])
 
   useEffect(() => {
     // Register with validation, otherwise its possible to send form without 'problems' field
@@ -157,28 +172,17 @@ export const ChamadoFormWrapper = ({
   )
 
   const handleWorkstationEdit = useCallback(
-    async (data: CreateWorkstationPayload) => {
-      const payload = {
-        ...data,
-        phones: (data.phones as unknown as { number: string }[])?.map(
-          (phone) => phone?.number
-        )
-      }
-
-      const response = await request<Workstation>(
-        updateWorkstation(getValues("workstation_id.value"))(payload)
-      )
-
-      if (response.type === "success") {
-        toast.success(response.value?.message)
+    (result: Result<ApiResponse<Workstation>>) => {
+      if (result.type === "success") {
+        toast.success(result.value?.message)
         mutateWorkstations()
       } else {
-        toast.error(response.error?.message)
+        toast.error(result.error?.message)
       }
 
       closeWorkstationModal()
     },
-    [getValues, closeWorkstationModal, mutateWorkstations]
+    [closeWorkstationModal, mutateWorkstations]
   )
 
   return (
@@ -187,38 +191,37 @@ export const ChamadoFormWrapper = ({
         {/* Self-enclosing form to avoid nested forms submiting the main form */}
         <form id="chamado-form-wrapper" onSubmit={handleSubmit(onSubmit)} />
         <Grid templateColumns="repeat(2, 1fr)" gap={8}>
-          <FormControl
-            isInvalid={Boolean(errors?.applicant_name)}
-            position="relative"
-          >
-            <FormLabel>Solicitante</FormLabel>
-            <Input
-              {...register("applicant_name", {
-                required: "Campo obrigatório"
-              })}
-            />
-            <FormErrorMessage>
-              {errors?.applicant_name?.message}
-            </FormErrorMessage>
-          </FormControl>
+          <Input
+            label="Solicitante"
+            {...register("applicant_name", {
+              required: "Campo obrigatório"
+            })}
+            errors={errors?.applicant_name}
+            leftElement={
+              <InputLeftElement>
+                <Icon as={BsPersonCircle} fontSize={20} />
+              </InputLeftElement>
+            }
+          />
 
-          <FormControl isInvalid={Boolean(errors?.applicant_phone)}>
-            <FormLabel>Telefone</FormLabel>
-            <Input
-              as={InputMask}
-              mask="9999-9999"
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- maskChar is not in the lib types
-              // @ts-ignore
-              maskChar={null}
-              placeholder="0000-0000"
-              {...register("applicant_phone", {
-                required: "Campo obrigatório"
-              })}
-            />
-            <FormErrorMessage>
-              {errors?.applicant_phone?.message}
-            </FormErrorMessage>
-          </FormControl>
+          <Input
+            label="Telefone"
+            as={InputMask}
+            mask="9999-9999"
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- maskChar is not in the lib types
+            // @ts-ignore
+            maskChar={null}
+            placeholder="0000-0000"
+            {...register("applicant_phone", {
+              required: "Campo obrigatório"
+            })}
+            errors={errors?.applicant_phone}
+            leftElement={
+              <InputLeftElement>
+                <Icon as={BsTelephoneFill} fontSize={20} />
+              </InputLeftElement>
+            }
+          />
 
           <ControlledSelect
             control={control}
@@ -235,13 +238,14 @@ export const ChamadoFormWrapper = ({
             <EditButton
               label="Posto de Trabalho"
               onClick={openWorkstationModal}
-              disabled={!watch("workstation_id")}
+              disabled={
+                !watch("workstation_id") || !isEditWorkstationAuthorized
+              }
               size="sm"
               variant="ghost"
               position="absolute"
               top={0}
               right={0}
-              aria-label="Editar Posto de Trabalho"
               zIndex={5}
               tabIndex={-1}
             />
@@ -279,12 +283,12 @@ export const ChamadoFormWrapper = ({
                     index={index}
                     onRemove={handleRemove(index)}
                     onUpdate={update}
-                    isEdditing={isEdditing}
+                    isEditing={isEditing}
                   />
                 </fieldset>
               ))}
 
-              {!isEdditing && (
+              {!isEditing && (
                 <Flex justifyContent="end" mt={8}>
                   <Button onClick={handleAdd} variant="tertiary">
                     <Icon as={FaPlus} mr={2} /> Chamado
@@ -305,12 +309,12 @@ export const ChamadoFormWrapper = ({
           mt={8}
           boxShadow="xl"
         >
-          Finalizar {isEdditing ? "Edição" : "Atendimento"}
+          Finalizar {isEditing ? "Edição" : "Atendimento"}
         </Button>
       </FormProvider>
 
       <WorkstationModal
-        defaultValues={workstations?.data?.find(
+        workstation={workstations?.data?.find(
           (station) => station.id === getValues("workstation_id.value")
         )}
         isOpen={isWorkstationModalOpen}

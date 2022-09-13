@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { memo, useMemo } from "react"
 import { FaServer } from "react-icons/fa"
 import {
   Flex,
@@ -7,26 +7,36 @@ import {
   Tooltip,
   useDisclosure
 } from "@chakra-ui/react"
+import { SWRConfig } from "swr"
 
 import { ServicesStatus } from "@components/Footnote/ServicesStatus"
 import { useRequest } from "@hooks/useRequest"
+import { Service } from "@services"
 
 type Releases = {
   tag_name: string
   name: string
 }
 
-export const Footnote = () => {
+const GithubService = new Service(
+  "https://api.github.com",
+  "/repos/fga-eps-mds"
+)
+
+export const Footnote = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { data } = useRequest<Releases[]>(
     process.env.NODE_ENV !== "development"
-      ? {
-          baseURL: "https://api.github.com",
-          url: "/repos/fga-eps-mds/2022-1-schedula-front/releases",
-          method: "GET"
-        }
-      : null
+      ? GithubService.get({
+          url: GithubService?.newUrl("/2022-1-schedula-front/releases"),
+          withCredentials: false
+        })
+      : null,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false
+    }
   )
 
   const version = useMemo(
@@ -67,7 +77,17 @@ export const Footnote = () => {
         </Tooltip>
       </Flex>
 
-      <ServicesStatus isOpen={isOpen} onClose={onClose} />
+      <SWRConfig
+        value={{
+          revalidateIfStale: false,
+          revalidateOnFocus: false,
+          revalidateOnReconnect: true
+        }}
+      >
+        <ServicesStatus isOpen={isOpen} onClose={onClose} />
+      </SWRConfig>
     </>
   )
-}
+})
+
+Footnote.displayName = "Footnote"

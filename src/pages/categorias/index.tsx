@@ -1,29 +1,19 @@
 import { useCallback, useState } from "react"
-import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
-import { AddButton } from "@components/ActionButtons/AddButton"
-import { DeleteButton } from "@components/ActionButtons/DeleteButton"
-import { EditButton } from "@components/ActionButtons/EditButton"
-import { CategoriaForm } from "@components/Forms/CategoriaForm"
+import { RefreshButton } from "@components/ActionButtons/RefreshButton"
+import { CategoryItem } from "@components/Items/CategoryItem"
 import { ListView } from "@components/List"
-import { Item } from "@components/ListItem"
-import { Modal } from "@components/Modal/Modal"
+import { CategoryModal } from "@components/Modals/CategoryModal"
 import { PageHeader } from "@components/PageHeader"
-import { RefreshButton } from "@components/RefreshButton"
+import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
-import {
-  createCategory,
-  deleteCategory,
-  getCategories,
-  updateCategory
-} from "@services/Categorias"
-import { request } from "@services/request"
+import { getCategories } from "@services/Categorias"
 
 const ListaCategoria = () => {
-  const router = useRouter()
+  const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
 
   const {
     data: categorias,
@@ -34,126 +24,94 @@ const ListaCategoria = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [categoriaToEdit, setCategoria] = useState<Category>()
+  const [categoriaToEdit, setCategoriaToEdit] = useState<Category>()
 
-  const handleDelete = useCallback(
-    async ({ id }: Category) => {
-      const response = await request(deleteCategory(id))
+  const refreshCategories = useCallback(
+    (data?: Category[]) =>
+      mutate(
+        {
+          data: {
+            error: null,
+            message: "",
+            data: data ?? []
+          }
+        } as AxiosResponse<ApiResponse<Category[]>>,
+        { revalidate: !data }
+      ),
+    [mutate]
+  )
 
-      if (response.type === "success") {
-        toast.success("Categoria deletada com sucesso!")
+  const onDelete = useCallback(
+    (result: Result<ApiResponse<null>>, { id }: Category) => {
+      if (result.type === "success") {
+        toast.success(result.value?.message)
 
         const newCategorias = categorias?.data.filter(
           (categoria) => categoria.id !== id
         )
-
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newCategorias || ([] as Category[])
-            }
-          } as AxiosResponse<ApiResponse<Category[]>>,
-          { revalidate: false }
-        )
+        refreshCategories(newCategorias)
 
         return
       }
 
-      toast.error("Erro ao deletar categoria!")
+      toast.error(result.error?.message)
     },
-    [categorias, mutate]
+    [categorias?.data, refreshCategories]
   )
 
-  const handleEdit = useCallback(
+  const onSubmit = useCallback(
+    (result: Result<ApiResponse<Category>>) => {
+      if (result.type === "error") {
+        toast.error(result.error?.message)
+
+        return
+      }
+
+      toast.success(result.value?.message)
+
+      const newCategorias = categoriaToEdit
+        ? categorias?.data.map((categoria) =>
+            categoria.id === categoriaToEdit?.id
+              ? result.value?.data
+              : categoria
+          )
+        : [...(categorias?.data || []), result.value?.data]
+
+      refreshCategories(newCategorias)
+      setCategoriaToEdit(undefined)
+      onClose()
+    },
+    [categoriaToEdit, categorias?.data, onClose, refreshCategories]
+  )
+
+  const onEdit = useCallback(
     (categoria: Category) => {
-      setCategoria(categoria)
+      setCategoriaToEdit(categoria)
       onOpen()
     },
     [onOpen]
   )
 
-  const handleAddProblem = useCallback(
-    ({ id }: Category) => {
-      router.push(`/categorias/${id}/problemas`)
-    },
-    [router]
-  )
-
-  const onSubmit = useCallback(
-    async (data: CategoryPayload) => {
-      console.log("DATA: ", data)
-
-      const response = await request<Category>(
-        categoriaToEdit
-          ? updateCategory(categoriaToEdit.id)(data)
-          : createCategory(data)
-      )
-
-      if (response.type === "success") {
-        toast.success(
-          `Categoria ${categoriaToEdit ? "editada" : "criada"} com sucesso!`
-        )
-
-        const newCategorias = categoriaToEdit
-          ? categorias?.data.map((categoria) =>
-              categoria.id === categoriaToEdit?.id
-                ? response.value?.data
-                : categoria
-            )
-          : [...(categorias?.data || []), response.value?.data]
-
-        mutate(
-          {
-            data: {
-              error: null,
-              message: "",
-              data: newCategorias
-            }
-          } as AxiosResponse<ApiResponse<Category[]>>,
-          { revalidate: false }
-        )
-
-        setCategoria(undefined)
-        onClose()
-
-        return
-      }
-
-      toast.error("Erro ao criar categoria!")
-    },
-    [categoriaToEdit, categorias?.data, mutate, onClose]
-  )
-
   const handleClose = useCallback(() => {
-    setCategoria(undefined)
+    setCategoriaToEdit(undefined)
     onClose()
   }, [onClose])
 
   const renderCategoriaItem = useCallback(
-    (item: Category) => (
-      <Item title={item?.name} description={item?.description}>
-        <Item.Actions item={item}>
-          <AddButton
-            onClick={handleAddProblem}
-            label="Tipos de Problema"
-            aria-label="Add"
-          />
-          <EditButton onClick={handleEdit} label={item.name} />
-          <DeleteButton onClick={handleDelete} label={item.name} />
-        </Item.Actions>
-      </Item>
+    (category: Category) => (
+      <CategoryItem category={category} onEdit={onEdit} onDelete={onDelete} />
     ),
-    [handleAddProblem, handleDelete, handleEdit]
+    [onDelete, onEdit]
   )
 
   return (
     <>
       <PageHeader title="Categorias de Problemas">
         <HStack spacing={2}>
-          <RefreshButton refresh={mutate} />
-          <Button onClick={onOpen}>Nova Categoria</Button>
+          <RefreshButton refresh={refreshCategories} />
+          {isCreateAuthorized && (
+            <Button onClick={onOpen}>Nova Categoria</Button>
+          )}
         </HStack>
       </PageHeader>
 
@@ -163,13 +121,12 @@ const ListaCategoria = () => {
         isLoading={isLoading || isValidating}
       />
 
-      <Modal
-        title={categoriaToEdit ? "Editar Categoria" : "Nova Categoria"}
+      <CategoryModal
         isOpen={isOpen}
         onClose={handleClose}
-      >
-        <CategoriaForm defaultValues={categoriaToEdit} onSubmit={onSubmit} />
-      </Modal>
+        onSubmit={onSubmit}
+        category={categoriaToEdit}
+      />
     </>
   )
 }
