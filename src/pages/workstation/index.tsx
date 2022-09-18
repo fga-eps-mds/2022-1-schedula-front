@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react"
 import { toast } from "react-toastify"
-import { Button, HStack, useDisclosure } from "@chakra-ui/react"
+import { Box, Button, HStack, useDisclosure, VStack } from "@chakra-ui/react"
 import { AxiosResponse } from "axios"
 
 import { RefreshButton } from "@components/ActionButtons/RefreshButton"
@@ -8,19 +8,36 @@ import { WorkstationItem } from "@components/Items/WorkstationItem"
 import { ListView } from "@components/List"
 import { WorkstationModal } from "@components/Modals/WorkstationModal"
 import { PageHeader } from "@components/PageHeader"
+import {
+  Filters,
+  workstationFields,
+  WorkstationsFilter
+} from "@components/WorkstationsFilter"
 import { useAuthorization } from "@hooks/useAuthorization"
+import { useFilters } from "@hooks/useFilters"
 import { useRequest } from "@hooks/useRequest"
 import { getWorkstations } from "@services/Workstation"
 
 const Workstation = () => {
   const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
 
+  const { filters, updateField } = useFilters(workstationFields)
+
   const {
     data: workstations,
     isLoading,
     isValidating,
     mutate
-  } = useRequest<Workstation[]>(getWorkstations())
+  } = useRequest<Workstation[]>(
+    getWorkstations({
+      params: {
+        regional_id: (filters?.regional as unknown as SelectOption)?.value
+      }
+    }),
+    {
+      revalidateIfStale: false
+    }
+  )
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [workstationToEdit, setWorkstationToEdit] = useState<Workstation>()
@@ -103,6 +120,19 @@ const Workstation = () => {
     [onDelete, onEdit]
   )
 
+  const handleFilterChange = useCallback(
+    (values: Filters) =>
+      (
+        Object.entries(values) as [
+          keyof Filters,
+          typeof values[keyof Filters]
+        ][]
+      ).forEach(([field, value]) => {
+        updateField(field)(value)
+      }),
+    [updateField]
+  )
+
   return (
     <>
       <PageHeader title="Gerenciar Postos de Trabalho">
@@ -114,11 +144,17 @@ const Workstation = () => {
         </HStack>
       </PageHeader>
 
-      <ListView<Workstation>
-        items={workstations?.data}
-        render={renderWorkstationItem}
-        isLoading={isLoading || isValidating}
-      />
+      <VStack align="stretch" spacing={6}>
+        <Box width="50%" minWidth="300px">
+          <WorkstationsFilter onFilter={handleFilterChange} />
+        </Box>
+
+        <ListView<Workstation>
+          items={workstations?.data}
+          render={renderWorkstationItem}
+          isLoading={isLoading || isValidating}
+        />
+      </VStack>
 
       <WorkstationModal
         isOpen={isOpen}
