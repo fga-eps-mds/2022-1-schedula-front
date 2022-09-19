@@ -1,8 +1,24 @@
 import { useRequest } from "@hooks/useRequest"
 import { getCategories } from "@services/Categorias"
+import { getCities } from "@services/Cidades"
 import { getProblemTypes } from "@services/Problemas"
+import { getWorkstations } from "@services/Workstation"
 
-export const useDropdownData = (category_id: number) => {
+export const useDropdownData = (category_id?: number) => {
+  const {
+    data: cities,
+    isLoading: isLoadingCities,
+    error: errorCities
+  } = useRequest<City[]>(getCities)
+
+  const {
+    data: workstations,
+    isLoading: isLoadingWorkstations,
+    isValidating: isValidatingWorkstations,
+    error: errorWorkstations,
+    mutate: mutateWorkstations
+  } = useRequest<Workstation[]>(getWorkstations())
+
   const {
     data: categorias,
     isLoading: isLoadingCategories,
@@ -28,6 +44,14 @@ export const useDropdownData = (category_id: number) => {
     errorCategorias,
     tiposProblemas,
     isLoadingProblems,
-    errorProblemas
+    errorProblemas,
+    cities,
+    isLoadingCities,
+    errorCities,
+    workstations,
+    isLoadingWorkstations,
+    isValidatingWorkstations,
+    errorWorkstations,
+    mutateWorkstations
   }
 }

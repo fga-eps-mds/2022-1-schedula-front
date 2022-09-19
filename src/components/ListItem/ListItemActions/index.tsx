@@ -11,7 +11,7 @@ export interface ActionsProps<Data> {
 
 export const Actions = <Data,>({ children, item }: ActionsProps<Data>) => {
   return (
-    <HStack spacing={4} role="menubar">
+    <HStack spacing={4} role="menubar" alignSelf="end">
       {Children.map(
         children,
         (child) =>

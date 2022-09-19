@@ -2,10 +2,7 @@ import { useCallback, useMemo } from "react"
 import { ModalProps } from "@chakra-ui/react"
 
 import { ChamadoFormWrapper } from "@components/Forms/ChamadoForm/ChamadoFormWrapper"
-import {
-  chamadoToFormValues,
-  formValuesToPayload
-} from "@components/Forms/ChamadoForm/helpers"
+import { formValuesToPayload } from "@components/Forms/ChamadoForm/helpers"
 import { Modal } from "@components/Modal"
 import { updateChamado } from "@services/Chamados"
 import { request } from "@services/request"
@@ -60,10 +57,7 @@ export const ChamadoModal = ({
       size="6xl"
       {...props}
     >
-      <ChamadoFormWrapper
-        defaultValues={chamado && chamadoToFormValues(chamado)}
-        onSubmit={handleSubmit}
-      />
+      <ChamadoFormWrapper defaultValues={chamado} onSubmit={handleSubmit} />
     </Modal>
   )
 }

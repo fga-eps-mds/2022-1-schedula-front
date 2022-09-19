@@ -20,7 +20,6 @@ const Chamados = () => {
   const [chamadoToEdit, setChamadoToEdit] = useState<Chamado>()
 
   const showEvents = router.query?.is_event
-  console.log("router query: ", router.query, showEvents)
 
   const {
     data: chamados,

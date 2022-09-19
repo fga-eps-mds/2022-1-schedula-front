@@ -10,15 +10,12 @@ interface DefaultLayoutProps {
 
 export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
-    <Flex as="main" minHeight="100vh">
+    <Flex as="main" justifyContent="center" p={14} minHeight="100vh">
       <Grid
         width="100%"
         maxWidth="1440px"
-        margin="0 auto"
         templateColumns="auto minmax(0, 1fr)"
-        gap={12}
-        px="12"
-        py="16"
+        gap={14}
       >
         <SideBar />
         <Flex flexDirection="column">{children}</Flex>

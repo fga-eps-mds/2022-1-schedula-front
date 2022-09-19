@@ -46,7 +46,9 @@ export const Item = <Data,>({
         <Box color="GrayText">{description}</Box>
       </Box>
 
-      <Box alignSelf="end">{children}</Box>
+      <Box alignSelf="end" display="contents">
+        {children}
+      </Box>
     </Flex>
   )
 }

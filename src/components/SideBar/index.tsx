@@ -27,9 +27,9 @@ export const SideBar = memo(() => {
       gap={2}
       width={"fit-content"}
       height="100%"
-      maxHeight="calc(100vh - 8rem)" // 4rem padding 2x
+      maxHeight="calc(100vh - 7rem)" // (--chakra-spacing-14)3.5rem padding 2x
       position="sticky"
-      top={16}
+      top={14}
     >
       <Heading margin="0 auto" textAlign="center" fontWeight="hairline">
         Schedula

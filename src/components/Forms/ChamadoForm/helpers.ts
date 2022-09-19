@@ -19,11 +19,11 @@ export const chamadoToFormValues = (chamado: Chamado): ChamadoFormValues => ({
   ...chamado,
   city_id: {
     value: chamado.city_id,
-    label: ""
+    label: chamado?.city?.name
   },
   workstation_id: {
     value: chamado.workstation_id,
-    label: ""
+    label: chamado?.workstation?.name
   },
   problems: chamado.problems.map((problem) => ({
     ...problem,

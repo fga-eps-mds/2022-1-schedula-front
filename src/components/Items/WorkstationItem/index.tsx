@@ -28,7 +28,10 @@ export const WorkstationItem = ({
   const { isAuthorized: isDeleteAuthorized } = useAuthorization()
 
   const { data: city, isLoading: isLoadingCity } = useRequest<City>(
-    workstation ? getCityById(workstation?.city_id) : null
+    workstation ? getCityById(workstation?.city_id) : null,
+    {
+      revalidateIfStale: false
+    }
   )
 
   const handleDelete = useCallback(

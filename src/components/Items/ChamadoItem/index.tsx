@@ -6,7 +6,8 @@ import {
   Skeleton,
   Spacer,
   Tag,
-  Text
+  Text,
+  VStack
 } from "@chakra-ui/react"
 
 import { EditButton } from "@components/ActionButtons/EditButton"
@@ -76,12 +77,6 @@ export const ChamadoItem = ({ chamado, handleEdit }: ChamadoItemProps) => {
             <HStack spacing={6}>
               <Box>
                 <Text fontSize="sm" fontWeight="light" color="GrayText">
-                  Solicitante
-                </Text>
-                <Text noOfLines={1}>{chamado?.applicant_name}</Text>
-              </Box>
-              <Box>
-                <Text fontSize="sm" fontWeight="light" color="GrayText">
                   Posto de Trabalho
                 </Text>
                 <Skeleton isLoaded={!isLoadingWorkstation}>
@@ -98,26 +93,22 @@ export const ChamadoItem = ({ chamado, handleEdit }: ChamadoItemProps) => {
               </Box>
               <Box>
                 <Text fontSize="sm" fontWeight="light" color="GrayText">
-                  Atendente
+                  Solicitante
                 </Text>
-                <Text noOfLines={1}>{chamado?.attendant_name}</Text>
+                <Text noOfLines={1}>{chamado?.applicant_name}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" fontWeight="light" color="GrayText">
-                  Data / Hora
+                  Telefone
                 </Text>
-                <Box textAlign="center" fontWeight="medium">
-                  <Text>
-                    {formatDate(chamado?.created_at, "date")}{" "}
-                    {formatDate(chamado?.created_at, "time")}
-                  </Text>
-                </Box>
+
+                <Text noOfLines={1}>{workstation?.data?.phones?.[0]}</Text>
               </Box>
             </HStack>
           </>
         }
         description={
-          <Box>
+          <VStack align="stretch" spacing={2}>
             <HStack gap={4} mt={2} flexWrap="wrap">
               {chamado?.problems.map((problem) => (
                 <HStack align="start" spacing={1} key={problem?.problem_id}>
@@ -130,19 +121,57 @@ export const ChamadoItem = ({ chamado, handleEdit }: ChamadoItemProps) => {
                 </HStack>
               ))}
             </HStack>
-          </Box>
+
+            {isEvent && (
+              <Box>
+                <Text fontSize="sm" fontWeight="light" color="GrayText">
+                  Descrição
+                </Text>
+                <Text fontWeight="medium" color="black" noOfLines={2}>
+                  {chamado?.problems?.[0]?.description || "---"}
+                </Text>
+              </Box>
+            )}
+          </VStack>
         }
       >
-        <Item.Actions item={chamado}>
-          {
-            (isEditAuthorized && (
-              <EditButton
-                onClick={handleEdit}
-                label={isEvent ? "Evento" : "Chamado"}
-              />
-            )) as ReactElement
-          }
-        </Item.Actions>
+        <VStack>
+          <HStack
+            alignItems="start"
+            spacing={6}
+            height="100%"
+            textAlign="right"
+          >
+            <Box>
+              <Text fontSize="sm" fontWeight="light" color="GrayText">
+                Atendente
+              </Text>
+              <Text noOfLines={1}>{chamado?.attendant_name}</Text>
+            </Box>
+            <Box>
+              <Text fontSize="sm" fontWeight="light" color="GrayText">
+                Data / Hora
+              </Text>
+              <Box textAlign="center" fontWeight="medium">
+                <Text>
+                  {formatDate(chamado?.created_at, "date")}{" "}
+                  {formatDate(chamado?.created_at, "time")}
+                </Text>
+              </Box>
+            </Box>
+          </HStack>
+
+          <Item.Actions item={chamado}>
+            {
+              (isEditAuthorized && (
+                <EditButton
+                  onClick={handleEdit}
+                  label={isEvent ? "Evento" : "Chamado"}
+                />
+              )) as ReactElement
+            }
+          </Item.Actions>
+        </VStack>
       </Item>
     </Box>
   )

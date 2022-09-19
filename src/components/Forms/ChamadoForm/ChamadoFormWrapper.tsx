@@ -26,63 +26,56 @@ import { EditButton } from "@components/ActionButtons/EditButton"
 import { ControlledSelect } from "@components/FormFields/ControlledSelect"
 import { Input } from "@components/FormFields/Input"
 import { ChamadoForm } from "@components/Forms/ChamadoForm"
-import { chamadosDefaultValues } from "@components/Forms/ChamadoForm/helpers"
 import { WorkstationModal } from "@components/Modals/WorkstationModal"
 import { useAuthorization } from "@hooks/useAuthorization"
-import { useRequest } from "@hooks/useRequest"
-import { getCities } from "@services/Cidades"
-import { getWorkstations } from "@services/Workstation"
 import { getSelectOptions } from "@utils/getSelectOptions"
+
+import { chamadosDefaultValues, chamadoToFormValues } from "./helpers"
+import { useDropdownData } from "./useDropdowData"
 
 export interface ChamadoFormProps {
   onSubmit: SubmitHandler<ChamadoFormValues>
-  defaultValues?: ChamadoFormValues
+  defaultValues?: Chamado
 }
 
 export const ChamadoFormWrapper = ({
   onSubmit,
   defaultValues
 }: ChamadoFormProps) => {
+  const isEditing = Boolean(defaultValues)
+
   const { data: session } = useSession()
+
   const { isAuthorized: isEditWorkstationAuthorized } = useAuthorization([
     "manager"
   ])
-
-  const isEditing = Boolean(defaultValues)
-
-  const methods = useForm<ChamadoFormValues>({
-    defaultValues: useMemo(
-      () => ({
-        ...chamadosDefaultValues,
-        ...defaultValues,
-        attendant_name: session?.user?.name
-      }),
-      [defaultValues, session?.user?.name]
-    ),
-    mode: "onChange"
-  })
-
-  const {
-    register,
-    getValues,
-    watch,
-    control,
-    handleSubmit,
-    reset,
-    resetField,
-    formState: { errors, isSubmitting, isSubmitSuccessful, isDirty }
-  } = methods
-
-  const { fields, append, remove, update } = useFieldArray({
-    control,
-    name: "problems"
-  })
 
   const {
     onOpen: openWorkstationModal,
     isOpen: isWorkstationModalOpen,
     onClose: closeWorkstationModal
   } = useDisclosure()
+
+  const {
+    cities,
+    isLoadingCities,
+    workstations,
+    isLoadingWorkstations,
+    isValidatingWorkstations,
+    mutateWorkstations
+  } = useDropdownData()
+
+  const methods = useForm<ChamadoFormValues>({
+    defaultValues: useMemo(
+      () => ({
+        ...chamadosDefaultValues,
+        attendant_name: session?.user?.name,
+        ...(defaultValues && chamadoToFormValues(defaultValues))
+      }),
+      [defaultValues, session?.user?.name]
+    ),
+    mode: "onChange"
+  })
 
   useEffect(() => {
     resetField("attendant_name", {
@@ -91,78 +84,60 @@ export const ChamadoFormWrapper = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- ignore resetField
   }, [session?.user])
 
+  const {
+    register,
+    getValues,
+    setValue,
+    watch,
+    control,
+    handleSubmit,
+    reset,
+    resetField,
+    formState: { errors, isSubmitting, isSubmitSuccessful, isDirty },
+    getFieldState
+  } = methods
+
   useEffect(() => {
     // Register with validation, otherwise its possible to send form without 'problems' field
     register("problems", { required: "Adicione um Chamado" })
   }, [register])
 
   useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset()
-    }
+    if (isSubmitSuccessful) reset()
     // eslint-disable-next-line react-hooks/exhaustive-deps -- ignore reset
   }, [isSubmitSuccessful])
 
-  const {
-    data: cities,
-    isLoading: isLoadingCities,
-    error: errorCities
-  } = useRequest<City[]>(getCities)
-
-  const {
-    data: workstations,
-    isLoading: isLoadingWorkstations,
-    isValidating: isValidatingWorkstations,
-    error: errorWorkstations,
-    mutate: mutateWorkstations
-  } = useRequest<Workstation[]>(getWorkstations())
-
+  const selectedWorkstation = watch("workstation_id")
   useEffect(() => {
-    // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE NAME OF THE CITY/WORKSTATION
-    // Get workstation label from defaultValues and set it on the select
-    if (defaultValues?.workstation_id && workstations) {
-      const label = workstations?.data.find(
-        (workstation) =>
-          workstation?.id === defaultValues?.workstation_id?.value
-      )?.name
+    if (!workstations || !selectedWorkstation) return
 
-      if (label)
-        resetField("workstation_id", {
-          defaultValue: {
-            value: defaultValues?.workstation_id?.value,
-            label
-          }
-        })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
-  }, [defaultValues, workstations])
+    // User didn't set a phone, so we set the phone of the selected workstation
+    if (
+      !getFieldState("applicant_phone").isTouched ||
+      !getValues("applicant_phone")
+    )
+      setValue(
+        "applicant_phone",
+        workstations?.data.find((ws) => ws.id === selectedWorkstation?.value)
+          ?.phones?.[0] || "",
+        {
+          shouldValidate: true
+        }
+      )
+  }, [getFieldState, getValues, selectedWorkstation, setValue, workstations])
 
-  useEffect(() => {
-    // THIS A HACKY SOLUTION UNTIL BACKEND SENDS THE NAME OF THE CITY/WORKSTATION
-    // Get workstation label from defaultValues and set it on the select
-    if (defaultValues?.city_id && cities) {
-      const label = cities?.data.find(
-        (city) => city?.id === defaultValues?.city_id?.value
-      )?.name
+  const { fields, append, remove, update } = useFieldArray({
+    control,
+    name: "problems"
+  })
 
-      if (label)
-        resetField("city_id", {
-          defaultValue: {
-            value: defaultValues?.city_id?.value,
-            label
-          }
-        })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- HACKY CODE
-  }, [cities, defaultValues])
-
-  const handleAdd = useCallback(() => {
-    append(chamadosDefaultValues.problems[0])
-  }, [append])
+  const handleAdd = useCallback(
+    () => append(chamadosDefaultValues.problems[0]),
+    [append]
+  )
 
   const handleRemove = useCallback(
     (field: number) => {
-      // if there is only one field, show the remove button
       if (fields.length > 1)
         return () => {
           remove(field)
@@ -176,9 +151,7 @@ export const ChamadoFormWrapper = ({
       if (result.type === "success") {
         toast.success(result.value?.message)
         mutateWorkstations()
-      } else {
-        toast.error(result.error?.message)
-      }
+      } else toast.error(result.error?.message)
 
       closeWorkstationModal()
     },

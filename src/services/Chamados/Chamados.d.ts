@@ -3,7 +3,9 @@ interface Chamado {
   attendant_name: string
   applicant_name: string
   applicant_phone: string
+  city: City
   city_id: number
+  workstation: Workstation
   workstation_id: number
   created_at: Date
   problems: ChamadoProblem[]

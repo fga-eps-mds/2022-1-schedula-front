@@ -13,7 +13,7 @@ const nextConfig = (phase, { defaultConfig }) => ({
     return [
       {
         source: "/",
-        destination: "/categorias",
+        destination: "/chamados",
         permanent: false
       }
     ]

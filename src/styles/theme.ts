@@ -21,9 +21,10 @@ export const theme = extendTheme({
   styles: {
     global: {
       body: {
+        color: "#333333",
         background: "linear-gradient(135deg, #FFFFFF 20%, #F0F0F0 100%)",
         backgroundAttachment: "fixed",
-        color: "#333333"
+        minHeight: "100vh"
       },
       html: {
         marginLeft: "calc(100vw - 100%)", // Fix scrollbar jump

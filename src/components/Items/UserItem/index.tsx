@@ -32,10 +32,10 @@ export const UserItem = ({ user, onEdit, onDelete }: UserItemProps) => {
       title={`${user?.name} [${user?.username}]`}
       description={
         <HStack spacing={2} mt={2.5}>
+          {RoleBadge(user?.acess)}
           <Badge colorScheme="gray" variant="outline">
             {user?.job_role}
           </Badge>
-          {RoleBadge(user?.acess)}
         </HStack>
       }
     >

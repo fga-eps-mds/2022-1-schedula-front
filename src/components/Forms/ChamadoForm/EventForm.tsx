@@ -59,8 +59,20 @@ export const EventForm = ({ defaultValues, onSubmit }: EventFormProps) => {
         />
 
         <Box>
-          <Text>Alertas</Text>
-          <Divider mb={4} />
+          <Flex gap={2} alignItems="center">
+            <ActionButton
+              label="Adicionar Alerta"
+              icon={<FaPlus />}
+              onClick={handleAddDate}
+              variant="outline"
+              color="primary"
+              tooltipProps={{
+                placement: "bottom"
+              }}
+            />
+            <Text>Alertas</Text>
+          </Flex>
+          <Divider mb={4} mt={1} />
           <Grid templateColumns="repeat(auto-fill, minmax(220px, 1fr))" gap={6}>
             {fields?.map((field, index) => {
               return (
@@ -86,17 +98,6 @@ export const EventForm = ({ defaultValues, onSubmit }: EventFormProps) => {
               )
             })}
           </Grid>
-          <ActionButton
-            label="Adicionar Alerta"
-            icon={<FaPlus />}
-            onClick={handleAddDate}
-            variant="outline"
-            color="primary"
-            tooltipProps={{
-              placement: "right"
-            }}
-            mt={4}
-          />
         </Box>
 
         <Flex w="100%" flexDirection="column">

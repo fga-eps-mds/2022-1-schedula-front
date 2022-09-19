@@ -197,8 +197,20 @@ export const WorkstationForm = ({
         )}
 
         <GridItem colSpan={2}>
-          <Text>Telefones</Text>
-          <Divider mb={4} />
+          <Flex gap={2} alignItems="center">
+            <ActionButton
+              label="Adicionar Telefone"
+              icon={<FaPlus />}
+              onClick={handleAddPhone}
+              variant="outline"
+              color="primary"
+              tooltipProps={{
+                placement: "bottom"
+              }}
+            />
+            <Text>Telefones</Text>
+          </Flex>
+          <Divider mb={4} mt={1} />
           <Grid templateColumns="repeat(auto-fill, minmax(220px, 1fr))" gap={6}>
             {fields?.map((phone, index) => {
               return (
@@ -223,17 +235,6 @@ export const WorkstationForm = ({
               )
             })}
           </Grid>
-          <ActionButton
-            label="Adicionar Telefone"
-            icon={<FaPlus />}
-            onClick={handleAddPhone}
-            variant="outline"
-            color="primary"
-            tooltipProps={{
-              placement: "right"
-            }}
-            mt={4}
-          />
         </GridItem>
 
         <GridItem colSpan={2}>

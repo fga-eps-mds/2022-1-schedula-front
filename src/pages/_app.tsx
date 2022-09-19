@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app"
+import Head from "next/head"
 import type { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 import NextNprogress from "nextjs-progressbar"
@@ -40,10 +41,13 @@ function MyApp({
                 #EB6A00,
                 #e84049
                 )"
-            startPosition={0.75}
-            stopDelayMs={50}
+            startPosition={0.2}
+            stopDelayMs={100}
             height={3}
           />
+          <Head>
+            <title>Schedula</title>
+          </Head>
           {getLayout(<Component {...pageProps} />)}
         </SWRConfig>
         <ToastContainer
