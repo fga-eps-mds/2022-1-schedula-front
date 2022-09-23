@@ -1,9 +1,19 @@
+import { ReactNode } from "react"
 import { render } from "@testing-library/react"
 
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
 
+// import RenderIfVisible from "react-render-if-visible"
 import { ListView } from "./index"
+
+jest.mock(
+  "react-render-if-visible",
+  () =>
+    function mockRenderIfVisible({ children }: { children: ReactNode }) {
+      return children
+    }
+)
 
 const mockedData = [
   {

@@ -10,7 +10,13 @@ interface DefaultLayoutProps {
 
 export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
-    <Flex as="main" justifyContent="center" p={14} minHeight="100vh">
+    <Flex
+      as="main"
+      justifyContent="center"
+      p={14}
+      minHeight="100vh"
+      overflow="clip"
+    >
       <Grid
         width="100%"
         maxWidth="1440px"
