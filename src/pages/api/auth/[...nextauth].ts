@@ -37,7 +37,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
               api.defaults.headers.common.Cookie =
                 cookies[0] || (cookies as unknown as string)
 
-              const authToken = cookies[0].split(";")[0].split("=")[1]
+              const authToken = cookies[0].split("")[0].split("=")[1]
 
               const user = jwt.verify(
                 authToken,
@@ -77,7 +77,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       console.log("SESSION: ", session, token)
 
       session.user = token.user as LoggedUser
-      session.token = token
+      session.user.access = token
 
       return session
     }

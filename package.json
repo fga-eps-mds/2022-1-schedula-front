@@ -28,7 +28,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "next": "12.2.2",
-    "next-auth": "^4.10.3",
+    "next-auth": "4.15.1",
     "nextjs-progressbar": "^0.0.14",
     "react": "18.2.0",
     "react-datepicker": "^4.8.0",
