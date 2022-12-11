@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import jwt from "jsonwebtoken";
+import { NextApiRequest, NextApiResponse } from "next"
+import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import jwt from "jsonwebtoken"
 
-import { api } from "@services/api";
-import { loginUser } from "@services/Usuarios";
+import { api } from "@services/api"
+import { loginUser } from "@services/Usuarios"
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const providers = [
@@ -19,7 +19,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         password: { label: "Password", type: "password" }
       },
       authorize: async (credentials) => {
-        let response;
+        let response
 
         try {
           if (credentials?.username && credentials.password) {
@@ -28,60 +28,60 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                 credential: credentials.username,
                 value: credentials.password
               })
-            );
+            )
 
-            const cookies = response.headers["set-cookie"];
+            const cookies = response.headers["set-cookie"]
 
             if (cookies) {
-              res.setHeader("Set-Cookie", cookies);
+              res.setHeader("Set-Cookie", cookies)
               api.defaults.headers.common.Cookie =
-                cookies[0] || (cookies as unknown as string);
+                cookies[0] || (cookies as unknown as string)
 
-              const authToken = cookies[0].split(";")[0].split("=")[1];
+              const authToken = cookies[0].split("")[0].split("=")[1]
 
               const user = jwt.verify(
                 authToken,
                 process.env.NEXTAUTH_SECRET as string
-              ) as LoggedUser;
+              ) as LoggedUser
 
-              return { ...user } ?? null;
+              return { ...user } ?? null
             }
           }
 
-          return null;
+          return null
         } catch (error) {
-          console.log("AUTHORIZE ERROR: ", error);
+          console.log("AUTHORIZE ERROR: ", error)
           // eslint-disable-next-line @typescript-eslint/no-explicit-any -- era p unico jeito
-          throw new Error(error as any);
+          throw new Error(error as any)
         }
       }
     })
-  ];
+  ]
 
   const callbacks: Partial<CallbacksOptions> = {
     async jwt({ token, user }) {
       if (user) {
-        token.user = user;
+        token.user = user
       }
 
-      return token;
+      return token
     },
     redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) return url;
+      if (url.startsWith(baseUrl)) return url
       // Allows relative callback URLs
-      if (url.startsWith("/")) return new URL(url, baseUrl).toString();
+      if (url.startsWith("/")) return new URL(url, baseUrl).toString()
 
-      return baseUrl;
+      return baseUrl
     },
     async session({ session, token }) {
-      console.log("SESSION: ", session, token);
+      console.log("SESSION: ", session, token)
 
-      session.user = token.user as LoggedUser;
-      session.user.access = token;
+      session.user = token.user as LoggedUser
+      session.user.access = token
 
-      return session;
+      return session
     }
-  };
+  }
 
   const options: NextAuthOptions = {
     providers,
@@ -90,7 +90,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       error: "/login",
       signIn: "/login"
     }
-  };
+  }
 
-  return await NextAuth(req, res, options);
+  return await NextAuth(req, res, options)
 }
