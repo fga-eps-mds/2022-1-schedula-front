@@ -1,7 +1,9 @@
 import { toast } from "react-toastify"
 import axios from "axios"
 
-const api = axios.create({ withCredentials: true })
+const api = axios.create({
+  withCredentials: true
+})
 api.defaults.withCredentials = true
 
 export const errorResponseHandler = (error: any) => {
