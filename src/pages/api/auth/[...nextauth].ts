@@ -33,7 +33,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
             if (cookies) {
               res.setHeader("Set-Cookie", cookies)
-              console.log("3 log:", cookies[0])
               api.defaults.headers.common.Cookie =
                 cookies[0] || (cookies as unknown as string)
 
