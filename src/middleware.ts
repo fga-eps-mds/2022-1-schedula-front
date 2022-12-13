@@ -8,7 +8,6 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        console.log(token)
         console.log("token: ", token, req)
 
         return Boolean(token)
