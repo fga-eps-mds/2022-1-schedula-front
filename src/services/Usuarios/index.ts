@@ -1,6 +1,6 @@
 import { Services } from "@services"
 
-const UserService = Services.usuarios.create("/user")
+const UserService = Services.usuarios.create("/users")
 const AuthService = Services.usuarios.create("/auth")
 
 export const getUsers = UserService.get()
