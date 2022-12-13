@@ -10,6 +10,7 @@ interface User {
 }
 
 interface LoggedUser {
+  id: string
   username: string
   name: string
   job_role: string
@@ -32,6 +33,6 @@ interface CredentialUser {
 }
 
 interface CredentialUserPayload {
-  credential: string
-  value: string
+  username: string
+  password: string
 }
