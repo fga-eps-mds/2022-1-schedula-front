@@ -8,12 +8,11 @@ import { CategoryItem } from "@components/Items/CategoryItem"
 import { ListView } from "@components/List"
 import { CategoryModal } from "@components/Modals/CategoryModal"
 import { PageHeader } from "@components/PageHeader"
-import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCategories } from "@services/Categorias"
 
 const ListaCategoria = () => {
-  const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
+  const isCreateAuthorized = true
 
   const {
     data: categorias,

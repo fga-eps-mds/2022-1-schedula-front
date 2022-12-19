@@ -5,7 +5,6 @@ import { AddButton } from "@components/ActionButtons/AddButton"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
-import { useAuthorization } from "@hooks/useAuthorization"
 import { deleteCategory } from "@services/Categorias"
 import { request } from "@services/request"
 
@@ -20,8 +19,8 @@ export const CategoryItem = ({
   onEdit,
   onDelete
 }: CategoryItemProps) => {
-  const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
-  const { isAuthorized: isDeleteAuthorized } = useAuthorization()
+  const isEditAuthorized = true
+  const isDeleteAuthorized = true
 
   const router = useRouter()
 

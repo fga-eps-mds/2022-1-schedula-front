@@ -8,14 +8,11 @@ import { UserItem } from "@components/Items/UserItem"
 import { ListView } from "@components/List"
 import { UserModal } from "@components/Modals/UserModal"
 import { PageHeader } from "@components/PageHeader"
-import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getUsers } from "@services/Usuarios"
 
 const Usuarios = () => {
-  const { isAuthorized: isCreateAuthorized, status } = useAuthorization([
-    "manager"
-  ])
+  const isCreateAuthorized = true
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 

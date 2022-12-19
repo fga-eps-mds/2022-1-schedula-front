@@ -3,7 +3,6 @@ import { ReactElement, useCallback } from "react"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
-import { useAuthorization } from "@hooks/useAuthorization"
 import { deleteCity } from "@services/Cidades"
 import { request } from "@services/request"
 
@@ -14,8 +13,8 @@ interface CityItemProps {
 }
 
 export const CityItem = ({ city, onEdit, onDelete }: CityItemProps) => {
-  const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
-  const { isAuthorized: isDeleteAuthorized } = useAuthorization()
+  const isEditAuthorized = true
+  const isDeleteAuthorized = true
 
   const handleDelete = useCallback(
     async ({ id }: City) => {

@@ -4,7 +4,6 @@ import { Badge, HStack } from "@chakra-ui/react"
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
-import { useAuthorization } from "@hooks/useAuthorization"
 import { request } from "@services/request"
 import { deleteUser } from "@services/Usuarios"
 
@@ -15,8 +14,8 @@ interface UserItemProps {
 }
 
 export const UserItem = ({ user, onEdit, onDelete }: UserItemProps) => {
-  const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
-  const { isAuthorized: isDeleteAuthorized } = useAuthorization()
+  const isEditAuthorized = true
+  const isDeleteAuthorized = true
 
   const handleDelete = useCallback(
     async ({ username }: User) => {

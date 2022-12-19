@@ -16,13 +16,12 @@ import { ProblemTypeItem } from "@components/Items/ProblemTypeItem"
 import { ListView } from "@components/List"
 import { ProblemTypeModal } from "@components/Modals/ProblemTypeModal"
 import { PageHeader } from "@components/PageHeader"
-import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCategoryById } from "@services/Categorias"
 import { getProblemTypes } from "@services/Problemas"
 
 const ListaProblemas = () => {
-  const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
+  const isCreateAuthorized = true
   const router = useRouter()
 
   const category_id = Number(router.query?.id)
