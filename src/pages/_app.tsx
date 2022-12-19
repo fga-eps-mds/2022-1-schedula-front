@@ -1,12 +1,12 @@
 import type { AppProps } from "next/app"
 import Head from "next/head"
-import type { Session } from "next-auth"
-import { SessionProvider } from "next-auth/react"
 import NextNprogress from "nextjs-progressbar"
 import { Slide, ToastContainer } from "react-toastify"
 import { ChakraProvider } from "@chakra-ui/react"
 import { DefaultLayout } from "layout/DefaultLayout"
 import { SWRConfig, SWRConfiguration } from "swr"
+
+import { AuthProvider } from "@contexts/AuthContext"
 
 import { theme } from "@styles/theme"
 import "react-toastify/dist/ReactToastify.css"
@@ -14,7 +14,7 @@ import "@styles/react-datepicker.scss"
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithProps
-  pageProps: { session: Session; pageProps: unknown }
+  pageProps: { pageProps: unknown }
 }
 
 const swrConfig: SWRConfiguration = {
@@ -22,15 +22,12 @@ const swrConfig: SWRConfiguration = {
   shouldRetryOnError: false
 }
 
-function MyApp({
-  Component,
-  pageProps: { session, ...pageProps }
-}: AppPropsWithLayout) {
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout =
     Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>)
 
   return (
-    <SessionProvider session={session}>
+    <AuthProvider>
       <ChakraProvider resetCSS theme={theme}>
         <SWRConfig value={swrConfig}>
           <NextNprogress
@@ -57,7 +54,7 @@ function MyApp({
           transition={Slide}
         />
       </ChakraProvider>
-    </SessionProvider>
+    </AuthProvider>
   )
 }
 
