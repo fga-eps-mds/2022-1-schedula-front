@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState
-} from "react"
+import { createContext, ReactNode, useContext, useState } from "react"
 import Router from "next/router"
 import { toast } from "react-toastify"
 import { destroyCookie, setCookie } from "nookies"
@@ -30,29 +24,31 @@ const FAKE_USER_DATA = {
   permissions: ["all"]
 }
 
-let authChannel: BroadcastChannel
+// let authChannel: BroadcastChannel
 
 export function signOut() {
   destroyCookie(undefined, "schedula.token")
 
-  authChannel.postMessage("signOut")
+  // authChannel.postMessage("signOut")
 
   Router.push("/login")
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<SignedUser>({} as SignedUser)
-  const isAuthenticated = !!user
+  const isAuthenticated = !!user?.token
 
-  useEffect(() => {
-    authChannel = new BroadcastChannel("schedula.auth")
+  // useEffect(() => {
+  //   if (typeof window !== undefined) {
+  //     authChannel = new BroadcastChannel("schedula.auth")
 
-    authChannel.onmessage = (message) => {
-      if (message.data === "signOut") {
-        signOut()
-      }
-    }
-  }, [])
+  //     authChannel.onmessage = (message) => {
+  //       if (message.data === "signOut") {
+  //         signOut()
+  //       }
+  //     }
+  //   }
+  // }, [])
 
   async function signIn({ username, password }: SignInCredentials) {
     try {
