@@ -17,13 +17,14 @@ export const ListView = typedMemo(
   <Data,>({ items, render, isLoading, ...props }: ListViewProps<Data>) => {
     return (
       <List spacing={6} {...props}>
-        {items?.map((item, key) => (
-          <RenderIfVisible defaultHeight={92 /* magic number */} key={key}>
-            <Fade in>
-              <ListItem>{render(item)}</ListItem>
-            </Fade>
-          </RenderIfVisible>
-        ))}
+        {items &&
+          items?.map((item, key) => (
+            <RenderIfVisible defaultHeight={92 /* magic number */} key={key}>
+              <Fade in>
+                <ListItem>{render(item)}</ListItem>
+              </Fade>
+            </RenderIfVisible>
+          ))}
 
         {isLoading &&
           Array.from({ length: 4 }, (_, key) => (

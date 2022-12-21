@@ -1,40 +1,29 @@
-import { useCallback } from "react"
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable react-perf/jsx-no-new-function-as-prop */
 import { Badge, HStack } from "@chakra-ui/react"
 
 import { DeleteButton } from "@components/ActionButtons/DeleteButton"
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
-import { useAuthorization } from "@hooks/useAuthorization"
-import { request } from "@services/request"
-import { deleteUser } from "@services/Usuarios"
 
 interface UserItemProps {
   user: User
   onEdit: (user: User) => void
-  onDelete: (result: Result<ApiResponse<null>>, user: User) => void
+  onDelete: (userId: string) => Promise<void>
 }
 
 export const UserItem = ({ user, onEdit, onDelete }: UserItemProps) => {
-  const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
-  const { isAuthorized: isDeleteAuthorized } = useAuthorization()
-
-  const handleDelete = useCallback(
-    async ({ username }: User) => {
-      const response = await request<null>(deleteUser(username))
-
-      onDelete?.(response, user)
-    },
-    [user, onDelete]
-  )
+  const isEditAuthorized = true
+  const isDeleteAuthorized = true
 
   return (
     <Item
       title={`${user?.name} [${user?.username}]`}
       description={
         <HStack spacing={2} mt={2.5}>
-          {RoleBadge(user?.acess)}
+          {RoleBadge(user?.profile)}
           <Badge colorScheme="gray" variant="outline">
-            {user?.job_role}
+            {user?.position}
           </Badge>
         </HStack>
       }
@@ -47,7 +36,7 @@ export const UserItem = ({ user, onEdit, onDelete }: UserItemProps) => {
         }
         {
           (isDeleteAuthorized && (
-            <DeleteButton onClick={handleDelete} label={user.name} />
+            <DeleteButton onClick={() => onDelete(user.id)} label={user.name} />
           )) as ReactElement
         }
       </Item.Actions>
@@ -57,20 +46,20 @@ export const UserItem = ({ user, onEdit, onDelete }: UserItemProps) => {
 
 const RoleBadge = (role: Access) => {
   switch (role) {
-    case "admin":
+    case "ADMIN":
       return (
         <Badge colorScheme="purple" variant="solid">
-          Admin
+          Administrador
         </Badge>
       )
 
-    case "basic":
-      return <Badge>Basico</Badge>
+    case "BASIC":
+      return <Badge>Usuário</Badge>
 
-    case "manager":
-      return <Badge colorScheme="green">Gerente</Badge>
+    // case "MANAGER":
+    //   return <Badge colorScheme="green">Gerente</Badge>
 
     default:
-      return <Badge>Basico</Badge>
+      return <Badge>Básico</Badge>
   }
 }

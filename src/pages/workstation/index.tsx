@@ -20,13 +20,12 @@ import {
   workstationFields,
   WorkstationsFilter
 } from "@components/WorkstationsFilter"
-import { useAuthorization } from "@hooks/useAuthorization"
 import { useFilters } from "@hooks/useFilters"
 import { useRequest } from "@hooks/useRequest"
 import { getWorkstations } from "@services/Workstation"
 
 const Workstation = () => {
-  const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
+  const isCreateAuthorized = true
 
   const { filters, updateField } = useFilters(workstationFields)
 

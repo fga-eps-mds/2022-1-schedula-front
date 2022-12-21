@@ -1,5 +1,4 @@
 import { memo } from "react"
-import { useSession } from "next-auth/react"
 import { FaRegUser } from "react-icons/fa"
 import { RiLogoutCircleFill } from "react-icons/ri"
 import {
@@ -12,14 +11,17 @@ import {
   VStack
 } from "@chakra-ui/react"
 
-import { useSignOut } from "@hooks/useSignOut"
+import { signOut, useAuth } from "@contexts/AuthContext"
 import { routes } from "@routes"
 
 import { SideBarItem } from "./SidebarItem/SideBarItem"
 
 export const SideBar = memo(() => {
-  const { data: session } = useSession()
-  const signOut = useSignOut()
+  const { user } = useAuth()
+
+  async function handleSignOut() {
+    signOut()
+  }
 
   return (
     <Flex
@@ -47,11 +49,11 @@ export const SideBar = memo(() => {
         <Flex gap={2} justifyContent={"space-between"} alignItems={"center"}>
           <FaRegUser size={25} />
           <Text maxWidth={140} noOfLines={1}>
-            {session?.user?.name ?? "Username"}
+            {user?.name ?? "Usuário"}
           </Text>
           <Icon
             as={RiLogoutCircleFill}
-            onClick={signOut}
+            onClick={handleSignOut}
             fontSize={24}
             cursor="pointer"
           />

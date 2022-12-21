@@ -10,10 +10,11 @@ type Releases = {
 }
 
 const onError = (service: string) => () =>
-  toast.error(`O Serviço de ${service} está fora do ar`, {
-    autoClose: false,
-    theme: "dark"
-  })
+  // toast.error(`O Serviço de ${service} está fora do ar`, {
+  //   autoClose: false,
+  //   theme: "dark"
+  // })
+  console.error(`O Serviço de ${service} está fora do ar`)
 
 const onLoadingSlow = (service: string) => () =>
   toast.warn(`A API de ${service} está lenta`, {

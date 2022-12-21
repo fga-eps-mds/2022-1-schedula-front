@@ -1,31 +1,28 @@
-import { useRouter } from "next/router"
-import { signIn } from "next-auth/react"
+import { useState } from "react"
+import { GetServerSideProps } from "next"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { Box, Button, Center, Input, Text } from "@chakra-ui/react"
 
+import { useAuth } from "@contexts/AuthContext"
+import { withSSRGuest } from "@utils/withSSRGuest"
+
 const Login: NextPageWithProps = () => {
-  const router = useRouter()
+  const { signIn } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
+
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<CredentialUser>()
 
-  const onSubmit: SubmitHandler<CredentialUser> = async (data) => {
-    const response = await signIn("credentials", {
-      ...data,
-      redirect: false
-    })
-
-    if (!response?.error) {
-      router.push((router?.query?.callbackUrl as string) || "/")
-
-      return
-    }
-
-    console.log("Sign in response: ", response)
-    toast.error(response.error)
+  const onSubmit: SubmitHandler<CredentialUser> = async ({
+    username,
+    password
+  }) => {
+    setIsLoading(true)
+    await signIn({ username, password })
+    setIsLoading(false)
   }
 
   return (
@@ -100,7 +97,13 @@ const Login: NextPageWithProps = () => {
               )}
             </Box>
             <Center>
-              <Button mb="70px" type="submit" paddingX="24" width="sm">
+              <Button
+                mb="70px"
+                type="submit"
+                paddingX="24"
+                width="sm"
+                isLoading={isLoading}
+              >
                 ENTRAR
               </Button>
             </Center>
@@ -116,3 +119,11 @@ Login.getLayout = (page) => {
 }
 
 export default Login
+
+export const getServerSideProps: GetServerSideProps = withSSRGuest(
+  async (_) => {
+    return {
+      props: {}
+    }
+  }
+)

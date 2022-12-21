@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react"
+import { GetServerSideProps } from "next"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
@@ -11,6 +12,7 @@ import { ChamadoModal } from "@components/Modals/ChamadoModal"
 import { PageHeader } from "@components/PageHeader"
 import { useRequest } from "@hooks/useRequest"
 import { getChamados } from "@services/Chamados"
+import { withSSRAuth } from "@utils/withSSRAuth"
 
 const Chamados = () => {
   const router = useRouter()
@@ -97,3 +99,9 @@ const Chamados = () => {
 }
 
 export default Chamados
+
+export const getServerSideProps: GetServerSideProps = withSSRAuth(async (_) => {
+  return {
+    props: {}
+  }
+})

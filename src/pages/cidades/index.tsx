@@ -8,12 +8,11 @@ import { CityItem } from "@components/Items/CityItem"
 import { ListView } from "@components/List"
 import { CityModal } from "@components/Modals/CityModal"
 import { PageHeader } from "@components/PageHeader"
-import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCities } from "@services/Cidades"
 
 const ListaCidades = () => {
-  const { isAuthorized: isCreateAuthorized } = useAuthorization(["manager"])
+  const isCreateAuthorized = true
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 

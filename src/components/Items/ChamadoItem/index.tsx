@@ -13,7 +13,6 @@ import {
 import { EditButton } from "@components/ActionButtons/EditButton"
 import { Item } from "@components/ListItem"
 import { CHAMADO_PRIORITY, priorityColorMap } from "@constants/Chamados"
-import { useAuthorization } from "@hooks/useAuthorization"
 import { useRequest } from "@hooks/useRequest"
 import { getCityById } from "@services/Cidades"
 import { getWorkstationById } from "@services/Workstation"
@@ -25,7 +24,8 @@ interface ChamadoItemProps {
 }
 
 export const ChamadoItem = ({ chamado, handleEdit }: ChamadoItemProps) => {
-  const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
+  const isEditAuthorized = true
+  // const { isAuthorized: isEditAuthorized } = useAuthorization(["manager"])
 
   const isEvent = useMemo(
     () => chamado?.problems?.some((item) => item?.is_event),
