@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo } from "react"
-import { useSession } from "next-auth/react"
 import {
   FormProvider,
   SubmitHandler,
@@ -27,7 +26,7 @@ import { ControlledSelect } from "@components/FormFields/ControlledSelect"
 import { Input } from "@components/FormFields/Input"
 import { ChamadoForm } from "@components/Forms/ChamadoForm"
 import { WorkstationModal } from "@components/Modals/WorkstationModal"
-import { useAuthorization } from "@hooks/useAuthorization"
+import { useAuth } from "@contexts/AuthContext"
 import { getSelectOptions } from "@utils/getSelectOptions"
 
 import { chamadosDefaultValues, chamadoToFormValues } from "./helpers"
@@ -43,12 +42,12 @@ export const ChamadoFormWrapper = ({
   defaultValues
 }: ChamadoFormProps) => {
   const isEditing = Boolean(defaultValues)
+  const { user } = useAuth()
 
-  const { data: session } = useSession()
-
-  const { isAuthorized: isEditWorkstationAuthorized } = useAuthorization([
-    "manager"
-  ])
+  // const { isAuthorized: isEditWorkstationAuthorized } = useAuth([
+  //   "manager"
+  // ])
+  const isEditWorkstationAuthorized = true
 
   const {
     onOpen: openWorkstationModal,
@@ -69,20 +68,20 @@ export const ChamadoFormWrapper = ({
     defaultValues: useMemo(
       () => ({
         ...chamadosDefaultValues,
-        attendant_name: session?.user?.name,
+        attendant_name: user?.name,
         ...(defaultValues && chamadoToFormValues(defaultValues))
       }),
-      [defaultValues, session?.user?.name]
+      [defaultValues, user?.name]
     ),
     mode: "onChange"
   })
 
   useEffect(() => {
     resetField("attendant_name", {
-      defaultValue: session?.user?.name
+      defaultValue: user?.name
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps -- ignore resetField
-  }, [session?.user])
+  }, [user])
 
   const {
     register,
