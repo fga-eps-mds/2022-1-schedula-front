@@ -1,4 +1,5 @@
 import { useCallback } from "react"
+import { toast } from "react-toastify"
 import { ModalProps } from "@chakra-ui/react"
 
 import { UserForm, UserFormValues } from "@components/Forms/UserForm"
@@ -20,12 +21,23 @@ export const UserModal = ({
   ...props
 }: UserModalProps) => {
   const handleSubmit = useCallback(
-    async (data: UserFormValues) => {
-      console.log("DATA: ", data)
-
+    async ({
+      name,
+      email,
+      position,
+      profile,
+      username,
+      confirmPassword,
+      password
+    }: UserFormValues) => {
       const payload: RegisterUserPayload = {
-        ...data,
-        acess: data?.acess?.value
+        name,
+        username,
+        email,
+        position,
+        profile: profile?.value,
+        password,
+        confirmPassword
       }
 
       const response = await request<User>(
@@ -36,6 +48,10 @@ export const UserModal = ({
 
       if (response.type === "error") {
         // Let hook form know that submit was not successful
+        toast.error(
+          "Não foi possível salvar os dados do usuário. Tente novamente mais tarde!"
+        )
+
         return Promise.reject(response.error?.message)
       } else {
         onClose?.()
