@@ -1,12 +1,18 @@
-type Access = "basic" | "manager" | "admin"
+type Access = "BASIC" | "ADMIN"
 
 interface User {
-  username: string
+  id: string
   email: string
+  username: string
   name: string
-  active: boolean
-  acess: Access // NOTE: fix 'acess' typo on backend
-  job_role: string
+
+  position: string
+  profile: Access
+
+  confirmationToken?: string
+  recoverToken?: string
+
+  active?: boolean
 }
 
 interface LoggedUser {
@@ -21,8 +27,8 @@ interface RegisterUserPayload {
   username: string
   email: string
   name: string
-  acess: Access
-  job_role: string
+  position: string
+  profile: Access
   password: string
   confirmPassword: string
 }

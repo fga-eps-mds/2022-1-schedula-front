@@ -10,8 +10,8 @@ interface UserFormProps {
   onSubmit: (data: UserFormValues) => void
 }
 
-export type UserFormValues = Omit<RegisterUserPayload, "acess"> & {
-  acess: SelectOption<Access>
+export type UserFormValues = Omit<RegisterUserPayload, "profile"> & {
+  profile: SelectOption<Access>
 }
 
 export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
@@ -26,9 +26,9 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
   } = useForm<UserFormValues>({
     defaultValues: {
       ...defaultValues,
-      acess: defaultValues?.acess && {
-        label: USER_ACCESS[defaultValues.acess],
-        value: defaultValues.acess
+      profile: defaultValues?.profile && {
+        label: USER_ACCESS[defaultValues.profile],
+        value: defaultValues.profile
       },
       password: ""
     }
@@ -81,21 +81,21 @@ export const UserForm = ({ defaultValues, onSubmit }: UserFormProps) => {
         />
 
         <ControlledSelect
-          label="Acesso"
+          label="Perfil"
           control={control}
-          name="acess" // NOTE: fix 'acess' typo in backend
-          id="acess" // NOTE: fix 'acess' typo in backend
+          name="profile"
+          id="profile"
           options={Object.entries(USER_ACCESS).map(([value, label]) => ({
             value,
             label
           }))}
-          placeholder="Acesso"
+          placeholder="Perfil"
           rules={{ required: "Campo obrigatório" }}
         />
         <Input
           label="Cargo"
-          {...register("job_role", { required: "Campo obrigatório" })}
-          errors={errors?.job_role}
+          {...register("position", { required: "Campo obrigatório" })}
+          errors={errors?.position}
           placeholder="Cargo"
         />
 

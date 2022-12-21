@@ -1,62 +1,67 @@
-import { useCallback, useState } from "react"
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable react-perf/jsx-no-new-function-as-prop */
+import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { Button, HStack, useDisclosure } from "@chakra-ui/react"
-import { AxiosResponse } from "axios"
 
 import { RefreshButton } from "@components/ActionButtons/RefreshButton"
 import { UserItem } from "@components/Items/UserItem"
 import { ListView } from "@components/List"
 import { UserModal } from "@components/Modals/UserModal"
 import { PageHeader } from "@components/PageHeader"
-import { useRequest } from "@hooks/useRequest"
-import { getUsers } from "@services/Usuarios"
+import { apiClient } from "@services/apiClient"
 
 const Usuarios = () => {
   const isCreateAuthorized = true
+  const isValidating = false
+  const [isLoading, setIsLoading] = useState(false)
+  const [users, setUsers] = useState<User[]>([])
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [userToEdit, setUserToEdit] = useState<User>()
 
-  const {
-    data: users,
-    isLoading,
-    isValidating,
-    mutate
-  } = useRequest<User[]>(getUsers)
+  async function getUsers() {
+    setIsLoading(true)
 
-  const refresh = useCallback(
-    (data?: User[]) =>
-      mutate(
-        {
-          data: {
-            error: null,
-            message: "",
-            data: data ?? []
-          }
-        } as AxiosResponse<ApiResponse<User[]>>,
-        { revalidate: !data }
-      ),
-    [mutate]
-  )
+    try {
+      const response = await apiClient.get<User[]>(
+        `${process.env.NEXT_PUBLIC_GESTOR_DE_USUARIOS_URL}/users`
+      )
 
-  const onDelete = useCallback(
-    (result: Result<ApiResponse<null>>, { username }: User) => {
-      if (result.type === "success") {
-        toast.success(result.value?.message)
+      setUsers(response.data)
+    } catch {
+      toast.error("Não foi possível carregar os dados dos usuários")
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-        const newUsers = users?.data.filter(
-          (user) => user.username !== username
-        )
-        refresh(newUsers)
+  useEffect(() => {
+    getUsers()
+  }, [])
 
-        return
-      }
+  const mutate = async () => {
+    getUsers()
+  }
 
-      toast.error(result.error?.message)
-    },
-    [refresh, users?.data]
-  )
+  const onDelete = useCallback(async (userId: string) => {
+    try {
+      await apiClient.delete(
+        `${process.env.NEXT_PUBLIC_GESTOR_DE_USUARIOS_URL}/users/${userId}`
+      )
+
+      getUsers()
+
+      toast.success("Usuário removido com sucesso!")
+    } catch {
+      toast.error("Não foi possível remover o usuário. Tente novamente!")
+    }
+  }, [])
+
+  const onSubmit = () => {
+    getUsers()
+  }
 
   const onEdit = useCallback(
     (user: User) => {
@@ -64,29 +69,6 @@ const Usuarios = () => {
       onOpen()
     },
     [onOpen]
-  )
-
-  const onSubmit = useCallback(
-    (result: Result<ApiResponse<User>>) => {
-      if (result.type === "error") {
-        toast.error(result.error?.message)
-
-        return
-      }
-
-      toast.success(result.value?.message)
-
-      const newUsers = userToEdit
-        ? users?.data.map((user) =>
-            user.username === userToEdit?.username ? result.value.data : user
-          )
-        : [...(users?.data || []), result.value?.data]
-
-      refresh(newUsers)
-      setUserToEdit(undefined)
-      onClose()
-    },
-    [onClose, refresh, userToEdit, users?.data]
   )
 
   const handleClose = useCallback(() => {
@@ -111,7 +93,7 @@ const Usuarios = () => {
       </PageHeader>
 
       <ListView<User>
-        items={users?.data}
+        items={users}
         render={renderUserItem}
         isLoading={isLoading || isValidating}
       />
