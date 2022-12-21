@@ -60,7 +60,7 @@ const Usuarios = () => {
   }, [])
 
   const onSubmit = () => {
-    //awdawdawd
+    getUsers()
   }
 
   const onEdit = useCallback(

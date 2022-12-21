@@ -4,12 +4,11 @@ import { ModalProps } from "@chakra-ui/react"
 
 import { UserForm, UserFormValues } from "@components/Forms/UserForm"
 import { Modal } from "@components/Modal"
-import { request } from "@services/request"
-import { createUser, updateUser } from "@services/Usuarios"
+import { apiClient } from "@services/apiClient"
 
 interface UserModalProps extends Partial<ModalProps> {
   user?: User | undefined
-  onSubmit: (result: Result<ApiResponse<User>>) => void
+  onSubmit: () => void
   isOpen: boolean
   onClose: () => void
 }
@@ -40,21 +39,30 @@ export const UserModal = ({
         confirmPassword
       }
 
-      const response = await request<User>(
-        user ? updateUser(user.username)(payload) : createUser(payload)
-      )
+      const endpoint = user
+        ? process.env.NEXT_PUBLIC_GESTOR_DE_USUARIOS_URL + "/users/" + user.id
+        : process.env.NEXT_PUBLIC_GESTOR_DE_USUARIOS_URL + "/users"
 
-      onSubmit?.(response)
+      try {
+        if (user) {
+          await apiClient.put(endpoint, payload)
+          toast.success("Usuário editado com sucesso!")
+        } else {
+          await apiClient.post(endpoint, payload)
+          toast.success("Usuário criado com sucesso!")
+        }
 
-      if (response.type === "error") {
-        // Let hook form know that submit was not successful
+        onSubmit()
+        onClose?.()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
         toast.error(
-          "Não foi possível salvar os dados do usuário. Tente novamente mais tarde!"
+          `Não foi possível salvar os dados do usuário. ${err?.response?.data?.message}`
         )
 
-        return Promise.reject(response.error?.message)
-      } else {
-        onClose?.()
+        console.log(err)
+
+        return Promise.reject(err?.message)
       }
     },
     [user, onClose, onSubmit]
