@@ -8,9 +8,7 @@ describe('DeleteButton', () => {
   });
 
   it('should be able to call DeleteButton onClick function', async () => {
-    const { debug } = render(
-      <DeleteButton label="usuário" onClick={() => {}} />
-    );
+    render(<DeleteButton label="usuário" onClick={() => {}} />);
 
     const button = screen.getByText('Excluir usuário');
 
