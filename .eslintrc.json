@@ -24,6 +24,8 @@
     "react/button-has-type": "off",
     "@typescript-eslint/no-shadow": "off",
     "import/prefer-default-export": "off",
-    "@typescript-eslint/naming-convention": "off"
+    "@typescript-eslint/naming-convention": "off",
+    "import/extensions": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }
