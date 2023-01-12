@@ -22,17 +22,17 @@ import {
 } from '@chakra-ui/react';
 
 // import { useAuth } from '@contexts/AuthContext';
-import { useDropdownData } from '@/components/forms/chamado-form/hooks/useDropdownData';
+// import { useDropdownData } from '@/components/forms/chamado-form/hooks/useDropdownData';
 import {
   chamadosDefaultValues,
   chamadoToFormValues,
-  getSelectOptions,
+  // getSelectOptions,
 } from '@/utils/form-utils';
-import { ControlledSelect, Input } from '@/components/form-fields';
+import { Input } from '@/components/form-fields';
 import { EditButton } from '@/components/action-buttons/edit-button';
 import { ChamadoForm } from '@/components/forms/chamado-form';
-import { toast } from '@/utils/toast';
-import { WorkstationModal } from '@/components/modals/workstation-modal';
+// import { toast } from '@/utils/toast';
+// import { WorkstationModal } from '@/components/modals/workstation-modal';
 
 export interface ChamadoFormProps {
   onSubmit: SubmitHandler<ChamadoFormValues>;
@@ -56,18 +56,18 @@ export function ChamadoFormWrapper({
 
   const {
     onOpen: openWorkstationModal,
-    isOpen: isWorkstationModalOpen,
-    onClose: closeWorkstationModal,
+    // isOpen: isWorkstationModalOpen,
+    // onClose: closeWorkstationModal,
   } = useDisclosure();
 
-  const {
-    cities,
-    isLoadingCities,
-    workstations,
-    isLoadingWorkstations,
-    isValidatingWorkstations,
-    mutateWorkstations,
-  } = useDropdownData();
+  // const {
+  //   cities,
+  //   isLoadingCities,
+  //   workstations,
+  //   isLoadingWorkstations,
+  //   isValidatingWorkstations,
+  //   mutateWorkstations,
+  // } = useDropdownData();
 
   const methods = useForm<ChamadoFormValues>({
     defaultValues: useMemo(
@@ -83,15 +83,15 @@ export function ChamadoFormWrapper({
 
   const {
     register,
-    getValues,
-    setValue,
+    // getValues,
+    // setValue,
     watch,
     control,
     handleSubmit,
     reset,
     resetField,
     formState: { errors, isSubmitting, isSubmitSuccessful, isDirty },
-    getFieldState,
+    // getFieldState,
   } = methods;
 
   useEffect(() => {
@@ -111,25 +111,25 @@ export function ChamadoFormWrapper({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- ignore reset
   }, [isSubmitSuccessful]);
 
-  const selectedWorkstation = watch('workstation_id');
-  useEffect(() => {
-    if (!workstations || !selectedWorkstation) return;
+  // const selectedWorkstation = watch('workstation_id');
+  // useEffect(() => {
+  //   if (!workstations || !selectedWorkstation) return;
 
-    // User didn't set a phone, so we set the phone of the selected workstation
-    if (
-      !getFieldState('applicant_phone').isTouched ||
-      !getValues('applicant_phone')
-    )
-      setValue(
-        'applicant_phone',
-        workstations?.data.find(
-          (ws: Workstation) => ws.id === selectedWorkstation?.value
-        )?.phones?.[0] || '',
-        {
-          shouldValidate: true,
-        }
-      );
-  }, [getFieldState, getValues, selectedWorkstation, setValue, workstations]);
+  //   // User didn't set a phone, so we set the phone of the selected workstation
+  //   if (
+  //     !getFieldState('applicant_phone').isTouched ||
+  //     !getValues('applicant_phone')
+  //   )
+  //     setValue(
+  //       'applicant_phone',
+  //       workstations?.data.find(
+  //         (ws: Workstation) => ws.id === selectedWorkstation?.value
+  //       )?.phones?.[0] || '',
+  //       {
+  //         shouldValidate: true,
+  //       }
+  //     );
+  // }, [getFieldState, getValues, selectedWorkstation, setValue, workstations]);
 
   const { fields, append, remove, update } = useFieldArray({
     control,
@@ -152,17 +152,17 @@ export function ChamadoFormWrapper({
     [fields.length, remove]
   );
 
-  const handleWorkstationEdit = useCallback(
-    (result: Result<ApiResponse<Workstation>>) => {
-      if (result.type === 'success') {
-        toast.success(result.value?.message);
-        mutateWorkstations();
-      } else toast.error(result.error?.message);
+  // const handleWorkstationEdit = useCallback(
+  //   (result: Result<ApiResponse<Workstation>>) => {
+  //     if (result.type === 'success') {
+  //       toast.success(result.value?.message);
+  //       mutateWorkstations();
+  //     } else toast.error(result.error?.message);
 
-      closeWorkstationModal();
-    },
-    [closeWorkstationModal, mutateWorkstations]
-  );
+  //     closeWorkstationModal();
+  //   },
+  //   [closeWorkstationModal, mutateWorkstations]
+  // );
 
   return (
     <>
@@ -202,7 +202,7 @@ export function ChamadoFormWrapper({
             }
           />
 
-          <ControlledSelect
+          {/* <ControlledSelect
             control={control}
             name="city_id"
             id="city_id"
@@ -211,7 +211,7 @@ export function ChamadoFormWrapper({
             placeholder="Cidade"
             label="Cidade"
             rules={{ required: 'Campo obrigatório' }}
-          />
+          /> */}
 
           <GridItem position="relative">
             <EditButton
@@ -228,7 +228,7 @@ export function ChamadoFormWrapper({
               zIndex={5}
               tabIndex={-1}
             />
-            <ControlledSelect
+            {/* <ControlledSelect
               control={control}
               name="workstation_id"
               id="workstation_id"
@@ -237,7 +237,7 @@ export function ChamadoFormWrapper({
               placeholder="Posto de Trabalho"
               label="Posto de Trabalho"
               rules={{ required: 'Campo obrigatório' }}
-            />
+            /> */}
           </GridItem>
 
           <GridItem colSpan={2}>
@@ -290,7 +290,7 @@ export function ChamadoFormWrapper({
         </Button>
       </FormProvider>
 
-      <WorkstationModal
+      {/* <WorkstationModal
         workstation={workstations?.data?.find(
           (station: { id: number }) =>
             station.id === getValues('workstation_id.value')
@@ -298,7 +298,7 @@ export function ChamadoFormWrapper({
         isOpen={isWorkstationModalOpen}
         onClose={closeWorkstationModal}
         onSubmit={handleWorkstationEdit}
-      />
+      /> */}
     </>
   );
 }

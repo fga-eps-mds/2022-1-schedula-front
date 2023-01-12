@@ -10,13 +10,13 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { useDropdownData } from '@/components/forms/chamado-form/hooks/useDropdownData';
+// import { useDropdownData } from '@/components/forms/chamado-form/hooks/useDropdownData';
 import { formatDate } from '@/utils/format-date';
 import { statusColor } from '@/utils/status';
 import { ActionButton } from '@/components/action-buttons';
 import { DeleteButton } from '@/components/action-buttons/delete-button';
 import { ControlledSelect } from '@/components/form-fields';
-import { getSelectOptions } from '@/utils/form-utils';
+// import { getSelectOptions } from '@/utils/form-utils';
 import { CHAMADO_PRIORITY, CHAMADO_STATUS } from '@/constants/chamados';
 import { Modal } from '@/components/modal';
 import { EventInfo } from '@/components/forms/chamado-form/event-info';
@@ -51,16 +51,16 @@ export function ChamadoForm({
     }
   }, [isSubmitSuccessful, reset]);
 
-  const {
-    categorias,
-    isLoadingCategories,
-    errorCategorias,
-    tiposProblemas,
-    isLoadingProblems,
-    errorProblemas,
-  } = useDropdownData(
-    Number(watch(`problems.${index}.category_id` as const)?.value)
-  );
+  // const {
+  //   categorias,
+  //   isLoadingCategories,
+  //   errorCategorias,
+  //   tiposProblemas,
+  //   isLoadingProblems,
+  //   errorProblemas,
+  // } = useDropdownData(
+  //   Number(watch(`problems.${index}.category_id` as const)?.value)
+  // );
 
   const handleCreateEvent = useCallback(
     (eventData: ChamadoEvent) => {
@@ -81,24 +81,24 @@ export function ChamadoForm({
     [getValues, index, onClose, onUpdate]
   );
 
-  const handleCategorySelect = useCallback(
-    (value: SelectOption) => {
-      onUpdate?.(index, {
-        ...getValues(`problems.${index}` as const),
-        category_id: value,
-        problem_id: null,
-      });
+  // const handleCategorySelect = useCallback(
+  //   (value: SelectOption) => {
+  //     onUpdate?.(index, {
+  //       ...getValues(`problems.${index}` as const),
+  //       category_id: value,
+  //       problem_id: null,
+  //     });
 
-      //   resetField(`problems.${index}.problem_id`, {
-      //     keepError: true,
-      //     keepDirty: true,
-      //     keepTouched: true
-      //   })
-      //   if (getFieldState(`problems.${index}.problem_id`).isTouched)
-      //     trigger(`problems.${index}.problem_id`)
-    },
-    [getValues, index, onUpdate]
-  );
+  //     //   resetField(`problems.${index}.problem_id`, {
+  //     //     keepError: true,
+  //     //     keepDirty: true,
+  //     //     keepTouched: true
+  //     //   })
+  //     //   if (getFieldState(`problems.${index}.problem_id`).isTouched)
+  //     //     trigger(`problems.${index}.problem_id`)
+  //   },
+  //   [getValues, index, onUpdate]
+  // );
 
   const isEvent = watch(`problems.${index}.is_event` as const);
 
@@ -151,7 +151,7 @@ export function ChamadoForm({
             )}
           </HStack>
 
-          <ControlledSelect
+          {/* <ControlledSelect
             control={control}
             name={`problems.${index}.category_id` as const}
             id={`problems.${index}.category_id` as const}
@@ -176,7 +176,7 @@ export function ChamadoForm({
             rules={{ required: 'Campo obrigatório' }}
             isDisabled={!watch(`problems.${index}.category_id`)?.value}
             colorScheme="purple"
-          />
+          /> */}
 
           {isEditing && (
             <>
