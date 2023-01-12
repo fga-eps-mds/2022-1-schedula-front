@@ -1,3 +1,5 @@
 vite.config.ts
 vitest.config.ts
 dist
+
+coverage
