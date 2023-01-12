@@ -1,13 +1,9 @@
-import { ReactNode } from 'react';
 import { Flex, Grid } from '@chakra-ui/react';
+import { Outlet } from 'react-router-dom';
 import { SideBar } from '@/components/side-bar';
 import Footnote from '@/components/footnote';
 
-interface DefaultLayoutProps {
-  children: ReactNode;
-}
-
-export function DefaultLayout({ children }: DefaultLayoutProps) {
+export function DefaultLayout() {
   return (
     <Flex
       as="main"
@@ -23,7 +19,9 @@ export function DefaultLayout({ children }: DefaultLayoutProps) {
         gap={14}
       >
         <SideBar />
-        <Flex flexDirection="column">{children}</Flex>
+        <Flex flexDirection="column">
+          <Outlet />
+        </Flex>
       </Grid>
 
       <Footnote />

@@ -10,12 +10,15 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { useAuth } from '@/contexts/AuthContext';
+import { routes } from '@/constants/routes';
+import { SideBarItem } from '@/components/side-bar/sidebar-item';
 
 export const SideBar = memo(() => {
-  // const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   async function handleSignOut() {
-    // signOut();
+    signOut();
   }
 
   return (
@@ -34,16 +37,16 @@ export const SideBar = memo(() => {
       <Divider />
 
       <VStack spacing={4} align="stretch">
-        {/* {routes.map((route) => (
+        {routes.map((route) => (
           <SideBarItem key={route.label} {...route} />
-        ))} */}
+        ))}
       </VStack>
 
-      <Box marginTop="auto">
+      <Box marginTop="auto" shadow="xl" p=".5rem">
         <Divider marginBottom={2} />
         <Flex gap={2} justifyContent="space-between" alignItems="center">
           <FaRegUser size={25} />
-          {/* <Text maxWidth={140} noOfLines={1}>
+          <Text maxWidth={140} noOfLines={1}>
             {user?.name ?? 'Usuário'}
           </Text>
           <Icon
@@ -51,7 +54,7 @@ export const SideBar = memo(() => {
             onClick={handleSignOut}
             fontSize={24}
             cursor="pointer"
-          /> */}
+          />
         </Flex>
       </Box>
     </Flex>

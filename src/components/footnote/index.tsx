@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { api } from '@/config/lib/axios';
-import { ServicesStatus } from '@/components/Footnote/service-status';
+import { ServicesStatus } from '@/components/footnote/service-status';
 
 interface Releases {
   tag_name: string;

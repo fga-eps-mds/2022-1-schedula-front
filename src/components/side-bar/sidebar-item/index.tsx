@@ -1,20 +1,8 @@
-import { Url } from 'url';
-
-import { memo, ReactElement, useMemo } from 'react';
-import { LinkBox, HStack, Icon } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+/* eslint-disable react/display-name */
+import { memo } from 'react';
+import { LinkBox, HStack, Icon, Text } from '@chakra-ui/react';
+import { useLocation, Link } from 'react-router-dom';
 import { IRoute } from '@/constants/routes';
-
-export interface SideBarItemAttributes extends IRoute {
-  query?: { [key: string]: string };
-  as?: string;
-  isActive?: boolean;
-}
-
-export interface SideBarItemProps extends Partial<SideBarItemAttributes> {
-  // eslint-disable-next-line react/no-unused-prop-types
-  children?: ReactElement<{ isActive: boolean }>;
-}
 
 const hoverStyle = {
   border: '1px solid',
@@ -23,25 +11,12 @@ const hoverStyle = {
   backgroundPosition: 'right center',
 };
 
-export const SideBarItem = memo(
-  ({ pathname, query, as, label, icon }: SideBarItemProps) => {
-    const navigate = useNavigate();
+export const SideBarItem = memo(({ label, pathname, icon }: IRoute) => {
+  const location = useLocation();
+  const isActive = location.pathname === pathname;
 
-    const href: Partial<Url> = useMemo(
-      () => ({
-        pathname,
-        query,
-      }),
-      [pathname, query]
-    );
-
-    // replace the pathname slug '/path/[slug]' with the actual slug
-    const path = query
-      ? pathname?.replace(`[${Object.keys(query)[0]}]`, Object.values(query)[0])
-      : pathname;
-    const isActive = true;
-
-    return (
+  return (
+    <Link to={pathname}>
       <LinkBox>
         <HStack
           transition="all 0.5s, color 0s"
@@ -64,15 +39,10 @@ export const SideBarItem = memo(
           _hover={hoverStyle}
         >
           <Icon as={icon} boxSize="1.5em" />
-          {/* <NextLink href={href} as={as} shallow={!pathname} passHref>
-            <LinkOverlay>
-              <Text fontWeight="medium">{label}</Text>
-            </LinkOverlay>
-          </NextLink> */}
+
+          <Text fontWeight="medium">{label}</Text>
         </HStack>
       </LinkBox>
-    );
-  }
-);
-
-SideBarItem.displayName = 'SideBarItem';
+    </Link>
+  );
+});

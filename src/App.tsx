@@ -1,8 +1,12 @@
 import { ChakraProvider, createStandaloneToast } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { RouterProvider } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { theme } from '@/styles/theme';
 
-import { router } from './config/routes/Routes';
+import { AuthProvider } from '@/contexts/AuthContext';
+
+import '@/styles/react-datepicker.scss';
+import { Router } from '@/config/routes/Routes';
 
 const { ToastContainer } = createStandaloneToast();
 
@@ -10,11 +14,15 @@ const queryClient = new QueryClient();
 
 export function App() {
   return (
-    <ChakraProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <ToastContainer />
-      </QueryClientProvider>
-    </ChakraProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <ChakraProvider resetCSS theme={theme}>
+          <QueryClientProvider client={queryClient}>
+            <Router />
+            <ToastContainer />
+          </QueryClientProvider>
+        </ChakraProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }

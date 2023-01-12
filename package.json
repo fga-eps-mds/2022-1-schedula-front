@@ -39,7 +39,8 @@
     "react-input-mask": "^2.0.4",
     "react-query": "^3.39.2",
     "react-render-if-visible": "^2.1.1",
-    "react-router-dom": "^6.6.1"
+    "react-router-dom": "^6.6.1",
+    "sass": "^1.57.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
