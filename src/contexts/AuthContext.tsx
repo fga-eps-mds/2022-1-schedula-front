@@ -1,91 +1,93 @@
-import { createContext, ReactNode, useContext, useState } from "react"
-import Router from "next/router"
-import { toast } from "react-toastify"
-import { destroyCookie, setCookie } from "nookies"
-
-import { apiClient } from "@services/apiClient"
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from '@/utils/toast';
+import { api } from '@/config/lib/axios';
 
 interface AuthContextData {
-  signIn(credentials: SignInCredentials): Promise<void>
-  isAuthenticated: boolean
-  user: SignedUser
+  signOut(): void;
+  signIn(credentials: SignInCredentials): Promise<void>;
+  isAuthenticated: boolean;
+  user: SignedUser | null;
 }
 
-const AuthContext = createContext({} as AuthContextData)
+const AuthContext = createContext({} as AuthContextData);
 
 interface AuthProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const FAKE_USER_DATA = {
-  id: "1",
-  name: "Usuário",
-  role: "admin",
-  permissions: ["all"]
-}
-
-// let authChannel: BroadcastChannel
-
-export function signOut() {
-  destroyCookie(undefined, "schedula.token")
-
-  // authChannel.postMessage("signOut")
-
-  Router.push("/login")
-}
+  id: '1',
+  name: 'Usuário',
+  role: 'admin',
+  permissions: ['all'],
+};
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<SignedUser>({} as SignedUser)
-  const isAuthenticated = !!user?.token
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState<SignedUser | null>({} as SignedUser);
+  const isAuthenticated = !!user?.token;
 
-  // useEffect(() => {
-  //   if (typeof window !== undefined) {
-  //     authChannel = new BroadcastChannel("schedula.auth")
+  const signIn = useCallback(
+    async ({ username, password }: SignInCredentials) => {
+      try {
+        const response = await api.post<AuthResponse>(
+          'https://schedula-user.herokuapp.com/auth',
+          {
+            username,
+            password,
+          }
+        );
 
-  //     authChannel.onmessage = (message) => {
-  //       if (message.data === "signOut") {
-  //         signOut()
-  //       }
-  //     }
-  //   }
-  // }, [])
+        const { token } = response.data;
 
-  async function signIn({ username, password }: SignInCredentials) {
-    try {
-      const response = await apiClient.post<AuthResponse>(
-        "https://schedula-user.herokuapp.com/auth",
-        {
-          username,
-          password
-        }
-      )
+        localStorage.setItem('@schedula:token', token);
 
-      const { token } = response?.data
+        setUser({ ...FAKE_USER_DATA, token });
 
-      setCookie(undefined, "schedula.token", token, {
-        maxAge: 60 * 60 * 24 * 30,
-        path: "/"
-      })
+        const from = location.state?.from?.pathname || '/';
 
-      setUser({ ...FAKE_USER_DATA, token })
+        navigate(from, { replace: true });
+      } catch (err) {
+        toast.error(
+          'Não foi possível realizar o login! Verifique o email e a senha e tente novamente.'
+        );
+      }
+    },
+    [navigate, location.state?.from?.pathname]
+  );
 
-      Router.push("/chamados")
-    } catch (err) {
-      toast.error(
-        "Não foi possível realizar o login! Verifique o email e a senha e tente novamente."
-      )
-    }
-  }
+  const signOut = useCallback(() => {
+    localStorage.removeItem('@schedula:token');
 
-  return (
-    <AuthContext.Provider value={{ signIn, isAuthenticated, user }}>
-      {children}
-    </AuthContext.Provider>
-  )
+    setUser(null);
+
+    navigate('/login');
+  }, [navigate]);
+
+  const value = useMemo(
+    () => ({
+      signIn,
+      signOut,
+      isAuthenticated,
+      user,
+    }),
+    [signIn, signOut, isAuthenticated, user]
+  );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth(): AuthContextData {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
 
-  return context
+  return context;
 }

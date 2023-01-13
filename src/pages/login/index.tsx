@@ -1,129 +1,105 @@
-import { useState } from "react"
-import { GetServerSideProps } from "next"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { Box, Button, Center, Input, Text } from "@chakra-ui/react"
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Box, Button, Center, Input, Text } from '@chakra-ui/react';
+import { useAuth } from '@/contexts/AuthContext';
 
-import { useAuth } from "@contexts/AuthContext"
-import { withSSRGuest } from "@utils/withSSRGuest"
-
-const Login: NextPageWithProps = () => {
-  const { signIn } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
+export function Login() {
+  const { signIn } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors }
-  } = useForm<CredentialUser>()
+    formState: { errors },
+  } = useForm<CredentialUser>();
 
   const onSubmit: SubmitHandler<CredentialUser> = async ({
     username,
-    password
+    password,
   }) => {
-    setIsLoading(true)
-    await signIn({ username, password })
-    setIsLoading(false)
-  }
+    setIsLoading(true);
+    await signIn({ username, password });
+    setIsLoading(false);
+  };
 
   return (
-    <>
-      <Center
-        bgGradient="linear(288.94deg, #F8B86D 0%, #F49320 90.96%)"
-        h="100vh"
-        color="white"
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box
-            bg="white"
-            borderRadius="10px"
-            boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25),  0px 4px 4px rgba(0, 0, 0, 0.25),  0px 1px 1px rgba(0, 0, 0, 0.12),  0px 2px 2px rgba(0, 0, 0, 0.12),  0px 8px 8px rgba(0, 0, 0, 0.12);"
-            color="black"
-            paddingY="20"
-            paddingX="20"
-          >
+    <Center
+      bgGradient="linear(288.94deg, #F8B86D 0%, #F49320 90.96%)"
+      h="100vh"
+      color="white"
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Box
+          bg="white"
+          borderRadius="10px"
+          boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25),  0px 4px 4px rgba(0, 0, 0, 0.25),  0px 1px 1px rgba(0, 0, 0, 0.12),  0px 2px 2px rgba(0, 0, 0, 0.12),  0px 8px 8px rgba(0, 0, 0, 0.12);"
+          color="black"
+          paddingY="20"
+          paddingX="20"
+        >
+          <Text mb="39px" color="#605555" fontWeight="semibold" fontSize="4xl">
+            Bem-vindo
+          </Text>
+          <Box marginBottom={10}>
             <Text
-              mb="39px"
+              pl="5px"
+              pb="8px"
               color="#605555"
-              fontWeight="semibold"
-              fontSize="4xl"
+              fontWeight="medium"
+              fontSize="lg"
             >
-              Bem-vindo
+              Login
             </Text>
-            <Box marginBottom={10}>
-              <Text
-                pl="5px"
-                pb="8px"
-                color="#605555"
-                fontWeight="medium"
-                fontSize="lg"
-              >
-                Login
-              </Text>
-              <Input
-                size="lg"
-                fontSize="lg"
-                {...register("username", { required: true })}
-                placeholder="E-mail ou nome de usuário"
-              />
-              {errors.username && (
-                <span>
-                  <Text color="red.400">Este campo é obrigatório</Text>
-                </span>
-              )}
-            </Box>
-            <Box mb="70px">
-              {" "}
-              <Text
-                pl="5px"
-                pb="8px"
-                color="#605555"
-                fontWeight="medium"
-                fontSize="lg"
-              >
-                {" "}
-                Senha{" "}
-              </Text>
-              <Input
-                size="lg"
-                fontSize="lg"
-                {...register("password", { required: true })}
-                type="password"
-                placeholder="Digite sua senha"
-              />
-              {errors.password && (
-                <span>
-                  <Text color="red.400">Este campo é obrigatório</Text>
-                </span>
-              )}
-            </Box>
-            <Center>
-              <Button
-                mb="70px"
-                type="submit"
-                paddingX="24"
-                width="sm"
-                isLoading={isLoading}
-              >
-                ENTRAR
-              </Button>
-            </Center>
+            <Input
+              size="lg"
+              fontSize="lg"
+              {...register('username', { required: true })}
+              placeholder="E-mail ou nome de usuário"
+            />
+            {errors.username && (
+              <span>
+                <Text color="red.400">Este campo é obrigatório</Text>
+              </span>
+            )}
           </Box>
-        </form>
-      </Center>
-    </>
-  )
+          <Box mb="70px">
+            {' '}
+            <Text
+              pl="5px"
+              pb="8px"
+              color="#605555"
+              fontWeight="medium"
+              fontSize="lg"
+            >
+              {' '}
+              Senha{' '}
+            </Text>
+            <Input
+              size="lg"
+              fontSize="lg"
+              {...register('password', { required: true })}
+              type="password"
+              placeholder="Digite sua senha"
+            />
+            {errors.password && (
+              <span>
+                <Text color="red.400">Este campo é obrigatório</Text>
+              </span>
+            )}
+          </Box>
+          <Center>
+            <Button
+              mb="70px"
+              type="submit"
+              paddingX="24"
+              width="sm"
+              isLoading={isLoading}
+            >
+              ENTRAR
+            </Button>
+          </Center>
+        </Box>
+      </form>
+    </Center>
+  );
 }
-
-Login.getLayout = (page) => {
-  return page
-}
-
-export default Login
-
-export const getServerSideProps: GetServerSideProps = withSSRGuest(
-  async (_) => {
-    return {
-      props: {}
-    }
-  }
-)

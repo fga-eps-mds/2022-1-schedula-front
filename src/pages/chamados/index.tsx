@@ -1,107 +1,84 @@
-import { useCallback, useState } from "react"
-import { GetServerSideProps } from "next"
-import NextLink from "next/link"
-import { useRouter } from "next/router"
-import { toast } from "react-toastify"
-import { Button, HStack, useDisclosure } from "@chakra-ui/react"
+export function Chamados() {
+  // const router = useRouter()
 
-import { RefreshButton } from "@components/ActionButtons/RefreshButton"
-import { ChamadoItem } from "@components/Items/ChamadoItem"
-import { ListView } from "@components/List"
-import { ChamadoModal } from "@components/Modals/ChamadoModal"
-import { PageHeader } from "@components/PageHeader"
-import { useRequest } from "@hooks/useRequest"
-import { getChamados } from "@services/Chamados"
-import { withSSRAuth } from "@utils/withSSRAuth"
+  // const { isOpen, onOpen, onClose } = useDisclosure()
 
-const Chamados = () => {
-  const router = useRouter()
+  // const [chamadoToEdit, setChamadoToEdit] = useState<Chamado>()
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  // const showEvents = router.query?.is_event
 
-  const [chamadoToEdit, setChamadoToEdit] = useState<Chamado>()
+  // const {
+  //   data: chamados,
+  //   isLoading,
+  //   isValidating,
+  //   mutate
+  // } = useRequest<Chamado[]>(
+  //   getChamados({
+  //     params: {
+  //       is_event: showEvents
+  //     }
+  //   })
+  // )
 
-  const showEvents = router.query?.is_event
+  // const onSubmit = useCallback(
+  //   (result: Result<ApiResponse<Chamado>>) => {
+  //     if (result.type === "error") {
+  //       toast.error(result.error.message)
 
-  const {
-    data: chamados,
-    isLoading,
-    isValidating,
-    mutate
-  } = useRequest<Chamado[]>(
-    getChamados({
-      params: {
-        is_event: showEvents
-      }
-    })
-  )
+  //       return
+  //     }
 
-  const onSubmit = useCallback(
-    (result: Result<ApiResponse<Chamado>>) => {
-      if (result.type === "error") {
-        toast.error(result.error.message)
+  //     toast.success(result.value.message)
+  //     mutate()
+  //     setChamadoToEdit(undefined)
+  //   },
+  //   [mutate]
+  // )
 
-        return
-      }
+  // const handleEdit = useCallback(
+  //   (chamado: Chamado) => {
+  //     setChamadoToEdit(chamado)
+  //     onOpen()
+  //   },
+  //   [onOpen]
+  // )
 
-      toast.success(result.value.message)
-      mutate()
-      setChamadoToEdit(undefined)
-    },
-    [mutate]
-  )
+  // const handleClose = useCallback(() => {
+  //   setChamadoToEdit(undefined)
+  //   onClose()
+  // }, [onClose])
 
-  const handleEdit = useCallback(
-    (chamado: Chamado) => {
-      setChamadoToEdit(chamado)
-      onOpen()
-    },
-    [onOpen]
-  )
-
-  const handleClose = useCallback(() => {
-    setChamadoToEdit(undefined)
-    onClose()
-  }, [onClose])
-
-  const renderChamadoItem = useCallback(
-    (chamado: Chamado) => (
-      <ChamadoItem chamado={chamado} handleEdit={handleEdit} />
-    ),
-    [handleEdit]
-  )
+  // const renderChamadoItem = useCallback(
+  //   (chamado: Chamado) => (
+  //     <ChamadoItem chamado={chamado} handleEdit={handleEdit} />
+  //   ),
+  //   [handleEdit]
+  // )
 
   return (
-    <>
-      <PageHeader title={showEvents ? "Eventos" : "Chamados"}>
-        <HStack spacing={2}>
-          <RefreshButton refresh={mutate} />
-          <NextLink href="/chamados/registrar" passHref>
-            <Button variant="primary">Novo Chamado</Button>
-          </NextLink>
-        </HStack>
-      </PageHeader>
+    // <>
+    //   <PageHeader title={showEvents ? "Eventos" : "Chamados"}>
+    //     <HStack spacing={2}>
+    //       <RefreshButton refresh={mutate} />
+    //       <NextLink href="/chamados/registrar" passHref>
+    //         <Button variant="primary">Novo Chamado</Button>
+    //       </NextLink>
+    //     </HStack>
+    //   </PageHeader>
 
-      <ListView<Chamado>
-        items={chamados?.data}
-        render={renderChamadoItem}
-        isLoading={isLoading || isValidating}
-      />
+    //   <ListView<Chamado>
+    //     items={chamados?.data}
+    //     render={renderChamadoItem}
+    //     isLoading={isLoading || isValidating}
+    //   />
 
-      <ChamadoModal
-        isOpen={isOpen}
-        onClose={handleClose}
-        chamado={chamadoToEdit}
-        onSubmit={onSubmit}
-      />
-    </>
-  )
+    //   <ChamadoModal
+    //     isOpen={isOpen}
+    //     onClose={handleClose}
+    //     chamado={chamadoToEdit}
+    //     onSubmit={onSubmit}
+    //   />
+    // </>
+    <h1>Chamados</h1>
+  );
 }
-
-export default Chamados
-
-export const getServerSideProps: GetServerSideProps = withSSRAuth(async (_) => {
-  return {
-    props: {}
-  }
-})

@@ -1,133 +1,121 @@
-import { useCallback, useState } from "react"
-import { toast } from "react-toastify"
-import { Button, HStack, useDisclosure } from "@chakra-ui/react"
-import { AxiosResponse } from "axios"
+export function ListaCategoria() {
+  // const isCreateAuthorized = true
 
-import { RefreshButton } from "@components/ActionButtons/RefreshButton"
-import { CategoryItem } from "@components/Items/CategoryItem"
-import { ListView } from "@components/List"
-import { CategoryModal } from "@components/Modals/CategoryModal"
-import { PageHeader } from "@components/PageHeader"
-import { useRequest } from "@hooks/useRequest"
-import { getCategories } from "@services/Categorias"
+  // const {
+  //   data: categorias,
+  //   isLoading,
+  //   isValidating,
+  //   mutate
+  // } = useRequest<Category[]>(getCategories())
 
-const ListaCategoria = () => {
-  const isCreateAuthorized = true
+  // const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const {
-    data: categorias,
-    isLoading,
-    isValidating,
-    mutate
-  } = useRequest<Category[]>(getCategories())
+  // const [categoriaToEdit, setCategoriaToEdit] = useState<Category>()
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  // const refreshCategories = useCallback(
+  //   (data?: Category[]) =>
+  //     mutate(
+  //       {
+  //         data: {
+  //           error: null,
+  //           message: "",
+  //           data: data ?? []
+  //         }
+  //       } as AxiosResponse<ApiResponse<Category[]>>,
+  //       { revalidate: !data }
+  //     ),
+  //   [mutate]
+  // )
 
-  const [categoriaToEdit, setCategoriaToEdit] = useState<Category>()
+  // const onDelete = useCallback(
+  //   (result: Result<ApiResponse<null>>, { id }: Category) => {
+  //     if (result.type === "success") {
+  //       toast.success(result.value?.message)
 
-  const refreshCategories = useCallback(
-    (data?: Category[]) =>
-      mutate(
-        {
-          data: {
-            error: null,
-            message: "",
-            data: data ?? []
-          }
-        } as AxiosResponse<ApiResponse<Category[]>>,
-        { revalidate: !data }
-      ),
-    [mutate]
-  )
+  //       const newCategorias = categorias?.data.filter(
+  //         (categoria) => categoria.id !== id
+  //       )
+  //       refreshCategories(newCategorias)
 
-  const onDelete = useCallback(
-    (result: Result<ApiResponse<null>>, { id }: Category) => {
-      if (result.type === "success") {
-        toast.success(result.value?.message)
+  //       return
+  //     }
 
-        const newCategorias = categorias?.data.filter(
-          (categoria) => categoria.id !== id
-        )
-        refreshCategories(newCategorias)
+  //     toast.error(result.error?.message)
+  //   },
+  //   [categorias?.data, refreshCategories]
+  // )
 
-        return
-      }
+  // const onSubmit = useCallback(
+  //   (result: Result<ApiResponse<Category>>) => {
+  //     if (result.type === "error") {
+  //       toast.error(result.error?.message)
 
-      toast.error(result.error?.message)
-    },
-    [categorias?.data, refreshCategories]
-  )
+  //       return
+  //     }
 
-  const onSubmit = useCallback(
-    (result: Result<ApiResponse<Category>>) => {
-      if (result.type === "error") {
-        toast.error(result.error?.message)
+  //     toast.success(result.value?.message)
 
-        return
-      }
+  //     const newCategorias = categoriaToEdit
+  //       ? categorias?.data.map((categoria) =>
+  //           categoria.id === categoriaToEdit?.id
+  //             ? result.value?.data
+  //             : categoria
+  //         )
+  //       : [...(categorias?.data || []), result.value?.data]
 
-      toast.success(result.value?.message)
+  //     refreshCategories(newCategorias)
+  //     setCategoriaToEdit(undefined)
+  //     onClose()
+  //   },
+  //   [categoriaToEdit, categorias?.data, onClose, refreshCategories]
+  // )
 
-      const newCategorias = categoriaToEdit
-        ? categorias?.data.map((categoria) =>
-            categoria.id === categoriaToEdit?.id
-              ? result.value?.data
-              : categoria
-          )
-        : [...(categorias?.data || []), result.value?.data]
+  // const onEdit = useCallback(
+  //   (categoria: Category) => {
+  //     setCategoriaToEdit(categoria)
+  //     onOpen()
+  //   },
+  //   [onOpen]
+  // )
 
-      refreshCategories(newCategorias)
-      setCategoriaToEdit(undefined)
-      onClose()
-    },
-    [categoriaToEdit, categorias?.data, onClose, refreshCategories]
-  )
+  // const handleClose = useCallback(() => {
+  //   setCategoriaToEdit(undefined)
+  //   onClose()
+  // }, [onClose])
 
-  const onEdit = useCallback(
-    (categoria: Category) => {
-      setCategoriaToEdit(categoria)
-      onOpen()
-    },
-    [onOpen]
-  )
-
-  const handleClose = useCallback(() => {
-    setCategoriaToEdit(undefined)
-    onClose()
-  }, [onClose])
-
-  const renderCategoriaItem = useCallback(
-    (category: Category) => (
-      <CategoryItem category={category} onEdit={onEdit} onDelete={onDelete} />
-    ),
-    [onDelete, onEdit]
-  )
+  // const renderCategoriaItem = useCallback(
+  //   (category: Category) => (
+  //     <CategoryItem category={category} onEdit={onEdit} onDelete={onDelete} />
+  //   ),
+  //   [onDelete, onEdit]
+  // )
 
   return (
-    <>
-      <PageHeader title="Categorias de Problemas">
-        <HStack spacing={2}>
-          <RefreshButton refresh={refreshCategories} />
-          {isCreateAuthorized && (
-            <Button onClick={onOpen}>Nova Categoria</Button>
-          )}
-        </HStack>
-      </PageHeader>
+    // <>
+    //   <PageHeader title="Categorias de Problemas">
+    //     <HStack spacing={2}>
+    //       <RefreshButton refresh={refreshCategories} />
+    //       {isCreateAuthorized && (
+    //         <Button onClick={onOpen}>Nova Categoria</Button>
+    //       )}
+    //     </HStack>
+    //   </PageHeader>
 
-      <ListView<Category>
-        items={categorias?.data}
-        render={renderCategoriaItem}
-        isLoading={isLoading || isValidating}
-      />
+    //   <ListView<Category>
+    //     items={categorias?.data}
+    //     render={renderCategoriaItem}
+    //     isLoading={isLoading || isValidating}
+    //   />
 
-      <CategoryModal
-        isOpen={isOpen}
-        onClose={handleClose}
-        onSubmit={onSubmit}
-        category={categoriaToEdit}
-      />
-    </>
-  )
+    //   <CategoryModal
+    //     isOpen={isOpen}
+    //     onClose={handleClose}
+    //     onSubmit={onSubmit}
+    //     category={categoriaToEdit}
+    //   />
+    // </>
+    <h1>Categorias</h1>
+  );
 }
 
-export default ListaCategoria
+export default ListaCategoria;

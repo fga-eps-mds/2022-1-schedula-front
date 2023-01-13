@@ -1,127 +1,124 @@
-import { useCallback, useState } from "react"
-import { toast } from "react-toastify"
-import { Button, HStack, useDisclosure } from "@chakra-ui/react"
-import { AxiosResponse } from "axios"
+import { useCallback, useState } from 'react';
 
-import { RefreshButton } from "@components/ActionButtons/RefreshButton"
-import { CityItem } from "@components/Items/CityItem"
-import { ListView } from "@components/List"
-import { CityModal } from "@components/Modals/CityModal"
-import { PageHeader } from "@components/PageHeader"
-import { useRequest } from "@hooks/useRequest"
-import { getCities } from "@services/Cidades"
+import { Button, HStack, useDisclosure } from '@chakra-ui/react';
+import { AxiosResponse } from 'axios';
+import { toast } from '@/utils/toast';
+import { CityItem } from '@/components/items/city-item';
+import { PageHeader } from '@/components/page-header';
+import { RefreshButton } from '@/components/action-buttons/refresh-button';
+import { ListView } from '@/components/list';
+import { CityModal } from '@/components/modals/city-modal';
 
-const ListaCidades = () => {
-  const isCreateAuthorized = true
+export function Cities() {
+  // const isCreateAuthorized = true;
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  // const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [cityToEdit, setCityToEdit] = useState<City>()
+  // const [cityToEdit, setCityToEdit] = useState<City>();
 
-  const {
-    data: cities,
-    isLoading,
-    isValidating,
-    mutate
-  } = useRequest<City[]>(getCities)
+  // const {
+  //   data: cities,
+  //   isLoading,
+  //   isValidating,
+  //   mutate,
+  // } = useRequest<City[]>(getCities);
 
-  const refresh = useCallback(
-    (data?: City[]) =>
-      mutate(
-        {
-          data: {
-            error: null,
-            message: "",
-            data: data ?? []
-          }
-        } as AxiosResponse<ApiResponse<City[]>>,
-        { revalidate: !data }
-      ),
-    [mutate]
-  )
+  // const refresh = useCallback(
+  //   (data?: City[]) =>
+  //     mutate(
+  //       {
+  //         data: {
+  //           error: null,
+  //           message: '',
+  //           data: data ?? [],
+  //         },
+  //       } as AxiosResponse<ApiResponse<City[]>>,
+  //       { revalidate: !data }
+  //     ),
+  //   [mutate]
+  // );
 
-  const onDelete = useCallback(
-    (result: Result<ApiResponse<null>>, { id }: City) => {
-      if (result.type === "success") {
-        toast.success(result.value?.message)
+  // const onDelete = useCallback(
+  //   (result: Result<ApiResponse<null>>, { id }: City) => {
+  //     if (result.type === 'success') {
+  //       toast.success(result.value?.message);
 
-        const newCities = cities?.data.filter((city) => city.id !== id)
-        refresh(newCities)
+  //       const newCities = cities?.data.filter((city) => city.id !== id);
+  //       refresh(newCities);
 
-        return
-      }
+  //       return;
+  //     }
 
-      toast.error(result.error?.message)
-    },
-    [cities?.data, refresh]
-  )
+  //     toast.error(result.error?.message);
+  //   },
+  //   [cities?.data, refresh]
+  // );
 
-  const onEdit = useCallback(
-    (city: City) => {
-      setCityToEdit(city)
-      onOpen()
-    },
-    [onOpen]
-  )
+  // const onEdit = useCallback(
+  //   (city: City) => {
+  //     setCityToEdit(city);
+  //     onOpen();
+  //   },
+  //   [onOpen]
+  // );
 
-  const onSubmit = useCallback(
-    (result: Result<ApiResponse<City>>) => {
-      if (result.type === "error") {
-        toast.error(result.error?.message)
+  // const onSubmit = useCallback(
+  //   (result: Result<ApiResponse<City>>) => {
+  //     if (result.type === 'error') {
+  //       toast.error(result.error?.message);
 
-        return
-      }
+  //       return;
+  //     }
 
-      toast.success(result.value?.message)
+  //     toast.success(result.value?.message);
 
-      const newCities = cityToEdit
-        ? cities?.data.map((city) =>
-            city.id === cityToEdit?.id ? result.value.data : city
-          )
-        : [...(cities?.data || []), result.value?.data]
+  //     const newCities = cityToEdit
+  //       ? cities?.data.map((city) =>
+  //           city.id === cityToEdit?.id ? result.value.data : city
+  //         )
+  //       : [...(cities?.data || []), result.value?.data];
 
-      refresh(newCities)
-      setCityToEdit(undefined)
-      onClose()
-    },
-    [onClose, cityToEdit, cities?.data, refresh]
-  )
+  //     refresh(newCities);
+  //     setCityToEdit(undefined);
+  //     onClose();
+  //   },
+  //   [onClose, cityToEdit, cities?.data, refresh]
+  // );
 
-  const handleClose = useCallback(() => {
-    setCityToEdit(undefined)
-    onClose()
-  }, [onClose])
+  // const handleClose = useCallback(() => {
+  //   setCityToEdit(undefined);
+  //   onClose();
+  // }, [onClose]);
 
-  const renderCityItem = useCallback(
-    (city: City) => (
-      <CityItem city={city} onEdit={onEdit} onDelete={onDelete} />
-    ),
-    [onDelete, onEdit]
-  )
+  // const renderCityItem = useCallback(
+  //   (city: City) => (
+  //     <CityItem city={city} onEdit={onEdit} onDelete={onDelete} />
+  //   ),
+  //   [onDelete, onEdit]
+  // );
 
   return (
-    <>
-      <PageHeader title="Cidades Cadastradas">
-        <HStack spacing={2}>
-          <RefreshButton refresh={mutate} />
-          {isCreateAuthorized && <Button onClick={onOpen}>Nova Cidade</Button>}
-        </HStack>
-      </PageHeader>
+    <h1>Cidades</h1>
+    // <>
+    //   <PageHeader title="Cidades Cadastradas">
+    //     <HStack spacing={2}>
+    //       <RefreshButton refresh={mutate} />
+    //       {isCreateAuthorized && <Button onClick={onOpen}>Nova Cidade</Button>}
+    //     </HStack>
+    //   </PageHeader>
 
-      <ListView<City>
-        items={cities?.data}
-        render={renderCityItem}
-        isLoading={isLoading || isValidating}
-      />
+    //   <ListView<City>
+    //     items={cities?.data}
+    //     render={renderCityItem}
+    //     isLoading={isLoading || isValidating}
+    //   />
 
-      <CityModal
-        isOpen={isOpen}
-        onClose={handleClose}
-        onSubmit={onSubmit}
-        city={cityToEdit}
-      />
-    </>
-  )
+    //   <CityModal
+    //     isOpen={isOpen}
+    //     onClose={handleClose}
+    //     onSubmit={onSubmit}
+    //     city={cityToEdit}
+    //   />
+    // </>
+  );
 }
-
-export default ListaCidades

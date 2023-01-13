@@ -1,56 +1,54 @@
-import { useCallback } from "react"
-import NextLink from "next/link"
-import { toast } from "react-toastify"
-import { Button } from "@chakra-ui/react"
+import { useCallback } from 'react';
 
-import { ChamadoFormWrapper as ChamadoForm } from "@components/Forms/ChamadoForm/ChamadoFormWrapper"
-import { formValuesToPayload } from "@components/Forms/ChamadoForm/helpers"
-import { PageHeader } from "@components/PageHeader"
-import { createChamado } from "@services/Chamados"
-import { request } from "@services/request"
+import { Button } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { PageHeader } from '@/components/page-header';
+import { ChamadoForm } from '@/components/forms/chamado-form';
+import { toast } from '@/utils/toast';
 
-const RegistrarChamado = () => {
-  const onSubmit = useCallback(async (data: ChamadoFormValues) => {
-    console.log("data", data)
+export function RegistrarChamado() {
+  // const navigate = useNavigate();
 
-    const newData: ChamadoFormValues = { ...data, problems: [] }
+  // const onSubmit = useCallback(async (data: ChamadoFormValues) => {
+  //   console.log('data', data);
 
-    // For each entry in the problem_id array, create a new object with only one problem_id.
-    // NOTE: This is a workaround for the API not accepting multiple problem_id in the same problem object.
-    data.problems.forEach((problem) => {
-      if (Array.isArray(problem.problem_id)) {
-        problem.problem_id.forEach((problem_id) => {
-          // Create a new object with only one problem_id
-          newData.problems.push({ ...problem, problem_id: [problem_id] })
-        })
-      } else newData.problems.push(problem)
-    })
+  //   const newData: ChamadoFormValues = { ...data, problems: [] };
 
-    const payload = formValuesToPayload(newData)
-    console.log("payload", payload)
+  //   // For each entry in the problem_id array, create a new object with only one problem_id.
+  //   // NOTE: This is a workaround for the API not accepting multiple problem_id in the same problem object.
+  //   data.problems.forEach((problem) => {
+  //     if (Array.isArray(problem.problem_id)) {
+  //       problem.problem_id.forEach((problem_id) => {
+  //         // Create a new object with only one problem_id
+  //         newData.problems.push({ ...problem, problem_id: [problem_id] });
+  //       });
+  //     } else newData.problems.push(problem);
+  //   });
 
-    const response = await request<Chamado>(createChamado(payload))
+  //   const payload = formValuesToPayload(newData);
+  //   console.log('payload', payload);
 
-    if (response.type === "error") {
-      toast.error(response.error.message)
+  //   const response = await request<Chamado>(createChamado(payload));
 
-      return Promise.reject(response.error.message)
-    }
+  //   if (response.type === 'error') {
+  //     toast.error(response.error.message);
 
-    toast.success(response.value.message)
-  }, [])
+  //     return Promise.reject(response.error.message);
+  //   }
+
+  //   toast.success(response.value.message);
+  // }, []);
 
   return (
-    <>
-      <PageHeader title="Novo Chamado">
-        <NextLink href="/chamados" passHref>
-          <Button variant="tertiary">Ver Chamados</Button>
-        </NextLink>
-      </PageHeader>
+    // <>
+    //   <PageHeader title="Novo Chamado">
+    //     <Button variant="tertiary" onClick={() => navigate('/chamados')}>
+    //       Ver Chamados
+    //     </Button>
+    //   </PageHeader>
 
-      <ChamadoForm onSubmit={onSubmit} />
-    </>
-  )
+    //   <ChamadoForm onSubmit={onSubmit} />
+    // </>
+    <h1>Registrar Chamado</h1>
+  );
 }
-
-export default RegistrarChamado

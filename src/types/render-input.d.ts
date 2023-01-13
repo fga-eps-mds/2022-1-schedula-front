@@ -1,10 +1,10 @@
-import type { ReactElement } from "react"
+import type { ReactElement } from 'react';
 import type {
   ControllerFieldState,
   ControllerRenderProps,
   FieldPath,
-  UseFormStateReturn
-} from "react-hook-form"
+  UseFormStateReturn,
+} from 'react-hook-form';
 
 type RenderInput<
   TFieldValues extends FieldValues = FieldValues,
@@ -12,9 +12,9 @@ type RenderInput<
 > = ({
   field,
   fieldState,
-  formState
+  formState,
 }: {
-  field: ControllerRenderProps<UserProfile, TName>
-  fieldState: ControllerFieldState
-  formState: UseFormStateReturn<TFieldValues>
-}) => ReactElement
+  field: ControllerRenderProps<UserProfile, TName>;
+  fieldState: ControllerFieldState;
+  formState: UseFormStateReturn<TFieldValues>;
+}) => ReactElement;
