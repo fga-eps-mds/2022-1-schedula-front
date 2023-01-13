@@ -9,6 +9,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from '@/utils/toast';
 import { api } from '@/config/lib/axios';
+import { GetUserInfoResponse } from '@/features/users/api/types';
 
 interface AuthContextData {
   signOut(): void;
@@ -22,13 +23,6 @@ const AuthContext = createContext({} as AuthContextData);
 interface AuthProviderProps {
   children: ReactNode;
 }
-
-const FAKE_USER_DATA = {
-  id: '1',
-  name: 'Usuário',
-  role: 'admin',
-  permissions: ['all'],
-};
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate();
@@ -51,7 +45,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         localStorage.setItem('@schedula:token', token);
 
-        setUser({ ...FAKE_USER_DATA, token });
+        const res = await api.get<GetUserInfoResponse>(
+          `${import.meta.env.VITE_PUBLIC_GESTOR_DE_USUARIOS_URL}/auth`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const { username: name, email, userId: id } = res.data;
+
+        setUser({ name, email, id, token });
 
         const from = location.state?.from?.pathname || '/';
 
