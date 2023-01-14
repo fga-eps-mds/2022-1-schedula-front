@@ -1,64 +1,23 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button, HStack, useDisclosure } from '@chakra-ui/react';
-import { api } from '@/config/lib/axios';
-import { toast } from '@/utils/toast';
-import { UserItem } from '@/components/items/user-item';
 import { PageHeader } from '@/components/page-header';
 import { RefreshButton } from '@/components/action-buttons/refresh-button';
 import { ListView } from '@/components/list';
-import { UserModal } from '@/components/modals/user-modal';
+import { useGetAllUsers } from '@/features/users/api/get-all-users';
+import { User } from '@/features/users/api/types';
+import { useDeleteRemoveUser } from '@/features/users/api/delete-remove-user';
+import { UserModal } from '@/features/users/components/user-modal';
+import { UserItem } from '@/features/users/components/user-item';
 
 function Usuarios() {
-  const isCreateAuthorized = true;
-  const isValidating = false;
-  const [isLoading, setIsLoading] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [userToEdit, setUserToEdit] = useState<User>();
 
-  async function getUsers() {
-    setIsLoading(true);
+  const { data: users, isLoading, refetch } = useGetAllUsers();
 
-    try {
-      const response = await api.get<User[]>(
-        `${process.env.NEXT_PUBLIC_GESTOR_DE_USUARIOS_URL}/users`
-      );
-
-      setUsers(response.data);
-    } catch {
-      toast.error('Não foi possível carregar os dados dos usuários');
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  const mutate = async () => {
-    getUsers();
-  };
-
-  const onDelete = useCallback(async (userId: string) => {
-    try {
-      await api.delete(
-        `${process.env.NEXT_PUBLIC_GESTOR_DE_USUARIOS_URL}/users/${userId}`
-      );
-
-      getUsers();
-
-      toast.success('Usuário removido com sucesso!');
-    } catch {
-      toast.error('Não foi possível remover o usuário. Tente novamente!');
-    }
-  }, []);
-
-  const onSubmit = () => {
-    getUsers();
-  };
+  const { mutate: deleteUser, isLoading: isRemovingUser } =
+    useDeleteRemoveUser();
 
   const onEdit = useCallback(
     (user: User) => {
@@ -68,6 +27,13 @@ function Usuarios() {
     [onOpen]
   );
 
+  const onDelete = useCallback(
+    (userId: string) => {
+      deleteUser({ userId });
+    },
+    [deleteUser]
+  );
+
   const handleClose = useCallback(() => {
     setUserToEdit(undefined);
     onClose();
@@ -75,32 +41,32 @@ function Usuarios() {
 
   const renderUserItem = useCallback(
     (user: User) => (
-      <UserItem user={user} onEdit={onEdit} onDelete={onDelete} />
+      <UserItem
+        user={user}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        isDeleting={isRemovingUser}
+      />
     ),
-    [onDelete, onEdit]
+    [onDelete, onEdit, isRemovingUser]
   );
 
   return (
     <>
       <PageHeader title="Gerenciar Usuários">
         <HStack spacing={2}>
-          <RefreshButton refresh={mutate} />
-          {isCreateAuthorized && <Button onClick={onOpen}>Novo Usuário</Button>}
+          <RefreshButton refresh={refetch} />
+          <Button onClick={onOpen}>Novo Usuário</Button>
         </HStack>
       </PageHeader>
 
       <ListView<User>
         items={users}
         render={renderUserItem}
-        isLoading={isLoading || isValidating}
+        isLoading={isLoading}
       />
 
-      <UserModal
-        isOpen={isOpen}
-        onClose={handleClose}
-        onSubmit={onSubmit}
-        user={userToEdit}
-      />
+      <UserModal isOpen={isOpen} onClose={handleClose} user={userToEdit} />
     </>
   );
 }

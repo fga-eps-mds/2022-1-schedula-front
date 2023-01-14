@@ -7,8 +7,9 @@ type SignedUser = {
   id: string;
   name: string;
   token: string;
-  role: string;
-  permissions: Array<string>;
+  email: string;
+  // role: string;
+  // permissions: Array<string>;
 };
 
 type AuthResponse = {

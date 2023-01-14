@@ -9,6 +9,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from '@/utils/toast';
 import { api } from '@/config/lib/axios';
+import { GetUserInfoResponse } from '@/features/users/api/types';
 
 interface AuthContextData {
   signOut(): void;
@@ -23,17 +24,16 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const FAKE_USER_DATA = {
-  id: '1',
-  name: 'Usuário',
-  role: 'admin',
-  permissions: ['all'],
-};
-
 export function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [user, setUser] = useState<SignedUser | null>({} as SignedUser);
+  const [user, setUser] = useState<SignedUser | null>(() => {
+    const loadedUser = localStorage.getItem('@schedula:user');
+
+    if (!loadedUser) return {} as SignedUser;
+
+    return JSON.parse(loadedUser);
+  });
   const isAuthenticated = !!user?.token;
 
   const signIn = useCallback(
@@ -49,9 +49,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const { token } = response.data;
 
-        localStorage.setItem('@schedula:token', token);
+        const res = await api.get<GetUserInfoResponse>(
+          `${import.meta.env.VITE_PUBLIC_GESTOR_DE_USUARIOS_URL}/auth`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        setUser({ ...FAKE_USER_DATA, token });
+        const { username: name, email, userId: id } = res.data;
+
+        localStorage.setItem('@schedula:token', token);
+        localStorage.setItem(
+          '@schedula:user',
+          JSON.stringify({
+            name,
+            email,
+            id,
+            token,
+          })
+        );
+
+        setUser({ name, email, id, token });
+
+        api.defaults.headers.common.Authorization = `Bearer ${token}`;
 
         const from = location.state?.from?.pathname || '/';
 
@@ -67,6 +89,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@schedula:token');
+    localStorage.removeItem('@schedula:user');
 
     setUser(null);
 

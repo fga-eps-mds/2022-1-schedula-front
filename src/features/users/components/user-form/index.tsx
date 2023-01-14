@@ -2,18 +2,24 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Grid, GridItem } from '@chakra-ui/react';
 import { ControlledSelect, Input } from '@/components/form-fields';
-import { USER_ACCESS } from '@/constants/user';
+import { User } from '@/features/users/api/types';
+import { USER_ACCESS } from '@/features/users/constants';
 
 interface UserFormProps {
   defaultValues?: User | undefined;
   onSubmit: (data: UserFormValues) => void;
+  isSubmitting: boolean;
 }
 
 export type UserFormValues = Omit<RegisterUserPayload, 'profile'> & {
-  profile: SelectOption<Access>;
+  profile: SelectOption<keyof typeof USER_ACCESS>;
 };
 
-export function UserForm({ defaultValues, onSubmit }: UserFormProps) {
+export function UserForm({
+  defaultValues,
+  onSubmit,
+  isSubmitting,
+}: UserFormProps) {
   const isEditing = useMemo(() => Boolean(defaultValues), [defaultValues]);
 
   const {
@@ -21,13 +27,15 @@ export function UserForm({ defaultValues, onSubmit }: UserFormProps) {
     control,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<UserFormValues>({
     defaultValues: {
       ...defaultValues,
-      profile: defaultValues?.profile && {
-        label: USER_ACCESS[defaultValues.profile],
-        value: defaultValues.profile,
+      profile: {
+        label: defaultValues?.profile
+          ? USER_ACCESS[defaultValues.profile]
+          : USER_ACCESS.USER,
+        value: defaultValues ? defaultValues.profile : 'BASIC',
       },
       password: '',
     },
@@ -100,7 +108,7 @@ export function UserForm({ defaultValues, onSubmit }: UserFormProps) {
 
         <GridItem colSpan={2}>
           <Button type="submit" size="lg" width="100%" isLoading={isSubmitting}>
-            Registrar
+            {isEditing ? 'Salvar' : 'Criar usuário'}
           </Button>
         </GridItem>
       </Grid>
