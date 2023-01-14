@@ -7,7 +7,7 @@ import {
   Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from '@/config/lib/axios';
 import { ServicesStatus } from '@/components/footnote/service-status';
 

@@ -1,6 +1,4 @@
-type Access = 'BASIC' | 'ADMIN';
-
-interface User {
+interface IUser {
   id: string;
   email: string;
   username: string;

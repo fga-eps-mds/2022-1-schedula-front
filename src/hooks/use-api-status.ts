@@ -1,6 +1,6 @@
 import { createStandaloneToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from '@/config/lib/axios';
 
 const { toast } = createStandaloneToast();

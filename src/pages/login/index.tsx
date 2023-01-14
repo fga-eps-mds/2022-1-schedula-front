@@ -54,7 +54,7 @@ export function Login() {
               size="lg"
               fontSize="lg"
               {...register('username', { required: true })}
-              placeholder="E-mail ou nome de usuário"
+              placeholder="Nome de usuário"
             />
             {errors.username && (
               <span>

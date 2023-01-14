@@ -1,5 +1,6 @@
 import { ChakraProvider, createStandaloneToast } from '@chakra-ui/react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 
@@ -20,6 +21,7 @@ export function App() {
           <QueryClientProvider client={queryClient}>
             <Router />
             <ToastContainer />
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </ChakraProvider>
       </AuthProvider>

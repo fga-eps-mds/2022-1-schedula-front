@@ -10,7 +10,7 @@ export interface ActionsProps<Data> {
     | null;
 }
 
-export function Actions<Data>({ children, item }: ActionsProps<Data>) {
+export function ItemActions<Data>({ children, item }: ActionsProps<Data>) {
   return (
     <HStack spacing={4} role="menubar" alignSelf="end">
       {Children.map(
