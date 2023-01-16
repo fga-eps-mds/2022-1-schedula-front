@@ -18,8 +18,8 @@ export const routes: IRoute[] = [
     icon: MdOutlineViewAgenda,
   },
   {
-    label: 'Eventos',
-    pathname: '/eventos',
+    label: 'Agendamentos',
+    pathname: '/agendamentos',
     icon: RiCalendarEventLine,
   },
   {
@@ -39,7 +39,7 @@ export const routes: IRoute[] = [
   },
   {
     label: 'Postos de Trabalho',
-    pathname: '/workstation',
+    pathname: '/postos-de-trabalho',
     icon: FiMapPin,
   },
   {

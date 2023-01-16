@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from '@/config/lib/axios';
 
 function getWorkstationData() {
@@ -12,5 +12,5 @@ function getWorkstationData() {
 }
 
 export function useGetWorkstationData() {
-  return useQuery('get-workstation-data', getWorkstationData);
+  return useQuery(['get-workstation-data'], getWorkstationData);
 }
