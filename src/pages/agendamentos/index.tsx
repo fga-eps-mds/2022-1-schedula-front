@@ -1,9 +1,8 @@
-import { Button, HStack } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { HStack } from '@chakra-ui/react';
 import { RefreshButton } from '@/components/action-buttons/refresh-button';
 import { PageHeader } from '@/components/page-header';
 
-export function Chamados() {
+export function Agendamentos() {
   // const router = useRouter()
 
   // const { isOpen, onOpen, onClose } = useDisclosure()
@@ -63,7 +62,7 @@ export function Chamados() {
   return (
     <>
       {/* <PageHeader title={showEvents ? 'Eventos' : 'Chamados'}> */}
-      <PageHeader title="Chamados">
+      <PageHeader title="Agendamentos">
         <HStack spacing={2}>
           <RefreshButton
             refresh={() =>
@@ -72,9 +71,6 @@ export function Chamados() {
               })
             }
           />
-          <Link to="/chamados/registrar">
-            <Button variant="primary">Novo Chamado</Button>
-          </Link>
         </HStack>
       </PageHeader>
 

@@ -1,3 +1,7 @@
+import { Button, HStack } from '@chakra-ui/react';
+import { RefreshButton } from '@/components/action-buttons/refresh-button';
+import { PageHeader } from '@/components/page-header';
+
 export function ListaCategoria() {
   // const isCreateAuthorized = true
 
@@ -91,30 +95,37 @@ export function ListaCategoria() {
   // )
 
   return (
-    // <>
-    //   <PageHeader title="Categorias de Problemas">
-    //     <HStack spacing={2}>
-    //       <RefreshButton refresh={refreshCategories} />
-    //       {isCreateAuthorized && (
-    //         <Button onClick={onOpen}>Nova Categoria</Button>
-    //       )}
-    //     </HStack>
-    //   </PageHeader>
+    <>
+      <PageHeader title="Categorias de Problemas">
+        <HStack spacing={2}>
+          <RefreshButton
+            refresh={() =>
+              new Promise((resolve) => {
+                resolve(5);
+              })
+            }
+          />
+          <Button onClick={() => console.log('Nova Categoria')}>
+            Nova Categoria
+          </Button>
+        </HStack>
+      </PageHeader>
 
-    //   <ListView<Category>
-    //     items={categorias?.data}
-    //     render={renderCategoriaItem}
-    //     isLoading={isLoading || isValidating}
-    //   />
+      <p>Em progresso! Será entregue nas próximas interações..</p>
 
-    //   <CategoryModal
-    //     isOpen={isOpen}
-    //     onClose={handleClose}
-    //     onSubmit={onSubmit}
-    //     category={categoriaToEdit}
-    //   />
-    // </>
-    <h1>Categorias</h1>
+      {/* <ListView<Category>
+        items={categorias?.data}
+        render={renderCategoriaItem}
+        isLoading={isLoading || isValidating}
+      />
+
+      <CategoryModal
+        isOpen={isOpen}
+        onClose={handleClose}
+        onSubmit={onSubmit}
+        category={categoriaToEdit}
+      /> */}
+    </>
   );
 }
 

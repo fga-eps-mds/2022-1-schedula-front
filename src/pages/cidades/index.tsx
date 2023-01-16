@@ -1,13 +1,6 @@
-import { useCallback, useState } from 'react';
-
-import { Button, HStack, useDisclosure } from '@chakra-ui/react';
-import { AxiosResponse } from 'axios';
-import { toast } from '@/utils/toast';
-import { CityItem } from '@/components/items/city-item';
+import { Button, HStack } from '@chakra-ui/react';
 import { PageHeader } from '@/components/page-header';
 import { RefreshButton } from '@/components/action-buttons/refresh-button';
-import { ListView } from '@/components/list';
-import { CityModal } from '@/components/modals/city-modal';
 
 export function Cities() {
   // const isCreateAuthorized = true;
@@ -98,27 +91,32 @@ export function Cities() {
   // );
 
   return (
-    <h1>Cidades</h1>
-    // <>
-    //   <PageHeader title="Cidades Cadastradas">
-    //     <HStack spacing={2}>
-    //       <RefreshButton refresh={mutate} />
-    //       {isCreateAuthorized && <Button onClick={onOpen}>Nova Cidade</Button>}
-    //     </HStack>
-    //   </PageHeader>
+    <>
+      <PageHeader title="Cidades Cadastradas">
+        <HStack spacing={2}>
+          <RefreshButton
+            refresh={() =>
+              new Promise((resolve) => {
+                resolve(5);
+              })
+            }
+          />
+          <Button onClick={() => console.log('novo')}>Nova Cidade</Button>
+        </HStack>
+      </PageHeader>
 
-    //   <ListView<City>
-    //     items={cities?.data}
-    //     render={renderCityItem}
-    //     isLoading={isLoading || isValidating}
-    //   />
+      {/* <ListView<City>
+         items={cities?.data}
+         render={renderCityItem}
+         isLoading={isLoading || isValidating}
+       />
 
-    //   <CityModal
-    //     isOpen={isOpen}
-    //     onClose={handleClose}
-    //     onSubmit={onSubmit}
-    //     city={cityToEdit}
-    //   />
-    // </>
+       <CityModal
+         isOpen={isOpen}
+         onClose={handleClose}
+         onSubmit={onSubmit}
+         city={cityToEdit}
+       /> */}
+    </>
   );
 }

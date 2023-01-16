@@ -1,13 +1,9 @@
-import { useCallback } from 'react';
-
 import { Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '@/components/page-header';
-import { ChamadoForm } from '@/components/forms/chamado-form';
-import { toast } from '@/utils/toast';
 
 export function RegistrarChamado() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // const onSubmit = useCallback(async (data: ChamadoFormValues) => {
   //   console.log('data', data);
@@ -40,15 +36,16 @@ export function RegistrarChamado() {
   // }, []);
 
   return (
-    // <>
-    //   <PageHeader title="Novo Chamado">
-    //     <Button variant="tertiary" onClick={() => navigate('/chamados')}>
-    //       Ver Chamados
-    //     </Button>
-    //   </PageHeader>
+    <>
+      <PageHeader title="Novo Chamado">
+        <Button variant="primary" onClick={() => navigate('/chamados')}>
+          Ver Chamados
+        </Button>
+      </PageHeader>
 
-    //   <ChamadoForm onSubmit={onSubmit} />
-    // </>
-    <h1>Registrar Chamado</h1>
+      <p>Em progresso! Será entregue nas próximas interações..</p>
+
+      {/* <ChamadoForm onSubmit={onSubmit} /> */}
+    </>
   );
 }

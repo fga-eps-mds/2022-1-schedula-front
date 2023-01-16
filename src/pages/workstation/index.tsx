@@ -1,19 +1,6 @@
-import { useCallback, useState } from 'react';
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react';
-import { AxiosResponse } from 'axios';
-import { toast } from '@/utils/toast';
+import { Button, HStack } from '@chakra-ui/react';
 import { PageHeader } from '@/components/page-header';
 import { RefreshButton } from '@/components/action-buttons/refresh-button';
-import { Filters, WorkstationsFilter } from '@/components/workstations-filter';
-import { ListView } from '@/components/list';
-import { WorkstationModal } from '@/components/modals/workstation-modal';
 
 export function Workstation() {
   // const isCreateAuthorized = true;
@@ -133,47 +120,54 @@ export function Workstation() {
   // );
 
   return (
-    // <>
-    //   <PageHeader title="Gerenciar Postos de Trabalho">
-    //     <HStack spacing={2}>
-    //       <RefreshButton refresh={mutate} />
-    //       {isCreateAuthorized && (
-    //         <Button onClick={onOpen}>Novo Posto de Trabalho</Button>
-    //       )}
-    //     </HStack>
-    //   </PageHeader>
+    <>
+      <PageHeader title="Gerenciar Postos de Trabalho">
+        <HStack spacing={2}>
+          <RefreshButton
+            refresh={() =>
+              new Promise((resolve) => {
+                resolve(5);
+              })
+            }
+          />
+          <Button onClick={() => console.log('novo')}>
+            Novo Posto de Trabalho
+          </Button>
+        </HStack>
+      </PageHeader>
 
-    //   <VStack align="stretch" spacing={6}>
-    //     <Box width="50%" minWidth="300px">
-    //       <WorkstationsFilter onFilter={handleFilterChange} />
-    //     </Box>
+      {/* <VStack align="stretch" spacing={6}>
+        <Box width="50%" minWidth="300px">
+          <WorkstationsFilter onFilter={handleFilterChange} />
+        </Box>
 
-    //     <ListView<Workstation>
-    //       items={workstations?.data}
-    //       render={renderWorkstationItem}
-    //       isLoading={isLoading || isValidating}
-    //     />
+        <ListView<Workstation>
+          items={workstations?.data}
+          render={renderWorkstationItem}
+          isLoading={isLoading || isValidating}
+        />
 
-    //     {workstations?.data?.length === 0 && (
-    //       <Heading size="md" textAlign="center">
-    //         Nenhum posto de trabalho encontrado
-    //       </Heading>
-    //     )}
+        {workstations?.data?.length === 0 && (
+          <Heading size="md" textAlign="center">
+            Nenhum posto de trabalho encontrado
+          </Heading>
+        )}
 
-    //     {!filters?.regional && (
-    //       <Heading size="md" color="GrayText">
-    //         Selecione uma regional para visualizar os postos de trabalho
-    //       </Heading>
-    //     )}
-    //   </VStack>
+        {!filters?.regional && (
+          <Heading size="md" color="GrayText">
+            Selecione uma regional para visualizar os postos de trabalho
+          </Heading>
+        )}
+      </VStack> */}
 
-    //   <WorkstationModal
-    //     isOpen={isOpen}
-    //     onClose={handleClose}
-    //     workstation={workstationToEdit}
-    //     onSubmit={onSubmit}
-    //   />
-    // </>
-    <h1>Postos de trabalho</h1>
+      <p>Em progresso! Será entregue nas próximas interações..</p>
+
+      {/* <WorkstationModal
+        isOpen={isOpen}
+        onClose={handleClose}
+        workstation={workstationToEdit}
+        onSubmit={onSubmit}
+      /> */}
+    </>
   );
 }
