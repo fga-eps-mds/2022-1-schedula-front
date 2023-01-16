@@ -7,40 +7,17 @@ import {
   Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { api } from '@/config/lib/axios';
-import { ServicesStatus } from '@/components/footnote/service-status';
-
-interface Releases {
-  tag_name: string;
-  name: string;
-}
-
-async function getData(endpoint: string) {
-  const response = await api.get(endpoint);
-  return response.data;
-}
+import { ServicesStatus } from '@/features/api-status/components/service-status';
+import { useGetReleaseVersion } from '@/features/api-status/api/get-release-version';
+import { Release } from '@/features/api-status/types';
 
 function Footnote() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data } = useQuery<Releases>(
-    'users-service-version',
-    () =>
-      getData(
-        'https://api.github.com/repos/fga-eps-mds/2022-2-schedula-front/releases'
-      ),
-    {
-      enabled: !!import.meta.env.PROD,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      retry: false,
-    }
-  );
+  const { data } = useGetReleaseVersion();
 
   const version = useMemo(
-    () => (data as unknown as Releases[])?.[0]?.tag_name,
+    () => (data as unknown as Release[])?.[0]?.tag_name,
     [data]
   );
 
