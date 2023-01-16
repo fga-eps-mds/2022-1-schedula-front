@@ -5,7 +5,7 @@ import { Input } from '@/components/form-fields';
 import { City } from '@/features/cities/api/types';
 
 interface CityFormProps {
-  defaultValues?: City | undefined;
+  defaultValues?: City;
   onSubmit: (data: CityPayload) => void;
   isSubmitting: boolean;
 }
@@ -19,9 +19,7 @@ export function CityForm({
 
   const {
     register,
-    control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<CityPayload>({
     defaultValues: {

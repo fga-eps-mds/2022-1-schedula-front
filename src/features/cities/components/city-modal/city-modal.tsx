@@ -7,7 +7,7 @@ import { Modal } from '@/components/modal';
 import { CityForm } from '@/features/cities/components/city-form';
 
 interface CityModalProps extends Partial<ModalProps> {
-  city?: City | undefined;
+  city?: City;
   isOpen: boolean;
   onClose: () => void;
 }
