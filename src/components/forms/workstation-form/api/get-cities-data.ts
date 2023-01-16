@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from '@/config/lib/axios';
 
 function getCitiesData() {
@@ -12,5 +12,5 @@ function getCitiesData() {
 }
 
 export function useGetCitiesData() {
-  return useQuery('get-cities-data', getCitiesData);
+  return useQuery(['get-cities-data'], getCitiesData);
 }
