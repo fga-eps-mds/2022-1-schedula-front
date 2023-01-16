@@ -1,122 +1,71 @@
-import { Button, HStack } from '@chakra-ui/react';
+import { useCallback, useState } from 'react';
+import { Button, HStack, useDisclosure } from '@chakra-ui/react';
+import { CityItem } from '@/features/cities/components/city-item';
 import { PageHeader } from '@/components/page-header';
 import { RefreshButton } from '@/components/action-buttons/refresh-button';
+import { ListView } from '@/components/list';
+import { CityModal } from '@/features/cities/components/city-modal/city-modal';
+import { useGetAllCities } from '@/features/cities/api/get-all-cities';
+import { useDeleteCity } from '@/features/cities/api/delete-city';
+import { City } from '@/features/cities/api/types';
 
 export function Cities() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // const isCreateAuthorized = true;
+  const [cityToEdit, setCityToEdit] = useState<City>();
 
-  // const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data: cities, isLoading, refetch } = useGetAllCities();
 
-  // const [cityToEdit, setCityToEdit] = useState<City>();
+  const { mutate: deleteCity, isLoading: isRemovingCity } = useDeleteCity();
 
-  // const {
-  //   data: cities,
-  //   isLoading,
-  //   isValidating,
-  //   mutate,
-  // } = useRequest<City[]>(getCities);
+  const onEdit = useCallback(
+    (city: City) => {
+      setCityToEdit(city);
+      onOpen();
+    },
+    [onOpen]
+  );
 
-  // const refresh = useCallback(
-  //   (data?: City[]) =>
-  //     mutate(
-  //       {
-  //         data: {
-  //           error: null,
-  //           message: '',
-  //           data: data ?? [],
-  //         },
-  //       } as AxiosResponse<ApiResponse<City[]>>,
-  //       { revalidate: !data }
-  //     ),
-  //   [mutate]
-  // );
+  const onDelete = useCallback(
+    (cityId: string) => {
+      deleteCity({ cityId });
+    },
+    [deleteCity]
+  );
 
-  // const onDelete = useCallback(
-  //   (result: Result<ApiResponse<null>>, { id }: City) => {
-  //     if (result.type === 'success') {
-  //       toast.success(result.value?.message);
+  const handleClose = useCallback(() => {
+    setCityToEdit(undefined);
+    onClose();
+  }, [onClose]);
 
-  //       const newCities = cities?.data.filter((city) => city.id !== id);
-  //       refresh(newCities);
-
-  //       return;
-  //     }
-
-  //     toast.error(result.error?.message);
-  //   },
-  //   [cities?.data, refresh]
-  // );
-
-  // const onEdit = useCallback(
-  //   (city: City) => {
-  //     setCityToEdit(city);
-  //     onOpen();
-  //   },
-  //   [onOpen]
-  // );
-
-  // const onSubmit = useCallback(
-  //   (result: Result<ApiResponse<City>>) => {
-  //     if (result.type === 'error') {
-  //       toast.error(result.error?.message);
-
-  //       return;
-  //     }
-
-  //     toast.success(result.value?.message);
-
-  //     const newCities = cityToEdit
-  //       ? cities?.data.map((city) =>
-  //           city.id === cityToEdit?.id ? result.value.data : city
-  //         )
-  //       : [...(cities?.data || []), result.value?.data];
-
-  //     refresh(newCities);
-  //     setCityToEdit(undefined);
-  //     onClose();
-  //   },
-  //   [onClose, cityToEdit, cities?.data, refresh]
-  // );
-
-  // const handleClose = useCallback(() => {
-  //   setCityToEdit(undefined);
-  //   onClose();
-  // }, [onClose]);
-
-  // const renderCityItem = useCallback(
-  //   (city: City) => (
-  //     <CityItem city={city} onEdit={onEdit} onDelete={onDelete} />
-  //   ),
-  //   [onDelete, onEdit]
-  // );
+  const renderCityItem = useCallback(
+    (city: City) => (
+      <CityItem
+        city={city}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        isDeleting={isRemovingCity}
+      />
+    ),
+    [onDelete, onEdit, isRemovingCity]
+  );
 
   return (
     <>
       <PageHeader title="Cidades Cadastradas">
         <HStack spacing={2}>
-          <RefreshButton
-            refresh={() =>
-              new Promise((resolve) => {
-                resolve(5);
-              })
-            }
-          />
-          <Button onClick={() => console.log('novo')}>Nova Cidade</Button>
+          <RefreshButton refresh={refetch} />
+          <Button onClick={onOpen}>Nova Cidade</Button>
         </HStack>
       </PageHeader>
 
-      {/* <ListView<City>
-         items={cities?.data}
-         render={renderCityItem}
-         isLoading={isLoading || isValidating}
-       />
+      <ListView<City>
+        items={cities}
+        render={renderCityItem}
+        isLoading={isLoading}
+      />
 
-       <CityModal
-         isOpen={isOpen}
-         onClose={handleClose}
-         onSubmit={onSubmit}
-         city={cityToEdit}
-       /> */}
+      <CityModal isOpen={isOpen} onClose={handleClose} city={cityToEdit} />
     </>
   );
 }

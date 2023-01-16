@@ -1,19 +1,30 @@
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@chakra-ui/react';
 import { Input } from '@/components/form-fields';
+import { City } from '@/features/cities/api/types';
 
 interface CityFormProps {
-  defaultValues?: City | undefined;
+  defaultValues?: City;
   onSubmit: (data: CityPayload) => void;
+  isSubmitting: boolean;
 }
 
-export function CityForm({ defaultValues, onSubmit }: CityFormProps) {
+export function CityForm({
+  defaultValues,
+  onSubmit,
+  isSubmitting,
+}: CityFormProps) {
+  const isEditing = useMemo(() => Boolean(defaultValues), [defaultValues]);
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<CityPayload>({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+    },
   });
 
   return (
@@ -25,6 +36,13 @@ export function CityForm({ defaultValues, onSubmit }: CityFormProps) {
         placeholder="Nome"
       />
 
+      <Input
+        label="Estado"
+        {...register('state', { required: 'Campo obrigatórtio' })}
+        errors={errors?.name}
+        placeholder="Estado"
+      />
+
       <Button
         type="submit"
         size="lg"
@@ -32,7 +50,7 @@ export function CityForm({ defaultValues, onSubmit }: CityFormProps) {
         mt={8}
         isLoading={isSubmitting}
       >
-        Registrar
+        {isEditing ? 'Salvar' : 'Criar cidade'}
       </Button>
     </form>
   );
