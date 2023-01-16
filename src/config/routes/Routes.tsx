@@ -8,6 +8,8 @@ import { Workstation } from '@/pages/workstation';
 import { ListaProblemas } from '@/pages/categorias/problemas';
 import { RequireAuth } from '@/config/routes/require-auth';
 import { DefaultLayout } from '@/components/layout/default-layout';
+import { RegistrarChamado } from '@/pages/chamados/registrar';
+import { Agendamentos } from '@/pages/agendamentos';
 
 export function Router() {
   return (
@@ -30,6 +32,24 @@ export function Router() {
             </RequireAuth>
           }
         />
+        <Route
+          path="chamados/registrar"
+          element={
+            <RequireAuth>
+              <RegistrarChamado />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="agendamentos"
+          element={
+            <RequireAuth>
+              <Agendamentos />
+            </RequireAuth>
+          }
+        />
+
         <Route
           path="cidades"
           element={

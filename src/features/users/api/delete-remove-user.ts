@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/config/lib/axios';
-import { USERS_ENDPOINT } from '@/features/users/constants/requests';
 import { toast } from '@/utils/toast';
 import { USERS_CACHE_KEYS } from '@/features/users/constants/cache';
 import { DeleteRemoveUserParams } from '@/features/users/api/types';
+import { USERS_ENDPOINT } from '@/constants/requests';
 
 function deleteRemoveUser({ userId }: DeleteRemoveUserParams) {
   return api.delete<boolean>(`${USERS_ENDPOINT}/users/${userId}`);

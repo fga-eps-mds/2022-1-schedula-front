@@ -1,6 +1,4 @@
 import {
-  Badge,
-  Box,
   Divider,
   Drawer,
   DrawerBody,
@@ -8,69 +6,15 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Flex,
-  Skeleton,
-  Text,
   VStack,
 } from '@chakra-ui/react';
-import { useAPIStatus } from '@/hooks/use-api-status';
-import { useReleaseData } from '@/hooks/use-release-data';
+import { StatusLine } from '@/features/api-status/components/status-line';
+import { useAPIStatus } from '@/features/api-status/hooks/use-api-status';
+import { useReleaseData } from '@/features/api-status/hooks/use-release-data';
 
 interface ServicesStatusProps {
   isOpen: boolean;
   onClose: () => void;
-}
-
-interface StatusLineProps {
-  serviceName: string;
-  status: boolean;
-  version: string;
-  isLoadingStatus: boolean;
-  isLoadingVersion: boolean;
-}
-
-function StatusLine({
-  serviceName,
-  status,
-  version,
-  isLoadingStatus,
-  isLoadingVersion,
-}: StatusLineProps) {
-  return (
-    <Flex gap={2}>
-      <Skeleton isLoaded={!isLoadingStatus}>
-        <Badge
-          fontSize="sm"
-          variant="subtle"
-          colorScheme={status ? 'green' : 'red'}
-        >
-          {status ? 'ON' : 'OFF'}
-        </Badge>
-      </Skeleton>
-
-      <Text>{serviceName}</Text>
-
-      {import.meta.env.PROD && (
-        <Skeleton isLoaded={!isLoadingVersion}>
-          <Badge
-            variant="outline"
-            textTransform="lowercase"
-            fontWeight="medium"
-          >
-            {version || 'Not Released'}
-          </Badge>
-        </Skeleton>
-      )}
-
-      {import.meta.env.DEV && (
-        <Box ml="auto">
-          <Badge colorScheme="pink" variant="outline" textTransform="lowercase">
-            dev
-          </Badge>
-        </Box>
-      )}
-    </Flex>
-  );
 }
 
 export function ServicesStatus({ isOpen, onClose }: ServicesStatusProps) {

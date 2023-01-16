@@ -1,12 +1,10 @@
-import { USER_ACCESS } from '@/features/users/constants';
-
 export interface User {
   id: string;
   email: string;
   name: string;
   username: string;
   position: string;
-  profile: keyof typeof USER_ACCESS;
+  profile: 'ADMIN' | 'BASIC' | 'USER';
   createdAt: string;
   updatedAt: string;
 }

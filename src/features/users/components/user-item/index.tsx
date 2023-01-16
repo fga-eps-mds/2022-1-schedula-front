@@ -55,6 +55,7 @@ export function UserItem({
           onClick={() => onDelete(user.id)}
           label={user.name}
           isLoading={isDeleting}
+          data-testid="deleteButton"
         />
       </ItemActions>
     </Item>

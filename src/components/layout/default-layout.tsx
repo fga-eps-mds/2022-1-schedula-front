@@ -1,7 +1,7 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import { SideBar } from '@/components/side-bar';
-import Footnote from '@/components/footnote';
+import Footnote from '@/features/api-status/components/footnote';
 
 export function DefaultLayout() {
   return (

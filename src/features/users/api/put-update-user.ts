@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { api } from '@/config/lib/axios';
-import { USERS_ENDPOINT } from '@/features/users/constants/requests';
 import {
   PutUpdateUserParams,
   PutUpdateUserResponse,
@@ -9,6 +8,7 @@ import {
 import { toast } from '@/utils/toast';
 import { USERS_CACHE_KEYS } from '@/features/users/constants/cache';
 import { ApiError } from '@/config/lib/axios/types';
+import { USERS_ENDPOINT } from '@/constants/requests';
 
 function putUpdateUser({ userId, data }: PutUpdateUserParams) {
   return api.put<PutUpdateUserResponse>(

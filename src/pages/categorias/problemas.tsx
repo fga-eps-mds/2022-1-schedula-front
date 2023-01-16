@@ -1,3 +1,7 @@
+import { Button, HStack, Skeleton, Tag, Text } from '@chakra-ui/react';
+import { RefreshButton } from '@/components/action-buttons/refresh-button';
+import { PageHeader } from '@/components/page-header';
+
 export function ListaProblemas() {
   // const isCreateAuthorized = true
   // const router = useRouter()
@@ -99,31 +103,38 @@ export function ListaProblemas() {
   // )
 
   return (
-    <h1>Problemas de uma categoria</h1>
     // <>
-    //   <PageHeader
-    //     title="Gerenciar Tipos de Problema"
-    //     subtitle={
-    //       <Skeleton
-    //         h="16px"
-    //         isLoaded={Boolean(!isLoadingCategory && category_id)}
-    //       >
-    //         <Text color="GrayText">
-    //           Da Categoria{" "}
-    //           <Tag colorScheme="yellow" fontWeight="semibold" fontSize="md">
-    //             {categoria?.data?.name}
-    //           </Tag>
-    //         </Text>
-    //       </Skeleton>
-    //     }
-    //   >
-    //     <HStack spacing={2}>
-    //       <RefreshButton refresh={mutate} />
-    //       {isCreateAuthorized && (
-    //         <Button onClick={onOpen}>Novo Tipo de Problema</Button>
-    //       )}
-    //     </HStack>
-    //   </PageHeader>
+    <PageHeader
+      title="Gerenciar Tipos de Problema"
+      subtitle={
+        <Skeleton
+          h="16px"
+          isLoaded
+          // isLoaded={Boolean(!isLoadingCategory && category_id)}
+        >
+          <Text color="GrayText">
+            Da Categoria{' '}
+            <Tag colorScheme="yellow" fontWeight="semibold" fontSize="md">
+              Segurança
+              {/* {categoria?.data?.name} */}
+            </Tag>
+          </Text>
+        </Skeleton>
+      }
+    >
+      <HStack spacing={2}>
+        <RefreshButton
+          refresh={() =>
+            new Promise((resolve) => {
+              resolve(5);
+            })
+          }
+        />
+        <Button onClick={() => console.log('onOpen')}>
+          Novo Tipo de Problema
+        </Button>
+      </HStack>
+    </PageHeader>
 
     //   <ListView<TipoProblema>
     //     items={problemTypes?.data}
